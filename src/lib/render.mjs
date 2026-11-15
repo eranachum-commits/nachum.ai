@@ -281,7 +281,7 @@ pages.home = (c) => {
   const proofSignals = [h.founder.signals[0], h.founder.signals[2], h.founder.signals[5]];
   const body = `
 <section class="hero"><div class="container hero-stage">
-  <div class="hero-copy"><p class="brand-positioning"><span>${hr.eyebrow}</span><span>${founderLine(c)}</span></p><h1>${hr.h1}</h1>
+  <div class="hero-copy"><p class="brand-positioning"><span>${brandDescriptor(c)}</span><span>${founderLine(c)}</span></p><h1>${hr.h1}</h1>
   <p class="lede">${hr.sub}</p>
   <div class="btn-row">${btn(c, h.sales.cta, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, h.sales.secondary, '#deliver', '')}</div>
   <p class="trust-line"><strong>${hr.trust}</strong> ${hr.proof}</p></div>
@@ -296,9 +296,9 @@ ${ctaBand(c, h.cta.title, h.cta.p)}`;
 };
 
 pages.usecase = (c) => {
-  const p = c.usecase, pn = p.pains, path = p.path, w = p.why;
+  const p = c.usecase, pn = p.pains, path = p.path;
   // The page follows a CEO's line of thought: the pain I feel → where it hides → how we get there
-  // (with my decision at each step) → why this partner → book.
+  // (with my decision at each step) → book. Why this partner lives on the About page.
   const hero = pageHero(c, p.h1, p.lede).replace('</div></section>',
     `<div class="btn-row">${btn(c, p.heroCta, '#pains', 'btn--primary')}${btn(c, c.ui.book, bookUrl(c, 'usecase'), '')}</div></div></section>`);
 
@@ -315,15 +315,9 @@ pages.usecase = (c) => {
   // Decision path: the four stages, with the CEO's go/no-go between them. Durations only, no prices.
   const stages = c.offers.items.map((o, i) => `<li class="dp-stage${i === 0 ? ' dp-stage--free' : ''}"><span class="dp-n" aria-hidden="true">${i + 1}</span><div><p class="dp-name">${o.stage}</p><h3>${o.h}</h3><p class="dp-dur">${i === 0 ? `<span class="dp-free">${o.price}</span>` : ''}${duration(o.unit)}</p><p class="dp-get"><strong>${path.getL}</strong> ${path.get[i]}</p></div></li>${i < path.gates.length ? `<li class="dp-gate"><span class="dp-gate-mark" aria-hidden="true"></span><p><strong>${path.gateL}</strong> ${path.gates[i]}</p></li>` : ''}`).join('');
 
-  // Why Eran: a fair three-way comparison, then real facts from the founder bio (no invented numbers).
-  const whyTable = `<div class="why-wrap"><table class="why"><thead><tr><td></td>${w.cols.map((x, i) => `<th scope="col"${i === 2 ? ' class="why-us"' : ''}>${x}</th>`).join('')}</tr></thead><tbody>${w.rows.map((r) => `<tr><th scope="row">${r.h}</th>${r.cells.map((x, i) => `<td data-label="${esc(w.cols[i])}"${i === 2 ? ' class="why-us"' : ''}>${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-  const sig = c.home.founder.signals;
-  const proof = `<div class="why-proof"><h3>${w.signalsTitle}</h3>${ticks([sig[0], sig[1], sig[2], sig[5]])}${btn(c, c.home.founder.link, href(c.lang, 'about'), '')}</div>`;
-
   const body = `${hero}
 ${section(`${head('', pn.title, pn.intro, 'pains-title')}${picker}`, 'usecase-pains', 'pains', 'pains-title')}
 ${section(`${head('', path.title, path.intro, 'path-title')}<ol class="decision-path">${stages}</ol>`, 'section--tint usecase-path', 'path', 'path-title')}
-${section(`${head('', w.title, w.intro, 'why-title')}${whyTable}${proof}`, 'usecase-why', 'why', 'why-title')}
 ${ctaBand(c, p.cta.title, p.cta.p, 'usecase')}`;
   return { meta: p.meta, body };
 };
@@ -338,21 +332,57 @@ ${section(`<div class="split split--even"><div><h2>${p.needTitle}</h2>${ticks(p.
 };
 
 pages.about = (c) => {
-  const p = c.about;
+  const p = c.about, w = p.why, sig = c.home.founder.signals;
+  // Reading order: who (story beside the portrait, then the hard facts) → why this partner over the alternatives
+  // (fair three-way comparison) → what that means day to day → how we work, ending on the booking action.
+  const facts = `<aside class="about-facts" aria-labelledby="facts-title"><h2 id="facts-title" class="as-h3">${p.factsTitle}</h2>${ticks([sig[0], sig[1], sig[2], sig[5]])}</aside>`;
+  const whyTable = `<div class="why-wrap"><table class="why"><thead><tr><td></td>${w.cols.map((x, i) => `<th scope="col"${i === 2 ? ' class="why-us"' : ''}>${x}</th>`).join('')}</tr></thead><tbody>${w.rows.map((r) => `<tr><th scope="row">${r.h}</th>${r.cells.map((x, i) => `<td data-label="${esc(w.cols[i])}"${i === 2 ? ' class="why-us"' : ''}>${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   const body = `${pageHero(c, p.h1, p.lede)}
-${section(`<div class="split split--even">${founderPanel(c)}<div class="prose">${p.story.map((x) => `<p>${x}</p>`).join('')}</div></div>`)}
-${section(`<h2>${p.sigTitle}</h2><div class="grid g4">${p.sigs.map((x) => `<article class="card"><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div>`, 'section--tint')}
-${section(`<div class="split split--even"><div><h2>${p.princTitle}</h2>${ticks(p.princ)}</div><div>${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div></div>`)}`;
+${section(`<div class="about-story"><div class="about-side">${founderPanel(c)}</div><div class="about-main"><div class="about-prose">${p.story.map((x) => `<p>${x}</p>`).join('')}</div>${facts}</div></div>`, 'about-intro')}
+${section(`${head('', w.title, w.intro, 'why-title')}${whyTable}`, 'section--tint about-why', 'why', 'why-title')}
+${section(`${head('', p.sigTitle, '', 'practice-title')}<div class="about-practice">${p.sigs.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div>`, 'about-practice-sec', 'practice', 'practice-title')}
+${section(`<div class="about-how"><h2 id="how-title">${p.princTitle}</h2>${ticks(p.princ)}<div class="btn-row">${btn(c, p.cta, bookUrl(c), 'btn--primary', 'data-track="cta_about"')}</div></div>`, 'section--tint', 'how-we-work', 'how-title')}`;
   return { meta: p.meta, body };
 };
 
 pages.results = (c) => {
-  const p = c.results;
-  const cycle = `<ol class="measure-cycle">${p.cycle.map((x, i) => `<li><span class="cycle-n" aria-hidden="true">0${i + 1}</span><div><h3>${x.h}</h3><p>${x.p}</p></div></li>`).join('')}</ol>`;
-  const metrics = `<div class="metric-grid">${p.rows.map((r, i) => `<article class="metric-card"><span class="metric-n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><h3>${r[0]}</h3><dl><div><dt>${p.cols[1]}</dt><dd>${r[1]}</dd></div><div><dt>${p.cols[2]}</dt><dd>${r[2]}</dd></div></dl></article>`).join('')}</div>`;
+  const p = c.results, f = p.flow, ex = p.example, L = ex.labels, m = p.measures, r = p.rules;
+  // Answers a CEO's three questions in order: how do you measure (flowchart), how do you calculate it
+  // (worked example), what exactly do you track (measures) — then the rules and booking.
+
+  // Measurement flowchart: data in → measure → agree the bar ◇ → pilot → compare → cleared? ◇ → run and report.
+  // Steps are numbered hexagons (a real sequence), decisions are diamonds, the data source is a chip.
+  // The "No" branch hangs under the second decision; "Every month" loops under the last step.
+  let n = 0;
+  const node = (x, i) => {
+    const shape = x.kind === 'step' ? `<span class="mf-shape" aria-hidden="true">${++n}</span>` : `<span class="mf-shape" aria-hidden="true"></span>`;
+    const decide = i === f.nodes.length - 2
+      ? `<p class="mf-yes"><strong>${f.yes}</strong></p><div class="mf-branch"><p class="mf-no"><strong>${f.no}</strong></p><p class="mf-alt"><span class="mf-t">${f.noNode.t}</span><span class="mf-s">${f.noNode.s}</span></p></div>` : '';
+    const loop = i === f.nodes.length - 1 ? `<p class="mf-loop"><span aria-hidden="true">↻</span> ${f.loop}</p>` : '';
+    return `<li class="mf mf--${x.kind}">${shape}<p class="mf-text"><span class="mf-t">${x.t}</span><span class="mf-s">${x.s}</span></p>${decide}${loop}</li>`;
+  };
+  const flow = `<ol class="mflow">${f.nodes.map(node).join('')}</ol>`;
+
+  // Worked example: the arithmetic stays visible. Bars share one scale (the "before" hours).
+  const hb = Math.round((ex.requests * ex.before) / 60), ha = Math.round((ex.requests * ex.after) / 60);
+  const freed = hb - ha, days = Math.round((freed / ex.hoursPerDay) * 2) / 2, pct = (v) => `${Math.round((v / hb) * 100)}%`;
+  const calc = `<figure class="calc-ex"><figcaption class="cx-ill">${L.illustrative}</figcaption>
+<div class="cx-row"><p class="cx-l">${L.before}</p><p class="cx-math">${ex.requests} ${L.requests} × ${ex.before} ${L.minutes}</p><div class="cx-bar" aria-hidden="true"><i class="cx-used" style="width:100%"></i></div><p class="cx-v">${hb} ${L.hours}</p></div>
+<div class="cx-row"><p class="cx-l">${L.after}</p><p class="cx-math">${ex.requests} ${L.requests} × ${ex.after} ${L.minutes}</p><div class="cx-bar" aria-hidden="true"><i class="cx-used" style="width:${pct(ha)}"></i><i class="cx-freed" style="width:${pct(freed)}"></i></div><p class="cx-v">${ha} ${L.hours}</p></div>
+<div class="cx-result"><p class="cx-l">${L.freed}</p><p class="cx-big"><span class="cx-eq" dir="ltr">${hb} − ${ha} = ${freed}</span> ${L.hours}</p><p class="cx-sub">≈ ${days} ${L.days}</p></div>
+<p class="cx-note">${ex.note}</p><p class="cx-money">${ex.money}</p></figure>`;
+
+  // Measures: same table pattern as the use case comparison (stacks into labelled blocks on phones).
+  const table = `<div class="why-wrap"><table class="why measures-table"><thead><tr>${m.cols.map((x) => `<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${m.items.map((x) => `<tr><th scope="row">${x.h}<span class="mt-q">${x.q}</span></th><td data-label="${esc(m.cols[1])}">${x.calc}</td><td data-label="${esc(m.cols[2])}">${x.src}</td></tr>`).join('')}</tbody></table></div>`;
+
+  const rules = `<div class="rules-layout"><div><h2 id="rules-title">${r.title}</h2>${ticks(r.items)}</div><article class="rules-card rules-card--monthly"><h3>${r.monthly.h}</h3><p>${r.monthly.p}</p></article><article class="rules-card"><h3>${r.honest.h}</h3><p>${r.honest.p}</p></article></div>`;
+
   const body = `${pageHero(c, p.h1, p.lede)}
-${section(`<div class="results-title"><span class="eyebrow">${p.cols[0]}</span><h2 id="score-title">${p.scoreTitle}</h2></div>${cycle}${metrics}`, 'results-score', 'scorecard', 'score-title')}
-${section(`<div class="proof-layout"><article class="gate-panel"><span class="proof-label">01</span><h2>${p.gatesTitle}</h2>${ticks(p.gates)}</article><div class="evidence-stack"><article class="monthly-card"><span class="proof-label">02</span><h2 class="h-sm">${p.monthly.h}</h2><p>${p.monthly.p}</p></article><article class="evidence-note"><span class="proof-label">03</span><h2 class="h-sm">${p.honest.h}</h2><p>${p.honest.p}</p></article></div></div><div class="results-action">${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div>`, 'results-proof section--tint')}`;
+${section(`${head('', f.title, f.intro, 'flow-title')}${flow}`, 'results-flow', 'flow', 'flow-title')}
+${section(`${head('', ex.title, ex.intro, 'calc-title')}${calc}`, 'section--tint results-calc', 'calculation', 'calc-title')}
+${section(`${head('', m.title, m.intro, 'measures-title')}${table}`, 'results-measures', 'measures', 'measures-title')}
+${section(rules, 'section--tint results-rules', 'rules', 'rules-title')}
+${ctaBand(c, p.cta.title, p.cta.p)}`;
   return { meta: p.meta, body };
 };
 

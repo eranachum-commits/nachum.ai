@@ -72,11 +72,23 @@ await t('generic use case replaces the solution pages', () => {
     assert.equal((page.match(/role="tab"/g) || []).length, c.usecase.pains.items.length, 'one tab per pain ' + lang);
     assert.equal((page.match(/role="tabpanel"/g) || []).length, c.usecase.pains.items.length, 'one panel per pain ' + lang);
     assert.equal((page.match(/class="dp-gate"/g) || []).length, c.usecase.path.gates.length, 'a decision between stages ' + lang);
-    assert.equal((page.match(/<td data-label=/g) || []).length, c.usecase.why.rows.length * 3, 'comparison cells ' + lang);
+    assert.doesNotMatch(page, /class="why"/, 'comparison moved off the use case page ' + lang);
+    const about = pages[href(lang, 'about')];
+    assert.equal((about.match(/<td data-label=/g) || []).length, c.about.why.rows.length * 3, 'comparison cells on about ' + lang);
     for (const k of ['home', 'how', 'usecase']) assert.doesNotMatch(pages[href(lang, k)], /data-pipeline/, 'no before/after diagram on ' + k + ' ' + lang);
     assert.ok(pages[href(lang, 'home')].includes(`href="${href(lang, 'usecase')}"`), 'home links to use case ' + lang);
   }
   for (const [u, html] of Object.entries(pages)) assert.doesNotMatch(html, /href="(\/en)?\/solutions\//, 'link to removed solution page on ' + u);
+});
+await t('results page shows the measurement flow, a worked calculation and the measures', () => {
+  for (const lang of langs) { const c = lang === 'he' ? he : en, r = c.results, page = pages[href(lang, 'results')];
+    assert.equal((page.match(/<li class="mf mf--/g) || []).length, r.flow.nodes.length, 'flow nodes ' + lang);
+    assert.equal((page.match(/class="mf mf--gate"/g) || []).length, 2, 'two decisions ' + lang);
+    const hb = Math.round(r.example.requests * r.example.before / 60), ha = Math.round(r.example.requests * r.example.after / 60);
+    assert.ok(page.replace(/<[^>]+>/g, '').includes(`${hb} − ${ha} = ${hb - ha}`), 'worked calculation ' + lang);
+    assert.ok(page.includes(r.example.labels.illustrative), 'example labelled illustrative ' + lang);
+    assert.equal((page.match(/<tr><th scope="row">/g) || []).length, r.measures.items.length, 'measures rows ' + lang);
+  }
 });
 await t('illustrative content is labelled; no invented proof', () => {
   for (const [u, html] of Object.entries(pages)) { assert.doesNotMatch(html, /testimonial|עדות מלקוח\b(?!ות)/i, u); }

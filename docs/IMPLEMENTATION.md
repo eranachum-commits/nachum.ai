@@ -79,11 +79,12 @@ English display headings use an editorial serif stack; Hebrew headings, body cop
 | Component | Where | What it shows |
 |---|---|---|
 | Brand hero + connected cells | Home | Business-outcome headline, proof-led positioning and a restrained Discover-to-Scale signal |
-| Use case page (CEO lens) | `/business-use-case`, linked from the main menu | A CEO's line of thought: pain picker (five CEO pains as tabs; each lights the step of a five-step lane where it hides, then what we change and the number that proves it) → decision path (four stages, "your call" between them, durations only) → "Why work with Eran" comparison (buy a tool / large consultancy / bee & co.) with real founder facts → booking. Replaced the four solution pages |
+| Use case page (CEO lens) | `/business-use-case`, linked from the main menu | A CEO's line of thought: pain picker (five CEO pains as tabs; each lights the step of a five-step lane where it hides, then what we change and the number that proves it) → decision path (four stages, "your call" between them, durations only) → booking. The "Why work with Eran" comparison now lives on the About page. Replaced the four solution pages |
 | Before/after AI pipeline | Not shown on any page (component kept in `pipeline()`, its styles and `pipeline` copy, for reuse) | One request moving through the business; the same boxes morph from the manual version (hand steps, rework loop) to the AI version (AI agent, live system connections, one human checkpoint) |
 | Transformation flow + method track | Home | Discover → Prioritize → Design → Prove → Deploy → Scale, with a proof decision gate, refinement loop, executive flow chart and detailed list |
 | Offers as standing bars | Home | Stage 1 emphasised in navy with "Free" and the booking button; stages 2–4 rise as bars on a shared baseline and show duration only, no prices |
 | How-it-works stage rail | How it works | Stage rows joined by a vertical connector; the stages table shows a Duration column instead of prices |
+| Results page (measurement method) | `/results` | Answers "how do you measure / calculate / what do you track": measurement flowchart (data → measure today → agree the bar ◇ → pilot → compare → cleared? ◇ → run and report, with a No branch and a monthly loop; horizontal on desktop, vertical on phones, mirrored in Hebrew), a worked calculation with visible arithmetic and bars (illustrative sample numbers), seven measures with formula and data source, rules and the monthly one-pager |
 | Capacity calculator, two-minute check | Not currently rendered | Code and copy still exist (`calculator()`, `check()` in `render.mjs`), but no page shows them since the bee & co. redesign; the quiz results now point to the use case |
 
 ## 6. Motion
@@ -153,6 +154,8 @@ Still present:
 | `d654323` | Four solution pages replaced by one generic use case: new `/business-use-case` page and home preview; Solutions menu and footer column replaced by "Use case"; quiz results repointed; old `/solutions/...` addresses redirect (301) to the use case; unused solution code, copy and ~150 style rules removed |
 | (this change) | Before/after AI diagram moved from home to the use case page, which now shows the diagram plus "Where the effort goes" (before, with AI, what it saves); use case preview removed from home; diagram also removed from how it works |
 | (this change) | Use case page rebuilt around CEO pains: pain picker, decision path, why-Eran comparison; before/after diagram section and its savings rows removed; reusable tab behaviour extended (vertical tabs, Home/End, works without JS) |
+| (next change) | Results page rebuilt from scratch: measurement flowchart, worked calculation, measures with formulas, rules |
+| (this change) | "Why work with Eran" comparison moved from the use case page to About; About relaid for reading: story beside a sticky portrait and fact list, comparison, practice in a 2×2 grid, how we work ending on the booking button; larger logo; tighter spacing between blocks |
 
 Process used for the redesigns: the `frontend-design` skill for direction, `design-critique` and `accessibility-review` passes, and two parallel review agents (design critic, WCAG auditor) whose findings were applied.
 
