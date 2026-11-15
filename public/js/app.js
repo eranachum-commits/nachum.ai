@@ -9,7 +9,7 @@ const store = {
 
 /* ---------- consent-gated tracking ----------
    Events go to window.dataLayer ONLY after the visitor accepts. Connect GTM/GA/Plausible etc. at launch (docs/LAUNCH.md). */
-const consent = () => store.get('nachum-consent');
+const consent = () => store.get('bee-co-consent');
 export function track(name, props = {}) {
   if (consent() !== 'yes') return;
   (window.dataLayer = window.dataLayer || []).push({ event: name, lang: document.documentElement.lang, path: location.pathname, ...props });
@@ -18,7 +18,7 @@ export function track(name, props = {}) {
   const box = $('[data-consent]');
   if (!box) return;
   if (!consent()) box.hidden = false;
-  const set = (v) => { store.set('nachum-consent', v); box.hidden = true; if (v === 'yes') track('consent_granted'); };
+  const set = (v) => { store.set('bee-co-consent', v); box.hidden = true; if (v === 'yes') track('consent_granted'); };
   $('[data-consent-yes]', box).addEventListener('click', () => set('yes'));
   $('[data-consent-no]', box).addEventListener('click', () => set('no'));
 })();
@@ -70,6 +70,7 @@ $$('[data-pipeline]').forEach((root) => {
       node.classList.add(`pl--${node.dataset[`${mode}Kind`]}`);
       $('.pl-title', node).textContent = node.dataset[`${mode}T`];
       $('.pl-sub', node).textContent = node.dataset[`${mode}S`];
+      $('.pl-icon use', node).setAttribute('href', node.dataset[`${mode}Icon`]);
       node.style.opacity = mode === 'after' && 'afterHidden' in node.dataset ? '0' : '1';
     });
     $$('.pl-edges', root).forEach((edges) => {

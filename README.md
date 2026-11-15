@@ -1,6 +1,6 @@
-# NACHUM.AI — bilingual site (HE/EN)
+# bee & co. — bilingual site (HE/EN)
 
-Fresh implementation per `NACHUM_AI_CLAUDE_PROJECT_README.md` (v6.1). Hebrew (RTL) at `/`, English (LTR) at `/en`.
+Fresh bilingual implementation for bee & co. Hebrew (RTL) at `/`, English (LTR) at `/en`.
 12 routes × 2 languages = 24 pages: home, 4 pain-specific landing pages, how-it-works, about, results/measurement, FAQ, data & security, contact/booking, privacy (draft).
 
 ## Run

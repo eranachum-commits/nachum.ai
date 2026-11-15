@@ -1,7 +1,7 @@
-# NACHUM.AI website — implementation record
+# bee & co. website — implementation record
 
 What has been built so far, how it fits together, and what is still open.
-Last updated: 2026-11-15 (commit `a464eaa`, live at https://nachum-ai.vercel.app).
+Last updated: 2026-11-15 (bee & co. brand-system redesign in progress locally).
 
 Related documents: [`README.md`](../README.md) (how to run), [`APPROVALS.md`](APPROVALS.md) (decisions waiting on the founder), [`LAUNCH.md`](LAUNCH.md) (launch checklist).
 
@@ -9,7 +9,7 @@ Related documents: [`README.md`](../README.md) (how to run), [`APPROVALS.md`](AP
 
 ## 1. What the site is
 
-A bilingual marketing site for NACHUM.AI, a boutique AI-solutions partner for established companies, led by a senior technology executive. The primary goal of every page is to book a free working session.
+A bilingual marketing site for bee & co., a boutique AI-solutions partner for established companies, led by a senior technology executive. The primary goal of every page is to book a free working session.
 
 - **Hebrew (RTL)** at `/`, **English (LTR)** at `/en`. Every page exists in both languages with the same structure; a test enforces parity.
 - **12 routes × 2 languages = 24 pages:** home, four solution landing pages (quotes and orders, customer inbox, opportunity discovery, AI adoption), how it works, about, results and measurement, FAQ, data and security, contact/booking, privacy (draft, `noindex`).
@@ -37,7 +37,7 @@ Commands: `npm start` (build + serve on :3000), `npm test` (build + smoke tests)
 
 ## 3. Design system (current)
 
-The current look is a **boutique pastel** direction, aligned to the colour map of the founder's "AI-Native Engineering" deck.
+The current look is **Quiet Authority**: a premium editorial consultancy system built around the bee & co. identity. It uses a connected lowercase-`b` mark, warm natural colour, restrained faceted-cell geometry, evidence-led diagrams and generous whitespace.
 
 ### Colour
 
@@ -45,42 +45,43 @@ Tokens live in `:root` in `src/styles.css`.
 
 | Token | Value | Use |
 |---|---|---|
-| `--ink` / `--night` | `#132238` | Text; dark bands (founder, footer, calculator results, free offer) |
-| `--paper` | `#fbfcfe` | Page background |
-| `--paper-2` | `#eef3fa` | Ice wash: alternating bands |
-| `--peri` | `#e4ebfd` | Periwinkle wash: hero |
-| `--ink-2` / `--muted` | `#4a5b73` / `#5b6a80` | Secondary and muted text |
-| `--rule` / `--field` | `#d3dce8` / `#7c8aa0` | Hairlines / form-control borders |
-| `--accent` / `--accent-deep` | `#2563eb` / `#1e3a8a` | The AI and actions / blue text on washes |
-| `--human` / `--human-tint` | `#b45309` / `#fff4e8` | The human decision: approval stamp, human checkpoints |
+| `--ink` / `--night` | `#202820` / `#25212a` | Botanical text; founder, CTA, footer and results bands |
+| `--paper` / `--sheet` | `#f5f0e6` / `#fffdf8` | Warm page and document surfaces |
+| `--paper-2` / `--peri` | `#e7ece3` / `#dce4d8` | Sage section and hero washes |
+| `--ink-2` / `--muted` | `#465247` / `#596459` | Secondary and muted copy |
+| `--rule` / `--field` | `#c6c9be` / `#6f796e` | Editorial hairlines and accessible controls |
+| `--pollen` / `--accent` | `#e8ad36` / `#6b550b` | Proven-value signal and accessible accent text |
+| `--human` / `--human-tint` | `#92520b` / `#f5dfcf` | Human checkpoints and approval moments |
 
-The colours carry meaning consistently: **blue = the AI working, apricot/amber = a person deciding, grey = manual work or systems.**
+The colours carry meaning consistently: **sage = systems and process, pollen = proven value or a decision, peach = a human checkpoint, lavender = supporting context.**
 
 ### Type
 
-One family, **IBM Plex Sans Hebrew** (Hebrew + Latin), self-hosted in weights 300, 400, 500 and 600. Display headings use Light 300 for a sharp, elegant feel; headings 500; body 400. (The deck uses Inter, which has no Hebrew.)
+English display headings use an editorial serif stack; Hebrew headings, body copy, diagrams and controls use self-hosted **IBM Plex Sans Hebrew**. The two scripts share scale, spacing and hierarchy without forcing the same letterform style.
 
 ### Shape and layout
 
-- Pill buttons and controls; 16px radius on documents, tools and cards.
-- Ruled "ledger" columns instead of identical boxed cards for groups that are not sequences.
-- Section labels above headings were removed; the hero keeps one positioning line ("Senior business & technology partner").
+- Squared editorial controls, ruled content groups and minimal shadows.
+- Connected-`b` wordmark; faceted cells are used sparingly as structural brand punctuation.
+- Asymmetric heroes, serif-led English headlines and mirrored RTL compositions.
+- Forms remain bounded for usability; informational cards become open, ruled layouts.
 
 ## 4. Messaging
 
 - Hero headline names AI solutions explicitly:
   - EN: "AI solutions that do real work inside your business."
   - HE: "פתרונות AI שעושים עבודה אמיתית בתוך העסק שלכם."
-- Page titles and the footer line position NACHUM.AI as a hands-on AI-solutions partner.
+- Page titles and the footer line position bee & co. as a hands-on AI-solutions partner.
 - Stage 1 of the four-stage path is **Observe / מתבוננים** (previously See / רואים). The stages are Observe → Prove → Embed → Expand.
 
 ## 5. Signature components and diagrams
 
 | Component | Where | What it shows |
 |---|---|---|
-| Hero work order + approval stamp | Home and quotes landing | A quote request moving through three stages, joined by a dashed connector; an "Approved / מאושר" stamp lands on the human checkpoint once it is in view |
+| Brand hero + connected cells | Home | Business-outcome headline, proof-led positioning and a restrained Discover-to-Scale signal |
+| Work order + approval stamp | Solution landings | A quote request moving through three stages, joined by a dashed connector; an approval stamp marks the human checkpoint |
 | Before/after explorer + timeline | Home, quotes and inbox landings | Steps toggle between manual and AI-assisted; a timeline diagram compares both runs as segmented bars (grey manual, blue AI, apricot human), e.g. 34 min vs 8 min (illustrative) |
-| Method track | Home | Observe → Prove → Embed → Expand as numbered circles with flowing connectors (horizontal on desktop, vertical on phones) |
+| Transformation flow + method track | Home | Discover → Prioritize → Design → Prove → Deploy → Scale, with a proof decision gate, refinement loop, executive flow chart and detailed list |
 | Offers as standing bars | Home | Stage 1 emphasised in navy with "Free" and the booking button; stages 2–4 rise as bars on a shared baseline and show duration only, no prices |
 | How-it-works stage rail | How it works | Stage rows joined by a vertical connector; the stages table shows a Duration column instead of prices |
 | Prioritisation matrix | Opportunity discovery | Impact × feasibility quadrants with a tinted "quick wins" corner, plus a hidden text list for screen readers |
@@ -122,8 +123,8 @@ Still present:
 
 ## 9. Hosting and deployment
 
-- **Vercel project:** `nachum-ai` (account `eranachum`), connected to GitHub `eranachum-commits/nachum.ai`.
-- **Every push to `main` deploys to production** at https://nachum-ai.vercel.app (build ≈ 10 seconds). Pull requests get preview deployments.
+- **Vercel project:** `bee-co`, connected to the production repository.
+- **Every push to `main` deploys to production** at the configured production URL (build ≈ 10 seconds). Pull requests get preview deployments.
 - `vercel.json`: build `node build.mjs`, output `dist/`, clean URLs, security headers (CSP, frame, referrer, permissions, nosniff), long cache on fonts and SVGs.
 - Canonical, hreflang and sitemap URLs use the Vercel production URL unless `SITE_URL` is set.
 - **Search engines are blocked on Vercel** (`robots.txt: Disallow: /`) until `ALLOW_INDEXING=1` is set, because prices, legal pages and the domain are still drafts.
@@ -161,7 +162,7 @@ Process used for the redesigns: the `frontend-design` skill for direction, `desi
 - Prices still in the footer note and the contact forms (see section 8).
 - Lead delivery: set `LEAD_ADAPTER=webhook` and a webhook URL in Vercel to receive real leads.
 - Indexing: set `ALLOW_INDEXING=1` after launch approvals.
-- Domain: connect `nachum.ai` in Vercel once ownership is confirmed, then set `SITE_URL`.
+- Domain: connect the approved production domain in Vercel, then set `SITE_URL`.
 - Founder photo (currently an "EN" monogram placeholder) and final logo.
 - Screen-reader testing with VoiceOver and NVDA.
 - The offers intro sentence still says "Prices are indicative starting points"; it was kept unchanged on request.

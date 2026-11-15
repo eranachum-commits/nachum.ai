@@ -1,6 +1,6 @@
-# Task: add the "Before AI → AI new era" pipeline diagram to the NACHUM.AI site
+# Task: add the "Before AI → AI new era" pipeline diagram to the bee & co. site
 
-You are working in the repository `nachum.ai` (a zero-dependency static site generator + tiny Node server, bilingual Hebrew RTL at `/` and English LTR at `/en`). Add an interactive diagram that shows one generic business pipeline (a customer request moving to a reply) first **before AI**, then **in the AI new era**. The same eight boxes slide into new positions when the visitor toggles, so it reads as a transformation, not two separate charts.
+You are working in the repository `bee-co` (a zero-dependency static site generator + tiny Node server, bilingual Hebrew RTL at `/` and English LTR at `/en`). Add an interactive diagram that shows one generic business pipeline (a customer request moving to a reply) first **before AI**, then **in the AI new era**. The same eight boxes slide into new positions when the visitor toggles, so it reads as a transformation, not two separate charts.
 
 ## Ground rules (read before writing code)
 

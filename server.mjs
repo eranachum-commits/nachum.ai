@@ -8,7 +8,7 @@ const ADAPTER = process.env.LEAD_ADAPTER || 'dev';
 const WEBHOOK = process.env.LEAD_WEBHOOK_URL || '';
 const SECRET = process.env.LEAD_WEBHOOK_SECRET || '';
 const BOOKING_URL = process.env.BOOKING_URL || '';
-const DATA_DIR = process.env.LEAD_DATA_DIR || (process.env.VERCEL ? '/tmp/nachum-leads' : 'data');
+const DATA_DIR = process.env.LEAD_DATA_DIR || (process.env.VERCEL ? '/tmp/bee-co-leads' : 'data');
 const DIST = join(process.cwd(), 'dist');
 const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain', '.json': 'application/json', '.png': 'image/png', '.ico': 'image/x-icon' };
 const SEC = {
@@ -108,5 +108,5 @@ export const server = createServer((req, res) => {
 });
 if (import.meta.url === `file://${process.argv[1]}`) {
   if (MISCONFIGURED) { console.error('LEAD_ADAPTER=webhook requires LEAD_WEBHOOK_URL'); process.exit(1); }
-  server.listen(PORT, () => console.log(`NACHUM.AI site on http://localhost:${PORT}  (lead adapter: ${ADAPTER})`));
+  server.listen(PORT, () => console.log(`bee & co. site on http://localhost:${PORT}  (lead adapter: ${ADAPTER})`));
 }

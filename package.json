@@ -1,9 +1,9 @@
 {
-  "name": "nachum-ai-site",
+  "name": "bee-co-site",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "NACHUM.AI bilingual (HE/EN) corporate site and landing pages. Zero runtime dependencies.",
+  "description": "bee & co. bilingual (HE/EN) corporate site and landing pages. Zero runtime dependencies.",
   "engines": { "node": ">=20" },
   "scripts": {
     "build": "node build.mjs",

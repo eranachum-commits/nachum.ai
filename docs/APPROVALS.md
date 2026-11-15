@@ -11,7 +11,7 @@ Everything below is implemented as **cautious draft copy**. Nothing here is fina
 | 5 | Data & security principles | `/data-and-security` | Draft banner | Legal/DPA review |
 | 6 | Logo / identity | `.logo` wordmark + CSS mark, `favicon.svg` | Placeholder wordmark | Final identity |
 | 7 | Founder photo | `.portrait` (monogram "EN") | Placeholder; no fabricated imagery | Provide/approve a photo |
-| 8 | Domain | `SITE_URL` | `http://localhost:3000` | Confirm `nachum.ai` availability/ownership |
+| 8 | Domain | `SITE_URL` | `http://localhost:3000` | Confirm the production domain and ownership |
 | 9 | Contact email / privacy contact | not present | none shown | Professional email address |
 | 10 | CRM / booking / email provider | `server.mjs` adapters | dev adapter + generic webhook | Choose provider, supply credentials |
 | 11 | Analytics + consent | `public/js/app.js` | Consent banner; events to `dataLayer` only after opt-in; no vendor loaded | Choose vendor; legal check of consent approach |

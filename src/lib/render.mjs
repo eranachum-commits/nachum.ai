@@ -14,6 +14,40 @@ const ticks = (arr) => `<ul class="ticks">${arr.map((x) => `<li>${x}</li>`).join
 const section = (inner, cls = '', id = '', labelledby = '') => `<section class="section ${cls}"${id ? ` id="${id}"` : ''}${labelledby ? ` aria-labelledby="${labelledby}"` : ''}><div class="container">${inner}</div></section>`;
 // Prices and numbers inside RTL copy must not be reordered by the bidi algorithm.
 const bdi = (s) => `<bdi>${s}</bdi>`;
+const brandDescriptor = (c) => c.lang === 'he' ? 'AI יישומי · טרנספורמציה עסקית' : 'Applied AI · Business Transformation';
+const founderLine = (c) => c.lang === 'he' ? 'נוסד על ידי ערן' : 'Founded by Eran';
+const brandMark = () => `<svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true"><path class="mark-b" d="M28 13v62c0 8 6 14 14 14h20c15 0 27-12 27-27 0-14-11-25-25-26H44"/><path class="mark-cell" d="M45 36l13-8 13 8v16l-13 8-13-8z"/></svg>`;
+const brandLockup = (c, full = false) => `<span class="brand-lockup">${brandMark()}<span class="logo-type"><span class="logo-name">bee &amp; co.</span><span class="logo-studio"><span>AI SOLUTIONS &amp;</span><span>TRANSFORMATION</span></span>${full ? `<span class="logo-descriptor"><i>${founderLine(c)}</i></span>` : ''}</span></span>`;
+const founderPanel = (c) => `<div class="portrait" role="img" aria-label="Eran"><span class="portrait-mark">E</span><span class="portrait-role">${c.lang === 'he' ? 'מייסד · bee & co.' : 'Founder · bee & co.'}</span><span class="portrait-exp">${c.lang === 'he' ? 'יותר מ־20 שנות הנהגה טכנולוגית' : '20+ years of technology leadership'}</span></div>`;
+const brandSignal = (c) => {
+  const outcome = c.lang === 'he' ? 'תוצאה אחת<br>שהוכחה' : 'one proven<br>outcome';
+  return `<div class="brand-signal" aria-hidden="true"><span></span><span></span><span></span><span>${outcome}</span></div>`;
+};
+const transformationFlow = (c) => {
+  const rtl = c.dir === 'rtl';
+  const steps = c.home.method.steps;
+  const xs = rtl ? [1010, 810, 610, 410] : [20, 220, 420, 620];
+  const gateX = rtl ? 250 : 940;
+  const deployX = rtl ? 165 : 855;
+  const scaleX = rtl ? 0 : 1030;
+  const meta = rtl ? ['ראיות', 'ערך', 'תכנון', 'בדיקה', 'אימוץ', 'מדידה'] : ['Evidence', 'Value', 'Blueprint', 'Test', 'Adoption', 'Measure'];
+  const gate = rtl ? 'הערך הוכח?' : 'Value proven?';
+  const yes = rtl ? 'כן — ממשיכים' : 'Yes — continue';
+  const refine = rtl ? 'לא — משפרים את התכנון' : 'No — refine the design';
+  const title = rtl ? 'מפת התהליך: מגילוי ועד הרחבה' : 'Transformation flow: from discovery to scale';
+  const swipe = rtl ? 'החליקו שמאלה כדי לעקוב אחר התהליך' : 'Swipe to follow the full process';
+  const swipeArrow = rtl ? '←' : '→';
+  const node = (i, x, y) => { const tx = rtl ? x + 142 : x + 18; const anchor = rtl ? 'end' : 'start'; return `<g class="mf-node"><rect x="${x}" y="${y}" width="160" height="88" rx="8"/><text x="${tx}" y="${y + 29}" text-anchor="${anchor}" class="mf-n">0${i + 1} · ${meta[i]}</text><text x="${tx}" y="${y + 58}" text-anchor="${anchor}" class="mf-title">${esc(steps[i].h)}</text></g>`; };
+  const topEdges = xs.slice(0, 3).map((x, i) => rtl
+    ? `<path d="M${x} 94H${xs[i + 1] + 170}"/>`
+    : `<path d="M${x + 160} 94H${xs[i + 1] - 10}"/>`).join('');
+  const proveToGate = rtl ? `M${xs[3]} 94H${gateX + 82}` : `M${xs[3] + 160} 94H${gateX - 82}`;
+  const deployToScale = rtl ? `M${deployX} 302H${scaleX + 160}` : `M${deployX + 160} 302H${scaleX}`;
+  const loop = rtl
+    ? `M${gateX} 146V205H${xs[2] + 80}V148`
+    : `M${gateX} 146V205H${xs[2] + 80}V148`;
+  return `<figure class="method-flow"><div class="method-flow-scroll"><svg viewBox="0 0 1200 380" role="img" aria-labelledby="method-flow-title"><title id="method-flow-title">${title}</title><defs><marker id="mf-arrow-${c.lang}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z"/></marker></defs><g class="mf-edges" marker-end="url(#mf-arrow-${c.lang})">${topEdges}<path d="${proveToGate}"/><path d="M${gateX} 146V248"/><path d="${deployToScale}"/></g><path class="mf-loop" d="${loop}" marker-end="url(#mf-arrow-${c.lang})"/>${xs.map((x, i) => node(i, x, 50)).join('')}<g class="mf-gate"><path d="M${gateX} 42  ${gateX + 82} 94  ${gateX} 146  ${gateX - 82} 94Z"/><text x="${gateX}" y="91">${gate}</text><text x="${gateX}" y="108" class="mf-small">${yes}</text></g>${node(4, deployX, 258)}${node(5, scaleX, 258)}<text x="${xs[2] + 80}" y="225" text-anchor="middle" class="mf-refine">${refine}</text></svg></div><figcaption class="flow-swipe">${swipe} ${swipeArrow}</figcaption></figure>`;
+};
 
 /* ---------- layout ---------- */
 function header(c, key) {
@@ -22,7 +56,7 @@ function header(c, key) {
   const msubs = SOLUTION_KEYS.map((k) => `<a href="${href(c.lang, k)}">${c.sub[k].t}</a>`).join('');
   const other = c.lang === 'he' ? 'en' : 'he';
   return `<header class="site-header"><div class="container header-in">
-  <a class="logo" href="${href(c.lang, 'home')}" aria-label="NACHUM.AI — ${esc(c.ui.home)}"><span class="logo-mark" aria-hidden="true"></span><span>NACHUM<span class="logo-ai">.AI</span></span></a>
+  <a class="logo" href="${href(c.lang, 'home')}" aria-label="bee &amp; co. — ${esc(c.ui.home)}">${brandLockup(c)}</a>
   <nav class="nav" aria-label="${esc(c.ui.main)}">
     ${link('how', c.nav.how)}
     <div class="has-sub"><button class="nav-link" type="button" aria-expanded="false" aria-controls="sub-menu" data-sub>${c.nav.solutions}<svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button><div class="sub" id="sub-menu">${subs}</div></div>
@@ -45,7 +79,7 @@ function footer(c) {
   const f = c.footer;
   return `<footer class="site-footer"><div class="container">
   <div class="foot-grid">
-    <div><a class="logo" href="${href(c.lang, 'home')}"><span class="logo-mark" aria-hidden="true"></span><span>NACHUM<span class="logo-ai">.AI</span></span></a><p>${f.tag}</p></div>
+    <div><a class="logo logo--footer" href="${href(c.lang, 'home')}">${brandLockup(c, true)}</a><p>${f.tag}</p></div>
     <div><h2>${f.cols.site}</h2><ul><li><a href="${href(c.lang, 'how')}">${c.nav.how}</a></li><li><a href="${href(c.lang, 'about')}">${c.nav.about}</a></li><li><a href="${href(c.lang, 'results')}">${c.nav.results}</a></li><li><a href="${href(c.lang, 'faq')}">${c.nav.faq}</a></li><li><a href="${href(c.lang, 'contact')}">${f.contact}</a></li></ul></div>
     <div><h2>${f.cols.solutions}</h2><ul>${SOLUTION_KEYS.map((k) => `<li><a href="${href(c.lang, k)}">${c.sub[k].t}</a></li>`).join('')}</ul></div>
     <div><h2>${f.cols.legal}</h2><ul><li><a href="${href(c.lang, 'privacy')}">${f.privacy}</a></li><li><a href="${href(c.lang, 'security')}">${f.security}</a></li></ul></div>
@@ -73,11 +107,11 @@ export function layout({ c, key, meta, body, ctx, ld = '' }) {
 <link rel="alternate" hreflang="he" href="${url('he')}">
 <link rel="alternate" hreflang="en" href="${url('en')}">
 <link rel="alternate" hreflang="x-default" href="${url('he')}">
-<meta property="og:type" content="website"><meta property="og:site_name" content="NACHUM.AI">
+<meta property="og:type" content="website"><meta property="og:site_name" content="bee & co.">
 <meta property="og:title" content="${esc(meta.title)}"><meta property="og:description" content="${esc(meta.desc)}">
 <meta property="og:url" content="${url(c.lang)}"><meta property="og:locale" content="${c.ogLocale}"><meta property="og:locale:alternate" content="${other === 'he' ? 'he_IL' : 'en_US'}">
 <meta name="twitter:card" content="summary">
-<meta name="theme-color" content="#e4ebfd">
+<meta name="theme-color" content="#dce4d8">
 ${ctx.noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 ${fontPre.map((f) => `<link rel="preload" href="/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`).join('\n')}
@@ -145,6 +179,21 @@ ${timeline(c, d, tb, ta)}
 
 function pipeline(c, id) {
   const p = c.pipeline;
+  const iconFor = {
+    req: ['request', 'request'], inbox: ['inbox', 'inbox'], sort: ['sort', 'spark'], look: ['search', 'price'],
+    draft: ['edit', 'spark'], erp: ['keyboard', 'sync'], appr: ['approve', 'approve'], reply: ['send', 'send'],
+  };
+  const icons = `<symbol id="${id}-i-request" viewBox="0 0 24 24"><path d="M7 3.5h7l3 3V20.5H7zM14 3.5v4h4M9.5 12h5M9.5 15.5h5"/></symbol>
+<symbol id="${id}-i-inbox" viewBox="0 0 24 24"><path d="M5 5.5h14l2 9v4H3v-4zM3.5 14.5h5l1.5 2h4l1.5-2h5"/></symbol>
+<symbol id="${id}-i-sort" viewBox="0 0 24 24"><path d="M6 6h12M8.5 11h7M11 16h2M4 19l2 2 2-2M6 21V4"/></symbol>
+<symbol id="${id}-i-spark" viewBox="0 0 24 24"><path d="M12 2.8l1.3 5.1 4.2 2.8-4.2 2.7L12 18.6l-1.3-5.2-4.2-2.7 4.2-2.8zM18.5 16l.7 2.1 1.8.9-1.8 1-.7 2-.7-2-1.8-1 1.8-.9z"/></symbol>
+<symbol id="${id}-i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M14.5 14.5L20 20M8 9h5M8 12h3"/></symbol>
+<symbol id="${id}-i-price" viewBox="0 0 24 24"><path d="M4 5h9l7 7-8 8-8-8z"/><circle cx="8" cy="9" r="1"/></symbol>
+<symbol id="${id}-i-edit" viewBox="0 0 24 24"><path d="M5 19l1-4L16.5 4.5a2 2 0 012.8 2.8L8.8 17.8zM14.5 6.5l3 3M5 20h14"/></symbol>
+<symbol id="${id}-i-keyboard" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M6 10h1M10 10h1M14 10h1M18 10h1M6 14h8M17 14h1"/></symbol>
+<symbol id="${id}-i-sync" viewBox="0 0 24 24"><path d="M19 8a7 7 0 00-12-2L5 8M5 8V4M5 8h4M5 16a7 7 0 0012 2l2-2M19 16v4M19 16h-4"/></symbol>
+<symbol id="${id}-i-approve" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19a5.5 5.5 0 0111 0M15.5 13.5l2 2 3.5-4"/></symbol>
+<symbol id="${id}-i-send" viewBox="0 0 24 24"><path d="M3 11.5L21 4l-7.5 18-2.2-7.8zM11.3 14.2L21 4"/></symbol>`;
   const pos = {
     req: { before: [25, 30], after: [25, 120] }, inbox: { before: [185, 30], after: [185, 120] },
     sort: { before: [345, 30], after: [345, 120] }, look: { before: [505, 30], after: [185, 240] },
@@ -158,14 +207,16 @@ function pipeline(c, id) {
   const afterLines = [[165, 148, 183, 148], [325, 148, 343, 148], [485, 148, 503, 148], [575, 176, 575, 238]].map((x) => line(x)).join('');
   const nodes = p.nodes.map((n) => {
     const before = nodePos(pos[n.id].before), after = nodePos(pos[n.id].after);
-    return `<g class="pl-node pl--${n.before.kind}" data-node="${n.id}" data-before="${before.join(',')}" data-after="${after.join(',')}" data-before-t="${esc(n.before.t)}" data-before-s="${esc(n.before.s)}" data-before-kind="${n.before.kind}" data-after-t="${esc(n.after.t)}" data-after-s="${esc(n.after.s)}" data-after-kind="${n.after.kind}"${n.after.hidden ? ' data-after-hidden' : ''} style="transform:translate(${before[0]}px, ${before[1]}px)"><rect width="140" height="56" rx="12"/><text class="pl-title" x="70" y="20" text-anchor="middle" dominant-baseline="central">${n.before.t}</text><text class="pl-sub" x="70" y="38" text-anchor="middle" dominant-baseline="central">${n.before.s}</text></g>`;
+    const [beforeIcon, afterIcon] = iconFor[n.id];
+    const iconX = c.dir === 'rtl' ? 108 : 8;
+    return `<g class="pl-node pl--${n.before.kind}" data-node="${n.id}" data-before="${before.join(',')}" data-after="${after.join(',')}" data-before-t="${esc(n.before.t)}" data-before-s="${esc(n.before.s)}" data-before-kind="${n.before.kind}" data-before-icon="#${id}-i-${beforeIcon}" data-after-t="${esc(n.after.t)}" data-after-s="${esc(n.after.s)}" data-after-kind="${n.after.kind}" data-after-icon="#${id}-i-${afterIcon}"${n.after.hidden ? ' data-after-hidden' : ''} style="transform:translate(${before[0]}px, ${before[1]}px)"><rect width="140" height="56" rx="12"/><g class="pl-icon" aria-hidden="true" transform="translate(${iconX} -10)"><circle cx="12" cy="12" r="11"/><use href="#${id}-i-${beforeIcon}" x="4" y="4" width="16" height="16"/></g><text class="pl-title" x="70" y="20" text-anchor="middle" dominant-baseline="central">${n.before.t}</text><text class="pl-sub" x="70" y="38" text-anchor="middle" dominant-baseline="central">${n.before.s}</text></g>`;
   }).join('');
   const rework = `M${mx(255)} 226 L${mx(255)} 262 L${mx(560)} 262 L${mx(560)} 228`;
   const price = `M${mx(375)} 178 L${mx(375)} 208 L${mx(255)} 208 L${mx(255)} 238`;
   return `<figure class="pipeline tool" data-pipeline data-mode="before" data-desc-before="${esc(p.desc.before)}" data-desc-after="${esc(p.desc.after)}" data-stat-before="${esc(p.stat.before)}" data-stat-after="${esc(p.stat.after)}" data-line-before="${esc(p.legend.rework)}" data-line-after="${esc(p.legend.live)}">
 <div class="tool-head"><div class="seg" role="group" aria-label="${esc(p.toggleAria)}" hidden><button type="button" aria-pressed="true" data-mode-btn="before">${p.toggle.before}</button><button type="button" aria-pressed="false" data-mode-btn="after">${p.toggle.after}</button></div>${ill(c)}</div>
 <svg viewBox="0 0 680 320" role="img" aria-labelledby="${id}-title ${id}-desc"><title id="${id}-title">${p.title}</title><desc id="${id}-desc">${p.desc.before}</desc>
-<defs><marker id="${id}-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="context-stroke" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<defs><marker id="${id}-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="context-stroke" stroke-linecap="round" stroke-linejoin="round"/></marker>${icons}</defs>
 <g class="pl-edges pl-edges--before">${beforeLines}<path class="pl-rework" d="${rework}" marker-end="url(#${id}-arrow)"/></g>
 <g class="pl-edges pl-edges--after" style="opacity:0">${afterLines}<line class="pl-live" x1="${mx(415)}" y1="178" x2="${mx(415)}" y2="238" marker-start="url(#${id}-arrow)" marker-end="url(#${id}-arrow)"/><path class="pl-live" d="${price}" marker-start="url(#${id}-arrow)" marker-end="url(#${id}-arrow)"/></g>
 ${nodes}</svg>
@@ -275,44 +326,39 @@ ${input('phone', f.phone, { type: 'tel', required: false, auto: 'tel' })}
 // The four stages as standing bars that rise with commitment. Stage 1 is free and carries the booking action;
 // paid stages show their duration only (no prices here), with the price wording ("excl. VAT") dropped from the unit.
 const duration = (u) => u.split(' · ').filter((part) => !/VAT|מע״מ/.test(part)).join(' · ');
-function offerCards(c) {
+function offerCards(c, ctaLabel = c.ui.book) {
   const o = c.offers;
   const [free, ...paid] = o.items;
-  const freeBar = `<li class="stair stair--free"><span class="stage">${free.stage}</span><p class="free-mark">${free.price}</p><h3>${free.h}</h3><p class="dur">${duration(free.unit)}</p><p>${free.p}</p><p class="guard">${free.guard}</p>${btn(c, c.ui.book, bookUrl(c), 'btn--primary', 'data-track="cta_offers_free"')}</li>`;
+  const freeBar = `<li class="stair stair--free"><span class="stage">${free.stage}</span><p class="free-mark">${free.price}</p><h3>${free.h}</h3><p class="dur">${duration(free.unit)}</p>${btn(c, ctaLabel, bookUrl(c), 'btn--primary', 'data-track="cta_offers_free"')}<p>${free.p}</p><p class="guard">${free.guard}</p></li>`;
   const bars = paid.map((x, i) => `<li class="stair" style="--step:${i + 1}"><span class="stage">${x.stage}</span><h3>${x.h}</h3><p class="dur">${duration(x.unit)}</p><p>${x.p}</p><p class="guard">${x.guard}</p></li>`).join('');
   return `<ol class="stairs">${freeBar}${bars}</ol>
 <div class="notice"><strong>${o.guarantee.h}.</strong> ${o.guarantee.p}</div>`;
 }
 const ctaBand = (c, title, p, pain) => section(`<div class="cta-band"><h2>${title}</h2><p class="lede">${p}</p><div class="btn-row">${btn(c, c.ui.book, bookUrl(c, pain), 'btn--primary', 'data-track="cta_band"')}${btn(c, c.ui.seeHow, href(c.lang, 'how'), '')}</div></div>`, 'section--dark');
-const pageHero = (c, h1, lede) => `<section class="page-hero"><div class="container"><h1>${h1}</h1>${lede ? `<p class="lede">${lede}</p>` : ''}</div></section>`;
+const pageHero = (c, h1, lede) => `<section class="page-hero"><div class="container"><p class="page-kicker"><span>${brandDescriptor(c)}</span><span>${founderLine(c)}</span></p><h1>${h1}</h1>${lede ? `<p class="lede">${lede}</p>` : ''}</div></section>`;
 
 /* ---------- pages ---------- */
 const pages = {};
 
 pages.home = (c) => {
   const h = c.home, hr = h.hero;
+  const go = c.dir === 'rtl' ? '←' : '→';
+  const outcomePicks = [h.outcomes.items[0], h.outcomes.items[3], h.outcomes.items[5]];
+  const proofSignals = [h.founder.signals[0], h.founder.signals[2], h.founder.signals[5]];
+  const starts = SOLUTION_KEYS.map((k, i) => `<a href="${href(c.lang, k)}"><span class="start-n" aria-hidden="true">0${i + 1}</span><span><strong>${c.sub[k].t}</strong><small>${c.sub[k].d}</small></span><span class="start-go" aria-hidden="true">${go}</span></a>`).join('');
   const body = `
-<section class="hero"><div class="container split">
-  <div class="hero-copy"><p class="kicker">${hr.eyebrow}</p><h1>${hr.h1}</h1>
-  <p class="lede">${hr.sub}</p><p class="hero-body">${hr.body}</p>
-  <div class="btn-row">${btn(c, c.ui.book, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, c.ui.seeHow, '#how', '')}</div>
+<section class="hero"><div class="container hero-stage">
+  <div class="hero-copy"><p class="brand-positioning"><span>${hr.eyebrow}</span><span>${founderLine(c)}</span></p><h1>${hr.h1}</h1>
+  <p class="lede">${hr.sub}</p>
+  <div class="btn-row">${btn(c, h.sales.cta, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, h.sales.secondary, '#work', '')}</div>
   <p class="trust-line"><strong>${hr.trust}</strong> ${hr.proof}</p></div>
-  <div class="hero-visual">${docStack(c)}</div>
 </div></section>
-${section(`${head(h.outcomes.eyebrow, h.outcomes.title, h.outcomes.intro, 'outcomes')}<div class="ledger">${h.outcomes.items.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div>`, 'section--tint', 'outcomes-s', 'outcomes')}
-${section(`${head('', c.pipeline.title, c.pipeline.intro, 'pipeline-title')}${pipeline(c, 'pipeline-home')}`, '', 'pipeline-s', 'pipeline-title')}
-${section(`${head(h.ba.eyebrow, h.ba.title, h.ba.intro, 'ba')}${explorer(c, 'quotes')}<div class="btn-row">${btn(c, c.sub.quotes.t, href(c.lang, 'quotes'), '')}${btn(c, c.sub.inbox.t, href(c.lang, 'inbox'), '')}</div>`, '', 'example', 'ba')}
-${section(`<div class="split split--even"><div class="portrait" role="img" aria-label="Eran Nachum"><span>EN</span></div><div><h2>${h.founder.title}</h2><p class="lede">${h.founder.p}</p>${ticks(h.founder.signals)}${btn(c, h.founder.link, href(c.lang, 'about'), '')}</div></div>`, 'section--dark', 'founder')}
-${section(`${head(h.method.eyebrow, h.method.title, h.method.intro, 'm')}<ol class="track">${h.method.steps.map((x) => `<li><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ol>`, '', 'how', 'm')}
-${section(`${head(c.offers.eyebrow, c.offers.title, c.offers.intro, 'o')}${offerCards(c)}<div class="btn-row">${btn(c, c.nav.how, href(c.lang, 'how'), '')}</div>`, 'section--tint', 'offers', 'o')}
-${section(`${head(c.calc.eyebrow, c.calc.title, c.calc.intro, 'calc')}${calculator(c)}`, '', 'calculator', 'calc')}
-${section(`${head(h.safe.eyebrow, h.safe.title, '', 's')}<div class="ledger ledger--2">${h.safe.items.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div><div class="btn-row">${btn(c, h.safe.link, href(c.lang, 'security'), '')}</div>`, 'section--tint', 'safe', 's')}
-${section(`${head(c.check.eyebrow, c.check.title, '', 'chk')}${check(c)}`, '', 'check', 'chk')}
-${section(`${head(c.faq.eyebrow, c.faq.title, '', 'f')}${faqList(c.faq.items.slice(0, 6))}<div class="btn-row">${btn(c, c.nav.faq, href(c.lang, 'faq'), '')}</div>`, 'section--tint', 'faq', 'f')}
+${section(`${head(h.sales.eyebrow, h.sales.title, h.sales.intro, 'o')}${offerCards(c, h.sales.cta)}<div class="home-offer-link">${btn(c, c.nav.how, href(c.lang, 'how'), '')}</div>`, 'section--tint home-offers', 'offers', 'o')}
+${section(`<div class="home-focus-grid"><div><span class="eyebrow">${h.outcomes.eyebrow}</span><h2 id="focus-title">${h.outcomes.title}</h2><p class="lede">${h.outcomes.intro}</p><div class="outcome-short">${outcomePicks.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div></div><div class="home-starts"><span class="eyebrow">${h.starts.eyebrow}</span><h2>${h.starts.title}</h2><p>${h.starts.intro}</p><nav aria-label="${esc(h.starts.title)}">${starts}</nav></div></div>`, 'home-focus', 'work', 'focus-title')}
+${section(`${head('', c.pipeline.title, c.pipeline.intro, 'pipeline-title')}${pipeline(c, 'pipeline-home')}`, 'section--tint home-example', 'pipeline-s', 'pipeline-title')}
+${section(`<div class="split split--even">${founderPanel(c)}<div><span class="eyebrow">${h.founder.eyebrow}</span><h2>${h.founder.title}</h2><p class="lede">${h.founder.p}</p>${ticks(proofSignals)}<div class="btn-row">${btn(c, h.founder.link, href(c.lang, 'about'), '')}${btn(c, h.safe.link, href(c.lang, 'security'), '')}</div></div></div>`, 'section--dark home-founder', 'founder')}
 ${ctaBand(c, h.cta.title, h.cta.p)}`;
-  const ld = { '@context': 'https://schema.org', '@graph': [
-    { '@type': 'Organization', name: 'NACHUM.AI', description: c.descriptor, founder: { '@type': 'Person', name: 'Eran Nachum' } },
-    faqLd(c.faq.items.slice(0, 6))] };
+  const ld = { '@context': 'https://schema.org', '@type': 'Organization', name: 'bee & co.', description: c.descriptor, founder: { '@type': 'Person', name: 'Eran' } };
   return { meta: h.meta, body, ld };
 };
 
@@ -323,7 +369,7 @@ function landing(k) {
     const others = SOLUTION_KEYS.filter((x) => x !== k);
     const body = `
 <section class="hero hero--landing"><div class="container split">
-  <div><nav class="crumbs" aria-label="Breadcrumb"><a href="${href(c.lang, 'home')}">${c.ui.backHome}</a> <span aria-hidden="true">/</span> ${s.eyebrow}</nav>
+  <div><p class="page-kicker"><span>${brandDescriptor(c)}</span><span>${founderLine(c)}</span></p><nav class="crumbs" aria-label="Breadcrumb"><a href="${href(c.lang, 'home')}">${c.ui.backHome}</a> <span aria-hidden="true">/</span> ${s.eyebrow}</nav>
   <h1>${s.h1}</h1><p class="lede">${s.sub}</p>
   <div class="btn-row">${btn(c, s.cta, '#book', 'btn--primary', `data-track="cta_landing_${k}"`)}</div>
   <p class="trust-line"><strong>${c.home.hero.trust}</strong></p></div>
@@ -343,17 +389,17 @@ SOLUTION_KEYS.forEach((k) => (pages[k] = landing(k)));
 pages.how = (c) => {
   const p = c.how;
   const body = `${pageHero(c, p.h1, p.lede)}
-${section(`${head('', c.pipeline.title, c.pipeline.intro, 'pipeline-title')}${pipeline(c, 'pipeline-how')}`, '', 'pipeline-s', 'pipeline-title')}
 ${section(p.stages.map((s, i) => `<article class="stage-row"><div class="stage-n" aria-hidden="true">${i + 1}</div><div><h2>${s.h}</h2><p class="who">${s.who}</p></div><div>${s.p.map((x) => `<p>${x}</p>`).join('')}<p class="out">${s.out}</p></div></article>`).join(''))}
-${section(`<h2>${p.tableTitle}</h2><div class="table-wrap"><table class="t"><thead><tr>${p.cols.map((x) => `<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${c.offers.items.map((o, i) => `<tr><th scope="row">${o.stage}<br><strong>${o.h}</strong></th><td>${o.p}</td><td>${i === 0 ? `<strong>${o.price}</strong><br>` : ''}${duration(o.unit)}</td><td>${o.guard}</td></tr>`).join('')}</tbody></table></div><div class="notice"><strong>${c.offers.guarantee.h}.</strong> ${c.offers.guarantee.p}</div>`, 'section--tint')}
-${section(`<div class="split split--even"><div><h2>${p.needTitle}</h2>${ticks(p.need)}</div><div>${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div></div>`)}`;
+${section(`${head('', p.tableTitle, p.salesIntro, 'stages-title')}${offerCards(c)}`, 'section--tint sales-path', 'stages', 'stages-title')}
+${section(`<div class="split split--even"><div><h2>${p.needTitle}</h2>${ticks(p.need)}</div><div>${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div></div>`)}
+${section(`${head('', c.pipeline.title, c.pipeline.intro, 'pipeline-title')}${pipeline(c, 'pipeline-how')}`, '', 'pipeline-s', 'pipeline-title')}`;
   return { meta: p.meta, body };
 };
 
 pages.about = (c) => {
   const p = c.about;
   const body = `${pageHero(c, p.h1, p.lede)}
-${section(`<div class="split split--even"><div class="portrait" role="img" aria-label="Eran Nachum"><span>EN</span></div><div class="prose">${p.story.map((x) => `<p>${x}</p>`).join('')}</div></div>`)}
+${section(`<div class="split split--even">${founderPanel(c)}<div class="prose">${p.story.map((x) => `<p>${x}</p>`).join('')}</div></div>`)}
 ${section(`<h2>${p.sigTitle}</h2><div class="grid g4">${p.sigs.map((x) => `<article class="card"><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div>`, 'section--tint')}
 ${section(`<div class="split split--even"><div><h2>${p.princTitle}</h2>${ticks(p.princ)}</div><div>${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div></div>`)}`;
   return { meta: p.meta, body };
@@ -361,9 +407,11 @@ ${section(`<div class="split split--even"><div><h2>${p.princTitle}</h2>${ticks(p
 
 pages.results = (c) => {
   const p = c.results;
+  const cycle = `<ol class="measure-cycle">${p.cycle.map((x, i) => `<li><span class="cycle-n" aria-hidden="true">0${i + 1}</span><div><h3>${x.h}</h3><p>${x.p}</p></div></li>`).join('')}</ol>`;
+  const metrics = `<div class="metric-grid">${p.rows.map((r, i) => `<article class="metric-card"><span class="metric-n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><h3>${r[0]}</h3><dl><div><dt>${p.cols[1]}</dt><dd>${r[1]}</dd></div><div><dt>${p.cols[2]}</dt><dd>${r[2]}</dd></div></dl></article>`).join('')}</div>`;
   const body = `${pageHero(c, p.h1, p.lede)}
-${section(`<h2>${p.scoreTitle}</h2><div class="table-wrap"><table class="t"><thead><tr>${p.cols.map((x) => `<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${p.rows.map((r) => `<tr><th scope="row">${r[0]}</th><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody></table></div>`)}
-${section(`<div class="grid g2"><div class="card"><h3>${p.gatesTitle}</h3>${ticks(p.gates)}</div><div><div class="card"><h3>${p.monthly.h}</h3><p>${p.monthly.p}</p></div><div class="notice"><strong>${p.honest.h}.</strong> ${p.honest.p}</div></div></div><div class="btn-row">${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div>`, 'section--tint')}`;
+${section(`<div class="results-title"><span class="eyebrow">${p.cols[0]}</span><h2 id="score-title">${p.scoreTitle}</h2></div>${cycle}${metrics}`, 'results-score', 'scorecard', 'score-title')}
+${section(`<div class="proof-layout"><article class="gate-panel"><span class="proof-label">01</span><h2>${p.gatesTitle}</h2>${ticks(p.gates)}</article><div class="evidence-stack"><article class="monthly-card"><span class="proof-label">02</span><h2 class="h-sm">${p.monthly.h}</h2><p>${p.monthly.p}</p></article><article class="evidence-note"><span class="proof-label">03</span><h2 class="h-sm">${p.honest.h}</h2><p>${p.honest.p}</p></article></div></div><div class="results-action">${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div>`, 'results-proof section--tint')}`;
   return { meta: p.meta, body };
 };
 
@@ -394,7 +442,7 @@ pages.privacy = (c) => {
 
 export function render404(c, ctx) {
   const body = section(`<h1>${c.notFound.h}</h1><p class="lede">${c.notFound.p}</p>${btn(c, c.notFound.cta, href(c.lang, 'home'), 'btn--primary')}`);
-  return layout({ c, key: 'home', meta: { title: c.notFound.h + ' — NACHUM.AI', desc: c.notFound.p }, body, ctx: { ...ctx, noindex: true } });
+  return layout({ c, key: 'home', meta: { title: c.notFound.h + ' — bee & co.', desc: c.notFound.p }, body, ctx: { ...ctx, noindex: true } });
 }
 
 export function renderPage(c, key, ctx) {

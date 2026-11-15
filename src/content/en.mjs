@@ -2,11 +2,11 @@
 // APPROVAL flags: prices, guarantee wording, credit and legal copy are DRAFT — see docs/APPROVALS.md.
 export default {
   lang: 'en', dir: 'ltr', ogLocale: 'en_US', langName: 'English', switchLabel: 'עברית', switchAria: 'מעבר לעברית',
-  brand: 'NACHUM.AI',
+  brand: 'bee & co.',
   descriptor: 'Business Transformation. Powered by AI.',
   ui: {
     skip: 'Skip to content', stamp: 'Approved', menu: 'Menu', close: 'Close', book: 'Book a working session', seeHow: 'See how it works',
-    illustrative: 'Illustrative', home: 'Home', solutions: 'Solutions', otherSolutions: 'Other places we start', backHome: 'Back to NACHUM.AI',
+    illustrative: 'Illustrative', home: 'Home', solutions: 'Solutions', otherSolutions: 'Other places we start', backHome: 'Back to bee & co.',
     indicative: 'Indicative price, excl. VAT', learnMore: 'Learn more', minutes: 'min', send: 'Send request', sending: 'Sending…',
     required: 'Required', fixField: 'Please check the highlighted fields.', main: 'Main navigation',
   },
@@ -22,7 +22,7 @@ export default {
     cols: { site: 'The firm', solutions: 'Solutions', legal: 'Legal' },
     privacy: 'Privacy policy', security: 'Data & security', contact: 'Contact',
     note: 'Illustrative examples on this site use sample data. Prices are indicative and subject to a written proposal.',
-    rights: '© 2026 NACHUM.AI',
+    rights: '© 2026 bee & co.',
   },
   consent: {
     text: 'We use privacy-respecting analytics only if you agree, to learn which pages help business owners. Nothing is loaded until you choose.',
@@ -30,14 +30,27 @@ export default {
   },
 
   home: {
-    meta: { title: 'NACHUM.AI — AI solutions for established businesses', desc: 'Hands-on AI solutions for established companies, led by a senior technology executive: proof on your real work first, then production, adoption and measured results.' },
+    meta: { title: 'bee & co. — AI solutions for established businesses', desc: 'Hands-on AI solutions for established companies, led by a senior technology executive: proof on your real work first, then production, adoption and measured results.' },
     hero: {
       eyebrow: 'Senior business & technology partner',
-      h1: 'AI solutions that do real work inside your business.',
+      h1: 'AI solutions that do <em>real work</em> inside your business.',
       sub: 'Quotes, orders, customer requests and reports, handled faster by AI and approved by your people. More capacity, without growing headcount at the same pace.',
       body: 'We find where operations lose time and money, prove an AI solution on your real work, and stay accountable until it runs in daily use, with measured results.',
       trust: 'Executive Experience. Hands-On Execution. Measurable Results.',
       proof: 'See it working on your business before you commit to a broad program.',
+    },
+    sales: {
+      eyebrow: 'A low-risk first move',
+      title: 'Start free. Expand only what proves its value.',
+      intro: 'Bring one recurring bottleneck. We begin with a safe working session, then move from proof to daily use only when the evidence supports it.',
+      cta: 'Book the free working session',
+      secondary: 'See where we start',
+      cardLabel: 'Your first step with bee & co.',
+    },
+    starts: {
+      eyebrow: 'Where we start',
+      title: 'Choose the work that is already costing time.',
+      intro: 'Start with one concrete operating problem—not a broad AI program.',
     },
     doc: {
       title: 'Quote request, handled',
@@ -62,11 +75,11 @@ export default {
     },
     ba: {
       eyebrow: 'One example, step by step', title: 'What an improved process looks like',
-      intro: 'A quote request moving through a distributor, before and with NACHUM.AI. Note where people stay in the loop.',
+      intro: 'A quote request moving through a distributor, before and with bee & co. Note where people stay in the loop.',
     },
     founder: {
       eyebrow: 'Why you can trust delivery', title: 'A senior technology executive who still builds.',
-      p: 'Eran Nachum has spent 20+ years leading engineering and shipping complex production systems. NACHUM.AI applies that judgment to established businesses—as both the builder and the accountable executive, from first conversation to measured outcome.',
+      p: 'Eran has spent 20+ years leading engineering and shipping complex production systems. bee & co. applies that judgment to established businesses—as both the builder and the accountable executive, from first conversation to measured outcome.',
       signals: [
         '20+ years of senior technology and engineering leadership',
         'Led engineering organizations of 50+ people',
@@ -79,12 +92,14 @@ export default {
     },
     method: {
       eyebrow: 'How it works', title: 'From bottleneck to measured result',
-      intro: 'One path, four stages. You decide at each stage whether to continue.',
+      intro: 'Six disciplined moves. Evidence and a clear decision gate at every stage.',
       steps: [
-        { h: 'Observe', p: 'A free, qualified working session: 20 minutes to screen the fit, 45 minutes to see a safe demonstration, and a one-page Business Impact Memo.' },
-        { h: 'Prove', p: 'A paid Proof of Value Sprint tests one improvement on your approved real examples against criteria we agree in writing first.' },
-        { h: 'Embed', p: 'A 90-day program takes the proven improvement into daily use: integration, process change, human checks, training and owners.' },
-        { h: 'Expand', p: 'Ongoing monitoring, incremental improvements and a monthly scorecard, with senior technology leadership on call.' },
+        { h: 'Discover', p: 'Observe the real work, the handoffs and the constraint—not the technology wish list.' },
+        { h: 'Prioritize', p: 'Rank opportunities by business value, feasibility, risk and the quality of available evidence.' },
+        { h: 'Design', p: 'Shape a better workflow around people, existing systems, data and explicit human checkpoints.' },
+        { h: 'Prove', p: 'Test one tightly scoped improvement on approved examples against written acceptance criteria.' },
+        { h: 'Deploy', p: 'Integrate the proven change into daily work with owners, training, safeguards and measurement.' },
+        { h: 'Scale', p: 'Expand only what earns trust, with ongoing monitoring and a clear operational scorecard.' },
       ],
     },
     safe: {
@@ -154,7 +169,7 @@ export default {
   },
 
   explorer: {
-    toggle: { before: 'Before', after: 'With NACHUM.AI' },
+    toggle: { before: 'Before', after: 'With bee & co.' },
     labels: { total: 'Illustrative handling time per request', human: 'Human checkpoint', manual: 'Manual work', ai: 'AI-assisted', timeline: 'Handling time, step by step', disclaimer: 'Illustrative scenario with example times. Real results depend on your volumes, systems and data, and are measured in the Sprint.', aria: 'Show process' },
     quotes: {
       title: 'Quote to order',
@@ -238,12 +253,12 @@ export default {
       { q: 'What do we need to bring?', a: 'One repeating process or bottleneck, a handful of anonymized recent examples, and the person who owns the process.' },
       { q: 'Who is this for?', a: 'Established companies of roughly 30–300 employees with a recurring, measurable operational bottleneck. It is not a fit for very small businesses with low volumes or for general curiosity about AI.' },
       { q: 'How is this different from a cheap automation agency or a large consultancy?', a: 'Agencies compete on build price and large consultancies on brand and breadth. We offer senior accountability, direct hands-on delivery, dependable production, team adoption and business measurement, at a mid-market budget.' },
-      { q: 'Who does the work?', a: 'Eran Nachum leads every engagement personally and remains accountable from first conversation to measured outcome.' },
+      { q: 'Who does the work?', a: 'Eran leads every engagement personally and remains accountable from first conversation to measured outcome.' },
     ],
   },
 
   how: {
-    meta: { title: 'How it works — NACHUM.AI', desc: 'Observe, Prove, Embed, Expand: a low-risk path from a business bottleneck to practical proof, production, adoption and measured results.' },
+    meta: { title: 'How it works — bee & co.', desc: 'Observe, Prove, Embed, Expand: a low-risk path from a business bottleneck to practical proof, production, adoption and measured results.' },
     h1: 'From bottleneck to measured result, in four stages',
     lede: 'You see value on your own work before you commit to anything large. At each stage you decide whether to continue.',
     stages: [
@@ -253,6 +268,7 @@ export default {
       { h: 'Expand', who: 'Run & Expand', p: ['Monitoring, incremental improvements, and senior technology leadership as your needs grow, with an operating scorecard each month.'], out: 'Continuous improvement with visible numbers.' },
     ],
     tableTitle: 'The four stages at a glance',
+    salesIntro: 'Start with one safe, no-cost working session. Continue only when the evidence supports the next level of commitment.',
     cols: ['Stage', 'What you get', 'Duration', 'Guardrails'],
     needTitle: 'What we need from you',
     need: ['One recurring process or bottleneck with a named owner', 'A few anonymized recent examples', 'A decision maker in the room', 'Willingness to have a person review outputs where it matters'],
@@ -260,11 +276,11 @@ export default {
   },
 
   about: {
-    meta: { title: 'About Eran Nachum — NACHUM.AI', desc: 'A senior technology executive with 20+ years leading engineering teams of 50+ and building production systems, now helping established businesses work smarter with AI.' },
+    meta: { title: 'About Eran — bee & co.', desc: 'A senior technology executive with 20+ years leading engineering teams of 50+ and building production systems, now helping established businesses work smarter with AI.' },
     h1: 'Builder and accountable executive. One person throughout.',
-    lede: 'NACHUM.AI exists because most companies do not need another AI strategy deck. They need someone senior who can find the bottleneck, build the fix, get people using it and show what changed.',
+    lede: 'bee & co. exists because most companies do not need another AI strategy deck. They need someone senior who can find the bottleneck, build the fix, get people using it and show what changed.',
     story: [
-      'Eran Nachum has spent more than 20 years in senior technology and engineering leadership, including leading engineering organizations of 50+ people and owning complex production software end to end: architecture, resilience, testing, security and operations.',
+      'Eran has spent more than 20 years in senior technology and engineering leadership, including leading engineering organizations of 50+ people and owning complex production software end to end: architecture, resilience, testing, security and operations.',
       'He now applies that experience to established companies. He designs and implements AI-powered workflows and integrations himself, connects them safely to the systems a business already runs, trains the people who will use them, and tracks what changed.',
       'You do not get a strategist who delegates and disappears. You get one accountable senior partner from the first conversation to the measured outcome.',
     ],
@@ -281,10 +297,15 @@ export default {
   },
 
   results: {
-    meta: { title: 'How we measure — NACHUM.AI', desc: 'The scorecard we use to measure operational improvement: baselines, cycle time, error rate, human intervention, adoption and response time.' },
+    meta: { title: 'How we measure — bee & co.', desc: 'The scorecard we use to measure operational improvement: baselines, cycle time, error rate, human intervention, adoption and response time.' },
     h1: 'How we measure results',
     lede: 'We are early, so you will not find invented case studies, logos or percentages here. What you will find is exactly how every engagement is measured.',
     scoreTitle: 'The operating scorecard',
+    cycle: [
+      { h: 'Baseline', p: 'Measure the real workflow before anything changes.' },
+      { h: 'Prove', p: 'Test one improvement against written acceptance criteria.' },
+      { h: 'Operate', p: 'Track adoption, exceptions and business effect in daily use.' },
+    ],
     cols: ['Measure', 'Why it matters', 'How we capture it'],
     rows: [
       ['Cycle time', 'Time from request to finished output', 'Baseline from your examples, then the same measure after'],
@@ -303,7 +324,7 @@ export default {
   },
 
   security: {
-    meta: { title: 'Data and security principles — NACHUM.AI', desc: 'How NACHUM.AI handles your data: anonymized samples, read-only access, confidentiality, human approval gates and least-privilege access.' },
+    meta: { title: 'Data and security principles — bee & co.', desc: 'How bee & co. handles your data: anonymized samples, read-only access, confidentiality, human approval gates and least-privilege access.' },
     h1: 'Data handling and deployment principles',
     lede: 'Trust is a precondition for working on real business processes. These are the principles every engagement follows.',
     draftNote: 'Draft principles. Final data-processing terms are agreed per engagement and are subject to legal review.',
@@ -319,10 +340,10 @@ export default {
     cta: 'Ask us about your data requirements',
   },
 
-  faqPage: { meta: { title: 'Frequently asked questions — NACHUM.AI', desc: 'Straight answers on pricing, the working session, the Proof of Value Sprint, guarantees, data security and who the work is for.' }, h1: 'Frequently asked questions', cta: 'Still have a question? Bring it to a working session.' },
+  faqPage: { meta: { title: 'Frequently asked questions — bee & co.', desc: 'Straight answers on pricing, the working session, the Proof of Value Sprint, guarantees, data security and who the work is for.' }, h1: 'Frequently asked questions', cta: 'Still have a question? Bring it to a working session.' },
 
   contact: {
-    meta: { title: 'Book a working session — NACHUM.AI', desc: 'Request a qualified working session: a 20-minute screening, a 45-minute safe demonstration and a one-page Business Impact Memo.' },
+    meta: { title: 'Book a working session — bee & co.', desc: 'Request a qualified working session: a 20-minute screening, a 45-minute safe demonstration and a one-page Business Impact Memo.' },
     h1: 'Book a working session',
     lede: 'Tell us about one repeating bottleneck. We reply to qualified requests to schedule the session.',
     priceNote: 'A first paid engagement (the Proof of Value Sprint) typically costs ₪18–28K excl. VAT, indicative. The working session itself is free.',
@@ -342,14 +363,14 @@ export default {
     urgencies: ['Within a month', 'This quarter', 'Later this year', 'Just exploring'],
     budgets: ['A first engagement of ₪18–28K fits', 'I need to understand the value first', 'Below ₪18K'],
     select: 'Select…',
-    consent: 'I agree that NACHUM.AI may contact me about this request and store these details for that purpose. See the privacy policy.',
+    consent: 'I agree that bee & co. may contact me about this request and store these details for that purpose. See the privacy policy.',
     errors: { required: 'This field is required.', email: 'Enter a valid email address.', consent: 'Please confirm to continue.' },
-    ok: { h: 'Request received', devH: 'Development mode: request NOT delivered', dev: 'This site is running without a lead integration. Your request was saved locally for testing only and has not reached NACHUM.AI.', p: 'Thank you. We will review your request and get back to you to arrange the session.', book: 'Choose a time' },
+    ok: { h: 'Request received', devH: 'Development mode: request NOT delivered', dev: 'This site is running without a lead integration. Your request was saved locally for testing only and has not reached bee & co.', p: 'Thank you. We will review your request and get back to you to arrange the session.', book: 'Choose a time' },
     fail: 'We could not send your request. Please try again in a moment.',
     failNet: 'We could not reach the server, so nothing was sent. Please try again.',
   },
   privacy: {
-    meta: { title: 'Privacy policy (draft) — NACHUM.AI', desc: 'Draft privacy policy for NACHUM.AI. Pending legal review.' },
+    meta: { title: 'Privacy policy (draft) — bee & co.', desc: 'Draft privacy policy for bee & co. Pending legal review.' },
     h1: 'Privacy policy',
     draft: 'DRAFT — pending legal review for Israeli law and other applicable requirements. Do not launch publicly without sign-off.',
     sections: [
@@ -364,7 +385,7 @@ export default {
 
   solutions: {
     quotes: {
-      meta: { title: 'Faster quotes, orders without retyping — NACHUM.AI', desc: 'For distributors, importers and B2B sellers: classify requests, pull approved prices, prepare drafts, review by a person and hand off to your existing system.' },
+      meta: { title: 'Faster quotes, orders without retyping — bee & co.', desc: 'For distributors, importers and B2B sellers: classify requests, pull approved prices, prepare drafts, review by a person and hand off to your existing system.' },
       eyebrow: 'Quotes & orders', h1: 'Faster quotes. Orders without repetitive retyping.',
       sub: 'For companies whose sales team copies details between emails, spreadsheets, price lists and the ERP.',
       cta: 'Bring three anonymized recent quote requests to a working session', cardLine: 'Quote-to-order handling for wholesalers and B2B sellers.',
@@ -385,7 +406,7 @@ export default {
       visual: 'doc',
     },
     inbox: {
-      meta: { title: 'Handle more requests, lose fewer messages — NACHUM.AI', desc: 'For service and back-office teams: triage, urgency, suggested replies, assignment and escalation, with a person approving each response.' },
+      meta: { title: 'Handle more requests, lose fewer messages — bee & co.', desc: 'For service and back-office teams: triage, urgency, suggested replies, assignment and escalation, with a person approving each response.' },
       eyebrow: 'Customer inbox', h1: 'Handle more requests. Let fewer messages fall through the cracks.',
       sub: 'For teams buried in repetitive email, WhatsApp and client messages that are poorly prioritized and slow to answer.',
       cta: 'Bring one anonymized day of customer messages', cardLine: 'Triage, prioritisation and reply drafts for busy service teams.',
@@ -410,7 +431,7 @@ export default {
       ] },
     },
     discovery: {
-      meta: { title: 'Where is your business losing time and money? — NACHUM.AI', desc: 'A practical look at one recurring process: three opportunities ranked by impact and feasibility, an honest view on what not to automate, and a clear next step.' },
+      meta: { title: 'Where is your business losing time and money? — bee & co.', desc: 'A practical look at one recurring process: three opportunities ranked by impact and feasibility, an honest view on what not to automate, and a clear next step.' },
       eyebrow: 'Opportunity discovery', h1: 'Where is your business losing time and money?',
       sub: 'Skip the jargon-heavy AI strategy workshop. Bring one repeating process and leave knowing where AI is worth it, and where it is not.',
       cta: 'Bring one repeating process or operational bottleneck', cardLine: 'A practical read on where AI creates return in your business.',
@@ -438,7 +459,7 @@ export default {
       ], impactL: 'Impact', feasL: 'Feasibility' },
     },
     adoption: {
-      meta: { title: 'You bought AI tools. Work has not changed. — NACHUM.AI', desc: 'Diagnose why AI tools sit unused: ownership, training and measurement, and chart a production-safe path from unused licenses to changed work.' },
+      meta: { title: 'You bought AI tools. Work has not changed. — bee & co.', desc: 'Diagnose why AI tools sit unused: ownership, training and measurement, and chart a production-safe path from unused licenses to changed work.' },
       eyebrow: 'AI adoption', h1: 'You bought AI tools. The way work gets done hasn’t changed.',
       sub: 'Licenses are paid for and pilots ran, but nothing became routine. The gap is usually ownership, training and measurement.',
       cta: 'Bring your existing AI tool list and one stalled use case', cardLine: 'Turn unused licenses into changed work.',

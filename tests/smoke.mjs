@@ -35,7 +35,7 @@ await t('calculator: invalid input is rejected', () => {
 });
 
 /* ---- server ---- */
-const dataDir = await mkdtemp(join(tmpdir(), 'nachum-leads-'));
+const dataDir = await mkdtemp(join(tmpdir(), 'bee-co-leads-'));
 const port = 3900 + Math.floor(Math.random() * 90);
 const srv = spawn('node', ['server.mjs'], { env: { ...process.env, PORT: String(port), LEAD_DATA_DIR: dataDir, LEAD_ADAPTER: 'dev' }, stdio: 'pipe' });
 await new Promise((r) => srv.stdout.on('data', (d) => /on http/.test(d) && r()));
