@@ -103,6 +103,32 @@ export default {
     },
   },
 
+  pipeline: {
+    title: 'One request, before and after AI',
+    intro: 'Toggle to see how a single request moves through the business today, and once an AI agent does the routine work and a person approves the exceptions.',
+    toggle: { before: 'Before AI', after: 'AI new era' },
+    toggleAria: 'Pipeline view',
+    legend: { person: 'Manual work by a person', ai: 'AI', system: 'Systems and channels', rework: 'Rework loop', live: 'Live connection' },
+    stat: {
+      before: 'Steps done by hand: 5 · People touching each request: 3',
+      after: 'Steps done by hand: 1 · People touching each request: 1',
+    },
+    desc: {
+      before: 'Before AI: a request lands in a shared inbox, a person sorts it, looks up prices, types a draft and retypes it into the ERP; a manager reviews it, sometimes sends it back for rework, and the reply goes out days later.',
+      after: 'AI new era: an AI agent reads the request on arrival, pulls prices from the price list and syncs the ERP directly; one human checkpoint approves the exceptions, and the reply goes out the same day.',
+    },
+    nodes: [
+      { id: 'req', before: { t: 'Request', s: 'Email or form', kind: 'system' }, after: { t: 'Request', s: 'Email or form', kind: 'system' } },
+      { id: 'inbox', before: { t: 'Shared inbox', s: 'Waits in a queue', kind: 'system' }, after: { t: 'Shared inbox', s: 'Read on arrival', kind: 'system' } },
+      { id: 'sort', before: { t: 'Read and sort', s: 'A person, by hand', kind: 'person' }, after: { t: 'AI agent', s: 'Reads and drafts', kind: 'ai' } },
+      { id: 'look', before: { t: 'Look up prices', s: 'Old quotes, sheets', kind: 'person' }, after: { t: 'Price list', s: 'Read directly', kind: 'system' } },
+      { id: 'draft', before: { t: 'Prepare draft', s: 'Typed by hand', kind: 'person' }, after: { t: 'AI agent', s: '', kind: 'ai', hidden: true } },
+      { id: 'erp', before: { t: 'Retype into ERP', s: 'Copy and paste', kind: 'person' }, after: { t: 'ERP / CRM', s: 'Synced directly', kind: 'system' } },
+      { id: 'appr', before: { t: 'Manager review', s: 'When time allows', kind: 'person' }, after: { t: 'Human checkpoint', s: 'Exceptions only', kind: 'person' } },
+      { id: 'reply', before: { t: 'Reply sent', s: 'Days later', kind: 'system' }, after: { t: 'Reply sent', s: 'Same day', kind: 'system' } },
+    ],
+  },
+
   offers: {
     eyebrow: 'Offers and indicative prices', title: 'A low-risk path from proof to production',
     intro: 'One journey, not a menu. Prices are indicative starting points and the final proposal depends on scope.',

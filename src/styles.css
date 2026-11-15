@@ -465,6 +465,45 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .tl-key { width: 18px; height: 10px; border-radius: 4px; display: inline-block; }
 @media (max-width: 560px) { .tl-row { grid-template-columns: minmax(0, 1fr) auto; } .tl-track { grid-column: 1 / -1; grid-row: 2; } .tl-seg { font-size: 0; min-width: 8px; } }
 
+/* One request reshaped from a manual pipeline into an AI-assisted one. */
+.pipeline { margin: 0; }
+.pipeline .tool-head { justify-content: flex-start; }
+.pipeline .chip--ill { margin-inline-start: auto; }
+.pipeline svg { width: 100%; height: auto; overflow: visible; }
+.pl-node { transition: transform .8s var(--ease-out), opacity .5s; }
+.pl-node rect { stroke-width: 1px; }
+.pl-node text { font-family: var(--sans); pointer-events: none; }
+.pl-title { font-size: 14px; font-weight: 500; }
+.pl-sub { font-size: 12px; font-weight: 400; }
+.pl--person rect { fill: var(--human-tint); stroke: var(--human); }
+.pl--person .pl-title { fill: var(--human-ink); }
+.pl--person .pl-sub { fill: var(--human); }
+.pl--ai rect { fill: var(--accent-tint); stroke: var(--accent); }
+.pl--ai :is(.pl-title, .pl-sub) { fill: var(--accent-deep); }
+.pl--ai .pl-sub { opacity: .85; }
+.pl--system rect { fill: var(--paper-2); stroke: var(--rule-2); }
+.pl--system .pl-title { fill: var(--ink); }
+.pl--system .pl-sub { fill: var(--ink-2); }
+.pl-edges { fill: none; stroke: var(--ink-2); stroke-width: 1px; transition: opacity .35s; }
+.pl-rework { stroke: var(--human); stroke-dasharray: 5 4; }
+.pl-live { stroke: var(--accent); stroke-dasharray: 4 3; }
+.pl-legend { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--ink-2); font-size: .84rem; }
+.pl-legend li { display: inline-flex; align-items: center; gap: 8px; }
+.pl-key { display: inline-block; width: 20px; height: 12px; border: 1px solid; border-radius: 4px; }
+.pl-key--person { background: var(--human-tint); border-color: var(--human); }
+.pl-key--ai { background: var(--accent-tint); border-color: var(--accent); }
+.pl-key--system { background: var(--paper-2); border-color: var(--rule-2); }
+.pl-key--line { width: 24px; height: 0; border: 0; border-top: 2px dashed var(--human); border-radius: 0; }
+.pipeline[data-mode='after'] .pl-key--line { border-color: var(--accent); }
+.pl-stat { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--rule); color: var(--ink-2); font-size: .92rem; font-weight: 500; }
+@media (max-width: 560px) {
+  .pipeline { margin-inline: calc(-1 * var(--gutter)); border-radius: 0; padding-inline: max(12px, var(--gutter)); }
+}
+@media (max-width: 420px) {
+  .pipeline .pl-sub { display: none; }
+  .pipeline .pl-title { transform: translateY(9px); }
+}
+
 /* ---------- motion: the stamp lands once the work order is in view ---------- */
 @media (prefers-reduced-motion: no-preference) {
   .hero .stamp { animation: stamp-down .45s cubic-bezier(.3, 1.6, .5, 1) .9s both; }

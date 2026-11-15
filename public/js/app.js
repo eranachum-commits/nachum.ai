@@ -51,6 +51,43 @@ $$('[data-explorer]').forEach((ex) => {
   set('before');
 });
 
+/* ---------- before/after pipeline ---------- */
+$$('[data-pipeline]').forEach((root) => {
+  const toggle = $('.seg', root), desc = $('desc', root), stat = $('[data-pl-stat]', root);
+  const lineLabel = $('[data-pl-line-label]', root);
+  const setStat = (value) => stat.replaceChildren(...value.split(/(\d[\d,.]*(?:[–-]\d[\d,.]*)?)/g).map((part, i) => {
+    if (i % 2 === 0) return document.createTextNode(part);
+    const number = document.createElement('bdi'); number.dir = 'ltr'; number.textContent = part; return number;
+  }));
+  toggle.hidden = false;
+  const set = (mode) => {
+    root.dataset.mode = mode;
+    $$('[data-mode-btn]', root).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.modeBtn === mode)));
+    $$('.pl-node', root).forEach((node) => {
+      const [x, y] = node.dataset[mode].split(',');
+      node.style.transform = `translate(${x}px, ${y}px)`;
+      node.classList.remove('pl--person', 'pl--ai', 'pl--system');
+      node.classList.add(`pl--${node.dataset[`${mode}Kind`]}`);
+      $('.pl-title', node).textContent = node.dataset[`${mode}T`];
+      $('.pl-sub', node).textContent = node.dataset[`${mode}S`];
+      node.style.opacity = mode === 'after' && 'afterHidden' in node.dataset ? '0' : '1';
+    });
+    $$('.pl-edges', root).forEach((edges) => {
+      const incoming = edges.classList.contains(`pl-edges--${mode}`);
+      edges.style.transitionDelay = incoming ? '.55s' : '0s';
+      edges.style.opacity = incoming ? '1' : '0';
+    });
+    desc.textContent = root.dataset[`desc${mode[0].toUpperCase()}${mode.slice(1)}`];
+    setStat(root.dataset[`stat${mode[0].toUpperCase()}${mode.slice(1)}`]);
+    lineLabel.textContent = root.dataset[`line${mode[0].toUpperCase()}${mode.slice(1)}`];
+  };
+  $$('[data-mode-btn]', root).forEach((b) => b.addEventListener('click', () => {
+    set(b.dataset.modeBtn);
+    track('tool_interaction', { tool: 'pipeline', mode: b.dataset.modeBtn });
+  }));
+  set('before');
+});
+
 /* ---------- ladder tabs ---------- */
 $$('[data-ladder]').forEach((root) => {
   const tabs = $$('[role=tab]', root);

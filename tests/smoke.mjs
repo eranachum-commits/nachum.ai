@@ -77,6 +77,17 @@ await t('illustrative content is labelled; no invented proof', () => {
   for (const [u, html] of Object.entries(pages)) { assert.doesNotMatch(html, /testimonial|עדות מלקוח\b(?!ות)/i, u); }
   assert.match(pages['/'], /להמחשה/); assert.match(pages['/en'], /Illustrative/);
 });
+await t('pipeline renders eight nodes and mirrors its Hebrew geometry', () => {
+  const figures = {};
+  for (const url of ['/', '/en']) {
+    assert.match(pages[url], /data-pipeline/, url);
+    figures[url] = pages[url].match(/<figure class="pipeline tool"[\s\S]*?<\/figure>/)?.[0];
+    assert.ok(figures[url], 'pipeline figure on ' + url);
+    assert.equal((figures[url].match(/class="pl-node\b/g) || []).length, 8, 'eight pipeline nodes on ' + url);
+  }
+  const reqX = (html) => Number(html.match(/data-node="req"[^>]*data-before="([\d.]+),/)[1]);
+  assert.ok(reqX(figures['/']) > reqX(figures['/en']), 'Hebrew request starts farther right');
+});
 await t('sitemap and robots', async () => {
   const sm = (await get('/sitemap.xml')).text; assert.equal((sm.match(/<url>/g) || []).length, (routes.length - 1) * 2);
   assert.match((await get('/robots.txt')).text, /Sitemap:/);

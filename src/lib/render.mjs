@@ -143,6 +143,37 @@ ${timeline(c, d, tb, ta)}
 <p class="ill-note">${L.disclaimer}</p></div>`;
 }
 
+function pipeline(c, id) {
+  const p = c.pipeline;
+  const pos = {
+    req: { before: [25, 30], after: [25, 120] }, inbox: { before: [185, 30], after: [185, 120] },
+    sort: { before: [345, 30], after: [345, 120] }, look: { before: [505, 30], after: [185, 240] },
+    draft: { before: [505, 170], after: [345, 120] }, erp: { before: [345, 170], after: [345, 240] },
+    appr: { before: [185, 170], after: [505, 120] }, reply: { before: [25, 170], after: [505, 240] },
+  };
+  const mx = (x) => c.dir === 'rtl' ? 680 - x : x;
+  const nodePos = ([x, y]) => [c.dir === 'rtl' ? 680 - x - 140 : x, y];
+  const line = ([x1, y1, x2, y2], cls = '') => `<line${cls ? ` class="${cls}"` : ''} x1="${mx(x1)}" y1="${y1}" x2="${mx(x2)}" y2="${y2}" marker-end="url(#${id}-arrow)"/>`;
+  const beforeLines = [[165, 58, 183, 58], [325, 58, 343, 58], [485, 58, 503, 58], [575, 86, 575, 168], [505, 198, 487, 198], [345, 198, 327, 198], [185, 198, 167, 198]].map((x) => line(x)).join('');
+  const afterLines = [[165, 148, 183, 148], [325, 148, 343, 148], [485, 148, 503, 148], [575, 176, 575, 238]].map((x) => line(x)).join('');
+  const nodes = p.nodes.map((n) => {
+    const before = nodePos(pos[n.id].before), after = nodePos(pos[n.id].after);
+    return `<g class="pl-node pl--${n.before.kind}" data-node="${n.id}" data-before="${before.join(',')}" data-after="${after.join(',')}" data-before-t="${esc(n.before.t)}" data-before-s="${esc(n.before.s)}" data-before-kind="${n.before.kind}" data-after-t="${esc(n.after.t)}" data-after-s="${esc(n.after.s)}" data-after-kind="${n.after.kind}"${n.after.hidden ? ' data-after-hidden' : ''} style="transform:translate(${before[0]}px, ${before[1]}px)"><rect width="140" height="56" rx="12"/><text class="pl-title" x="70" y="20" text-anchor="middle" dominant-baseline="central">${n.before.t}</text><text class="pl-sub" x="70" y="38" text-anchor="middle" dominant-baseline="central">${n.before.s}</text></g>`;
+  }).join('');
+  const rework = `M${mx(255)} 226 L${mx(255)} 262 L${mx(560)} 262 L${mx(560)} 228`;
+  const price = `M${mx(375)} 178 L${mx(375)} 208 L${mx(255)} 208 L${mx(255)} 238`;
+  return `<figure class="pipeline tool" data-pipeline data-mode="before" data-desc-before="${esc(p.desc.before)}" data-desc-after="${esc(p.desc.after)}" data-stat-before="${esc(p.stat.before)}" data-stat-after="${esc(p.stat.after)}" data-line-before="${esc(p.legend.rework)}" data-line-after="${esc(p.legend.live)}">
+<div class="tool-head"><div class="seg" role="group" aria-label="${esc(p.toggleAria)}" hidden><button type="button" aria-pressed="true" data-mode-btn="before">${p.toggle.before}</button><button type="button" aria-pressed="false" data-mode-btn="after">${p.toggle.after}</button></div>${ill(c)}</div>
+<svg viewBox="0 0 680 320" role="img" aria-labelledby="${id}-title ${id}-desc"><title id="${id}-title">${p.title}</title><desc id="${id}-desc">${p.desc.before}</desc>
+<defs><marker id="${id}-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="context-stroke" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g class="pl-edges pl-edges--before">${beforeLines}<path class="pl-rework" d="${rework}" marker-end="url(#${id}-arrow)"/></g>
+<g class="pl-edges pl-edges--after" style="opacity:0">${afterLines}<line class="pl-live" x1="${mx(415)}" y1="178" x2="${mx(415)}" y2="238" marker-start="url(#${id}-arrow)" marker-end="url(#${id}-arrow)"/><path class="pl-live" d="${price}" marker-start="url(#${id}-arrow)" marker-end="url(#${id}-arrow)"/></g>
+${nodes}</svg>
+<ul class="pl-legend" aria-hidden="true"><li><i class="pl-key pl-key--person"></i>${p.legend.person}</li><li><i class="pl-key pl-key--ai"></i>${p.legend.ai}</li><li><i class="pl-key pl-key--system"></i>${p.legend.system}</li><li><i class="pl-key pl-key--line"></i><span data-pl-line-label>${p.legend.rework}</span></li></ul>
+<p class="pl-stat" data-pl-stat aria-live="polite">${p.stat.before}</p>
+<ol class="sr-only"><li>${p.desc.before}</li><li>${p.desc.after}</li></ol></figure>`;
+}
+
 // Quadrant a dot sits in, using the same labels the chart shows: q = [high impact+feasible, high impact+hard, low impact+feasible, low impact+hard].
 const quadrant = (p, i) => p.q[(i.y >= 50 ? 2 : 0) + (i.x >= 50 ? 0 : 1)];
 
@@ -269,6 +300,7 @@ pages.home = (c) => {
   <div class="hero-visual">${docStack(c)}</div>
 </div></section>
 ${section(`${head(h.outcomes.eyebrow, h.outcomes.title, h.outcomes.intro, 'outcomes')}<div class="ledger">${h.outcomes.items.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div>`, 'section--tint', 'outcomes-s', 'outcomes')}
+${section(`${head('', c.pipeline.title, c.pipeline.intro, 'pipeline-title')}${pipeline(c, 'pipeline-home')}`, '', 'pipeline-s', 'pipeline-title')}
 ${section(`${head(h.ba.eyebrow, h.ba.title, h.ba.intro, 'ba')}${explorer(c, 'quotes')}<div class="btn-row">${btn(c, c.sub.quotes.t, href(c.lang, 'quotes'), '')}${btn(c, c.sub.inbox.t, href(c.lang, 'inbox'), '')}</div>`, '', 'example', 'ba')}
 ${section(`<div class="split split--even"><div class="portrait" role="img" aria-label="Eran Nachum"><span>EN</span></div><div><h2>${h.founder.title}</h2><p class="lede">${h.founder.p}</p>${ticks(h.founder.signals)}${btn(c, h.founder.link, href(c.lang, 'about'), '')}</div></div>`, 'section--dark', 'founder')}
 ${section(`${head(h.method.eyebrow, h.method.title, h.method.intro, 'm')}<ol class="track">${h.method.steps.map((x) => `<li><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ol>`, '', 'how', 'm')}
@@ -311,6 +343,7 @@ SOLUTION_KEYS.forEach((k) => (pages[k] = landing(k)));
 pages.how = (c) => {
   const p = c.how;
   const body = `${pageHero(c, p.h1, p.lede)}
+${section(`${head('', c.pipeline.title, c.pipeline.intro, 'pipeline-title')}${pipeline(c, 'pipeline-how')}`, '', 'pipeline-s', 'pipeline-title')}
 ${section(p.stages.map((s, i) => `<article class="stage-row"><div class="stage-n" aria-hidden="true">${i + 1}</div><div><h2>${s.h}</h2><p class="who">${s.who}</p></div><div>${s.p.map((x) => `<p>${x}</p>`).join('')}<p class="out">${s.out}</p></div></article>`).join(''))}
 ${section(`<h2>${p.tableTitle}</h2><div class="table-wrap"><table class="t"><thead><tr>${p.cols.map((x) => `<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${c.offers.items.map((o, i) => `<tr><th scope="row">${o.stage}<br><strong>${o.h}</strong></th><td>${o.p}</td><td>${i === 0 ? `<strong>${o.price}</strong><br>` : ''}${duration(o.unit)}</td><td>${o.guard}</td></tr>`).join('')}</tbody></table></div><div class="notice"><strong>${c.offers.guarantee.h}.</strong> ${c.offers.guarantee.p}</div>`, 'section--tint')}
 ${section(`<div class="split split--even"><div><h2>${p.needTitle}</h2>${ticks(p.need)}</div><div>${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div></div>`)}`;
