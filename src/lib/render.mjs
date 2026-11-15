@@ -243,9 +243,9 @@ ${input('phone', f.phone, { type: 'tel', required: false, auto: 'tel' })}
 /* ---------- shared blocks ---------- */
 // The four stages as standing bars that rise with commitment. Stage 1 is free and carries the booking action;
 // paid stages show their duration only (no prices here), with the price wording ("excl. VAT") dropped from the unit.
+const duration = (u) => u.split(' · ').filter((part) => !/VAT|מע״מ/.test(part)).join(' · ');
 function offerCards(c) {
   const o = c.offers;
-  const duration = (u) => u.split(' · ').filter((part) => !/VAT|מע״מ/.test(part)).join(' · ');
   const [free, ...paid] = o.items;
   const freeBar = `<li class="stair stair--free"><span class="stage">${free.stage}</span><p class="free-mark">${free.price}</p><h3>${free.h}</h3><p class="dur">${duration(free.unit)}</p><p>${free.p}</p><p class="guard">${free.guard}</p>${btn(c, c.ui.book, bookUrl(c), 'btn--primary', 'data-track="cta_offers_free"')}</li>`;
   const bars = paid.map((x, i) => `<li class="stair" style="--step:${i + 1}"><span class="stage">${x.stage}</span><h3>${x.h}</h3><p class="dur">${duration(x.unit)}</p><p>${x.p}</p><p class="guard">${x.guard}</p></li>`).join('');
@@ -312,7 +312,7 @@ pages.how = (c) => {
   const p = c.how;
   const body = `${pageHero(c, p.h1, p.lede)}
 ${section(p.stages.map((s, i) => `<article class="stage-row"><div class="stage-n" aria-hidden="true">${i + 1}</div><div><h2>${s.h}</h2><p class="who">${s.who}</p></div><div>${s.p.map((x) => `<p>${x}</p>`).join('')}<p class="out">${s.out}</p></div></article>`).join(''))}
-${section(`<h2>${p.tableTitle}</h2><div class="table-wrap"><table class="t"><thead><tr>${p.cols.map((x) => `<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${c.offers.items.map((o) => `<tr><th scope="row">${o.stage}<br><strong>${o.h}</strong></th><td>${o.p}</td><td>${bdi(o.price)}<br><span class="muted small">${o.unit}</span></td><td>${o.guard}</td></tr>`).join('')}</tbody></table></div><p class="small muted offer-note">${c.offers.note}</p><div class="notice"><strong>${c.offers.guarantee.h}.</strong> ${c.offers.guarantee.p}</div>`, 'section--tint')}
+${section(`<h2>${p.tableTitle}</h2><div class="table-wrap"><table class="t"><thead><tr>${p.cols.map((x) => `<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${c.offers.items.map((o, i) => `<tr><th scope="row">${o.stage}<br><strong>${o.h}</strong></th><td>${o.p}</td><td>${i === 0 ? `<strong>${o.price}</strong><br>` : ''}${duration(o.unit)}</td><td>${o.guard}</td></tr>`).join('')}</tbody></table></div><div class="notice"><strong>${c.offers.guarantee.h}.</strong> ${c.offers.guarantee.p}</div>`, 'section--tint')}
 ${section(`<div class="split split--even"><div><h2>${p.needTitle}</h2>${ticks(p.need)}</div><div>${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div></div>`)}`;
   return { meta: p.meta, body };
 };

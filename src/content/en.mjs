@@ -99,7 +99,7 @@ export default {
     },
     cta: {
       title: 'Bring one repeating bottleneck. Leave with a clear next step.',
-      p: 'The working session is free for companies where there is a real operational pain, budget and example material we can look at safely. A first paid engagement typically starts at ₪18–28K (indicative, excl. VAT).',
+      p: 'The working session is free for companies where there is a real operational pain, budget and example material we can look at safely.',
     },
   },
 
@@ -203,7 +203,7 @@ export default {
     eyebrow: 'Questions owners ask', title: 'Straight answers',
     items: [
       { q: 'Is the working session really free?', a: 'Yes, for qualified companies: a 20-minute screening, a 45-minute safe demonstration and a one-page Business Impact Memo. It is not a free custom build, and it never touches production systems. Free sessions are limited each week, so we ask a few questions first.' },
-      { q: 'What does a Proof of Value Sprint cost?', a: 'Indicatively ₪18–28K excl. VAT, depending on scope, for 10–15 working days. 50% is invoiced upfront and 50% on acceptance. You receive a written proposal before anything starts.' },
+      { q: 'How is a Proof of Value Sprint priced?', a: 'By scope. You receive a written proposal before anything starts. A Sprint runs 10–15 working days; 50% is invoiced upfront and 50% on acceptance.' },
       { q: 'What if the Sprint does not deliver?', a: 'We agree written acceptance criteria before work begins. If those are missed for reasons within our control, the second 50% payment may be waived. The exact terms are defined in the agreement.' },
       { q: 'Does this replace my employees?', a: 'No. The aim is for the same team to handle more work and spend more time on judgment and customers. Freed hours are capacity, not automatically cash savings.' },
       { q: 'How long until it runs in production?', a: 'The Sprint proves value on real work in 10–15 working days. It is not a production launch. Real deployment, integration and adoption happen in the 90-day program.' },
@@ -217,7 +217,7 @@ export default {
   },
 
   how: {
-    meta: { title: 'How it works — NACHUM.AI', desc: 'Observe, Prove, Embed, Expand: a low-risk path from a business bottleneck to practical proof, production, adoption and measured results. Indicative prices included.' },
+    meta: { title: 'How it works — NACHUM.AI', desc: 'Observe, Prove, Embed, Expand: a low-risk path from a business bottleneck to practical proof, production, adoption and measured results.' },
     h1: 'From bottleneck to measured result, in four stages',
     lede: 'You see value on your own work before you commit to anything large. At each stage you decide whether to continue.',
     stages: [
@@ -226,8 +226,8 @@ export default {
       { h: 'Embed', who: '90-Day Business Improvement Program', p: ['The proven improvement becomes part of how work gets done: integration with your systems, process redesign, human checks, training, named owners and metrics.', 'Scope and outcomes are agreed up front. We do not promise a fixed number of automations.'], out: 'A working, owned and measured process in daily use.' },
       { h: 'Expand', who: 'Run & Expand', p: ['Monitoring, incremental improvements, and senior technology leadership as your needs grow, with an operating scorecard each month.'], out: 'Continuous improvement with visible numbers.' },
     ],
-    tableTitle: 'Offers and indicative prices',
-    cols: ['Stage', 'What you get', 'Indicative price', 'Guardrails'],
+    tableTitle: 'The four stages at a glance',
+    cols: ['Stage', 'What you get', 'Duration', 'Guardrails'],
     needTitle: 'What we need from you',
     need: ['One recurring process or bottleneck with a named owner', 'A few anonymized recent examples', 'A decision maker in the room', 'Willingness to have a person review outputs where it matters'],
     cta: 'Book a working session',
