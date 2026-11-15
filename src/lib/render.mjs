@@ -279,7 +279,6 @@ pages.home = (c) => {
   const h = c.home, hr = h.hero;
   const outcomePicks = [h.outcomes.items[0], h.outcomes.items[3], h.outcomes.items[5]];
   const proofSignals = [h.founder.signals[0], h.founder.signals[2], h.founder.signals[5]];
-  const usecase = c.usecase;
   const body = `
 <section class="hero"><div class="container hero-stage">
   <div class="hero-copy"><p class="brand-positioning"><span>${hr.eyebrow}</span><span>${founderLine(c)}</span></p><h1>${hr.h1}</h1>
@@ -289,8 +288,7 @@ pages.home = (c) => {
 </div></section>
 ${section(`<div class="delivery-layout"><div><span class="eyebrow">${h.delivery.eyebrow}</span><h2 id="delivery-title">${h.delivery.title}</h2><p class="lede">${h.delivery.intro}</p></div><ol class="delivery-list">${h.delivery.items.map((x, i) => `<li><span aria-hidden="true">0${i + 1}</span><p>${x}</p></li>`).join('')}</ol></div>`, 'home-delivery', 'deliver', 'delivery-title')}
 ${section(`${head(h.sales.eyebrow, h.sales.title, h.sales.intro, 'o')}${offerCards(c, h.sales.cta)}<div class="home-offer-link">${btn(c, c.nav.how, href(c.lang, 'how'), '')}</div>`, 'section--tint home-offers', 'offers', 'o')}
-${section(`<div class="home-focus-grid"><div><span class="eyebrow">${h.outcomes.eyebrow}</span><h2 id="focus-title">${h.outcomes.title}</h2><p class="lede">${h.outcomes.intro}</p><div class="outcome-short">${outcomePicks.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div></div><div class="home-usecase"><span class="eyebrow">${usecase.preview.eyebrow}</span><h2>${usecase.preview.title}</h2><p>${usecase.preview.intro}</p><ol>${usecase.steps.map((x, i) => `<li><span aria-hidden="true">0${i + 1}</span><strong>${x.h}</strong></li>`).join('')}</ol>${btn(c, usecase.preview.cta, href(c.lang, 'usecase'), '')}</div></div>`, 'home-focus', 'work', 'focus-title')}
-${section(`${head('', c.pipeline.title, c.pipeline.intro, 'pipeline-title')}${pipeline(c, 'pipeline-home')}`, 'section--tint home-example', 'pipeline-s', 'pipeline-title')}
+${section(`<div class="home-focus-grid"><div><span class="eyebrow">${h.outcomes.eyebrow}</span><h2 id="focus-title">${h.outcomes.title}</h2><p class="lede">${h.outcomes.intro}</p></div><div class="outcome-short">${outcomePicks.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div></div>`, 'home-focus', 'work', 'focus-title')}
 ${section(`<div class="split split--even">${founderPanel(c)}<div><span class="eyebrow">${h.founder.eyebrow}</span><h2>${h.founder.title}</h2><p class="lede">${h.founder.p}</p>${ticks(proofSignals)}<div class="btn-row">${btn(c, h.founder.link, href(c.lang, 'about'), '')}${btn(c, h.safe.link, href(c.lang, 'security'), '')}</div></div></div>`, 'section--dark home-founder', 'founder')}
 ${ctaBand(c, h.cta.title, h.cta.p)}`;
   const ld = { '@context': 'https://schema.org', '@type': 'Organization', name: 'bee & co.', description: c.descriptor, founder: { '@type': 'Person', name: 'Eran' } };
@@ -298,12 +296,14 @@ ${ctaBand(c, h.cta.title, h.cta.p)}`;
 };
 
 pages.usecase = (c) => {
-  const p = c.usecase;
-  const flow = `<ol class="usecase-flow">${p.steps.map((x, i) => `<li><span class="usecase-n" aria-hidden="true">0${i + 1}</span><div><h3>${x.h}</h3><p>${x.p}</p></div></li>`).join('')}</ol>`;
+  const p = c.usecase, s = p.savings;
+  // One row per box a person used to fill in the diagram: before, with AI, what it saves.
+  // Column labels sit in a header row on wide screens and inside each cell (visible) on phones.
+  const cell = (cls, i, text) => `<p class="${cls}"><span class="sv-l">${s.cols[i]}</span>${text}</p>`;
+  const rows = s.items.map((x) => `<li>${cell('sv-before', 0, x.before)}${cell('sv-after', 1, x.after)}${cell('sv-saves', 2, x.saves)}</li>`).join('');
   const body = `${pageHero(c, p.h1, p.lede)}
-${section(`${head(p.eyebrow, p.flowTitle, p.flowIntro, 'usecase-flow-title')}${flow}`, 'usecase-process', 'usecase-flow', 'usecase-flow-title')}
-${section(`<div class="usecase-shift"><article><span class="eyebrow">${p.before.eyebrow}</span><h2>${p.before.title}</h2>${ticks(p.before.items)}</article><article><span class="eyebrow">${p.after.eyebrow}</span><h2>${p.after.title}</h2>${ticks(p.after.items)}</article></div>`, 'section--tint')}
-${section(`<div class="split split--even"><div><span class="eyebrow">${p.measure.eyebrow}</span><h2>${p.measure.title}</h2><p class="lede">${p.measure.intro}</p></div><div class="usecase-measures">${p.measure.items.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div></div>`)}
+${section(`${head('', c.pipeline.title, c.pipeline.intro, 'pipeline-title')}${pipeline(c, 'pipeline-usecase')}`, 'section--tint usecase-diagram', 'pipeline-s', 'pipeline-title')}
+${section(`${head('', s.title, s.intro, 'savings-title')}<div class="savings-head" aria-hidden="true">${s.cols.map((x) => `<span>${x}</span>`).join('')}</div><ol class="savings">${rows}</ol><p class="savings-total">${s.total}</p>`, '', 'savings', 'savings-title')}
 ${ctaBand(c, p.cta.title, p.cta.p, 'usecase')}`;
   return { meta: p.meta, body };
 };

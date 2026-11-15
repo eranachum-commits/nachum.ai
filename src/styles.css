@@ -242,10 +242,10 @@ p { margin: 0 0 1em; text-wrap: pretty; }
 .home-focus-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(360px, 1.1fr); gap: clamp(50px, 8vw, 120px); align-items: start; }
 .home-focus-grid h2 { margin: .35em 0 .45em; }
 .outcome-short { margin-top: clamp(28px, 4vw, 46px); }
+.home-focus-grid > .outcome-short { margin-top: 0; }
 .outcome-short article { display: grid; grid-template-columns: minmax(110px, .35fr) 1fr; gap: 22px; padding-block: 18px; border-top: 1px solid var(--rule-2); }
 .outcome-short h3, .outcome-short p { margin: 0; }
 .outcome-short p { color: var(--ink-2); }
-.home-example .section-head { max-width: 800px; }
 .home-founder .eyebrow { color: var(--accent-on-night); }
 .home-founder .portrait { border: 1px solid var(--night-line); }
 @media (max-width: 860px) {
@@ -599,47 +599,26 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   @keyframes drop { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
   @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 }
-/* ---------- generic use case (replaces the four solution pages) ---------- */
-/* The five steps as a connected track; hexagon numerals echo the brand mark. The last step is the human decision. */
-.usecase-flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px); counter-reset: none; }
-.usecase-flow li { position: relative; display: grid; grid-template-rows: auto 1fr; gap: 16px; }
-.usecase-flow li:not(:last-child)::after { content: ''; position: absolute; top: 21px; inset-inline-start: 54px; inset-inline-end: calc(-1 * clamp(16px, 2vw, 28px) + 6px); height: 2px; background: var(--flow-h); border-radius: 2px; }
-.usecase-n { display: grid; place-items: center; width: 46px; aspect-ratio: 1.14; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: var(--accent-tint); color: var(--accent-deep); font-size: .78rem; font-weight: 600; letter-spacing: .06em; }
-.usecase-flow li:last-child .usecase-n { background: var(--human-tint); color: var(--human-ink); }
-.usecase-flow h3 { margin: 0 0 .4em; font-size: clamp(1.05rem, 1.5vw, 1.2rem); }
-.usecase-flow p { margin: 0; color: var(--ink-2); font-size: .96rem; line-height: 1.55; }
+/* ---------- generic use case: the pipeline diagram, then where the effort goes ---------- */
+.usecase-diagram .section-head { max-width: 800px; }
+.savings-head, .savings li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, .85fr); gap: clamp(18px, 3vw, 40px); }
+.savings-head { padding-bottom: 12px; border-bottom: 1px solid var(--ink-2); color: var(--accent-deep); font-size: .78rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+[lang='he'] .savings-head { letter-spacing: .02em; font-size: .86rem; }
+.savings { list-style: none; margin: 0; padding: 0; }
+.savings li { padding-block: 18px 20px; border-bottom: 1px solid var(--rule-2); align-items: baseline; }
+.savings p { margin: 0; line-height: 1.5; }
+.sv-before { color: var(--muted); }
+.sv-after { color: var(--ink); font-weight: 500; }
+.sv-saves { color: var(--accent-deep); font-weight: 600; }
+.sv-l { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.savings-total { margin: 26px 0 0; max-width: 62ch; color: var(--ink-2); padding-inline-start: 16px; border-inline-start: 4px solid var(--pollen); }
 
-.usecase-shift { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 5vw, 72px); }
-.usecase-shift article { border-top: 4px solid var(--rule-2); padding-top: clamp(22px, 3vw, 32px); }
-.usecase-shift article:last-child { border-top-color: var(--pollen); }
-.usecase-shift h2 { margin: .4em 0 .7em; font-size: clamp(1.6rem, 2.8vw, 2.2rem); max-width: 18ch; }
-.usecase-shift .ticks { margin: 0; }
-.usecase-shift article:first-child .ticks li { color: var(--ink-2); }
-
-.usecase-measures { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--rule-2); }
-.usecase-measures article { padding-block: 20px 22px; border-bottom: 1px solid var(--rule-2); }
-.usecase-measures article:nth-child(odd) { padding-inline-end: 24px; border-inline-end: 1px solid var(--rule-2); }
-.usecase-measures article:nth-child(even) { padding-inline-start: 24px; }
-.usecase-measures h3 { margin: 0 0 .35em; font-size: 1.08rem; }
-.usecase-measures p { margin: 0; color: var(--ink-2); line-height: 1.5; }
-
-/* home: preview of the use case beside the outcomes */
-.home-usecase { background: var(--sheet); border-top: 4px solid var(--pollen); padding: clamp(26px, 3.4vw, 40px); border-radius: 0 0 var(--r-sheet) var(--r-sheet); }
-.home-usecase h2 { margin: .35em 0 .45em; }
-.home-usecase > p { color: var(--ink-2); max-width: 44ch; }
-.home-usecase ol { list-style: none; margin: 22px 0 26px; padding: 0; border-bottom: 1px solid var(--rule); }
-.home-usecase li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; align-items: baseline; padding-block: 12px; border-top: 1px solid var(--rule); }
-.home-usecase li > span { color: var(--accent-deep); font-size: .72rem; font-weight: 600; letter-spacing: .1em; }
-.home-usecase li strong { font-weight: 600; }
 
 @media (max-width: 899px) {
-  .usecase-flow { grid-template-columns: 1fr; gap: 0; }
-  .usecase-flow li { grid-template-columns: 46px minmax(0, 1fr); grid-template-rows: none; gap: 18px; padding-bottom: 26px; }
-  .usecase-flow li:not(:last-child)::after { top: 48px; bottom: 4px; inset-inline-start: 22px; inset-inline-end: auto; width: 2px; height: auto; background: var(--flow-v); }
-  .usecase-shift, .usecase-measures { grid-template-columns: 1fr; }
-  .usecase-measures article:nth-child(odd) { padding-inline-end: 0; border-inline-end: 0; }
-  .usecase-measures article:nth-child(even) { padding-inline-start: 0; }
-  .home-usecase { padding: 28px 24px; }
+  .savings-head { display: none; }
+  .savings li { grid-template-columns: 1fr; gap: 6px; }
+  .sv-l { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; display: block; color: var(--muted); font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+  [lang='he'] .sv-l { letter-spacing: .02em; font-size: .8rem; }
 }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }

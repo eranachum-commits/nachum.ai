@@ -69,8 +69,10 @@ await t('generic use case replaces the solution pages', () => {
   for (const lang of langs) { const c = lang === 'he' ? he : en;
     const page = pages[href(lang, 'usecase')];
     assert.ok(page, 'use case page ' + lang);
-    assert.equal(c.usecase.steps.length, 5);
-    for (const s of c.usecase.steps) assert.ok(page.includes(s.h), 'step ' + s.h);
+    assert.equal(c.usecase.savings.items.length, 5);
+    for (const s of c.usecase.savings.items) assert.ok(page.includes(s.saves), 'saving ' + s.saves);
+    assert.equal((page.match(/<li><p class="sv-before">/g) || []).length, 5, 'five savings rows ' + lang);
+    assert.doesNotMatch(pages[href(lang, 'home')], /data-pipeline/, 'pipeline moved off home ' + lang);
     assert.ok(pages[href(lang, 'home')].includes(`href="${href(lang, 'usecase')}"`), 'home links to use case ' + lang);
   }
   for (const [u, html] of Object.entries(pages)) assert.doesNotMatch(html, /href="(\/en)?\/solutions\//, 'link to removed solution page on ' + u);
@@ -81,14 +83,14 @@ await t('illustrative content is labelled; no invented proof', () => {
 });
 await t('pipeline renders eight nodes and mirrors its Hebrew geometry', () => {
   const figures = {};
-  for (const url of ['/', '/en']) {
+  for (const url of ['/business-use-case', '/en/business-use-case']) {
     assert.match(pages[url], /data-pipeline/, url);
     figures[url] = pages[url].match(/<figure class="pipeline tool"[\s\S]*?<\/figure>/)?.[0];
     assert.ok(figures[url], 'pipeline figure on ' + url);
     assert.equal((figures[url].match(/class="pl-node\b/g) || []).length, 8, 'eight pipeline nodes on ' + url);
   }
   const reqX = (html) => Number(html.match(/data-node="req"[^>]*data-before="([\d.]+),/)[1]);
-  assert.ok(reqX(figures['/']) > reqX(figures['/en']), 'Hebrew request starts farther right');
+  assert.ok(reqX(figures['/business-use-case']) > reqX(figures['/en/business-use-case']), 'Hebrew request starts farther right');
 });
 await t('sitemap and robots', async () => {
   const sm = (await get('/sitemap.xml')).text; assert.equal((sm.match(/<url>/g) || []).length, (routes.length - 1) * 2);
