@@ -2,3 +2,6 @@ dist/
 data/
 .env
 node_modules/
+.vercel
+.env*
+!.env.example

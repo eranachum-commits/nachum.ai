@@ -18,7 +18,7 @@ export default {
     adoption: { t: 'AI adoption', d: 'Tools bought, work unchanged' },
   },
   footer: {
-    tag: 'A senior business-and-technology partner for established companies.',
+    tag: 'A hands-on AI solutions partner for established companies, led by a senior technology executive.',
     cols: { site: 'The firm', solutions: 'Solutions', legal: 'Legal' },
     privacy: 'Privacy policy', security: 'Data & security', contact: 'Contact',
     note: 'Illustrative examples on this site use sample data. Prices are indicative and subject to a written proposal.',
@@ -30,12 +30,12 @@ export default {
   },
 
   home: {
-    meta: { title: 'NACHUM.AI — Business Transformation. Powered by AI.', desc: 'A senior business-and-technology partner helping established companies work smarter with AI and automation: proof on your real work first, then production, adoption and measured results.' },
+    meta: { title: 'NACHUM.AI — AI solutions for established businesses', desc: 'Hands-on AI solutions for established companies, led by a senior technology executive: proof on your real work first, then production, adoption and measured results.' },
     hero: {
-      eyebrow: 'NACHUM.AI · Senior Business & Technology Partner',
-      h1: 'Your business can work a lot smarter.',
-      sub: 'Less manual work. Faster operations. More room to grow—without growing headcount at the same pace.',
-      body: 'We find where operations lose time and money, demonstrate an improvement on real work, and take responsibility for bringing it into everyday use—with measurable results.',
+      eyebrow: 'Senior business & technology partner',
+      h1: 'AI solutions that do real work inside your business.',
+      sub: 'Quotes, orders, customer requests and reports, handled faster by AI and approved by your people. More capacity, without growing headcount at the same pace.',
+      body: 'We find where operations lose time and money, prove an AI solution on your real work, and stay accountable until it runs in daily use, with measured results.',
       trust: 'Executive Experience. Hands-On Execution. Measurable Results.',
       proof: 'See it working on your business before you commit to a broad program.',
     },
@@ -81,7 +81,7 @@ export default {
       eyebrow: 'How it works', title: 'From bottleneck to measured result',
       intro: 'One path, four stages. You decide at each stage whether to continue.',
       steps: [
-        { h: 'See', p: 'A free, qualified working session: 20 minutes to screen the fit, 45 minutes to see a safe demonstration, and a one-page Business Impact Memo.' },
+        { h: 'Observe', p: 'A free, qualified working session: 20 minutes to screen the fit, 45 minutes to see a safe demonstration, and a one-page Business Impact Memo.' },
         { h: 'Prove', p: 'A paid Proof of Value Sprint tests one improvement on your approved real examples against criteria we agree in writing first.' },
         { h: 'Embed', p: 'A 90-day program takes the proven improvement into daily use: integration, process change, human checks, training and owners.' },
         { h: 'Expand', p: 'Ongoing monitoring, incremental improvements and a monthly scorecard, with senior technology leadership on call.' },
@@ -107,7 +107,7 @@ export default {
     eyebrow: 'Offers and indicative prices', title: 'A low-risk path from proof to production',
     intro: 'One journey, not a menu. Prices are indicative starting points and the final proposal depends on scope.',
     items: [
-      { stage: 'Stage 1 · See', h: 'Qualified Working Session', price: 'Free', unit: '20 + 45 minutes + 1-page memo',
+      { stage: 'Stage 1 · Observe', h: 'Qualified Working Session', price: 'Free', unit: '20 + 45 minutes + 1-page memo',
         p: 'A 20-minute screening, a 45-minute safe working demonstration and a one-page Business Impact Memo.',
         guard: 'No bespoke build. No production connection. Anonymized or safe examples only.' },
       { stage: 'Stage 2 · Prove', h: 'Proof of Value Sprint', price: '₪18–28K', unit: '10–15 working days · excl. VAT', hl: true,
@@ -129,7 +129,7 @@ export default {
 
   explorer: {
     toggle: { before: 'Before', after: 'With NACHUM.AI' },
-    labels: { total: 'Illustrative handling time per request', human: 'Human checkpoint', disclaimer: 'Illustrative scenario with example times. Real results depend on your volumes, systems and data, and are measured in the Sprint.', aria: 'Show process' },
+    labels: { total: 'Illustrative handling time per request', human: 'Human checkpoint', manual: 'Manual work', ai: 'AI-assisted', timeline: 'Handling time, step by step', disclaimer: 'Illustrative scenario with example times. Real results depend on your volumes, systems and data, and are measured in the Sprint.', aria: 'Show process' },
     quotes: {
       title: 'Quote to order',
       steps: [
@@ -217,11 +217,11 @@ export default {
   },
 
   how: {
-    meta: { title: 'How it works — NACHUM.AI', desc: 'See, Prove, Embed, Expand: a low-risk path from a business bottleneck to practical proof, production, adoption and measured results. Indicative prices included.' },
+    meta: { title: 'How it works — NACHUM.AI', desc: 'Observe, Prove, Embed, Expand: a low-risk path from a business bottleneck to practical proof, production, adoption and measured results. Indicative prices included.' },
     h1: 'From bottleneck to measured result, in four stages',
     lede: 'You see value on your own work before you commit to anything large. At each stage you decide whether to continue.',
     stages: [
-      { h: 'See', who: 'Free working session', p: ['In 20 minutes we check whether there is a real, recurring bottleneck, urgency, budget and safe example material.', 'In 45 minutes we show a working demonstration on anonymized or sample data. You leave with a one-page Business Impact Memo: where time is lost, what to try first and what not to automate.'], out: 'A memo and a clear yes or no on the next step.' },
+      { h: 'Observe', who: 'Free working session', p: ['In 20 minutes we check whether there is a real, recurring bottleneck, urgency, budget and safe example material.', 'In 45 minutes we show a working demonstration on anonymized or sample data. You leave with a one-page Business Impact Memo: where time is lost, what to try first and what not to automate.'], out: 'A memo and a clear yes or no on the next step.' },
       { h: 'Prove', who: 'Proof of Value Sprint', p: ['One improvement, tested on your approved real examples over 10–15 working days.', 'Before we begin we agree in writing what success means, typically using a representative sample (often around 30 examples where appropriate), reviewer-approved quality, safe read-only access and before-and-after time and quality measures.'], out: 'Measured results, a production-readiness plan and rollout recommendations.' },
       { h: 'Embed', who: '90-Day Business Improvement Program', p: ['The proven improvement becomes part of how work gets done: integration with your systems, process redesign, human checks, training, named owners and metrics.', 'Scope and outcomes are agreed up front. We do not promise a fixed number of automations.'], out: 'A working, owned and measured process in daily use.' },
       { h: 'Expand', who: 'Run & Expand', p: ['Monitoring, incremental improvements, and senior technology leadership as your needs grow, with an operating scorecard each month.'], out: 'Continuous improvement with visible numbers.' },

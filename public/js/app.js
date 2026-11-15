@@ -45,7 +45,7 @@ $$('[data-explorer]').forEach((ex) => {
     $$('[data-mode-btn]', ex).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.modeBtn === mode)));
     const v = mode === 'before' ? tb : ta;
     total.innerHTML = `<bdi>${v} ${unit}</bdi>`;
-    bar.style.width = Math.round((v / tb) * 100) + '%';
+    if (bar) bar.style.width = Math.round((v / tb) * 100) + '%';
   };
   $$('[data-mode-btn]', ex).forEach((b) => b.addEventListener('click', () => { ex.dataset.touched = ''; set(b.dataset.modeBtn); track('tool_interaction', { tool: ex.dataset.trackId, mode: b.dataset.modeBtn }); }));
   set('before');
@@ -199,6 +199,12 @@ $$('[data-lead-form]').forEach((form) => {
     } finally { btn.disabled = false; btn.innerHTML = label; }
   });
 });
+
+// Diagram connectors flow for a few cycles when they come into view, then rest (WCAG 2.2.2: under 5s).
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } }), { threshold: 0.35 });
+  document.querySelectorAll('.work-order, .track:not(.track--offers), .stage-row').forEach((el) => io.observe(el));
+}
 
 // The approval stamp lands when the work order is actually on screen (matters on phones).
 {

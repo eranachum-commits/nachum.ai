@@ -32,13 +32,13 @@ function header(c, key) {
   <a class="btn btn--primary btn--sm" href="${bookUrl(c)}" data-track="cta_header">${c.ui.book}</a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" data-menu>${c.ui.menu}</button>
 </div>
-<div class="mobile-nav" id="mobile-nav"><div class="container">
+<nav class="mobile-nav" id="mobile-nav" aria-label="${esc(c.ui.main)}"><div class="container">
   <a href="${href(c.lang, 'how')}">${c.nav.how}</a>
   <span class="m-label">${c.nav.solutions}</span><div class="m-sub">${msubs}</div>
   <a href="${href(c.lang, 'about')}">${c.nav.about}</a><a href="${href(c.lang, 'results')}">${c.nav.results}</a><a href="${href(c.lang, 'faq')}">${c.nav.faq}</a>
   <a href="__ALT__" hreflang="${other}" lang="${other}">${c.switchLabel}</a>
   <a class="btn btn--primary" href="${bookUrl(c)}">${c.ui.book}</a>
-</div></div></header>`;
+</div></nav></header>`;
 }
 
 function footer(c) {
@@ -61,7 +61,7 @@ export function layout({ c, key, meta, body, ctx, ld = '' }) {
   const other = c.lang === 'he' ? 'en' : 'he';
   const url = (l) => ctx.site + href(l, key);
   const fontPre = c.lang === 'he'
-    ? ['IBMPlexSansHebrew-400-hebrew', 'IBMPlexSansHebrew-700-hebrew'] : ['IBMPlexSansHebrew-400-latin', 'IBMPlexSansHebrew-700-latin'];
+    ? ['IBMPlexSansHebrew-400-hebrew', 'IBMPlexSansHebrew-300-hebrew'] : ['IBMPlexSansHebrew-400-latin', 'IBMPlexSansHebrew-300-latin'];
   const html = `<!doctype html>
 <html lang="${c.lang}" dir="${c.dir}">
 <head>
@@ -77,7 +77,7 @@ export function layout({ c, key, meta, body, ctx, ld = '' }) {
 <meta property="og:title" content="${esc(meta.title)}"><meta property="og:description" content="${esc(meta.desc)}">
 <meta property="og:url" content="${url(c.lang)}"><meta property="og:locale" content="${c.ogLocale}"><meta property="og:locale:alternate" content="${other === 'he' ? 'he_IL' : 'en_US'}">
 <meta name="twitter:card" content="summary">
-<meta name="theme-color" content="#f1f2ee">
+<meta name="theme-color" content="#e4ebfd">
 ${ctx.noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 ${fontPre.map((f) => `<link rel="preload" href="/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`).join('\n')}
@@ -135,31 +135,44 @@ function explorer(c, id) {
   const e = c.explorer, d = e[id], L = e.labels, m = c.ui.minutes;
   const tb = d.steps.reduce((a, s) => a + s.tb, 0), ta = d.steps.reduce((a, s) => a + s.ta, 0);
   return `<div class="tool" data-explorer data-mode="before" data-tb="${tb}" data-ta="${ta}" data-unit="${esc(m)}" data-track-id="explorer_${id}">
-<div class="tool-head"><h3 style="margin:0">${d.title}</h3>
+<div class="tool-head"><h3>${d.title}</h3>
 <div class="seg" role="group" aria-label="${esc(L.aria)}"><button type="button" aria-pressed="true" data-mode-btn="before">${e.toggle.before}</button><button type="button" aria-pressed="false" data-mode-btn="after">${e.toggle.after}</button></div>${ill(c)}</div>
 <ol class="xsteps">${d.steps.map((s) => `<li class="xstep" data-human="${s.human ? 1 : 0}"><div><h4>${s.h}${s.human ? ` <span class="chip chip--human">${L.human}</span>` : ''}</h4><p class="before">${s.before}</p><p class="after">${s.after}</p></div><span class="t"><span class="before">${bdi(s.tb + ' ' + m)}</span><span class="after">${bdi(s.ta + ' ' + m)}</span></span></li>`).join('')}</ol>
-<div class="totals"><div><span class="muted small">${L.total}</span><br><b data-total aria-live="polite">${bdi(tb + ' ' + m)}</b></div><div class="bar" aria-hidden="true"><i data-bar></i></div></div>
+<div class="totals"><div><span class="muted small">${L.total}</span><br><b data-total aria-live="polite">${bdi(tb + ' ' + m)}</b></div></div>
+${timeline(c, d, tb, ta)}
 <p class="ill-note">${L.disclaimer}</p></div>`;
 }
 
 // Quadrant a dot sits in, using the same labels the chart shows: q = [high impact+feasible, high impact+hard, low impact+feasible, low impact+hard].
 const quadrant = (p, i) => p.q[(i.y >= 50 ? 2 : 0) + (i.x >= 50 ? 0 : 1)];
 
+// Before/after as one diagram: each step is a segment sized by its minutes.
+// Grey = manual work, blue = AI-assisted, apricot = the human checkpoint.
+function timeline(c, d, tb, ta) {
+  const e = c.explorer, L = e.labels, m = c.ui.minutes;
+  const seg = (s, i, t, kind) => `<span class="tl-seg tl-seg--${kind}" style="flex:${t}" title="${esc(s.h)}">${i + 1}</span>`;
+  const row = (cls, label, total, pct, segs) => `<div class="tl-row tl-row--${cls}"><span class="tl-label">${label}</span><div class="tl-track"><div class="tl-bar" style="width:${pct}%">${segs}</div></div><span class="tl-total">${bdi(total + ' ' + m)}</span></div>`;
+  const before = row('before', e.toggle.before, tb, 100, d.steps.map((s, i) => seg(s, i, s.tb, 'manual')).join(''));
+  const after = row('after', e.toggle.after, ta, Math.max(18, Math.round((ta / tb) * 100)), d.steps.map((s, i) => seg(s, i, s.ta, s.human ? 'human' : 'ai')).join(''));
+  return `<figure class="timeline" aria-label="${esc(L.timeline)}: ${esc(e.toggle.before)} ${tb} ${esc(m)}, ${esc(e.toggle.after)} ${ta} ${esc(m)}"><figcaption class="tl-cap">${L.timeline}</figcaption><div aria-hidden="true">${before}${after}</div>
+<ul class="tl-legend" aria-hidden="true"><li><i class="tl-key tl-seg--manual"></i>${L.manual}</li><li><i class="tl-key tl-seg--ai"></i>${L.ai}</li><li><i class="tl-key tl-seg--human"></i>${L.human}</li></ul></figure>`;
+}
+
 function matrix(c, s) {
   const p = s.process;
-  return `<div class="tool"><div class="tool-head"><h3 style="margin:0">${p.title}</h3>${ill(c)}</div>
+  return `<div class="tool"><div class="tool-head"><h3>${p.title}</h3>${ill(c)}</div>
 <div class="matrix" aria-hidden="true">
 <span class="q" style="inset-block-start:0;inset-inline-end:0;text-align:end">${p.q[0]}</span><span class="q" style="inset-block-start:0;inset-inline-start:0">${p.q[1]}</span>
 <span class="q" style="inset-block-end:0;inset-inline-end:0;text-align:end">${p.q[2]}</span><span class="q" style="inset-block-end:0;inset-inline-start:0">${p.q[3]}</span>
 ${p.items.map((i) => `<span class="dot${i.top ? ' top' : ''}${i.no ? ' no' : ''}" style="inset-inline-start:${i.x}%;top:${i.y}%">${i.no ? '×' : i.n}</span>`).join('')}</div>
-<div class="axis" aria-hidden="true"><span>← ${p.xl}</span><span>${p.yl} ↑</span></div>
+<div class="axis" aria-hidden="true"><span>${p.xl} <span class="ax">→</span></span><span>${p.yl} ↑</span></div>
 <ol class="sr-only">${p.items.map((i) => { const v = s.visual.items[i.n - 1]; return `<li>${v.t}: ${quadrant(p, i)}${v.no ? ` (${v.no})` : ''}</li>`; }).join('')}</ol>
 <p class="ill-note">${c.explorer.labels.disclaimer}</p></div>`;
 }
 
 function ladder(c, s) {
   const p = s.process;
-  return `<div class="tool" data-ladder><div class="tool-head"><h3 style="margin:0">${p.title}</h3>${ill(c)}</div>
+  return `<div class="tool" data-ladder><div class="tool-head"><h3>${p.title}</h3>${ill(c)}</div>
 <div class="ladder-tabs" role="tablist" aria-label="${esc(p.title)}">${p.stages.map((st, i) => `<button type="button" role="tab" id="lt-${i}" aria-controls="lp-${i}" aria-selected="${i === 3 ? 'true' : 'false'}" tabindex="${i === 3 ? 0 : -1}">${i + 1}. ${st.l}</button>`).join('')}</div>
 ${p.stages.map((st, i) => `<div class="ladder-panel" role="tabpanel" id="lp-${i}" aria-labelledby="lt-${i}" ${i === 3 ? '' : 'hidden'}><div class="card"><h4>${p.blockL}</h4><p>${st.block}</p></div><div class="card"><h4>${p.fixL}</h4><p>${st.fix}</p></div><div class="card"><h4>${p.kpiL}</h4><p>${st.kpi}</p></div></div>`).join('')}
 <p class="ill-note">${c.explorer.labels.disclaimer}</p></div>`;
@@ -169,7 +182,7 @@ function calculator(c) {
   const k = c.calc, f = k.fields;
   const fld = (n, extra = '') => `<div class="field"><label for="c-${n}">${f[n].l}</label><input id="c-${n}" name="${n}" inputmode="decimal" ${extra} aria-describedby="h-${n} e-${n}"><span class="hint" id="h-${n}">${f[n].h}</span><span class="err" id="e-${n}" role="alert"></span></div>`;
   return `<div class="calc" data-calc data-errs='${json(k.err)}' data-hours="${esc(k.hours)}" data-days="${esc(k.daysU)}" data-tasks="${esc(k.tasksU)}" data-lang="${c.lang === 'he' ? 'he-IL' : 'en-IL'}">
-<form class="tool" novalidate onsubmit="return false"><div class="tool-head"><h3 style="margin:0">${k.title}</h3>${ill(c)}</div>
+<form class="tool" novalidate onsubmit="return false"><div class="tool-head"><h3>${k.title}</h3>${ill(c)}</div>
 ${fld('tasks', 'value="400"')}${fld('minutes', 'value="12"')}
 <div class="field"><label for="c-saved">${f.saved.l}: <b data-saved-out>30%</b></label><input id="c-saved" name="saved" type="range" min="1" max="80" value="30" aria-describedby="h-saved e-saved"><span class="hint" id="h-saved">${f.saved.h}</span><span class="err" id="e-saved" role="alert"></span></div>
 ${fld('rate')}
@@ -228,10 +241,15 @@ ${input('phone', f.phone, { type: 'tel', required: false, auto: 'tel' })}
 }
 
 /* ---------- shared blocks ---------- */
+// The four stages as standing bars that rise with commitment. Stage 1 is free and carries the booking action;
+// paid stages show their duration only (no prices here), with the price wording ("excl. VAT") dropped from the unit.
 function offerCards(c) {
   const o = c.offers;
-  return `<ol class="track track--offers">${o.items.map((x) => `<li class="offer${x.hl ? ' offer--hl' : ''}"><span class="stage">${x.stage}</span><h3>${x.h}</h3><div class="price">${bdi(x.price)}<small>${x.unit}</small></div><p>${x.p}</p><p class="guard">${x.guard}</p></li>`).join('')}</ol>
-<p class="small muted offer-note">${o.note}</p>
+  const duration = (u) => u.split(' · ').filter((part) => !/VAT|מע״מ/.test(part)).join(' · ');
+  const [free, ...paid] = o.items;
+  const freeBar = `<li class="stair stair--free"><span class="stage">${free.stage}</span><p class="free-mark">${free.price}</p><h3>${free.h}</h3><p class="dur">${duration(free.unit)}</p><p>${free.p}</p><p class="guard">${free.guard}</p>${btn(c, c.ui.book, bookUrl(c), 'btn--primary', 'data-track="cta_offers_free"')}</li>`;
+  const bars = paid.map((x, i) => `<li class="stair" style="--step:${i + 1}"><span class="stage">${x.stage}</span><h3>${x.h}</h3><p class="dur">${duration(x.unit)}</p><p>${x.p}</p><p class="guard">${x.guard}</p></li>`).join('');
+  return `<ol class="stairs">${freeBar}${bars}</ol>
 <div class="notice"><strong>${o.guarantee.h}.</strong> ${o.guarantee.p}</div>`;
 }
 const ctaBand = (c, title, p, pain) => section(`<div class="cta-band"><h2>${title}</h2><p class="lede">${p}</p><div class="btn-row">${btn(c, c.ui.book, bookUrl(c, pain), 'btn--primary', 'data-track="cta_band"')}${btn(c, c.ui.seeHow, href(c.lang, 'how'), '')}</div></div>`, 'section--dark');
@@ -244,7 +262,7 @@ pages.home = (c) => {
   const h = c.home, hr = h.hero;
   const body = `
 <section class="hero"><div class="container split">
-  <div class="hero-copy"><h1>${hr.h1}</h1>
+  <div class="hero-copy"><p class="kicker">${hr.eyebrow}</p><h1>${hr.h1}</h1>
   <p class="lede">${hr.sub}</p><p class="hero-body">${hr.body}</p>
   <div class="btn-row">${btn(c, c.ui.book, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, c.ui.seeHow, '#how', '')}</div>
   <p class="trust-line"><strong>${hr.trust}</strong> ${hr.proof}</p></div>

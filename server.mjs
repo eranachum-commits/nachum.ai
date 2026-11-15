@@ -8,7 +8,7 @@ const ADAPTER = process.env.LEAD_ADAPTER || 'dev';
 const WEBHOOK = process.env.LEAD_WEBHOOK_URL || '';
 const SECRET = process.env.LEAD_WEBHOOK_SECRET || '';
 const BOOKING_URL = process.env.BOOKING_URL || '';
-const DATA_DIR = process.env.LEAD_DATA_DIR || 'data';
+const DATA_DIR = process.env.LEAD_DATA_DIR || (process.env.VERCEL ? '/tmp/nachum-leads' : 'data');
 const DIST = join(process.cwd(), 'dist');
 const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain', '.json': 'application/json', '.png': 'image/png', '.ico': 'image/x-icon' };
 const SEC = {
@@ -17,7 +17,7 @@ const SEC = {
   'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'",
 };
 
-if (ADAPTER === 'webhook' && !WEBHOOK) { console.error('LEAD_ADAPTER=webhook requires LEAD_WEBHOOK_URL'); process.exit(1); }
+const MISCONFIGURED = ADAPTER === 'webhook' && !WEBHOOK;
 
 /* ---- lead validation (server-side, authoritative) ---- */
 const ROLE_MAX = 120;
@@ -39,6 +39,7 @@ export function validateLead(b) {
 
 /* ---- delivery adapters ---- */
 async function deliver(lead) {
+  if (MISCONFIGURED) throw new Error('LEAD_ADAPTER=webhook requires LEAD_WEBHOOK_URL');
   if (ADAPTER === 'webhook') {
     const res = await fetch(WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json', ...(SECRET ? { Authorization: `Bearer ${SECRET}` } : {}) }, body: JSON.stringify(lead), signal: AbortSignal.timeout(10000) });
     if (!res.ok) throw new Error('webhook ' + res.status);
@@ -54,7 +55,7 @@ const hits = new Map();
 const limited = (ip) => { const now = Date.now(); const a = (hits.get(ip) || []).filter((t) => now - t < 600000); a.push(now); hits.set(ip, a); return a.length > 5; };
 
 const send = (res, code, body, headers = {}) => { res.writeHead(code, { ...SEC, ...headers }); res.end(body); };
-const sendJson = (res, code, o) => send(res, code, JSON.stringify(o), { 'Content-Type': 'application/json' });
+export const sendJson = (res, code, o) => send(res, code, JSON.stringify(o), { 'Content-Type': 'application/json' });
 
 async function readBody(req, max = 20000) {
   let size = 0; const chunks = [];
@@ -62,9 +63,10 @@ async function readBody(req, max = 20000) {
   return Buffer.concat(chunks).toString('utf8');
 }
 
-async function handleLead(req, res) {
+export async function handleLead(req, res) {
   try {
-    const ip = req.socket.remoteAddress || '';
+    const fwd = process.env.VERCEL ? String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() : '';
+    const ip = fwd || req.socket?.remoteAddress || '';
     let b; try { b = JSON.parse(await readBody(req)); } catch (e) { return sendJson(res, e.code === 413 ? 413 : 400, { ok: false, error: 'bad_request' }); }
     if (b.website) return sendJson(res, 200, { ok: true, mode: 'dev', spam: true }); // honeypot: pretend, store nothing
     const { lead, errors } = validateLead(b);
@@ -105,5 +107,6 @@ export const server = createServer((req, res) => {
   return serveStatic(req, res);
 });
 if (import.meta.url === `file://${process.argv[1]}`) {
+  if (MISCONFIGURED) { console.error('LEAD_ADAPTER=webhook requires LEAD_WEBHOOK_URL'); process.exit(1); }
   server.listen(PORT, () => console.log(`NACHUM.AI site on http://localhost:${PORT}  (lead adapter: ${ADAPTER})`));
 }
