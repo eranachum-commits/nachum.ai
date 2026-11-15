@@ -32,7 +32,8 @@ document.addEventListener('click', (e) => { const a = e.target.closest('[data-tr
   const close = () => { wrap?.classList.remove('open'); sb?.setAttribute('aria-expanded', 'false'); };
   sb?.addEventListener('click', () => { const o = wrap.classList.toggle('open'); sb.setAttribute('aria-expanded', o); });
   document.addEventListener('click', (e) => { if (wrap && !wrap.contains(e.target)) close(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { close(); if (mn?.classList.contains('open')) { mn.classList.remove('open'); mb.setAttribute('aria-expanded', 'false'); mb.focus(); } } });
+  wrap?.addEventListener('focusout', (e) => { if (!wrap.contains(e.relatedTarget)) close(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (wrap?.contains(document.activeElement)) sb.focus(); close(); if (mn?.classList.contains('open')) { mn.classList.remove('open'); mb.setAttribute('aria-expanded', 'false'); mb.focus(); } } });
 })();
 
 /* ---------- before/after explorer ---------- */
@@ -46,19 +47,19 @@ $$('[data-explorer]').forEach((ex) => {
     total.innerHTML = `<bdi>${v} ${unit}</bdi>`;
     bar.style.width = Math.round((v / tb) * 100) + '%';
   };
-  $$('[data-mode-btn]', ex).forEach((b) => b.addEventListener('click', () => { set(b.dataset.modeBtn); track('tool_interaction', { tool: ex.dataset.trackId, mode: b.dataset.modeBtn }); }));
+  $$('[data-mode-btn]', ex).forEach((b) => b.addEventListener('click', () => { ex.dataset.touched = ''; set(b.dataset.modeBtn); track('tool_interaction', { tool: ex.dataset.trackId, mode: b.dataset.modeBtn }); }));
   set('before');
 });
 
 /* ---------- ladder tabs ---------- */
 $$('[data-ladder]').forEach((root) => {
   const tabs = $$('[role=tab]', root);
-  const sel = (i, focus) => tabs.forEach((t, j) => {
+  const sel = (i, focus) => (root.dataset.touched = '', tabs.forEach((t, j) => {
     const on = i === j;
     t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
     $('#' + t.getAttribute('aria-controls')).hidden = !on;
     if (on && focus) t.focus();
-  });
+  }));
   tabs.forEach((t, i) => {
     t.addEventListener('click', () => { sel(i); track('tool_interaction', { tool: 'adoption_ladder', stage: i + 1 }); });
     t.addEventListener('keydown', (e) => {

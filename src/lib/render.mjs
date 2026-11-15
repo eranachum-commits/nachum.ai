@@ -46,9 +46,9 @@ function footer(c) {
   return `<footer class="site-footer"><div class="container">
   <div class="foot-grid">
     <div><a class="logo" href="${href(c.lang, 'home')}"><span class="logo-mark" aria-hidden="true"></span><span>NACHUM<span class="logo-ai">.AI</span></span></a><p>${f.tag}</p></div>
-    <div><h4>${f.cols.site}</h4><ul><li><a href="${href(c.lang, 'how')}">${c.nav.how}</a></li><li><a href="${href(c.lang, 'about')}">${c.nav.about}</a></li><li><a href="${href(c.lang, 'results')}">${c.nav.results}</a></li><li><a href="${href(c.lang, 'faq')}">${c.nav.faq}</a></li><li><a href="${href(c.lang, 'contact')}">${f.contact}</a></li></ul></div>
-    <div><h4>${f.cols.solutions}</h4><ul>${SOLUTION_KEYS.map((k) => `<li><a href="${href(c.lang, k)}">${c.sub[k].t}</a></li>`).join('')}</ul></div>
-    <div><h4>${f.cols.legal}</h4><ul><li><a href="${href(c.lang, 'privacy')}">${f.privacy}</a></li><li><a href="${href(c.lang, 'security')}">${f.security}</a></li></ul></div>
+    <div><h2>${f.cols.site}</h2><ul><li><a href="${href(c.lang, 'how')}">${c.nav.how}</a></li><li><a href="${href(c.lang, 'about')}">${c.nav.about}</a></li><li><a href="${href(c.lang, 'results')}">${c.nav.results}</a></li><li><a href="${href(c.lang, 'faq')}">${c.nav.faq}</a></li><li><a href="${href(c.lang, 'contact')}">${f.contact}</a></li></ul></div>
+    <div><h2>${f.cols.solutions}</h2><ul>${SOLUTION_KEYS.map((k) => `<li><a href="${href(c.lang, k)}">${c.sub[k].t}</a></li>`).join('')}</ul></div>
+    <div><h2>${f.cols.legal}</h2><ul><li><a href="${href(c.lang, 'privacy')}">${f.privacy}</a></li><li><a href="${href(c.lang, 'security')}">${f.security}</a></li></ul></div>
   </div>
   <div class="foot-base"><span>${f.rights}</span><span>${f.note}</span></div>
 </div></footer>
@@ -114,7 +114,7 @@ function isolateNumbers(html) {
 function docStack(c) {
   const d = c.home.doc;
   return `<figure class="doc-stack work-order" aria-label="${esc(d.title)}"><div class="wo-head"><span>${d.title}</span>${ill(c)}</div>
-${d.stages.map((s, i) => `<div class="doc-stage" data-n="${i + 1}"><h4>${s.h} <span class="chip${s.human ? ' chip--human' : ''}">${s.chip}</span></h4><div class="doc-body">${s.rows.map(([k, v]) => `<div class="row"><span>${k}</span><span>${bdi(v)}</span></div>`).join('')}</div>${s.human ? `<span class="stamp" aria-hidden="true"><span>${esc(c.ui.stamp)}</span></span>` : ''}</div>`).join('')}
+${d.stages.map((s, i) => `<div class="doc-stage" data-n="${i + 1}"><p class="stage-h">${s.h} <span class="chip${s.human ? ' chip--human' : ''}">${s.chip}</span></p><div class="doc-body">${s.rows.map(([k, v]) => `<div class="row"><span>${k}</span><span>${bdi(v)}</span></div>`).join('')}</div>${s.human ? `<span class="stamp" aria-hidden="true"><span>${esc(c.ui.stamp)}</span></span>` : ''}</div>`).join('')}
 <figcaption class="ill-note">${d.note}</figcaption></figure>`;
 }
 
@@ -202,7 +202,7 @@ function leadForm(c, { pain = '', extras = [], full = false, id = 'lead', title 
   return `<form class="form-card" data-lead-form id="${id}" novalidate method="post" action="/api/leads" data-lang="${c.lang}"
  data-m-required="${esc(E.required)}" data-m-email="${esc(E.email)}" data-m-consent="${esc(E.consent)}" data-m-fix="${esc(c.ui.fixField)}" data-m-sending="${esc(c.ui.sending)}" data-m-fail="${esc(F.fail)}" data-m-net="${esc(F.failNet)}"
  data-ok-h="${esc(O.h)}" data-ok-p="${esc(O.p)}" data-dev-h="${esc(O.devH)}" data-dev="${esc(O.dev)}" data-book-l="${esc(O.book)}">
-<h3>${title}</h3>
+${full ? `<h2>${title}</h2>` : `<h3>${title}</h3>`}
 <div class="form-grid">
 ${input('name', f.name, { auto: 'name' })}
 ${select('role', f.role, F.roles)}
@@ -320,7 +320,7 @@ pages.faq = (c) => {
 
 pages.security = (c) => {
   const p = c.security;
-  const body = `${pageHero(c, p.h1, p.lede)}${section(`<div class="draft-banner">${p.draftNote}</div><div class="grid g3">${p.items.map((x) => `<article class="card"><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div><div class="btn-row">${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div>`)}`;
+  const body = `${pageHero(c, p.h1, p.lede)}${section(`<div class="draft-banner">${p.draftNote}</div><div class="grid g3">${p.items.map((x) => `<article class="card"><h2 class="as-h3">${x.h}</h2><p>${x.p}</p></article>`).join('')}</div><div class="btn-row">${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div>`)}`;
   return { meta: p.meta, body };
 };
 
