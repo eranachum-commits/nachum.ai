@@ -1,0 +1,14 @@
+{
+  "name": "nachum-ai-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "NACHUM.AI bilingual (HE/EN) corporate site and landing pages. Zero runtime dependencies.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node build.mjs",
+    "start": "node build.mjs && node server.mjs",
+    "serve": "node server.mjs",
+    "test": "node build.mjs && node tests/smoke.mjs"
+  }
+}
