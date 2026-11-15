@@ -3,7 +3,6 @@ import { href, routes } from './routes.mjs';
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const json = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
 const arrow = ''; // buttons say what they do; no decorative arrows
-const SOLUTION_KEYS = ['quotes', 'inbox', 'discovery', 'adoption'];
 
 /* ---------- primitives ---------- */
 export const btn = (c, label, url, cls = 'btn--primary', attrs = '') => `<a class="btn ${cls}" href="${url}" ${attrs}>${label}${arrow}</a>`;
@@ -52,14 +51,12 @@ const transformationFlow = (c) => {
 /* ---------- layout ---------- */
 function header(c, key) {
   const link = (k, label) => `<a href="${href(c.lang, k)}"${key === k ? ' aria-current="page"' : ''}>${label}</a>`;
-  const subs = SOLUTION_KEYS.map((k) => `<a href="${href(c.lang, k)}"${key === k ? ' aria-current="page"' : ''}>${c.sub[k].t}<small>${c.sub[k].d}</small></a>`).join('');
-  const msubs = SOLUTION_KEYS.map((k) => `<a href="${href(c.lang, k)}">${c.sub[k].t}</a>`).join('');
   const other = c.lang === 'he' ? 'en' : 'he';
   return `<header class="site-header"><div class="container header-in">
   <a class="logo" href="${href(c.lang, 'home')}" aria-label="bee &amp; co. — ${esc(c.ui.home)}">${brandLockup(c)}</a>
   <nav class="nav" aria-label="${esc(c.ui.main)}">
     ${link('how', c.nav.how)}
-    <div class="has-sub"><button class="nav-link" type="button" aria-expanded="false" aria-controls="sub-menu" data-sub>${c.nav.solutions}<svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button><div class="sub" id="sub-menu">${subs}</div></div>
+    ${link('usecase', c.nav.usecase)}
     ${link('about', c.nav.about)}${link('results', c.nav.results)}${link('faq', c.nav.faq)}
     <a class="lang-switch" href="__ALT__" hreflang="${other}" lang="${other}" aria-label="${esc(c.switchAria)}">${c.switchLabel}</a>
   </nav>
@@ -68,7 +65,7 @@ function header(c, key) {
 </div>
 <nav class="mobile-nav" id="mobile-nav" aria-label="${esc(c.ui.main)}"><div class="container">
   <a href="${href(c.lang, 'how')}">${c.nav.how}</a>
-  <span class="m-label">${c.nav.solutions}</span><div class="m-sub">${msubs}</div>
+  <a href="${href(c.lang, 'usecase')}">${c.nav.usecase}</a>
   <a href="${href(c.lang, 'about')}">${c.nav.about}</a><a href="${href(c.lang, 'results')}">${c.nav.results}</a><a href="${href(c.lang, 'faq')}">${c.nav.faq}</a>
   <a href="__ALT__" hreflang="${other}" lang="${other}">${c.switchLabel}</a>
   <a class="btn btn--primary" href="${bookUrl(c)}">${c.ui.book}</a>
@@ -81,7 +78,7 @@ function footer(c) {
   <div class="foot-grid">
     <div><a class="logo logo--footer" href="${href(c.lang, 'home')}">${brandLockup(c, true)}</a><p>${f.tag}</p></div>
     <div><h2>${f.cols.site}</h2><ul><li><a href="${href(c.lang, 'how')}">${c.nav.how}</a></li><li><a href="${href(c.lang, 'about')}">${c.nav.about}</a></li><li><a href="${href(c.lang, 'results')}">${c.nav.results}</a></li><li><a href="${href(c.lang, 'faq')}">${c.nav.faq}</a></li><li><a href="${href(c.lang, 'contact')}">${f.contact}</a></li></ul></div>
-    <div><h2>${f.cols.solutions}</h2><ul>${SOLUTION_KEYS.map((k) => `<li><a href="${href(c.lang, k)}">${c.sub[k].t}</a></li>`).join('')}</ul></div>
+    <div><h2>${f.cols.example}</h2><ul><li><a href="${href(c.lang, 'usecase')}">${c.nav.usecase}</a></li></ul></div>
     <div><h2>${f.cols.legal}</h2><ul><li><a href="${href(c.lang, 'privacy')}">${f.privacy}</a></li><li><a href="${href(c.lang, 'security')}">${f.security}</a></li></ul></div>
   </div>
   <div class="foot-base"><span>${f.rights}</span><span>${f.note}</span></div>
@@ -145,37 +142,8 @@ function isolateNumbers(html) {
 }
 
 /* ---------- illustrative visuals ---------- */
-function docStack(c) {
-  const d = c.home.doc;
-  return `<figure class="doc-stack work-order" aria-label="${esc(d.title)}"><div class="wo-head"><span>${d.title}</span>${ill(c)}</div>
-${d.stages.map((s, i) => `<div class="doc-stage" data-n="${i + 1}"><p class="stage-h">${s.h} <span class="chip${s.human ? ' chip--human' : ''}">${s.chip}</span></p><div class="doc-body">${s.rows.map(([k, v]) => `<div class="row"><span>${k}</span><span>${bdi(v)}</span></div>`).join('')}</div>${s.human ? `<span class="stamp" aria-hidden="true"><span>${esc(c.ui.stamp)}</span></span>` : ''}</div>`).join('')}
-<figcaption class="ill-note">${d.note}</figcaption></figure>`;
-}
-
-function landingVisual(c, k) {
-  const s = c.solutions[k];
-  if (s.visual === 'doc') return docStack(c);
-  if (k === 'inbox') {
-    return `<figure class="doc-stack"><div class="msgs">${s.visual.items.map((m) => `<div class="msg"><span><b>${m.who}</b> · ${m.text}</span><span class="chip ${m.tone === 'hot' ? 'chip--hot' : m.tone === 'human' ? 'chip--human' : ''}">${m.chip}</span><small>${m.note}</small></div>`).join('')}</div><figcaption class="ill-note">${ill(c)}</figcaption></figure>`;
-  }
-  if (k === 'discovery') {
-    return `<figure class="doc-stack"><ol class="rank">${s.visual.items.map((it, i) => `<li${it.no ? ' class="no"' : ''}><span class="n">${it.no ? '×' : i + 1}</span><div>${it.t}${it.no ? ` <span class="chip">${it.no}</span>` : ''}<div class="meters"><span>${s.visual.impactL}<i style="--v:${it.impact}%"></i></span><span>${s.visual.feasL}<i style="--v:${it.feas}%"></i></span></div></div></li>`).join('')}</ol><figcaption class="ill-note">${ill(c)}</figcaption></figure>`;
-  }
-  return `<figure class="doc-stack"><div class="usage">${s.visual.items.map((u) => `<div class="u"><div><span>${u.name}</span><span>${bdi(u.pct + '%')}</span></div><div class="b"><i style="--v:${u.pct}%"></i></div></div>`).join('')}</div><figcaption class="ill-note">${ill(c)} ${s.visual.cap}</figcaption></figure>`;
-}
 
 /* ---------- interactive tools ---------- */
-function explorer(c, id) {
-  const e = c.explorer, d = e[id], L = e.labels, m = c.ui.minutes;
-  const tb = d.steps.reduce((a, s) => a + s.tb, 0), ta = d.steps.reduce((a, s) => a + s.ta, 0);
-  return `<div class="tool" data-explorer data-mode="before" data-tb="${tb}" data-ta="${ta}" data-unit="${esc(m)}" data-track-id="explorer_${id}">
-<div class="tool-head"><h3>${d.title}</h3>
-<div class="seg" role="group" aria-label="${esc(L.aria)}"><button type="button" aria-pressed="true" data-mode-btn="before">${e.toggle.before}</button><button type="button" aria-pressed="false" data-mode-btn="after">${e.toggle.after}</button></div>${ill(c)}</div>
-<ol class="xsteps">${d.steps.map((s) => `<li class="xstep" data-human="${s.human ? 1 : 0}"><div><h4>${s.h}${s.human ? ` <span class="chip chip--human">${L.human}</span>` : ''}</h4><p class="before">${s.before}</p><p class="after">${s.after}</p></div><span class="t"><span class="before">${bdi(s.tb + ' ' + m)}</span><span class="after">${bdi(s.ta + ' ' + m)}</span></span></li>`).join('')}</ol>
-<div class="totals"><div><span class="muted small">${L.total}</span><br><b data-total aria-live="polite">${bdi(tb + ' ' + m)}</b></div></div>
-${timeline(c, d, tb, ta)}
-<p class="ill-note">${L.disclaimer}</p></div>`;
-}
 
 function pipeline(c, id) {
   const p = c.pipeline;
@@ -225,40 +193,7 @@ ${nodes}</svg>
 <ol class="sr-only"><li>${p.desc.before}</li><li>${p.desc.after}</li></ol></figure>`;
 }
 
-// Quadrant a dot sits in, using the same labels the chart shows: q = [high impact+feasible, high impact+hard, low impact+feasible, low impact+hard].
-const quadrant = (p, i) => p.q[(i.y >= 50 ? 2 : 0) + (i.x >= 50 ? 0 : 1)];
 
-// Before/after as one diagram: each step is a segment sized by its minutes.
-// Grey = manual work, blue = AI-assisted, apricot = the human checkpoint.
-function timeline(c, d, tb, ta) {
-  const e = c.explorer, L = e.labels, m = c.ui.minutes;
-  const seg = (s, i, t, kind) => `<span class="tl-seg tl-seg--${kind}" style="flex:${t}" title="${esc(s.h)}">${i + 1}</span>`;
-  const row = (cls, label, total, pct, segs) => `<div class="tl-row tl-row--${cls}"><span class="tl-label">${label}</span><div class="tl-track"><div class="tl-bar" style="width:${pct}%">${segs}</div></div><span class="tl-total">${bdi(total + ' ' + m)}</span></div>`;
-  const before = row('before', e.toggle.before, tb, 100, d.steps.map((s, i) => seg(s, i, s.tb, 'manual')).join(''));
-  const after = row('after', e.toggle.after, ta, Math.max(18, Math.round((ta / tb) * 100)), d.steps.map((s, i) => seg(s, i, s.ta, s.human ? 'human' : 'ai')).join(''));
-  return `<figure class="timeline" aria-label="${esc(L.timeline)}: ${esc(e.toggle.before)} ${tb} ${esc(m)}, ${esc(e.toggle.after)} ${ta} ${esc(m)}"><figcaption class="tl-cap">${L.timeline}</figcaption><div aria-hidden="true">${before}${after}</div>
-<ul class="tl-legend" aria-hidden="true"><li><i class="tl-key tl-seg--manual"></i>${L.manual}</li><li><i class="tl-key tl-seg--ai"></i>${L.ai}</li><li><i class="tl-key tl-seg--human"></i>${L.human}</li></ul></figure>`;
-}
-
-function matrix(c, s) {
-  const p = s.process;
-  return `<div class="tool"><div class="tool-head"><h3>${p.title}</h3>${ill(c)}</div>
-<div class="matrix" aria-hidden="true">
-<span class="q" style="inset-block-start:0;inset-inline-end:0;text-align:end">${p.q[0]}</span><span class="q" style="inset-block-start:0;inset-inline-start:0">${p.q[1]}</span>
-<span class="q" style="inset-block-end:0;inset-inline-end:0;text-align:end">${p.q[2]}</span><span class="q" style="inset-block-end:0;inset-inline-start:0">${p.q[3]}</span>
-${p.items.map((i) => `<span class="dot${i.top ? ' top' : ''}${i.no ? ' no' : ''}" style="inset-inline-start:${i.x}%;top:${i.y}%">${i.no ? '×' : i.n}</span>`).join('')}</div>
-<div class="axis" aria-hidden="true"><span>${p.xl} <span class="ax">→</span></span><span>${p.yl} ↑</span></div>
-<ol class="sr-only">${p.items.map((i) => { const v = s.visual.items[i.n - 1]; return `<li>${v.t}: ${quadrant(p, i)}${v.no ? ` (${v.no})` : ''}</li>`; }).join('')}</ol>
-<p class="ill-note">${c.explorer.labels.disclaimer}</p></div>`;
-}
-
-function ladder(c, s) {
-  const p = s.process;
-  return `<div class="tool" data-ladder><div class="tool-head"><h3>${p.title}</h3>${ill(c)}</div>
-<div class="ladder-tabs" role="tablist" aria-label="${esc(p.title)}">${p.stages.map((st, i) => `<button type="button" role="tab" id="lt-${i}" aria-controls="lp-${i}" aria-selected="${i === 3 ? 'true' : 'false'}" tabindex="${i === 3 ? 0 : -1}">${i + 1}. ${st.l}</button>`).join('')}</div>
-${p.stages.map((st, i) => `<div class="ladder-panel" role="tabpanel" id="lp-${i}" aria-labelledby="lt-${i}" ${i === 3 ? '' : 'hidden'}><div class="card"><h4>${p.blockL}</h4><p>${st.block}</p></div><div class="card"><h4>${p.fixL}</h4><p>${st.fix}</p></div><div class="card"><h4>${p.kpiL}</h4><p>${st.kpi}</p></div></div>`).join('')}
-<p class="ill-note">${c.explorer.labels.disclaimer}</p></div>`;
-}
 
 function calculator(c) {
   const k = c.calc, f = k.fields;
@@ -342,10 +277,9 @@ const pages = {};
 
 pages.home = (c) => {
   const h = c.home, hr = h.hero;
-  const go = c.dir === 'rtl' ? '←' : '→';
   const outcomePicks = [h.outcomes.items[0], h.outcomes.items[3], h.outcomes.items[5]];
   const proofSignals = [h.founder.signals[0], h.founder.signals[2], h.founder.signals[5]];
-  const starts = SOLUTION_KEYS.map((k, i) => `<a href="${href(c.lang, k)}"><span class="start-n" aria-hidden="true">0${i + 1}</span><span><strong>${c.sub[k].t}</strong><small>${c.sub[k].d}</small></span><span class="start-go" aria-hidden="true">${go}</span></a>`).join('');
+  const usecase = c.usecase;
   const body = `
 <section class="hero"><div class="container hero-stage">
   <div class="hero-copy"><p class="brand-positioning"><span>${hr.eyebrow}</span><span>${founderLine(c)}</span></p><h1>${hr.h1}</h1>
@@ -355,7 +289,7 @@ pages.home = (c) => {
 </div></section>
 ${section(`<div class="delivery-layout"><div><span class="eyebrow">${h.delivery.eyebrow}</span><h2 id="delivery-title">${h.delivery.title}</h2><p class="lede">${h.delivery.intro}</p></div><ol class="delivery-list">${h.delivery.items.map((x, i) => `<li><span aria-hidden="true">0${i + 1}</span><p>${x}</p></li>`).join('')}</ol></div>`, 'home-delivery', 'deliver', 'delivery-title')}
 ${section(`${head(h.sales.eyebrow, h.sales.title, h.sales.intro, 'o')}${offerCards(c, h.sales.cta)}<div class="home-offer-link">${btn(c, c.nav.how, href(c.lang, 'how'), '')}</div>`, 'section--tint home-offers', 'offers', 'o')}
-${section(`<div class="home-focus-grid"><div><span class="eyebrow">${h.outcomes.eyebrow}</span><h2 id="focus-title">${h.outcomes.title}</h2><p class="lede">${h.outcomes.intro}</p><div class="outcome-short">${outcomePicks.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div></div><div class="home-starts"><span class="eyebrow">${h.starts.eyebrow}</span><h2>${h.starts.title}</h2><p>${h.starts.intro}</p><nav aria-label="${esc(h.starts.title)}">${starts}</nav></div></div>`, 'home-focus', 'work', 'focus-title')}
+${section(`<div class="home-focus-grid"><div><span class="eyebrow">${h.outcomes.eyebrow}</span><h2 id="focus-title">${h.outcomes.title}</h2><p class="lede">${h.outcomes.intro}</p><div class="outcome-short">${outcomePicks.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div></div><div class="home-usecase"><span class="eyebrow">${usecase.preview.eyebrow}</span><h2>${usecase.preview.title}</h2><p>${usecase.preview.intro}</p><ol>${usecase.steps.map((x, i) => `<li><span aria-hidden="true">0${i + 1}</span><strong>${x.h}</strong></li>`).join('')}</ol>${btn(c, usecase.preview.cta, href(c.lang, 'usecase'), '')}</div></div>`, 'home-focus', 'work', 'focus-title')}
 ${section(`${head('', c.pipeline.title, c.pipeline.intro, 'pipeline-title')}${pipeline(c, 'pipeline-home')}`, 'section--tint home-example', 'pipeline-s', 'pipeline-title')}
 ${section(`<div class="split split--even">${founderPanel(c)}<div><span class="eyebrow">${h.founder.eyebrow}</span><h2>${h.founder.title}</h2><p class="lede">${h.founder.p}</p>${ticks(proofSignals)}<div class="btn-row">${btn(c, h.founder.link, href(c.lang, 'about'), '')}${btn(c, h.safe.link, href(c.lang, 'security'), '')}</div></div></div>`, 'section--dark home-founder', 'founder')}
 ${ctaBand(c, h.cta.title, h.cta.p)}`;
@@ -363,29 +297,16 @@ ${ctaBand(c, h.cta.title, h.cta.p)}`;
   return { meta: h.meta, body, ld };
 };
 
-function landing(k) {
-  return (c) => {
-    const s = c.solutions[k];
-    const proc = k === 'quotes' || k === 'inbox' ? explorer(c, k) : k === 'discovery' ? matrix(c, s) : ladder(c, s);
-    const others = SOLUTION_KEYS.filter((x) => x !== k);
-    const body = `
-<section class="hero hero--landing"><div class="container split">
-  <div><p class="page-kicker"><span>${brandDescriptor(c)}</span><span>${founderLine(c)}</span></p><nav class="crumbs" aria-label="Breadcrumb"><a href="${href(c.lang, 'home')}">${c.ui.backHome}</a> <span aria-hidden="true">/</span> ${s.eyebrow}</nav>
-  <h1>${s.h1}</h1><p class="lede">${s.sub}</p>
-  <div class="btn-row">${btn(c, s.cta, '#book', 'btn--primary', `data-track="cta_landing_${k}"`)}</div>
-  <p class="trust-line"><strong>${c.home.hero.trust}</strong></p></div>
-  <div class="hero-visual">${landingVisual(c, k)}</div>
-</div></section>
-${section(`<div class="split split--even"><div><h2 id="pb">${s.problem.title}</h2><p class="lede">${s.problem.p}</p></div><div class="card">${ticks(s.problem.list)}</div></div>`, 'section--tint', 'problem', 'pb')}
-${section(`${head(s.process.eyebrow, s.process.title, s.process.intro, 'pr')}${proc}`, '', 'process', 'pr')}
-${section(`<div class="grid g2"><div class="card"><h3>${s.bring.title}</h3>${ticks(s.bring.items)}</div><div class="card"><h3>${s.kpi.title}</h3>${ticks(s.kpi.items)}</div></div>`, 'section--dark')}
-${section(`${head(c.faq.eyebrow, c.faq.title, '', 'f')}${faqList(s.faq)}`, '', 'faq', 'f')}
-${section(`<div class="split split--even"><div><h2>${s.cta}</h2><p class="lede">${c.contact.lede}</p>${ticks(c.contact.next.steps)}</div>${leadForm(c, { pain: k, extras: s.form.fields, id: 'lead', title: s.form.title })}</div>`, 'section--tint', 'book')}
-${section(`<h2 class="h-sm">${c.ui.otherSolutions}</h2><div class="grid g3 xnav">${others.map((o) => `<a class="card" href="${href(c.lang, o)}"><h3>${c.sub[o].t}</h3><p>${c.solutions[o].cardLine}</p><span class="go">${c.ui.learnMore}${arrow}</span></a>`).join('')}</div><div class="btn-row">${btn(c, c.ui.backHome, href(c.lang, 'home'), '')}</div>`)}`;
-    return { meta: s.meta, body, ld: faqLd(s.faq) };
-  };
-}
-SOLUTION_KEYS.forEach((k) => (pages[k] = landing(k)));
+pages.usecase = (c) => {
+  const p = c.usecase;
+  const flow = `<ol class="usecase-flow">${p.steps.map((x, i) => `<li><span class="usecase-n" aria-hidden="true">0${i + 1}</span><div><h3>${x.h}</h3><p>${x.p}</p></div></li>`).join('')}</ol>`;
+  const body = `${pageHero(c, p.h1, p.lede)}
+${section(`${head(p.eyebrow, p.flowTitle, p.flowIntro, 'usecase-flow-title')}${flow}`, 'usecase-process', 'usecase-flow', 'usecase-flow-title')}
+${section(`<div class="usecase-shift"><article><span class="eyebrow">${p.before.eyebrow}</span><h2>${p.before.title}</h2>${ticks(p.before.items)}</article><article><span class="eyebrow">${p.after.eyebrow}</span><h2>${p.after.title}</h2>${ticks(p.after.items)}</article></div>`, 'section--tint')}
+${section(`<div class="split split--even"><div><span class="eyebrow">${p.measure.eyebrow}</span><h2>${p.measure.title}</h2><p class="lede">${p.measure.intro}</p></div><div class="usecase-measures">${p.measure.items.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div></div>`)}
+${ctaBand(c, p.cta.title, p.cta.p, 'usecase')}`;
+  return { meta: p.meta, body };
+};
 
 pages.how = (c) => {
   const p = c.how;

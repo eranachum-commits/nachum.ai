@@ -104,6 +104,9 @@ export const server = createServer((req, res) => {
     return handleLead(req, res);
   }
   if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, 'Method not allowed');
+  // The four solution pages were replaced by one generic use case (same rule as vercel.json)
+  const old = /^\/(en\/)?solutions(\/|$)/.exec(req.url);
+  if (old) return send(res, 301, '', { Location: (old[1] ? '/en' : '') + '/business-use-case' });
   return serveStatic(req, res);
 });
 if (import.meta.url === `file://${process.argv[1]}`) {

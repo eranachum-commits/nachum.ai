@@ -5,21 +5,14 @@ export default {
   brand: 'bee & co.',
   descriptor: 'Business Transformation. Powered by AI.',
   ui: {
-    skip: 'Skip to content', stamp: 'Approved', menu: 'Menu', close: 'Close', book: 'Book a working session', seeHow: 'See how it works',
-    illustrative: 'Illustrative', home: 'Home', solutions: 'Solutions', otherSolutions: 'Other places we start', backHome: 'Back to bee & co.',
-    indicative: 'Indicative price, excl. VAT', learnMore: 'Learn more', minutes: 'min', send: 'Send request', sending: 'Sending…',
+    skip: 'Skip to content', menu: 'Menu', close: 'Close', book: 'Book a working session', seeHow: 'See how it works',
+    illustrative: 'Illustrative', home: 'Home',     indicative: 'Indicative price, excl. VAT', send: 'Send request', sending: 'Sending…',
     required: 'Required', fixField: 'Please check the highlighted fields.', main: 'Main navigation',
   },
-  nav: { how: 'How it works', solutions: 'Solutions', about: 'About', results: 'Results & measurement', faq: 'FAQ' },
-  sub: {
-    quotes: { t: 'Quotes & orders', d: 'Faster quotes, no retyping' },
-    inbox: { t: 'Customer inbox', d: 'Fewer messages lost' },
-    discovery: { t: 'Opportunity discovery', d: 'Where time and money leak' },
-    adoption: { t: 'AI adoption', d: 'Tools bought, work unchanged' },
-  },
+  nav: { how: 'How it works', usecase: 'Use case', about: 'About', results: 'Results & measurement', faq: 'FAQ' },
   footer: {
     tag: 'A hands-on AI solutions partner for established companies, led by a senior technology executive.',
-    cols: { site: 'The firm', solutions: 'Solutions', legal: 'Legal' },
+    cols: { site: 'The firm', example: 'Example', legal: 'Legal' },
     privacy: 'Privacy policy', security: 'Data & security', contact: 'Contact',
     note: 'Illustrative examples on this site use sample data. Prices are indicative and subject to a written proposal.',
     rights: '© 2026 bee & co.',
@@ -46,11 +39,6 @@ export default {
       cta: 'Book the free working session',
       secondary: 'What we deliver',
       cardLabel: 'Your first step with bee & co.',
-    },
-    starts: {
-      eyebrow: 'Where we start',
-      title: 'Choose the work that is already costing time.',
-      intro: 'Start with one concrete operating problem—not a broad AI program.',
     },
     delivery: {
       eyebrow: 'What you get',
@@ -161,8 +149,8 @@ export default {
     eyebrow: 'Offers and indicative prices', title: 'A low-risk path from proof to production',
     intro: 'One journey, not a menu. Prices are indicative starting points and the final proposal depends on scope.',
     items: [
-      { stage: 'Stage 1 · Observe', h: 'Qualified Working Session', price: 'Free', unit: '20 + 45 minutes + 1-page memo',
-        p: 'A 20-minute screening, a 45-minute safe working demonstration and a one-page Business Impact Memo.',
+      { stage: 'Stage 1 · Observe', h: 'Qualified Working Session', price: 'Free', unit: 'Working session and a one-page memo',
+        p: 'A short fit check, a safe demonstration on the kind of work you do, and a one-page Business Impact Memo with a clear next step.',
         guard: 'No bespoke build. No production connection. Anonymized or safe examples only.' },
       { stage: 'Stage 2 · Prove', h: 'Proof of Value Sprint', price: '₪18–28K', unit: '10–15 working days · excl. VAT', hl: true,
         p: 'One relevant improvement tested on your approved real examples, with written acceptance criteria and rollout recommendations.',
@@ -181,30 +169,6 @@ export default {
     },
   },
 
-  explorer: {
-    toggle: { before: 'Before', after: 'With bee & co.' },
-    labels: { total: 'Illustrative handling time per request', human: 'Human checkpoint', manual: 'Manual work', ai: 'AI-assisted', timeline: 'Handling time, step by step', disclaimer: 'Illustrative scenario with example times. Real results depend on your volumes, systems and data, and are measured in the Sprint.', aria: 'Show process' },
-    quotes: {
-      title: 'Quote to order',
-      steps: [
-        { h: 'Request arrives', before: 'Someone reads the email, finds the customer and works out what is being asked.', after: 'The request is classified and items, quantities and customer are extracted.', tb: 6, ta: 1 },
-        { h: 'Find the right price', before: 'Search the price list, old quotes and a shared spreadsheet.', after: 'Approved prices and terms are pulled from your own price list.', tb: 8, ta: 2 },
-        { h: 'Prepare the quote', before: 'Type the quote into a document or the ERP, line by line.', after: 'A draft quote is prepared in your format.', tb: 10, ta: 1 },
-        { h: 'Review', before: 'A manager checks it when there is time. Exceptions are easy to miss.', after: 'A sales rep reviews flagged exceptions and approves. Nothing goes out unreviewed.', tb: 4, ta: 3, human: true },
-        { h: 'Hand off', before: 'Retype into the ERP and send by email.', after: 'The approved quote is handed to your existing system.', tb: 6, ta: 1 },
-      ],
-    },
-    inbox: {
-      title: 'Customer message to answer',
-      steps: [
-        { h: 'Message arrives', before: 'Email, WhatsApp and web forms are read in whatever order they were noticed.', after: 'Messages from every channel land in one queue.', tb: 3, ta: 1 },
-        { h: 'Triage', before: 'Someone decides what is urgent, by reading everything.', after: 'Each message is classified by topic and urgency with a short reason.', tb: 5, ta: 1 },
-        { h: 'Find context', before: 'Search past conversations, orders and notes.', after: 'The customer history and relevant policy are attached.', tb: 7, ta: 1 },
-        { h: 'Reply', before: 'Write the reply from scratch, again.', after: 'A suggested reply is drafted. The agent edits and approves it.', tb: 8, ta: 3, human: true },
-        { h: 'Escalate or assign', before: 'Forward to a colleague and hope they see it.', after: 'Anything sensitive or unclear is assigned to a named owner with a due time.', tb: 3, ta: 1, human: true },
-      ],
-    },
-  },
 
   calc: {
     eyebrow: 'Capacity scenario', title: 'What could freed-up time look like?',
@@ -245,10 +209,10 @@ export default {
       { q: 'Would your team accept a person reviewing the output before it goes out?', o: [['Yes, that is how we would want it', 2], ['Probably', 1], ['We want full automation', 0]] },
     ],
     res: {
-      orders: { h: 'Start with quotes and orders', p: 'Your answers point to repetitive quote and order handling. It is a strong first Sprint candidate.', href: 'quotes', cta: 'See the quotes and orders page' },
-      inbox: { h: 'Start with the customer inbox', p: 'Your answers point to high-volume messages that need triage and consistent replies.', href: 'inbox', cta: 'See the customer inbox page' },
+      orders: { h: 'Start with quotes and orders', p: 'Your answers point to repetitive quote and order handling. It is a strong first Sprint candidate.', href: 'usecase', cta: 'See a typical use case' },
+      inbox: { h: 'Start with the customer inbox', p: 'Your answers point to high-volume messages that need triage and consistent replies.', href: 'usecase', cta: 'See a typical use case' },
       docs: { h: 'Start with documents and reporting', p: 'Document-heavy checking and reporting looks like your best fit. A working session is the fastest way to scope it.', href: 'contact', cta: 'Book a working session' },
-      notready: { h: 'Not ready yet, and that is useful to know', p: 'Automating a process nobody owns, or without volume or examples, is rarely worth it. Pick one repeating process, write down how long it takes this month, then come back. Or start with the opportunity discovery page.', href: 'discovery', cta: 'Find where you lose time and money' },
+      notready: { h: 'Not ready yet, and that is useful to know', p: 'Automating a process nobody owns, or without volume or examples, is rarely worth it. Pick one repeating process, write down how long it takes this month, then come back. Or see how a typical first use case works.', href: 'usecase', cta: 'See a typical use case' },
     },
     optional: 'Want to talk it through? Optional, and your answers stay in your browser unless you choose to send them.',
   },
@@ -256,7 +220,7 @@ export default {
   faq: {
     eyebrow: 'Questions owners ask', title: 'Straight answers',
     items: [
-      { q: 'Is the working session really free?', a: 'Yes, for qualified companies: a 20-minute screening, a 45-minute safe demonstration and a one-page Business Impact Memo. It is not a free custom build, and it never touches production systems. Free sessions are limited each week, so we ask a few questions first.' },
+      { q: 'Is the working session really free?', a: 'Yes, for qualified companies: a short fit check, a safe demonstration and a one-page Business Impact Memo. It is not a free custom build, and it never touches production systems. Free sessions are limited each week, so we ask a few questions first.' },
       { q: 'How is a Proof of Value Sprint priced?', a: 'By scope. You receive a written proposal before anything starts. A Sprint runs 10–15 working days; 50% is invoiced upfront and 50% on acceptance.' },
       { q: 'What if the Sprint does not deliver?', a: 'We agree written acceptance criteria before work begins. If those are missed for reasons within our control, the second 50% payment may be waived. The exact terms are defined in the agreement.' },
       { q: 'Does this replace my employees?', a: 'No. The aim is for the same team to handle more work and spend more time on judgment and customers. Freed hours are capacity, not automatically cash savings.' },
@@ -270,12 +234,41 @@ export default {
     ],
   },
 
+  usecase: {
+    meta: { title: 'A typical use case: from request to reply — bee & co.', desc: 'How an AI solution handles one recurring business request, from the inbox to an approved reply: what changes, what stays human, and what we measure.' },
+    h1: 'One recurring request, from inbox to reply',
+    lede: 'Most established businesses run the same loop hundreds of times a month: a request arrives, someone finds the information, prepares a response, gets it checked and sends it. Quotes, orders, customer questions and documents all follow this pattern.',
+    eyebrow: 'The use case',
+    flowTitle: 'How the request moves once AI does the routine work',
+    flowIntro: 'The same five steps you run today. The difference is who does each one, and how much waiting sits between them.',
+    steps: [
+      { h: 'The request arrives', p: 'An email, form or message lands in the shared inbox and is read on arrival, not when someone gets to it.' },
+      { h: 'AI understands it', p: 'The AI classifies the request and extracts the customer, items, quantities and deadlines.' },
+      { h: 'AI gathers the facts', p: 'Prices, terms, stock or history come straight from your own systems and approved rules. Nothing is invented.' },
+      { h: 'AI prepares the response', p: 'A draft reply, quote or record is prepared in your format and synced to your ERP or CRM.' },
+      { h: 'A person approves', p: 'Routine cases flow through; exceptions and anything sensitive wait for a person. Nothing that matters goes out unreviewed.' },
+    ],
+    preview: { eyebrow: 'A typical use case', title: 'One request, from inbox to reply.', intro: 'Quotes, orders, customer questions and documents follow the same loop. Here is how it runs once AI does the routine work.', cta: 'See the use case' },
+    before: { eyebrow: 'Before', title: 'People carry the request by hand', items: ['It waits in a shared inbox until someone is free', 'Information is copied between spreadsheets, email and the ERP', 'A manager reviews when time allows, and errors loop back', 'Replies go out days later, and more volume means more hiring'] },
+    after: { eyebrow: 'With an AI solution', title: 'AI does the routine, people decide', items: ['Every request is read and sorted on arrival', 'Data flows between your systems without retyping', 'People review exceptions only, at one clear checkpoint', 'Replies go out sooner, and the same team handles more'] },
+    measure: {
+      eyebrow: 'What we measure', title: 'Proof in your numbers, not ours',
+      intro: 'Before anything changes we measure the current process, then compare like for like on your real work.',
+      items: [
+        { h: 'Handling time', p: 'Minutes of human work per request, before and after.' },
+        { h: 'Response time', p: 'Time from the request arriving to the reply going out.' },
+        { h: 'Quality', p: 'Errors, rework and exceptions caught at the checkpoint.' },
+        { h: 'Capacity', p: 'Requests the same team can handle each month.' },
+      ],
+    },
+    cta: { title: 'Bring your own version of this request.', p: 'In a free working session we map it on your real examples and show what the first improvement could be.' },
+  },
   how: {
     meta: { title: 'How it works — bee & co.', desc: 'Observe, Prove, Embed, Expand: a low-risk path from a business bottleneck to practical proof, production, adoption and measured results.' },
     h1: 'From bottleneck to measured result, in four stages',
     lede: 'You see value on your own work before you commit to anything large. At each stage you decide whether to continue.',
     stages: [
-      { h: 'Observe', who: 'Free working session', p: ['In 20 minutes we check whether there is a real, recurring bottleneck, urgency, budget and safe example material.', 'In 45 minutes we show a working demonstration on anonymized or sample data. You leave with a one-page Business Impact Memo: where time is lost, what to try first and what not to automate.'], out: 'A memo and a clear yes or no on the next step.' },
+      { h: 'Observe', who: 'Free working session', p: ['First we check whether there is a real, recurring bottleneck, urgency, budget and safe example material.', 'Then we show a working demonstration on anonymized or sample data. You leave with a one-page Business Impact Memo: where time is lost, what to try first and what not to automate.'], out: 'A memo and a clear yes or no on the next step.' },
       { h: 'Prove', who: 'Proof of Value Sprint', p: ['One improvement, tested on your approved real examples over 10–15 working days.', 'Before we begin we agree in writing what success means, typically using a representative sample (often around 30 examples where appropriate), reviewer-approved quality, safe read-only access and before-and-after time and quality measures.'], out: 'Measured results, a production-readiness plan and rollout recommendations.' },
       { h: 'Embed', who: '90-Day Business Improvement Program', p: ['The proven improvement becomes part of how work gets done: integration with your systems, process redesign, human checks, training, named owners and metrics.', 'Scope and outcomes are agreed up front. We do not promise a fixed number of automations.'], out: 'A working, owned and measured process in daily use.' },
       { h: 'Expand', who: 'Run & Expand', p: ['Monitoring, incremental improvements, and senior technology leadership as your needs grow, with an operating scorecard each month.'], out: 'Continuous improvement with visible numbers.' },
@@ -356,11 +349,11 @@ export default {
   faqPage: { meta: { title: 'Frequently asked questions — bee & co.', desc: 'Straight answers on pricing, the working session, the Proof of Value Sprint, guarantees, data security and who the work is for.' }, h1: 'Frequently asked questions', cta: 'Still have a question? Bring it to a working session.' },
 
   contact: {
-    meta: { title: 'Book a working session — bee & co.', desc: 'Request a qualified working session: a 20-minute screening, a 45-minute safe demonstration and a one-page Business Impact Memo.' },
+    meta: { title: 'Book a working session — bee & co.', desc: 'Request a qualified working session: a short fit check, a safe demonstration and a one-page Business Impact Memo.' },
     h1: 'Book a working session',
     lede: 'Tell us about one repeating bottleneck. We reply to qualified requests to schedule the session.',
     priceNote: 'A first paid engagement (the Proof of Value Sprint) typically costs ₪18–28K excl. VAT, indicative. The working session itself is free.',
-    next: { h: 'What happens next', steps: ['We review your request and may ask a clarifying question.', 'If there is a fit, we schedule the 20-minute screening.', 'The 45-minute session follows, with a one-page memo after.'] },
+    next: { h: 'What happens next', steps: ['We review your request and may ask a clarifying question.', 'If there is a fit, we schedule a short fit check.', 'The working session follows, with a one-page memo after.'] },
     bring: { h: 'Helpful to bring', items: ['One recurring process', 'Three to five anonymized recent examples', 'Rough volume and time per item'] },
   },
 
@@ -396,109 +389,4 @@ export default {
   },
   notFound: { h: 'Page not found', p: 'That page does not exist.', cta: 'Back to the home page' },
 
-  solutions: {
-    quotes: {
-      meta: { title: 'Faster quotes, orders without retyping — bee & co.', desc: 'For distributors, importers and B2B sellers: classify requests, pull approved prices, prepare drafts, review by a person and hand off to your existing system.' },
-      eyebrow: 'Quotes & orders', h1: 'Faster quotes. Orders without repetitive retyping.',
-      sub: 'For companies whose sales team copies details between emails, spreadsheets, price lists and the ERP.',
-      cta: 'Bring three anonymized recent quote requests to a working session', cardLine: 'Quote-to-order handling for wholesalers and B2B sellers.',
-      problem: { title: 'Every quote is rebuilt by hand', p: 'Requests arrive by email, WhatsApp and phone. Someone reads, looks up prices, types a quote and later retypes the order. Each copy is a delay and a chance for a mistake.', list: ['Customers wait while a rep hunts through spreadsheets', 'Different people quote different prices for the same item', 'Orders are keyed twice, once to quote and once into the ERP', 'Exceptions are noticed late, or not at all'] },
-      process: { eyebrow: 'Process', title: 'Classify, price, draft, review, hand off', intro: 'Switch between the manual process and the improved one. Notice that a person approves before anything goes out.' },
-      bring: { title: 'Bring to the working session', items: ['Three anonymized recent quote requests', 'A sample of your price list or pricing rules', 'The name of the system where orders end up'] },
-      kpi: { title: 'What we measure', items: ['Quote turnaround time', 'Staff minutes per request', 'Rework rate', 'Number and type of exceptions'] },
-      faq: [
-        { q: 'Does it send quotes to customers on its own?', a: 'No. By default a person reviews and approves every draft. Which steps, if any, can be automated is agreed with you.' },
-        { q: 'Where do the prices come from?', a: 'From your own approved price list and rules. We do not invent or guess prices. Unclear cases are flagged for review.' },
-        { q: 'Do we have to replace our ERP?', a: 'No. The goal is to hand the approved quote or order to the system you already use.' },
-        { q: 'What if our requests are messy or in Hebrew and English?', a: 'Messy and bilingual requests are typical. We test on your real examples in the Sprint to see how well it holds up.' },
-      ],
-      form: { title: 'Tell us about your quoting process', fields: [
-        { n: 'volume', l: 'Quote requests per month (approx.)', t: 'select', o: ['Under 50', '50–200', '200–1,000', 'Over 1,000'] },
-        { n: 'system', l: 'Where do orders end up?', t: 'text', h: 'For example an ERP name, CRM or spreadsheets.' },
-      ] },
-      visual: 'doc',
-    },
-    inbox: {
-      meta: { title: 'Handle more requests, lose fewer messages — bee & co.', desc: 'For service and back-office teams: triage, urgency, suggested replies, assignment and escalation, with a person approving each response.' },
-      eyebrow: 'Customer inbox', h1: 'Handle more requests. Let fewer messages fall through the cracks.',
-      sub: 'For teams buried in repetitive email, WhatsApp and client messages that are poorly prioritized and slow to answer.',
-      cta: 'Bring one anonymized day of customer messages', cardLine: 'Triage, prioritisation and reply drafts for busy service teams.',
-      problem: { title: 'The important message is buried under fifty routine ones', p: 'Messages come from many channels and look alike. Without triage, urgent and valuable requests wait their turn behind routine ones.', list: ['Nobody sees the whole queue', 'Urgent messages wait for whoever notices them', 'The same answers are typed again and again', 'Hand-offs between colleagues are informal and get lost'] },
-      process: { eyebrow: 'Process', title: 'Triage, classify, suggest, assign, approve', intro: 'Compare how one customer message is handled today with an improved flow that keeps people in control.' },
-      bring: { title: 'Bring to the working session', items: ['One anonymized day of customer messages', 'Your most common reply templates or policies', 'A list of channels in use'] },
-      kpi: { title: 'What we measure', items: ['First-response time', 'Backlog size', 'Rework rate', 'Reviewer approval rate and escalations'] },
-      faq: [
-        { q: 'Will customers be answered by a robot?', a: 'Replies are suggested and a person approves them. How much freedom to give the system is decided with you, step by step.' },
-        { q: 'Does it work with WhatsApp?', a: 'Channel feasibility depends on how you use it. We check this in the working session and do not assume it.' },
-        { q: 'How do you handle private customer data?', a: 'We start with anonymized messages and agree confidentiality and access terms before using any real data.' },
-        { q: 'What if a message is sensitive?', a: 'Sensitive and unclear messages are escalated to a named owner instead of being answered automatically.' },
-      ],
-      form: { title: 'Tell us about your inbox', fields: [
-        { n: 'channels', l: 'Main channels', t: 'text', h: 'For example email, WhatsApp, web form.' },
-        { n: 'volume', l: 'Messages per day (approx.)', t: 'select', o: ['Under 30', '30–100', '100–300', 'Over 300'] },
-      ] },
-      visual: { items: [
-        { who: 'Customer B', text: 'Where is my order? Needed Thursday.', chip: 'Urgent', tone: 'hot', note: 'Assign: logistics, reply due today' },
-        { who: 'Customer C', text: 'Can you resend last month’s invoice?', chip: 'Routine', note: 'Suggested reply ready, approve' },
-        { who: 'Customer D', text: 'I want to cancel the contract.', chip: 'Escalate', tone: 'human', note: 'Owner: account manager' },
-      ] },
-    },
-    discovery: {
-      meta: { title: 'Where is your business losing time and money? — bee & co.', desc: 'A practical look at one recurring process: three opportunities ranked by impact and feasibility, an honest view on what not to automate, and a clear next step.' },
-      eyebrow: 'Opportunity discovery', h1: 'Where is your business losing time and money?',
-      sub: 'Skip the jargon-heavy AI strategy workshop. Bring one repeating process and leave knowing where AI is worth it, and where it is not.',
-      cta: 'Bring one repeating process or operational bottleneck', cardLine: 'A practical read on where AI creates return in your business.',
-      problem: { title: 'You are told AI matters. Nobody tells you where.', p: 'Leadership suspects there is return in AI, but not where. Workshops produce long lists of ideas with no ranking, no owner and no first step.', list: ['Too many ideas, no way to rank them', 'Fear of spending on the wrong thing', 'No honest view on what should not be automated', 'No clear first step'] },
-      process: { eyebrow: 'Process', title: 'Rank by impact and feasibility', intro: 'Every candidate is placed by business impact and by how feasible it is with your data and systems. Some points deserve a firm “not now”.', xl: 'Feasibility', yl: 'Impact', q: ['Quick wins', 'Worth planning', 'Only if simple', 'Not now'], items: [
-        { n: 1, x: 72, y: 24, top: true }, { n: 2, x: 62, y: 38 }, { n: 3, x: 30, y: 28 }, { n: 4, x: 22, y: 76, no: true },
-      ] },
-      bring: { title: 'Bring to the working session', items: ['One repeating process or bottleneck', 'A rough sense of volume and time spent', 'The person who knows the process best'] },
-      kpi: { title: 'What we track', items: ['Qualified owner sessions', 'Opportunity-to-Sprint conversion', 'Opportunities ranked and decided'] },
-      faq: [
-        { q: 'Is this an AI strategy workshop?', a: 'No. It is a practical look at one process, with three ranked opportunities and a next step.' },
-        { q: 'What do we get at the end?', a: 'A one-page Business Impact Memo: where time is lost, three ranked opportunities, what not to automate and a recommended next step.' },
-        { q: 'What if nothing is worth automating?', a: 'Then we say so. That answer saves you money, and is part of the value.' },
-        { q: 'Do we need technical people in the room?', a: 'No. An owner or operations lead who knows the process is enough.' },
-      ],
-      form: { title: 'Tell us where you suspect the leak', fields: [
-        { n: 'process', l: 'The repeating process, in a sentence', t: 'text' },
-        { n: 'team', l: 'People involved in it', t: 'select', o: ['1–3', '4–10', '11–30', 'More than 30'] },
-      ] },
-      visual: { items: [
-        { t: 'Quote preparation', impact: 80, feas: 75 },
-        { t: 'Invoice and document checking', impact: 60, feas: 65 },
-        { t: 'Weekly management report', impact: 40, feas: 55 },
-        { t: 'Customer negotiation', impact: 70, feas: 15, no: 'Keep human' },
-      ], impactL: 'Impact', feasL: 'Feasibility' },
-    },
-    adoption: {
-      meta: { title: 'You bought AI tools. Work has not changed. — bee & co.', desc: 'Diagnose why AI tools sit unused: ownership, training and measurement, and chart a production-safe path from unused licenses to changed work.' },
-      eyebrow: 'AI adoption', h1: 'You bought AI tools. The way work gets done hasn’t changed.',
-      sub: 'Licenses are paid for and pilots ran, but nothing became routine. The gap is usually ownership, training and measurement.',
-      cta: 'Bring your existing AI tool list and one stalled use case', cardLine: 'Turn unused licenses into changed work.',
-      problem: { title: 'The tools are there. The habits are not.', p: 'After the pilot, enthusiasm fades. Nobody owns the use case, people were never trained for their actual tasks and nobody tracks usage.', list: ['Licenses paid for, usage unknown', 'Pilots that never became routine', 'No named owner per use case', 'No link between tool use and a business number'] },
-      process: { eyebrow: 'Process', title: 'Find where adoption stalls', intro: 'Select a stage to see what typically blocks it and what we do about it.', stages: [
-        { l: 'Bought', block: 'Tools chosen by enthusiasm, not by a specific job to be done.', fix: 'Tie each tool to one named process and outcome.', kpi: 'Licenses mapped to use cases' },
-        { l: 'Tried', block: 'A pilot ran, but on generic examples rather than your real work.', fix: 'Retest on approved real examples with clear criteria.', kpi: 'Quality on your own samples' },
-        { l: 'Owned', block: 'No one is accountable for the result.', fix: 'Name an owner per use case and define their weekly routine.', kpi: 'Named owner coverage' },
-        { l: 'Embedded', block: 'People were told, not trained, so they fall back on old habits.', fix: 'Train on real tasks, change the process, add the human checks.', kpi: 'Weekly use by relevant staff' },
-        { l: 'Measured', block: 'Nobody can show what changed.', fix: 'Baseline and a monthly scorecard.', kpi: 'Throughput, quality, adoption' },
-      ], blockL: 'What blocks it', fixL: 'What we do', kpiL: 'What we track' },
-      bring: { title: 'Bring to the working session', items: ['Your list of AI tools and licenses', 'One use case that stalled', 'Anything you know about who uses what'] },
-      kpi: { title: 'What we measure', items: ['Actual weekly usage', 'Workflow throughput', 'Quality of output', 'Adoption among relevant staff'] },
-      faq: [
-        { q: 'Do we have to drop the tools we bought?', a: 'Not necessarily. We first check whether they fit a real process, and say so honestly if they do not.' },
-        { q: 'Is this training?', a: 'Training is part of it, tied to real tasks, alongside process change, ownership and measurement.' },
-        { q: 'How do you measure adoption?', a: 'Weekly actual use by the people who should be using it, tied to a workflow measure such as throughput or quality.' },
-        { q: 'What if the tools are simply the wrong ones?', a: 'We say so, and show the lowest-risk way forward. This is part of the diagnosis.' },
-      ],
-      form: { title: 'Tell us what you already have', fields: [
-        { n: 'tools', l: 'AI tools you already pay for', t: 'text', h: 'Names are enough.' },
-        { n: 'stalled', l: 'One use case that stalled', t: 'text' },
-      ] },
-      visual: { items: [
-        { name: 'Writing assistant', pct: 55 }, { name: 'Meeting notes tool', pct: 30 }, { name: 'Document assistant', pct: 12 },
-      ], cap: 'Weekly active use among licensed staff (sample)' },
-    },
-  },
 };

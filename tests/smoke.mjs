@@ -65,13 +65,15 @@ await t('language switch maps to the equivalent page', () => {
     assert.ok(pages[href('en', r.key)].includes(`href="${href('he', r.key)}" hreflang="he"`), 'en→he ' + r.key);
   }
 });
-await t('each landing has distinct hero, FAQ and form fields', () => {
-  const keys = ['quotes', 'inbox', 'discovery', 'adoption'];
+await t('generic use case replaces the solution pages', () => {
   for (const lang of langs) { const c = lang === 'he' ? he : en;
-    assert.equal(new Set(keys.map((k) => c.solutions[k].h1)).size, 4);
-    assert.equal(new Set(keys.map((k) => JSON.stringify(c.solutions[k].faq))).size, 4);
-    assert.equal(new Set(keys.map((k) => JSON.stringify(c.solutions[k].form))).size, 4);
-    for (const k of keys) assert.match(pages[href(lang, k)], new RegExp(`name="pain" value="${k}"`)); }
+    const page = pages[href(lang, 'usecase')];
+    assert.ok(page, 'use case page ' + lang);
+    assert.equal(c.usecase.steps.length, 5);
+    for (const s of c.usecase.steps) assert.ok(page.includes(s.h), 'step ' + s.h);
+    assert.ok(pages[href(lang, 'home')].includes(`href="${href(lang, 'usecase')}"`), 'home links to use case ' + lang);
+  }
+  for (const [u, html] of Object.entries(pages)) assert.doesNotMatch(html, /href="(\/en)?\/solutions\//, 'link to removed solution page on ' + u);
 });
 await t('illustrative content is labelled; no invented proof', () => {
   for (const [u, html] of Object.entries(pages)) { assert.doesNotMatch(html, /testimonial|עדות מלקוח\b(?!ות)/i, u); }

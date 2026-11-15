@@ -12,7 +12,7 @@ Related documents: [`README.md`](../README.md) (how to run), [`APPROVALS.md`](AP
 A bilingual marketing site for bee & co., a boutique AI-solutions partner for established companies, led by a senior technology executive. The primary goal of every page is to book a free working session.
 
 - **Hebrew (RTL)** at `/`, **English (LTR)** at `/en`. Every page exists in both languages with the same structure; a test enforces parity.
-- **12 routes × 2 languages = 24 pages:** home, four solution landing pages (quotes and orders, customer inbox, opportunity discovery, AI adoption), how it works, about, results and measurement, FAQ, data and security, contact/booking, privacy (draft, `noindex`).
+- **9 routes × 2 languages = 18 pages:** home, a generic use case (one recurring request from inbox to reply; it replaced the four solution pages, whose old addresses redirect to it), how it works, about, results and measurement, FAQ, data and security, contact/booking, privacy (draft, `noindex`).
 
 ## 2. Stack and structure
 
@@ -79,20 +79,17 @@ English display headings use an editorial serif stack; Hebrew headings, body cop
 | Component | Where | What it shows |
 |---|---|---|
 | Brand hero + connected cells | Home | Business-outcome headline, proof-led positioning and a restrained Discover-to-Scale signal |
-| Work order + approval stamp | Solution landings | A quote request moving through three stages, joined by a dashed connector; an approval stamp marks the human checkpoint |
-| Before/after explorer + timeline | Home, quotes and inbox landings | Steps toggle between manual and AI-assisted; a timeline diagram compares both runs as segmented bars (grey manual, blue AI, apricot human), e.g. 34 min vs 8 min (illustrative) |
+| Generic use case | Use case page (`/business-use-case`) + home preview | One recurring request from inbox to reply: five steps on a connected track with hexagon numerals (the human approval step in apricot), before/with-AI columns, and what we measure. Replaced the four solution pages |
+| Before/after AI pipeline | Home | One request moving through the business; the same boxes morph from the manual version (hand steps, rework loop) to the AI version (AI agent, live system connections, one human checkpoint) |
 | Transformation flow + method track | Home | Discover → Prioritize → Design → Prove → Deploy → Scale, with a proof decision gate, refinement loop, executive flow chart and detailed list |
 | Offers as standing bars | Home | Stage 1 emphasised in navy with "Free" and the booking button; stages 2–4 rise as bars on a shared baseline and show duration only, no prices |
 | How-it-works stage rail | How it works | Stage rows joined by a vertical connector; the stages table shows a Duration column instead of prices |
-| Prioritisation matrix | Opportunity discovery | Impact × feasibility quadrants with a tinted "quick wins" corner, plus a hidden text list for screen readers |
-| Capacity calculator | Home | Scenario calculator for freed hours (illustrative, not a promise) |
-| Two-minute check | Home | Eight-question quiz pointing to the right starting solution |
+| Capacity calculator, two-minute check | Not currently rendered | Code and copy still exist (`calculator()`, `check()` in `render.mjs`), but no page shows them since the bee & co. redesign; the quiz results now point to the use case |
 
 ## 6. Motion
 
-- **One page-load moment:** the approval stamp lands on the hero work order when it scrolls into view.
 - **Diagram flow:** connectors play three slow cycles (under 5 seconds) when a diagram enters the viewport, then rest.
-- **Responsive motion only after a click:** menus and FAQ answers drop in; the explorer's new times fade in top to bottom; ladder panels fade.
+- **Responsive motion only after a click:** the mobile menu and FAQ answers drop in; the pipeline diagram morphs between its before and after states.
 - Timing tokens: `--t-fast` .15s, `--t-med` .22s, `--t-slow` .5s, one easing curve.
 - Everything is disabled under `prefers-reduced-motion: reduce`.
 
@@ -102,9 +99,8 @@ Reviewed twice by automated audits and fixed. Current state:
 
 - Text contrast ≥ 4.5:1 everywhere (lowest ≈ 4.6:1, muted text on periwinkle); control borders ≥ 3:1; light focus ring on navy surfaces.
 - One `h1` per page, no skipped heading levels, landmarks on every page, skip link, mobile menu is a `<nav>`.
-- Keyboard: Escape closes the Solutions menu and returns focus; the menu closes when focus leaves it; adoption tabs use arrow keys and reverse correctly in Hebrew.
+- Keyboard: every navigation item is a plain link (the Solutions dropdown is gone); Escape closes the mobile menu and returns focus to its button.
 - No horizontal scroll at 320px.
-- The timeline marks the active row by label weight and colour, not opacity; manual segments are outlined.
 - Moving content stops within 5 seconds (WCAG 2.2.2).
 - Not yet tested with a real screen reader (VoiceOver/NVDA).
 
@@ -150,12 +146,17 @@ Still present:
 | `dc19163` | Pastel redesign aligned to the deck palette, soft diagrams, offers as standing bars, Observe rename, Vercel setup |
 | `8fd874f` | First Vercel production deploy |
 | `a464eaa` | Prices removed from the FAQ and how-it-works |
+| `865c6e1` | This implementation record |
+| `ad7316e`, `02664db` | Codex prompt for, then the interactive before/after AI pipeline diagram |
+| `6c1a48a` | Redesign around the bee & co. brand |
+| `9379b0b`, `1c8ef29` | Clearer AI transformation value proposition and Hebrew headline |
+| (this change) | Four solution pages replaced by one generic use case: new `/business-use-case` page and home preview; Solutions menu and footer column replaced by "Use case"; quiz results repointed; old `/solutions/...` addresses redirect (301) to the use case; unused solution code, copy and ~150 style rules removed |
 
 Process used for the redesigns: the `frontend-design` skill for direction, `design-critique` and `accessibility-review` passes, and two parallel review agents (design critic, WCAG auditor) whose findings were applied.
 
 ## 11. Proposed, not built
 
-- **Before/after AI pipeline diagram:** a generic "request to reply" flowchart whose boxes morph from the manual version (five hand steps, three people, a rework loop) into the AI version (one AI agent connected to the price list and ERP, one human checkpoint for exceptions). Sketched as a prototype in the working session; a candidate for the home page or the how-it-works page.
+- Nothing outstanding. The before/after AI pipeline diagram proposed earlier is now built on the home page (`02664db`).
 
 ## 12. Open items
 
