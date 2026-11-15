@@ -30,12 +30,12 @@ export default {
   },
 
   home: {
-    meta: { title: 'bee & co. — AI solutions for established businesses', desc: 'Hands-on AI solutions for established companies, led by a senior technology executive: proof on your real work first, then production, adoption and measured results.' },
+    meta: { title: 'bee & co. — AI transformation for measurable business growth', desc: 'Strategic, hands-on AI transformation for established businesses: improve performance, accelerate growth and deliver measurable business outcomes.' },
     hero: {
       eyebrow: 'Senior business & technology partner',
-      h1: 'AI solutions that do <em>real work</em> inside your business.',
-      sub: 'Quotes, orders, customer requests and reports, handled faster by AI and approved by your people. More capacity, without growing headcount at the same pace.',
-      body: 'We find where operations lose time and money, prove an AI solution on your real work, and stay accountable until it runs in daily use, with measured results.',
+      h1: 'Turn AI into better performance, faster growth and <em>measurable business results.</em>',
+      sub: 'bee & co. helps established businesses unlock their potential through AI—improving operational efficiency, transforming how work gets done, accelerating growth and turning technology investment into measurable business outcomes.',
+      body: 'AI becomes a strategic business enabler: connected to real priorities, existing systems, daily operations and accountable measures of performance.',
       trust: 'Executive Experience. Hands-On Execution. Measurable Results.',
       proof: 'See it working on your business before you commit to a broad program.',
     },
@@ -44,13 +44,26 @@ export default {
       title: 'Start free. Expand only what proves its value.',
       intro: 'Bring one recurring bottleneck. We begin with a safe working session, then move from proof to daily use only when the evidence supports it.',
       cta: 'Book the free working session',
-      secondary: 'See where we start',
+      secondary: 'What we deliver',
       cardLabel: 'Your first step with bee & co.',
     },
     starts: {
       eyebrow: 'Where we start',
       title: 'Choose the work that is already costing time.',
       intro: 'Start with one concrete operating problem—not a broad AI program.',
+    },
+    delivery: {
+      eyebrow: 'What you get',
+      title: 'Business transformation, from opportunity to adoption.',
+      intro: 'One accountable technology partner connects business priorities, AI strategy and hands-on execution.',
+      items: [
+        'Identify business challenges, operational inefficiencies and growth opportunities.',
+        'Design and implement tailored AI solutions around real business needs.',
+        'Transform business processes and workflows through AI.',
+        'Integrate AI into existing systems and daily operations.',
+        'Deliver measurable improvements in productivity, efficiency and business performance.',
+        'Provide hands-on technology leadership—from strategy and architecture to implementation and adoption.',
+      ],
     },
     doc: {
       title: 'Quote request, handled',

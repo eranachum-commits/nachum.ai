@@ -350,9 +350,10 @@ pages.home = (c) => {
 <section class="hero"><div class="container hero-stage">
   <div class="hero-copy"><p class="brand-positioning"><span>${hr.eyebrow}</span><span>${founderLine(c)}</span></p><h1>${hr.h1}</h1>
   <p class="lede">${hr.sub}</p>
-  <div class="btn-row">${btn(c, h.sales.cta, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, h.sales.secondary, '#work', '')}</div>
+  <div class="btn-row">${btn(c, h.sales.cta, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, h.sales.secondary, '#deliver', '')}</div>
   <p class="trust-line"><strong>${hr.trust}</strong> ${hr.proof}</p></div>
 </div></section>
+${section(`<div class="delivery-layout"><div><span class="eyebrow">${h.delivery.eyebrow}</span><h2 id="delivery-title">${h.delivery.title}</h2><p class="lede">${h.delivery.intro}</p></div><ol class="delivery-list">${h.delivery.items.map((x, i) => `<li><span aria-hidden="true">0${i + 1}</span><p>${x}</p></li>`).join('')}</ol></div>`, 'home-delivery', 'deliver', 'delivery-title')}
 ${section(`${head(h.sales.eyebrow, h.sales.title, h.sales.intro, 'o')}${offerCards(c, h.sales.cta)}<div class="home-offer-link">${btn(c, c.nav.how, href(c.lang, 'how'), '')}</div>`, 'section--tint home-offers', 'offers', 'o')}
 ${section(`<div class="home-focus-grid"><div><span class="eyebrow">${h.outcomes.eyebrow}</span><h2 id="focus-title">${h.outcomes.title}</h2><p class="lede">${h.outcomes.intro}</p><div class="outcome-short">${outcomePicks.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div></div><div class="home-starts"><span class="eyebrow">${h.starts.eyebrow}</span><h2>${h.starts.title}</h2><p>${h.starts.intro}</p><nav aria-label="${esc(h.starts.title)}">${starts}</nav></div></div>`, 'home-focus', 'work', 'focus-title')}
 ${section(`${head('', c.pipeline.title, c.pipeline.intro, 'pipeline-title')}${pipeline(c, 'pipeline-home')}`, 'section--tint home-example', 'pipeline-s', 'pipeline-title')}
