@@ -1,9 +1,10 @@
-// One-off: self-host Frank Ruhl Libre + Heebo (hebrew + latin subsets) from Google Fonts.
-import { writeFile } from 'node:fs/promises';
+// One-off: self-host IBM Plex Sans Hebrew (hebrew + latin subsets) from Google Fonts.
+import { writeFile, readdir, unlink } from 'node:fs/promises';
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/124 Safari/537.36';
-const url = 'https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;700&display=swap';
+const url = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@400;500;700&display=swap';
 const css = await (await fetch(url, { headers: { 'User-Agent': UA } })).text();
 const blocks = [...css.matchAll(/\/\* ([\w-]+) \*\/\s*@font-face\s*\{([^}]+)\}/g)];
+for (const f of await readdir('public/fonts')) await unlink(`public/fonts/${f}`);
 let out = '';
 for (const [, subset, b] of blocks) {
   if (!['hebrew', 'latin'].includes(subset)) continue;

@@ -5,7 +5,7 @@ export default {
   brand: 'NACHUM.AI',
   descriptor: 'Business Transformation. Powered by AI.',
   ui: {
-    skip: 'Skip to content', menu: 'Menu', close: 'Close', book: 'Book a working session', seeHow: 'See how it works',
+    skip: 'Skip to content', stamp: 'Approved', menu: 'Menu', close: 'Close', book: 'Book a working session', seeHow: 'See how it works',
     illustrative: 'Illustrative', home: 'Home', solutions: 'Solutions', otherSolutions: 'Other places we start', backHome: 'Back to NACHUM.AI',
     indicative: 'Indicative price, excl. VAT', learnMore: 'Learn more', minutes: 'min', send: 'Send request', sending: 'Sending…',
     required: 'Required', fixField: 'Please check the highlighted fields.', main: 'Main navigation',

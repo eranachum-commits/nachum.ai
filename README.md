@@ -18,7 +18,7 @@ Requires Node ≥ 20. **No dependencies, no `npm install`.**
 - **Zero-dependency Node static generator + tiny Node server.** Simplest reliable thing for a 24-page marketing site: no framework upgrades to maintain, <1s builds, clean checkout runs anywhere.
 - Content is plain data in `src/content/{he,en}.mjs` (a test enforces identical structure); templates in `src/lib/render.mjs`; one CSS file with design tokens and logical properties (RTL/LTR from the same rules).
 - Client JS (`public/js/app.js`, ~250 lines, ES module) is progressive: pages read fine without it; tools, menus and the form need it.
-- Fonts (Frank Ruhl Libre + Heebo, Hebrew+Latin subsets) are **self-hosted** — no third-party request before consent.
+- Font (IBM Plex Sans Hebrew 400/500/700, Hebrew+Latin subsets) is **self-hosted** — no third-party request before consent.
 - If you later want a CMS or Next.js, content/data are already separated from markup.
 
 ## Layout

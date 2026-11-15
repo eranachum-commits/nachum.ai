@@ -198,3 +198,13 @@ $$('[data-lead-form]').forEach((form) => {
     } finally { btn.disabled = false; btn.innerHTML = label; }
   });
 });
+
+// The approval stamp lands when the work order is actually on screen (matters on phones).
+{
+  const st = document.querySelector('.hero .stamp');
+  if (st && 'IntersectionObserver' in window) {
+    st.classList.add('wait');
+    const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { st.classList.remove('wait'); io.disconnect(); } }, { threshold: 0.9 });
+    io.observe(st);
+  }
+}

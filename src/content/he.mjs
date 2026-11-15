@@ -4,7 +4,7 @@ export default {
   brand: 'NACHUM.AI',
   descriptor: 'Business Transformation. Powered by AI.',
   ui: {
-    skip: 'דלגו לתוכן', menu: 'תפריט', close: 'סגירה', book: 'לתיאום פגישת עבודה', seeHow: 'איך זה עובד',
+    skip: 'דלגו לתוכן', stamp: 'מאושר', menu: 'תפריט', close: 'סגירה', book: 'לתיאום פגישת עבודה', seeHow: 'איך זה עובד',
     illustrative: 'להמחשה בלבד', home: 'דף הבית', solutions: 'פתרונות', otherSolutions: 'מאיפה עוד אפשר להתחיל', backHome: 'חזרה ל-NACHUM.AI',
     indicative: 'מחיר אינדיקטיבי, לא כולל מע״מ', learnMore: 'למידע נוסף', minutes: 'דק׳', send: 'שליחת הבקשה', sending: 'שולחים…',
     required: 'שדה חובה', fixField: 'נא לבדוק את השדות המסומנים.', main: 'ניווט ראשי',
