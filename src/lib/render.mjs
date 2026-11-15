@@ -346,9 +346,9 @@ ${section(`<div class="about-how"><h2 id="how-title">${p.princTitle}</h2>${ticks
 };
 
 pages.results = (c) => {
-  const p = c.results, f = p.flow, ex = p.example, L = ex.labels, m = p.measures, r = p.rules;
-  // Answers a CEO's three questions in order: how do you measure (flowchart), how do you calculate it
-  // (worked example), what exactly do you track (measures) — then the rules and booking.
+  const p = c.results, f = p.flow, m = p.measures, r = p.rules;
+  // Answers a CEO's questions in order: how do you measure (flowchart), what exactly do you track and
+  // what it proves (measures with outcomes) — then the rules and booking.
 
   // Measurement flowchart: data in → measure → agree the bar ◇ → pilot → compare → cleared? ◇ → run and report.
   // Steps are numbered hexagons (a real sequence), decisions are diamonds, the data source is a chip.
@@ -363,25 +363,15 @@ pages.results = (c) => {
   };
   const flow = `<ol class="mflow">${f.nodes.map(node).join('')}</ol>`;
 
-  // Worked example: the arithmetic stays visible. Bars share one scale (the "before" hours).
-  const hb = Math.round((ex.requests * ex.before) / 60), ha = Math.round((ex.requests * ex.after) / 60);
-  const freed = hb - ha, days = Math.round((freed / ex.hoursPerDay) * 2) / 2, pct = (v) => `${Math.round((v / hb) * 100)}%`;
-  const calc = `<figure class="calc-ex"><figcaption class="cx-ill">${L.illustrative}</figcaption>
-<div class="cx-row"><p class="cx-l">${L.before}</p><p class="cx-math">${ex.requests} ${L.requests} × ${ex.before} ${L.minutes}</p><div class="cx-bar" aria-hidden="true"><i class="cx-used" style="width:100%"></i></div><p class="cx-v">${hb} ${L.hours}</p></div>
-<div class="cx-row"><p class="cx-l">${L.after}</p><p class="cx-math">${ex.requests} ${L.requests} × ${ex.after} ${L.minutes}</p><div class="cx-bar" aria-hidden="true"><i class="cx-used" style="width:${pct(ha)}"></i><i class="cx-freed" style="width:${pct(freed)}"></i></div><p class="cx-v">${ha} ${L.hours}</p></div>
-<div class="cx-result"><p class="cx-l">${L.freed}</p><p class="cx-big"><span class="cx-eq" dir="ltr">${hb} − ${ha} = ${freed}</span> ${L.hours}</p><p class="cx-sub">≈ ${days} ${L.days}</p></div>
-<p class="cx-note">${ex.note}</p><p class="cx-money">${ex.money}</p></figure>`;
-
   // Measures: same table pattern as the use case comparison (stacks into labelled blocks on phones).
-  const table = `<div class="why-wrap"><table class="why measures-table"><thead><tr>${m.cols.map((x) => `<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${m.items.map((x) => `<tr><th scope="row">${x.h}<span class="mt-q">${x.q}</span></th><td data-label="${esc(m.cols[1])}">${x.calc}</td><td data-label="${esc(m.cols[2])}">${x.src}</td></tr>`).join('')}</tbody></table></div>`;
+  const table = `<div class="why-wrap"><table class="why measures-table"><thead><tr>${m.cols.map((x) => `<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${m.items.map((x) => `<tr><th scope="row">${x.h}<span class="mt-q">${x.q}</span></th><td data-label="${esc(m.cols[1])}" class="mt-outcome">${x.outcome}</td><td data-label="${esc(m.cols[2])}">${x.calc}</td><td data-label="${esc(m.cols[3])}">${x.src}</td></tr>`).join('')}</tbody></table></div>`;
 
   const rules = `<div class="rules-layout"><div><h2 id="rules-title">${r.title}</h2>${ticks(r.items)}</div><article class="rules-card rules-card--monthly"><h3>${r.monthly.h}</h3><p>${r.monthly.p}</p></article><article class="rules-card"><h3>${r.honest.h}</h3><p>${r.honest.p}</p></article></div>`;
 
   const body = `${pageHero(c, p.h1, p.lede)}
 ${section(`${head('', f.title, f.intro, 'flow-title')}${flow}`, 'results-flow', 'flow', 'flow-title')}
-${section(`${head('', ex.title, ex.intro, 'calc-title')}${calc}`, 'section--tint results-calc', 'calculation', 'calc-title')}
-${section(`${head('', m.title, m.intro, 'measures-title')}${table}`, 'results-measures', 'measures', 'measures-title')}
-${section(rules, 'section--tint results-rules', 'rules', 'rules-title')}
+${section(`${head('', m.title, m.intro, 'measures-title')}${table}`, 'section--tint results-measures', 'measures', 'measures-title')}
+${section(rules, 'results-rules', 'rules', 'rules-title')}
 ${ctaBand(c, p.cta.title, p.cta.p)}`;
   return { meta: p.meta, body };
 };

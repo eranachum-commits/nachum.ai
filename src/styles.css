@@ -682,26 +682,10 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .mf-alt .mf-t { color: var(--human-ink); }
 .mf-loop { margin: 4px 0 0; padding: 6px 12px; border: 1.5px dashed var(--pollen); border-radius: 999px; font-size: .82rem; font-weight: 600; color: var(--accent-deep); }
 
-/* ---------- results: worked calculation ---------- */
-.calc-ex { margin: 0; background: var(--sheet); border-top: 4px solid var(--pollen); border-radius: 0 0 var(--r-sheet) var(--r-sheet); padding: clamp(22px, 3.4vw, 40px); box-shadow: var(--lift); max-width: 1040px; }
-.cx-ill { display: inline-block; margin-bottom: 18px; font-size: .78rem; color: var(--muted); border: 1px solid var(--rule-2); border-radius: 999px; padding: 3px 10px; }
-.cx-row { display: grid; grid-template-columns: minmax(110px, .6fr) minmax(0, 1.2fr) minmax(0, 1.9fr) minmax(160px, .8fr); gap: 16px; align-items: center; padding-block: 14px; border-bottom: 1px solid var(--rule); }
-.cx-row p, .cx-result p { margin: 0; }
-.cx-l { font-weight: 600; color: var(--ink); }
-.cx-math { color: var(--ink-2); font-variant-numeric: tabular-nums; }
-.cx-v { font-weight: 600; color: var(--ink); text-align: end; font-variant-numeric: tabular-nums; }
-.cx-bar { display: flex; height: 16px; background: var(--paper); border-radius: 999px; overflow: hidden; }
-.cx-used { display: block; height: 100%; background: var(--ink-2); }
-.cx-freed { display: block; height: 100%; background: repeating-linear-gradient(135deg, var(--pollen) 0 6px, var(--accent-tint) 6px 12px); }
-.cx-result { display: grid; grid-template-columns: minmax(110px, .7fr) minmax(0, 1fr) auto; gap: 16px; align-items: baseline; padding-block: 20px 6px; }
-.cx-result .cx-l { color: var(--accent-deep); }
-.cx-big { font: 300 clamp(1.6rem, 3.2vw, 2.4rem)/1.1 var(--sans); letter-spacing: -.02em; color: var(--ink); font-variant-numeric: tabular-nums; }
-.cx-sub { color: var(--accent-deep); font-weight: 600; }
-.cx-note, .cx-money { margin: 16px 0 0; color: var(--ink-2); font-size: .94rem; max-width: 70ch; }
-.cx-money { padding-inline-start: 14px; border-inline-start: 4px solid var(--pollen); }
 
 /* ---------- results: measures table (extends .why) and rules ---------- */
-.measures-table tbody th { width: 30%; }
+.measures-table tbody th { width: 24%; }
+.measures-table .mt-outcome { color: var(--accent-deep); font-weight: 600; }
 .mt-q { display: block; margin-top: 4px; font-weight: 400; color: var(--muted); font-size: .9rem; }
 .rules-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .9fr) minmax(0, .9fr); gap: clamp(20px, 3vw, 40px); align-items: start; }
 .rules-layout h2 { margin: 0 0 .7em; }
@@ -728,10 +712,6 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   [dir='rtl'] .mf-no strong::after { content: " ↙"; }
   .mf-alt { max-width: 30ch; }
   .mf-loop { grid-column: 2; }
-  .cx-row { grid-template-columns: 1fr auto; row-gap: 8px; }
-  .cx-math { grid-column: 1 / -1; grid-row: 2; }
-  .cx-bar { grid-column: 1 / -1; grid-row: 3; }
-  .cx-result { grid-template-columns: 1fr; gap: 4px; }
   .rules-layout { grid-template-columns: 1fr; }
 }
 

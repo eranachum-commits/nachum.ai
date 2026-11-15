@@ -80,14 +80,12 @@ await t('generic use case replaces the solution pages', () => {
   }
   for (const [u, html] of Object.entries(pages)) assert.doesNotMatch(html, /href="(\/en)?\/solutions\//, 'link to removed solution page on ' + u);
 });
-await t('results page shows the measurement flow, a worked calculation and the measures', () => {
+await t('results page shows the measurement flow and the measures with outcomes', () => {
   for (const lang of langs) { const c = lang === 'he' ? he : en, r = c.results, page = pages[href(lang, 'results')];
     assert.equal((page.match(/<li class="mf mf--/g) || []).length, r.flow.nodes.length, 'flow nodes ' + lang);
     assert.equal((page.match(/class="mf mf--gate"/g) || []).length, 2, 'two decisions ' + lang);
-    const hb = Math.round(r.example.requests * r.example.before / 60), ha = Math.round(r.example.requests * r.example.after / 60);
-    assert.ok(page.replace(/<[^>]+>/g, '').includes(`${hb} − ${ha} = ${hb - ha}`), 'worked calculation ' + lang);
-    assert.ok(page.includes(r.example.labels.illustrative), 'example labelled illustrative ' + lang);
     assert.equal((page.match(/<tr><th scope="row">/g) || []).length, r.measures.items.length, 'measures rows ' + lang);
+    for (const x of r.measures.items) assert.ok(x.outcome && page.includes(x.outcome), 'outcome for ' + x.h);
   }
 });
 await t('illustrative content is labelled; no invented proof', () => {
