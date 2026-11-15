@@ -142,14 +142,18 @@ function explorer(c, id) {
 <p class="ill-note">${L.disclaimer}</p></div>`;
 }
 
+// Quadrant a dot sits in, using the same labels the chart shows: q = [high impact+feasible, high impact+hard, low impact+feasible, low impact+hard].
+const quadrant = (p, i) => p.q[(i.y >= 50 ? 2 : 0) + (i.x >= 50 ? 0 : 1)];
+
 function matrix(c, s) {
   const p = s.process;
   return `<div class="tool"><div class="tool-head"><h3 style="margin:0">${p.title}</h3>${ill(c)}</div>
-<div class="matrix" role="img" aria-label="${esc(p.title)}">
+<div class="matrix" aria-hidden="true">
 <span class="q" style="inset-block-start:0;inset-inline-end:0;text-align:end">${p.q[0]}</span><span class="q" style="inset-block-start:0;inset-inline-start:0">${p.q[1]}</span>
 <span class="q" style="inset-block-end:0;inset-inline-end:0;text-align:end">${p.q[2]}</span><span class="q" style="inset-block-end:0;inset-inline-start:0">${p.q[3]}</span>
 ${p.items.map((i) => `<span class="dot${i.top ? ' top' : ''}${i.no ? ' no' : ''}" style="inset-inline-start:${i.x}%;top:${i.y}%">${i.no ? '×' : i.n}</span>`).join('')}</div>
-<div class="axis"><span>← ${p.xl}</span><span>${p.yl} ↑</span></div>
+<div class="axis" aria-hidden="true"><span>← ${p.xl}</span><span>${p.yl} ↑</span></div>
+<ol class="sr-only">${p.items.map((i) => { const v = s.visual.items[i.n - 1]; return `<li>${v.t}: ${quadrant(p, i)}${v.no ? ` (${v.no})` : ''}</li>`; }).join('')}</ol>
 <p class="ill-note">${c.explorer.labels.disclaimer}</p></div>`;
 }
 

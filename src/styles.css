@@ -48,7 +48,7 @@ a:hover { color: var(--stamp); }
 .section--dark :focus-visible, .site-footer :focus-visible, .results :focus-visible { outline-color: #9ec1ff; }  /* 8.9:1 on night */
 bdi, .ltr { unicode-bidi: isolate; }
 .ltr { direction: ltr; display: inline-block; }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; border: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .skip { position: absolute; inset-inline-start: 12px; top: -60px; background: var(--ink); color: #fff; padding: 10px 16px; border-radius: var(--r-ctl); z-index: 100; }
 .skip:focus { top: 12px; }
 
