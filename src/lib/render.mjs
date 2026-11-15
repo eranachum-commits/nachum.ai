@@ -296,14 +296,34 @@ ${ctaBand(c, h.cta.title, h.cta.p)}`;
 };
 
 pages.usecase = (c) => {
-  const p = c.usecase, s = p.savings;
-  // One row per box a person used to fill in the diagram: before, with AI, what it saves.
-  // Column labels sit in a header row on wide screens and inside each cell (visible) on phones.
-  const cell = (cls, i, text) => `<p class="${cls}"><span class="sv-l">${s.cols[i]}</span>${text}</p>`;
-  const rows = s.items.map((x) => `<li>${cell('sv-before', 0, x.before)}${cell('sv-after', 1, x.after)}${cell('sv-saves', 2, x.saves)}</li>`).join('');
-  const body = `${pageHero(c, p.h1, p.lede)}
-${section(`${head('', c.pipeline.title, c.pipeline.intro, 'pipeline-title')}${pipeline(c, 'pipeline-usecase')}`, 'section--tint usecase-diagram', 'pipeline-s', 'pipeline-title')}
-${section(`${head('', s.title, s.intro, 'savings-title')}<div class="savings-head" aria-hidden="true">${s.cols.map((x) => `<span>${x}</span>`).join('')}</div><ol class="savings">${rows}</ol><p class="savings-total">${s.total}</p>`, '', 'savings', 'savings-title')}
+  const p = c.usecase, pn = p.pains, path = p.path, w = p.why;
+  // The page follows a CEO's line of thought: the pain I feel → where it hides → how we get there
+  // (with my decision at each step) → why this partner → book.
+  const hero = pageHero(c, p.h1, p.lede).replace('</div></section>',
+    `<div class="btn-row">${btn(c, p.heroCta, '#pains', 'btn--primary')}${btn(c, c.ui.book, bookUrl(c, 'usecase'), '')}</div></div></section>`);
+
+  // Pain picker: one tab per CEO pain. Each panel lights the step of a five-step lane where the pain hides,
+  // then says what we change and the number that proves it. Without JS every panel simply shows.
+  const lane = (where) => `<ol class="lane">${pn.lane.map((l, i) => `<li${where.includes(i) ? ' class="hit" aria-current="step"' : ''}><span class="lane-hex" aria-hidden="true"></span><span class="lane-l">${l}</span></li>`).join('')}</ol>`;
+  const tabs = pn.items.map((x, i) => `<button type="button" role="tab" id="pt-${i}" aria-controls="pp-${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${x.q}</button>`).join('');
+  const panels = pn.items.map((x, i) => `<div class="pain-panel" role="tabpanel" id="pp-${i}" aria-labelledby="pt-${i}" tabindex="0">
+<p class="pain-quote">${x.q}</p>
+<div class="pain-where"><h3>${pn.whereL}${x.where.length === pn.lane.length ? `<span class="pain-all">${pn.laneAll}</span>` : ''}</h3>${lane(x.where)}<p>${x.whereText}</p></div>
+<div class="pain-fix"><div><h3>${pn.doL}</h3><p>${x.do}</p></div><div class="pain-measure"><h3>${pn.measureL}</h3><p>${x.measure}</p></div></div></div>`).join('');
+  const picker = `<div class="pain-picker" data-ladder data-track-id="pain_picker"><div class="pain-tabs" role="tablist" aria-orientation="vertical" aria-label="${esc(pn.tabsLabel)}">${tabs}</div><div class="pain-panels">${panels}</div></div>`;
+
+  // Decision path: the four stages, with the CEO's go/no-go between them. Durations only, no prices.
+  const stages = c.offers.items.map((o, i) => `<li class="dp-stage${i === 0 ? ' dp-stage--free' : ''}"><span class="dp-n" aria-hidden="true">${i + 1}</span><div><p class="dp-name">${o.stage}</p><h3>${o.h}</h3><p class="dp-dur">${i === 0 ? `<span class="dp-free">${o.price}</span>` : ''}${duration(o.unit)}</p><p class="dp-get"><strong>${path.getL}</strong> ${path.get[i]}</p></div></li>${i < path.gates.length ? `<li class="dp-gate"><span class="dp-gate-mark" aria-hidden="true"></span><p><strong>${path.gateL}</strong> ${path.gates[i]}</p></li>` : ''}`).join('');
+
+  // Why Eran: a fair three-way comparison, then real facts from the founder bio (no invented numbers).
+  const whyTable = `<div class="why-wrap"><table class="why"><thead><tr><td></td>${w.cols.map((x, i) => `<th scope="col"${i === 2 ? ' class="why-us"' : ''}>${x}</th>`).join('')}</tr></thead><tbody>${w.rows.map((r) => `<tr><th scope="row">${r.h}</th>${r.cells.map((x, i) => `<td data-label="${esc(w.cols[i])}"${i === 2 ? ' class="why-us"' : ''}>${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  const sig = c.home.founder.signals;
+  const proof = `<div class="why-proof"><h3>${w.signalsTitle}</h3>${ticks([sig[0], sig[1], sig[2], sig[5]])}${btn(c, c.home.founder.link, href(c.lang, 'about'), '')}</div>`;
+
+  const body = `${hero}
+${section(`${head('', pn.title, pn.intro, 'pains-title')}${picker}`, 'usecase-pains', 'pains', 'pains-title')}
+${section(`${head('', path.title, path.intro, 'path-title')}<ol class="decision-path">${stages}</ol>`, 'section--tint usecase-path', 'path', 'path-title')}
+${section(`${head('', w.title, w.intro, 'why-title')}${whyTable}${proof}`, 'usecase-why', 'why', 'why-title')}
 ${ctaBand(c, p.cta.title, p.cta.p, 'usecase')}`;
   return { meta: p.meta, body };
 };
@@ -313,8 +333,7 @@ pages.how = (c) => {
   const body = `${pageHero(c, p.h1, p.lede)}
 ${section(p.stages.map((s, i) => `<article class="stage-row"><div class="stage-n" aria-hidden="true">${i + 1}</div><div><h2>${s.h}</h2><p class="who">${s.who}</p></div><div>${s.p.map((x) => `<p>${x}</p>`).join('')}<p class="out">${s.out}</p></div></article>`).join(''))}
 ${section(`${head('', p.tableTitle, p.salesIntro, 'stages-title')}${offerCards(c)}`, 'section--tint sales-path', 'stages', 'stages-title')}
-${section(`<div class="split split--even"><div><h2>${p.needTitle}</h2>${ticks(p.need)}</div><div>${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div></div>`)}
-${section(`${head('', c.pipeline.title, c.pipeline.intro, 'pipeline-title')}${pipeline(c, 'pipeline-how')}`, '', 'pipeline-s', 'pipeline-title')}`;
+${section(`<div class="split split--even"><div><h2>${p.needTitle}</h2>${ticks(p.need)}</div><div>${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div></div>`)}`;
   return { meta: p.meta, body };
 };
 

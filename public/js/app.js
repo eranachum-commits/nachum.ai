@@ -92,19 +92,24 @@ $$('[data-pipeline]').forEach((root) => {
 /* ---------- ladder tabs ---------- */
 $$('[data-ladder]').forEach((root) => {
   const tabs = $$('[role=tab]', root);
-  const sel = (i, focus) => (root.dataset.touched = '', tabs.forEach((t, j) => {
+  const vertical = root.matches('.pain-picker');
+  const sel = (i, focus) => tabs.forEach((t, j) => {
     const on = i === j;
     t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
     $('#' + t.getAttribute('aria-controls')).hidden = !on;
     if (on && focus) t.focus();
-  }));
+  });
+  // Panels are all visible in the HTML (works without JS); show one at a time once tabs are live.
+  root.classList.add('is-tabs');
+  sel(Math.max(0, tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true')));
   tabs.forEach((t, i) => {
-    t.addEventListener('click', () => { sel(i); track('tool_interaction', { tool: 'adoption_ladder', stage: i + 1 }); });
+    t.addEventListener('click', () => { root.dataset.touched = ''; sel(i); track('tool_interaction', { tool: root.dataset.trackId || 'adoption_ladder', stage: i + 1 }); });
     t.addEventListener('keydown', (e) => {
       const rtl = document.documentElement.dir === 'rtl';
-      const next = e.key === (rtl ? 'ArrowLeft' : 'ArrowRight'), prev = e.key === (rtl ? 'ArrowRight' : 'ArrowLeft');
-      if (next) { e.preventDefault(); sel((i + 1) % tabs.length, true); }
-      if (prev) { e.preventDefault(); sel((i - 1 + tabs.length) % tabs.length, true); }
+      const next = e.key === (vertical ? 'ArrowDown' : rtl ? 'ArrowLeft' : 'ArrowRight') || (vertical && e.key === (rtl ? 'ArrowLeft' : 'ArrowRight'));
+      const prev = e.key === (vertical ? 'ArrowUp' : rtl ? 'ArrowRight' : 'ArrowLeft') || (vertical && e.key === (rtl ? 'ArrowRight' : 'ArrowLeft'));
+      if (next || prev) { e.preventDefault(); root.dataset.touched = ''; sel((i + (next ? 1 : tabs.length - 1)) % tabs.length, true); }
+      if (e.key === 'Home' || e.key === 'End') { e.preventDefault(); root.dataset.touched = ''; sel(e.key === 'Home' ? 0 : tabs.length - 1, true); }
     });
   });
 });

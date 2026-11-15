@@ -79,8 +79,8 @@ English display headings use an editorial serif stack; Hebrew headings, body cop
 | Component | Where | What it shows |
 |---|---|---|
 | Brand hero + connected cells | Home | Business-outcome headline, proof-led positioning and a restrained Discover-to-Scale signal |
-| Generic use case | Use case page (`/business-use-case`), linked from the main menu | One recurring request from inbox to reply: the before/after AI pipeline diagram, then "Where the effort goes": five rows (before, with an AI workflow, what it saves), one per box a person used to fill by hand. Replaced the four solution pages |
-| Before/after AI pipeline | Use case page, how it works | One request moving through the business; the same boxes morph from the manual version (hand steps, rework loop) to the AI version (AI agent, live system connections, one human checkpoint) |
+| Use case page (CEO lens) | `/business-use-case`, linked from the main menu | A CEO's line of thought: pain picker (five CEO pains as tabs; each lights the step of a five-step lane where it hides, then what we change and the number that proves it) → decision path (four stages, "your call" between them, durations only) → "Why work with Eran" comparison (buy a tool / large consultancy / bee & co.) with real founder facts → booking. Replaced the four solution pages |
+| Before/after AI pipeline | Not shown on any page (component kept in `pipeline()`, its styles and `pipeline` copy, for reuse) | One request moving through the business; the same boxes morph from the manual version (hand steps, rework loop) to the AI version (AI agent, live system connections, one human checkpoint) |
 | Transformation flow + method track | Home | Discover → Prioritize → Design → Prove → Deploy → Scale, with a proof decision gate, refinement loop, executive flow chart and detailed list |
 | Offers as standing bars | Home | Stage 1 emphasised in navy with "Free" and the booking button; stages 2–4 rise as bars on a shared baseline and show duration only, no prices |
 | How-it-works stage rail | How it works | Stage rows joined by a vertical connector; the stages table shows a Duration column instead of prices |
@@ -151,7 +151,8 @@ Still present:
 | `6c1a48a` | Redesign around the bee & co. brand |
 | `9379b0b`, `1c8ef29` | Clearer AI transformation value proposition and Hebrew headline |
 | `d654323` | Four solution pages replaced by one generic use case: new `/business-use-case` page and home preview; Solutions menu and footer column replaced by "Use case"; quiz results repointed; old `/solutions/...` addresses redirect (301) to the use case; unused solution code, copy and ~150 style rules removed |
-| (this change) | Before/after AI diagram moved from home to the use case page, which now shows the diagram plus "Where the effort goes" (before, with AI, what it saves); use case preview removed from home |
+| (this change) | Before/after AI diagram moved from home to the use case page, which now shows the diagram plus "Where the effort goes" (before, with AI, what it saves); use case preview removed from home; diagram also removed from how it works |
+| (this change) | Use case page rebuilt around CEO pains: pain picker, decision path, why-Eran comparison; before/after diagram section and its savings rows removed; reusable tab behaviour extended (vertical tabs, Home/End, works without JS) |
 
 Process used for the redesigns: the `frontend-design` skill for direction, `design-critique` and `accessibility-review` passes, and two parallel review agents (design critic, WCAG auditor) whose findings were applied.
 
