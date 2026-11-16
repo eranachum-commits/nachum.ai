@@ -13,9 +13,8 @@ const ticks = (arr) => `<ul class="ticks">${arr.map((x) => `<li>${x}</li>`).join
 const section = (inner, cls = '', id = '', labelledby = '') => `<section class="section ${cls}"${id ? ` id="${id}"` : ''}${labelledby ? ` aria-labelledby="${labelledby}"` : ''}><div class="container">${inner}</div></section>`;
 // Prices and numbers inside RTL copy must not be reordered by the bidi algorithm.
 const bdi = (s) => `<bdi>${s}</bdi>`;
-const brandDescriptor = (c) => c.lang === 'he' ? 'AI יישומי · טרנספורמציה עסקית' : 'Applied AI · Business Transformation';
-const founderLine = (c) => c.lang === 'he' ? 'נוסד על ידי ערן' : 'Founded by Eran';
 const brandMark = () => `<svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true"><path class="mark-b" d="M28 13v62c0 8 6 14 14 14h20c15 0 27-12 27-27 0-14-11-25-25-26H44"/><path class="mark-cell" d="M45 36l13-8 13 8v16l-13 8-13-8z"/></svg>`;
+const founderLine = (c) => c.lang === 'he' ? 'נוסד על ידי ערן' : 'Founded by Eran';
 const brandLockup = (c, full = false) => `<span class="brand-lockup">${brandMark()}<span class="logo-type"><span class="logo-name">bee &amp; co.</span><span class="logo-studio"><span>AI SOLUTIONS &amp;</span><span>TRANSFORMATION</span></span>${full ? `<span class="logo-descriptor"><i>${founderLine(c)}</i></span>` : ''}</span></span>`;
 const founderPanel = (c) => `<div class="portrait" role="img" aria-label="Eran"><span class="portrait-mark">E</span><span class="portrait-role">${c.lang === 'he' ? 'מייסד · bee & co.' : 'Founder · bee & co.'}</span><span class="portrait-exp">${c.lang === 'he' ? 'יותר מ־20 שנות הנהגה טכנולוגית' : '20+ years of technology leadership'}</span></div>`;
 const brandSignal = (c) => {
@@ -270,7 +269,7 @@ function offerCards(c, ctaLabel = c.ui.book) {
 <div class="notice"><strong>${o.guarantee.h}.</strong> ${o.guarantee.p}</div>`;
 }
 const ctaBand = (c, title, p, pain) => section(`<div class="cta-band"><h2>${title}</h2><p class="lede">${p}</p><div class="btn-row">${btn(c, c.ui.book, bookUrl(c, pain), 'btn--primary', 'data-track="cta_band"')}${btn(c, c.ui.seeHow, href(c.lang, 'how'), '')}</div></div>`, 'section--dark');
-const pageHero = (c, h1, lede) => `<section class="page-hero"><div class="container"><p class="page-kicker"><span>${brandDescriptor(c)}</span><span>${founderLine(c)}</span></p><h1>${h1}</h1>${lede ? `<p class="lede">${lede}</p>` : ''}</div></section>`;
+const pageHero = (c, h1, lede) => `<section class="page-hero"><div class="container"><h1>${h1}</h1>${lede ? `<p class="lede">${lede}</p>` : ''}</div></section>`;
 
 /* ---------- pages ---------- */
 const pages = {};
@@ -281,7 +280,7 @@ pages.home = (c) => {
   const proofSignals = [h.founder.signals[0], h.founder.signals[2], h.founder.signals[5]];
   const body = `
 <section class="hero"><div class="container hero-stage">
-  <div class="hero-copy"><p class="brand-positioning"><span>${brandDescriptor(c)}</span><span>${founderLine(c)}</span></p><h1>${hr.h1}</h1>
+  <div class="hero-copy"><h1>${hr.h1}</h1>
   <p class="lede">${hr.sub}</p>
   <div class="btn-row">${btn(c, h.sales.cta, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, h.sales.secondary, '#deliver', '')}</div>
   <p class="trust-line"><strong>${hr.trust}</strong> ${hr.proof}</p></div>
@@ -336,7 +335,7 @@ pages.about = (c) => {
   // A CEO's questions in order: who is he (hero beside the portrait) → why does his experience matter to me
   // (experience → what it means for you) → why him over the alternatives (comparison) → how he works → book.
   const hero = `<section class="about-hero"><div class="container about-hero-in">
-<div class="about-hero-copy"><p class="page-kicker"><span>${brandDescriptor(c)}</span><span>${founderLine(c)}</span></p><h1>${p.h1}</h1><p class="lede">${p.lede}</p>
+<div class="about-hero-copy"><h1>${p.h1}</h1><p class="lede">${p.lede}</p>
 <div class="btn-row">${btn(c, p.cta, bookUrl(c), 'btn--primary', 'data-track="cta_about_hero"')}</div>
 <div class="about-facts"><h2 class="as-h3">${p.factsTitle}</h2>${ticks([sig[0], sig[1], sig[2]])}</div></div>
 <div class="about-hero-portrait">${founderPanel(c)}</div></div></section>`;
