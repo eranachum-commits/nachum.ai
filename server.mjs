@@ -31,7 +31,7 @@ export function validateLead(b) {
     extra: {},
   };
   for (const k of ['volume', 'system', 'channels', 'process', 'team', 'tools', 'stalled']) if (b[k]) lead.extra[k] = clean(b[k], 300);
-  for (const k of ['name', 'role', 'company', 'email']) if (!lead[k]) errors[k] = 'required';
+  for (const k of ['name', 'company', 'email', 'detail']) if (!lead[k]) errors[k] = 'required';
   if (lead.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(lead.email)) errors.email = 'email';
   if (!(b.consent === true || b.consent === 'true' || b.consent === 'on')) errors.consent = 'required';
   return { lead, errors };

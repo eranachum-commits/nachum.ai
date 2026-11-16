@@ -98,7 +98,21 @@ await t('about page: hero beside the portrait, experience ledger, comparison', (
 });
 await t('illustrative content is labelled; no invented proof', () => {
   for (const [u, html] of Object.entries(pages)) { assert.doesNotMatch(html, /testimonial|עדות מלקוח\b(?!ות)/i, u); }
-  assert.match(pages['/'], /להמחשה/); assert.match(pages['/en'], /Illustrative/);
+  assert.match(pages['/'], /להמחשה/); assert.match(pages['/en'], /illustrative/i);
+});
+await t('repositioning: named founder, no prices, no size limits, slim form', () => {
+  for (const [u, html] of Object.entries(pages)) {
+    for (const bad of [/30[–-]300/, /WalkMe|Resident\b|Agora|ClickDimensions|Sizmek|Amdocs/i, /₪\s?\d/, /\d+\s?אלף/, /free working session/i, /פגישת עבודה ללא עלות/, /unlock/i, /mid-market budget/i, /20\+ years of senior/i]) assert.doesNotMatch(html.replace(/<script[\s\S]*?<\/script>/g, ''), bad, `${bad} on ${u}`);
+  }
+  for (const lang of langs) { const c = lang === 'he' ? he : en, home = pages[href(lang, 'home')], contact = pages[href(lang, 'contact')];
+    assert.ok(home.includes(c.founder.name), 'founder full name on home ' + lang);
+    assert.ok(home.includes(c.founder.linkedin), 'LinkedIn on home ' + lang);
+    assert.equal((home.match(/<li class="way">/g) || []).length, 3, 'Decide / Build / Lead ' + lang);
+    assert.equal((home.match(/class="memo-row memo-row--/g) || []).length, c.home.memo.items.length, 'decision memo in hero ' + lang);
+    assert.doesNotMatch(home, /class="spine/, 'no career timeline on home ' + lang);
+    for (const f of ['name', 'company', 'detail', 'email']) assert.match(contact, new RegExp(`name="${f}"[^>]*required`), 'required ' + f + ' ' + lang);
+    for (const f of ['size', 'budget', 'urgency']) assert.doesNotMatch(contact, new RegExp(`name="${f}"`), 'no ' + f + ' field ' + lang);
+  }
 });
 await t('sitemap and robots', async () => {
   const sm = (await get('/sitemap.xml')).text; assert.equal((sm.match(/<url>/g) || []).length, (routes.length - 1) * 2);
@@ -110,19 +124,21 @@ await t('unknown route is a 404 in the right language', async () => {
 });
 
 const post = (body) => fetch(base + '/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: typeof body === 'string' ? body : JSON.stringify(body) });
-const good = { name: 'Test Owner', role: 'Owner / CEO / Managing director', company: 'Example Ltd', email: 'owner@example.com', consent: true, pain: 'quotes', lang: 'en', volume: '50–200' };
+const good = { name: 'Test Owner', company: 'Example Ltd', email: 'owner@example.com', detail: 'We need to decide whether to rebuild our quoting system.', consent: true, pain: 'usecase', lang: 'en', volume: '50–200' };
 await t('lead API rejects invalid input server-side', async () => {
   let r = await post({ ...good, email: 'not-an-email' }); assert.equal(r.status, 400); assert.equal((await r.json()).errors.email, 'email');
   r = await post({ ...good, consent: false }); assert.equal(r.status, 400);
   r = await post({ ...good, name: '' }); assert.equal(r.status, 400);
+  r = await post({ ...good, detail: '' }); assert.equal(r.status, 400);
+  r = await post({ ...good, role: undefined, phone: undefined }); assert.notEqual(r.status, 400);
   r = await post('{bad json'); assert.equal(r.status, 400);
   r = await post({ ...good, detail: 'x'.repeat(30000) }); assert.equal(r.status, 413);
 });
 await t('lead API: honeypot stores nothing; valid lead reports dev mode honestly', async () => {
   let r = await post({ ...good, website: 'http://spam' }); assert.equal(r.status, 200);
   r = await post(good); const j = await r.json(); assert.equal(r.status, 200); assert.equal(j.ok, true); assert.equal(j.mode, 'dev');
-  const lines = (await readFile(join(dataDir, 'leads.jsonl'), 'utf8')).trim().split('\n'); assert.equal(lines.length, 1);
-  assert.equal(JSON.parse(lines[0]).extra.volume, '50–200');
+  const lines = (await readFile(join(dataDir, 'leads.jsonl'), 'utf8')).trim().split('\n'); assert.equal(lines.length, 2, 'one lead without optional fields, one full lead; the honeypot stored nothing');
+  assert.equal(JSON.parse(lines.at(-1)).extra.volume, '50–200');
 });
 await t('lead API: rate limit kicks in', async () => {
   let last; for (let i = 0; i < 8; i++) last = await post({ ...good, email: `x${i}@example.com` }); assert.equal(last.status, 429);

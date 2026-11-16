@@ -101,7 +101,10 @@ $$('[data-ladder]').forEach((root) => {
   });
   // Panels are all visible in the HTML (works without JS); show one at a time once tabs are live.
   root.classList.add('is-tabs');
-  sel(Math.max(0, tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true')));
+  // A link such as /business-use-case#s-2 opens that tab and scrolls to the picker.
+  const fromHash = tabs.findIndex((t) => '#' + t.getAttribute('aria-controls') === location.hash);
+  sel(fromHash >= 0 ? fromHash : Math.max(0, tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true')));
+  if (fromHash >= 0) root.scrollIntoView({ block: 'start' });
   tabs.forEach((t, i) => {
     t.addEventListener('click', () => { root.dataset.touched = ''; sel(i); track('tool_interaction', { tool: root.dataset.trackId || 'adoption_ladder', stage: i + 1 }); });
     t.addEventListener('keydown', (e) => {
@@ -188,7 +191,7 @@ $$('[data-lead-form]').forEach((form) => {
   const D = form.dataset, status = $('.form-status', form), btn = $('[data-submit]', form);
   const params = new URLSearchParams(location.search);
   const pain = $('[name=pain]', form);
-  if (pain && params.get('pain') && pain.tagName === 'SELECT' && [...pain.options].some((o) => o.value === params.get('pain'))) pain.value = params.get('pain');
+  if (pain && /^[a-z-]{1,40}$/.test(params.get('pain') || '')) pain.value = params.get('pain');
   $('[name=source]', form).value = location.pathname;
   $('[name=ts]', form).value = Date.now();
   let started = false;

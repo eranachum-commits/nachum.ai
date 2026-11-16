@@ -20,3 +20,16 @@ Everything below is implemented as **cautious draft copy**. Nothing here is fina
 | 14 | OG share image | not generated | no `og:image` tag | Provide a 1200×630 PNG |
 
 Copy that makes numeric claims (all illustrative, labelled "להמחשה בלבד"/"Illustrative"): workflow explorer times, calculator defaults, hero document example, inbox/matrix/usage samples.
+
+## Repositioning (Nov 2026) — still open before launch
+
+| # | Item | Where in code | Current state | Needed |
+|---|------|---------------|---------------|--------|
+| 15 | Founder photo | `founderPanel` in `src/lib/render.mjs` | "EN" monogram card with full name | Professional photo of Eran (replace the monogram) |
+| 16 | Contact email | `contact.direct` (content) | LinkedIn link only | A professional address to show beside the form |
+| 17 | Decision Stories page | not built | — | Eran's raw notes for 2 career stories (Agora RE hotfixes −85% is the first candidate) |
+| 18 | References | not shown | one 2017 peer recommendation on LinkedIn | 3–5 recommendations from former CEOs/execs (Resident, Agora RE, WalkMe) |
+| 19 | LinkedIn profile | outside the site | still shows the startup role as current, "Open to work" on | End-date the startup role, add "Founder, bee & co.", new headline, turn off Open to work |
+| 20 | Booking link | `BOOKING_URL` env | not set | Calendar link so the success message offers "Choose a time" |
+
+Prices: none are published anywhere (decision 2026-11-16). Items 1 and 3 above are superseded.

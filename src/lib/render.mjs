@@ -2,70 +2,35 @@ import { href, routes } from './routes.mjs';
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const json = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
-const arrow = ''; // buttons say what they do; no decorative arrows
 
 /* ---------- primitives ---------- */
-export const btn = (c, label, url, cls = 'btn--primary', attrs = '') => `<a class="btn ${cls}" href="${url}" ${attrs}>${label}${arrow}</a>`;
+export const btn = (c, label, url, cls = 'btn--primary', attrs = '') => `<a class="btn ${cls}" href="${url}" ${attrs}>${label}</a>`;
 const bookUrl = (c, pain) => href(c.lang, 'contact') + (pain ? `?pain=${pain}` : '');
-const ill = (c) => `<span class="chip chip--ill">${esc(c.ui.illustrative)}</span>`;
-const head = (_eyebrow, title, intro, id) => `<div class="section-head"><h2${id ? ` id="${id}"` : ''}>${title}</h2>${intro ? `<p class="lede">${intro}</p>` : ''}</div>`;
+const head = (title, intro, id) => `<div class="section-head"><h2${id ? ` id="${id}"` : ''}>${title}</h2>${intro ? `<p class="lede">${intro}</p>` : ''}</div>`;
 const ticks = (arr) => `<ul class="ticks">${arr.map((x) => `<li>${x}</li>`).join('')}</ul>`;
 const section = (inner, cls = '', id = '', labelledby = '') => `<section class="section ${cls}"${id ? ` id="${id}"` : ''}${labelledby ? ` aria-labelledby="${labelledby}"` : ''}><div class="container">${inner}</div></section>`;
-// Prices and numbers inside RTL copy must not be reordered by the bidi algorithm.
-const bdi = (s) => `<bdi>${s}</bdi>`;
+const extLink = (url, label, cls = '') => `<a${cls ? ` class="${cls}"` : ''} href="${url}" rel="noopener" target="_blank">${label}</a>`;
 const brandMark = () => `<svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true"><path class="mark-b" d="M28 13v62c0 8 6 14 14 14h20c15 0 27-12 27-27 0-14-11-25-25-26H44"/><path class="mark-cell" d="M45 36l13-8 13 8v16l-13 8-13-8z"/></svg>`;
-const founderLine = (c) => c.lang === 'he' ? 'נוסד על ידי ערן' : 'Founded by Eran';
-const brandLockup = (c, full = false) => `<span class="brand-lockup">${brandMark()}<span class="logo-type"><span class="logo-name">bee &amp; co.</span><span class="logo-studio"><span>AI SOLUTIONS &amp;</span><span>TRANSFORMATION</span></span>${full ? `<span class="logo-descriptor"><i>${founderLine(c)}</i></span>` : ''}</span></span>`;
-const founderPanel = (c) => `<div class="portrait" role="img" aria-label="Eran"><span class="portrait-mark">E</span><span class="portrait-role">${c.lang === 'he' ? 'מייסד · bee & co.' : 'Founder · bee & co.'}</span><span class="portrait-exp">${c.lang === 'he' ? 'יותר מ־20 שנות הנהגה טכנולוגית' : '20+ years of technology leadership'}</span></div>`;
-const brandSignal = (c) => {
-  const outcome = c.lang === 'he' ? 'תוצאה אחת<br>שהוכחה' : 'one proven<br>outcome';
-  return `<div class="brand-signal" aria-hidden="true"><span></span><span></span><span></span><span>${outcome}</span></div>`;
-};
-const transformationFlow = (c) => {
-  const rtl = c.dir === 'rtl';
-  const steps = c.home.method.steps;
-  const xs = rtl ? [1010, 810, 610, 410] : [20, 220, 420, 620];
-  const gateX = rtl ? 250 : 940;
-  const deployX = rtl ? 165 : 855;
-  const scaleX = rtl ? 0 : 1030;
-  const meta = rtl ? ['ראיות', 'ערך', 'תכנון', 'בדיקה', 'אימוץ', 'מדידה'] : ['Evidence', 'Value', 'Blueprint', 'Test', 'Adoption', 'Measure'];
-  const gate = rtl ? 'הערך הוכח?' : 'Value proven?';
-  const yes = rtl ? 'כן — ממשיכים' : 'Yes — continue';
-  const refine = rtl ? 'לא — משפרים את התכנון' : 'No — refine the design';
-  const title = rtl ? 'מפת התהליך: מגילוי ועד הרחבה' : 'Transformation flow: from discovery to scale';
-  const swipe = rtl ? 'החליקו שמאלה כדי לעקוב אחר התהליך' : 'Swipe to follow the full process';
-  const swipeArrow = rtl ? '←' : '→';
-  const node = (i, x, y) => { const tx = rtl ? x + 142 : x + 18; const anchor = rtl ? 'end' : 'start'; return `<g class="mf-node"><rect x="${x}" y="${y}" width="160" height="88" rx="8"/><text x="${tx}" y="${y + 29}" text-anchor="${anchor}" class="mf-n">0${i + 1} · ${meta[i]}</text><text x="${tx}" y="${y + 58}" text-anchor="${anchor}" class="mf-title">${esc(steps[i].h)}</text></g>`; };
-  const topEdges = xs.slice(0, 3).map((x, i) => rtl
-    ? `<path d="M${x} 94H${xs[i + 1] + 170}"/>`
-    : `<path d="M${x + 160} 94H${xs[i + 1] - 10}"/>`).join('');
-  const proveToGate = rtl ? `M${xs[3]} 94H${gateX + 82}` : `M${xs[3] + 160} 94H${gateX - 82}`;
-  const deployToScale = rtl ? `M${deployX} 302H${scaleX + 160}` : `M${deployX + 160} 302H${scaleX}`;
-  const loop = rtl
-    ? `M${gateX} 146V205H${xs[2] + 80}V148`
-    : `M${gateX} 146V205H${xs[2] + 80}V148`;
-  return `<figure class="method-flow"><div class="method-flow-scroll"><svg viewBox="0 0 1200 380" role="img" aria-labelledby="method-flow-title"><title id="method-flow-title">${title}</title><defs><marker id="mf-arrow-${c.lang}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z"/></marker></defs><g class="mf-edges" marker-end="url(#mf-arrow-${c.lang})">${topEdges}<path d="${proveToGate}"/><path d="M${gateX} 146V248"/><path d="${deployToScale}"/></g><path class="mf-loop" d="${loop}" marker-end="url(#mf-arrow-${c.lang})"/>${xs.map((x, i) => node(i, x, 50)).join('')}<g class="mf-gate"><path d="M${gateX} 42  ${gateX + 82} 94  ${gateX} 146  ${gateX - 82} 94Z"/><text x="${gateX}" y="91">${gate}</text><text x="${gateX}" y="108" class="mf-small">${yes}</text></g>${node(4, deployX, 258)}${node(5, scaleX, 258)}<text x="${xs[2] + 80}" y="225" text-anchor="middle" class="mf-refine">${refine}</text></svg></div><figcaption class="flow-swipe">${swipe} ${swipeArrow}</figcaption></figure>`;
-};
+const brandLockup = (c, full = false) => `<span class="brand-lockup">${brandMark()}<span class="logo-type"><span class="logo-name">bee &amp; co.</span><span class="logo-studio"><span>AI SOLUTIONS &amp;</span><span>TRANSFORMATION</span></span>${full ? `<span class="logo-descriptor"><i>${c.founder.by}</i></span>` : ''}</span></span>`;
+// Portrait placeholder until a professional photo is approved (docs/APPROVALS.md #7). Never a stock image.
+const founderPanel = (c) => `<div class="portrait" role="img" aria-label="${esc(c.founder.photoAlt)}"><span class="portrait-mark">${c.founder.mark}</span><span class="portrait-name">${c.founder.name}</span><span class="portrait-role">${c.founder.role}</span><span class="portrait-exp">${c.founder.exp}</span></div>`;
 
 /* ---------- layout ---------- */
+const NAV = ['how', 'about', 'results', 'faq'];
 function header(c, key) {
-  const link = (k, label) => `<a href="${href(c.lang, k)}"${key === k ? ' aria-current="page"' : ''}>${label}</a>`;
+  const link = (k) => `<a href="${href(c.lang, k)}"${key === k ? ' aria-current="page"' : ''}>${c.nav[k]}</a>`;
   const other = c.lang === 'he' ? 'en' : 'he';
   return `<header class="site-header"><div class="container header-in">
   <a class="logo" href="${href(c.lang, 'home')}" aria-label="bee &amp; co. — ${esc(c.ui.home)}">${brandLockup(c)}</a>
   <nav class="nav" aria-label="${esc(c.ui.main)}">
-    ${link('how', c.nav.how)}
-    ${link('usecase', c.nav.usecase)}
-    ${link('about', c.nav.about)}${link('results', c.nav.results)}${link('faq', c.nav.faq)}
+    ${NAV.map(link).join('\n    ')}
     <a class="lang-switch" href="__ALT__" hreflang="${other}" lang="${other}" aria-label="${esc(c.switchAria)}">${c.switchLabel}</a>
   </nav>
   <a class="btn btn--primary btn--sm" href="${bookUrl(c)}" data-track="cta_header">${c.ui.book}</a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" data-menu>${c.ui.menu}</button>
 </div>
 <nav class="mobile-nav" id="mobile-nav" aria-label="${esc(c.ui.main)}"><div class="container">
-  <a href="${href(c.lang, 'how')}">${c.nav.how}</a>
-  <a href="${href(c.lang, 'usecase')}">${c.nav.usecase}</a>
-  <a href="${href(c.lang, 'about')}">${c.nav.about}</a><a href="${href(c.lang, 'results')}">${c.nav.results}</a><a href="${href(c.lang, 'faq')}">${c.nav.faq}</a>
+  ${NAV.map((k) => `<a href="${href(c.lang, k)}">${c.nav[k]}</a>`).join('\n  ')}
   <a href="__ALT__" hreflang="${other}" lang="${other}">${c.switchLabel}</a>
   <a class="btn btn--primary" href="${bookUrl(c)}">${c.ui.book}</a>
 </div></nav></header>`;
@@ -76,7 +41,7 @@ function footer(c) {
   return `<footer class="site-footer"><div class="container">
   <div class="foot-grid">
     <div><a class="logo logo--footer" href="${href(c.lang, 'home')}">${brandLockup(c, true)}</a><p>${f.tag}</p></div>
-    <div><h2>${f.cols.site}</h2><ul><li><a href="${href(c.lang, 'how')}">${c.nav.how}</a></li><li><a href="${href(c.lang, 'about')}">${c.nav.about}</a></li><li><a href="${href(c.lang, 'results')}">${c.nav.results}</a></li><li><a href="${href(c.lang, 'faq')}">${c.nav.faq}</a></li><li><a href="${href(c.lang, 'contact')}">${f.contact}</a></li></ul></div>
+    <div><h2>${f.cols.site}</h2><ul>${NAV.map((k) => `<li><a href="${href(c.lang, k)}">${c.nav[k]}</a></li>`).join('')}<li><a href="${href(c.lang, 'contact')}">${f.contact}</a></li><li>${extLink(c.founder.linkedin, c.founder.linkedinLabel)}</li></ul></div>
     <div><h2>${f.cols.example}</h2><ul><li><a href="${href(c.lang, 'usecase')}">${c.nav.usecase}</a></li></ul></div>
     <div><h2>${f.cols.legal}</h2><ul><li><a href="${href(c.lang, 'privacy')}">${f.privacy}</a></li><li><a href="${href(c.lang, 'security')}">${f.security}</a></li></ul></div>
   </div>
@@ -125,7 +90,7 @@ ${footer(c)}
   return c.lang === 'he' ? isolateNumbers(out) : out;
 }
 
-// In RTL text, ranges like "18–28" or "4,120" can be reordered by the bidi algorithm.
+// In RTL text, ranges like "15–30" or "2020" can be reordered by the bidi algorithm.
 // Wrap each numeric run in an LTR isolate (text nodes only; never inside tags, <script>, <style>, <title>).
 function isolateNumbers(html) {
   let skip = '';
@@ -136,211 +101,137 @@ function isolateNumbers(html) {
       return tok;
     }
     if (skip) return tok;
-    return tok.replace(/\d[\d,.]*(?:[–-]\d[\d,.]*)?/g, '<bdi dir="ltr">$&</bdi>');
+    // The Latin brand name keeps its trailing period on the right side of the name inside Hebrew lines.
+    return tok.replace(/\d[\d,.]*(?:[–-]\d[\d,.]*)?/g, '<bdi dir="ltr">$&</bdi>').replace(/bee (?:&|&amp;) co\./g, '<bdi dir="ltr">$&</bdi>');
   }).join('');
-}
-
-/* ---------- illustrative visuals ---------- */
-
-/* ---------- interactive tools ---------- */
-
-function pipeline(c, id) {
-  const p = c.pipeline;
-  const iconFor = {
-    req: ['request', 'request'], inbox: ['inbox', 'inbox'], sort: ['sort', 'spark'], look: ['search', 'price'],
-    draft: ['edit', 'spark'], erp: ['keyboard', 'sync'], appr: ['approve', 'approve'], reply: ['send', 'send'],
-  };
-  const icons = `<symbol id="${id}-i-request" viewBox="0 0 24 24"><path d="M7 3.5h7l3 3V20.5H7zM14 3.5v4h4M9.5 12h5M9.5 15.5h5"/></symbol>
-<symbol id="${id}-i-inbox" viewBox="0 0 24 24"><path d="M5 5.5h14l2 9v4H3v-4zM3.5 14.5h5l1.5 2h4l1.5-2h5"/></symbol>
-<symbol id="${id}-i-sort" viewBox="0 0 24 24"><path d="M6 6h12M8.5 11h7M11 16h2M4 19l2 2 2-2M6 21V4"/></symbol>
-<symbol id="${id}-i-spark" viewBox="0 0 24 24"><path d="M12 2.8l1.3 5.1 4.2 2.8-4.2 2.7L12 18.6l-1.3-5.2-4.2-2.7 4.2-2.8zM18.5 16l.7 2.1 1.8.9-1.8 1-.7 2-.7-2-1.8-1 1.8-.9z"/></symbol>
-<symbol id="${id}-i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M14.5 14.5L20 20M8 9h5M8 12h3"/></symbol>
-<symbol id="${id}-i-price" viewBox="0 0 24 24"><path d="M4 5h9l7 7-8 8-8-8z"/><circle cx="8" cy="9" r="1"/></symbol>
-<symbol id="${id}-i-edit" viewBox="0 0 24 24"><path d="M5 19l1-4L16.5 4.5a2 2 0 012.8 2.8L8.8 17.8zM14.5 6.5l3 3M5 20h14"/></symbol>
-<symbol id="${id}-i-keyboard" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M6 10h1M10 10h1M14 10h1M18 10h1M6 14h8M17 14h1"/></symbol>
-<symbol id="${id}-i-sync" viewBox="0 0 24 24"><path d="M19 8a7 7 0 00-12-2L5 8M5 8V4M5 8h4M5 16a7 7 0 0012 2l2-2M19 16v4M19 16h-4"/></symbol>
-<symbol id="${id}-i-approve" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19a5.5 5.5 0 0111 0M15.5 13.5l2 2 3.5-4"/></symbol>
-<symbol id="${id}-i-send" viewBox="0 0 24 24"><path d="M3 11.5L21 4l-7.5 18-2.2-7.8zM11.3 14.2L21 4"/></symbol>`;
-  const pos = {
-    req: { before: [25, 30], after: [25, 120] }, inbox: { before: [185, 30], after: [185, 120] },
-    sort: { before: [345, 30], after: [345, 120] }, look: { before: [505, 30], after: [185, 240] },
-    draft: { before: [505, 170], after: [345, 120] }, erp: { before: [345, 170], after: [345, 240] },
-    appr: { before: [185, 170], after: [505, 120] }, reply: { before: [25, 170], after: [505, 240] },
-  };
-  const mx = (x) => c.dir === 'rtl' ? 680 - x : x;
-  const nodePos = ([x, y]) => [c.dir === 'rtl' ? 680 - x - 140 : x, y];
-  const line = ([x1, y1, x2, y2], cls = '') => `<line${cls ? ` class="${cls}"` : ''} x1="${mx(x1)}" y1="${y1}" x2="${mx(x2)}" y2="${y2}" marker-end="url(#${id}-arrow)"/>`;
-  const beforeLines = [[165, 58, 183, 58], [325, 58, 343, 58], [485, 58, 503, 58], [575, 86, 575, 168], [505, 198, 487, 198], [345, 198, 327, 198], [185, 198, 167, 198]].map((x) => line(x)).join('');
-  const afterLines = [[165, 148, 183, 148], [325, 148, 343, 148], [485, 148, 503, 148], [575, 176, 575, 238]].map((x) => line(x)).join('');
-  const nodes = p.nodes.map((n) => {
-    const before = nodePos(pos[n.id].before), after = nodePos(pos[n.id].after);
-    const [beforeIcon, afterIcon] = iconFor[n.id];
-    const iconX = c.dir === 'rtl' ? 108 : 8;
-    return `<g class="pl-node pl--${n.before.kind}" data-node="${n.id}" data-before="${before.join(',')}" data-after="${after.join(',')}" data-before-t="${esc(n.before.t)}" data-before-s="${esc(n.before.s)}" data-before-kind="${n.before.kind}" data-before-icon="#${id}-i-${beforeIcon}" data-after-t="${esc(n.after.t)}" data-after-s="${esc(n.after.s)}" data-after-kind="${n.after.kind}" data-after-icon="#${id}-i-${afterIcon}"${n.after.hidden ? ' data-after-hidden' : ''} style="transform:translate(${before[0]}px, ${before[1]}px)"><rect width="140" height="56" rx="12"/><g class="pl-icon" aria-hidden="true" transform="translate(${iconX} -10)"><circle cx="12" cy="12" r="11"/><use href="#${id}-i-${beforeIcon}" x="4" y="4" width="16" height="16"/></g><text class="pl-title" x="70" y="20" text-anchor="middle" dominant-baseline="central">${n.before.t}</text><text class="pl-sub" x="70" y="38" text-anchor="middle" dominant-baseline="central">${n.before.s}</text></g>`;
-  }).join('');
-  const rework = `M${mx(255)} 226 L${mx(255)} 262 L${mx(560)} 262 L${mx(560)} 228`;
-  const price = `M${mx(375)} 178 L${mx(375)} 208 L${mx(255)} 208 L${mx(255)} 238`;
-  return `<figure class="pipeline tool" data-pipeline data-mode="before" data-desc-before="${esc(p.desc.before)}" data-desc-after="${esc(p.desc.after)}" data-stat-before="${esc(p.stat.before)}" data-stat-after="${esc(p.stat.after)}" data-line-before="${esc(p.legend.rework)}" data-line-after="${esc(p.legend.live)}">
-<div class="tool-head"><div class="seg" role="group" aria-label="${esc(p.toggleAria)}" hidden><button type="button" aria-pressed="true" data-mode-btn="before">${p.toggle.before}</button><button type="button" aria-pressed="false" data-mode-btn="after">${p.toggle.after}</button></div>${ill(c)}</div>
-<svg viewBox="0 0 680 320" role="img" aria-labelledby="${id}-title ${id}-desc"><title id="${id}-title">${p.title}</title><desc id="${id}-desc">${p.desc.before}</desc>
-<defs><marker id="${id}-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="context-stroke" stroke-linecap="round" stroke-linejoin="round"/></marker>${icons}</defs>
-<g class="pl-edges pl-edges--before">${beforeLines}<path class="pl-rework" d="${rework}" marker-end="url(#${id}-arrow)"/></g>
-<g class="pl-edges pl-edges--after" style="opacity:0">${afterLines}<line class="pl-live" x1="${mx(415)}" y1="178" x2="${mx(415)}" y2="238" marker-start="url(#${id}-arrow)" marker-end="url(#${id}-arrow)"/><path class="pl-live" d="${price}" marker-start="url(#${id}-arrow)" marker-end="url(#${id}-arrow)"/></g>
-${nodes}</svg>
-<ul class="pl-legend" aria-hidden="true"><li><i class="pl-key pl-key--person"></i>${p.legend.person}</li><li><i class="pl-key pl-key--ai"></i>${p.legend.ai}</li><li><i class="pl-key pl-key--system"></i>${p.legend.system}</li><li><i class="pl-key pl-key--line"></i><span data-pl-line-label>${p.legend.rework}</span></li></ul>
-<p class="pl-stat" data-pl-stat aria-live="polite">${p.stat.before}</p>
-<ol class="sr-only"><li>${p.desc.before}</li><li>${p.desc.after}</li></ol></figure>`;
-}
-
-
-
-function calculator(c) {
-  const k = c.calc, f = k.fields;
-  const fld = (n, extra = '') => `<div class="field"><label for="c-${n}">${f[n].l}</label><input id="c-${n}" name="${n}" inputmode="decimal" ${extra} aria-describedby="h-${n} e-${n}"><span class="hint" id="h-${n}">${f[n].h}</span><span class="err" id="e-${n}" role="alert"></span></div>`;
-  return `<div class="calc" data-calc data-errs='${json(k.err)}' data-hours="${esc(k.hours)}" data-days="${esc(k.daysU)}" data-tasks="${esc(k.tasksU)}" data-lang="${c.lang === 'he' ? 'he-IL' : 'en-IL'}">
-<form class="tool" novalidate onsubmit="return false"><div class="tool-head"><h3>${k.title}</h3>${ill(c)}</div>
-${fld('tasks', 'value="400"')}${fld('minutes', 'value="12"')}
-<div class="field"><label for="c-saved">${f.saved.l}: <b data-saved-out>30%</b></label><input id="c-saved" name="saved" type="range" min="1" max="80" value="30" aria-describedby="h-saved e-saved"><span class="hint" id="h-saved">${f.saved.h}</span><span class="err" id="e-saved" role="alert"></span></div>
-${fld('rate')}
-<button class="btn btn--sm" type="button" data-reset>${k.reset}</button></form>
-<div><div class="results" aria-live="polite"><dl>
-<div><dt>${k.out.freed}</dt><dd><span class="big" data-o="freed">—</span></dd></div>
-<div><dt>${k.out.base}</dt><dd data-o="base">—</dd></div>
-<div><dt>${k.out.days}</dt><dd data-o="days">—</dd></div>
-<div><dt>${k.out.extra}</dt><dd data-o="extra">—</dd></div>
-<div class="scen" data-value-box hidden><dt>${k.out.value}</dt><dd class="scen-val" data-o="value">—</dd></div></dl>
-<p class="small scen-note">${k.scenarioNote}</p></div>
-<div class="calc-explain"><h4>${k.explain.h}</h4>${ticks(k.explain.items)}</div>
-<div class="btn-row"><a class="btn btn--primary" href="${bookUrl(c)}" data-track="cta_calc">${k.cta}${arrow}</a></div></div></div>`;
-}
-
-function check(c) {
-  const k = c.check;
-  const res = Object.fromEntries(Object.entries(k.res).map(([n, r]) => [n, { ...r, href: href(c.lang, r.href) }]));
-  const data = { qs: k.qs, res, t: { next: k.next, back: k.back, see: k.see, again: k.again, of: k.of, optional: k.optional }, book: bookUrl(c) };
-  return `<div class="tool" data-check><script type="application/json" data-check-json>${json(data)}</script>
-<div data-check-ui><p>${k.intro}</p><button class="btn btn--primary" type="button" data-check-start>${k.start}</button></div></div>`;
 }
 
 const faqList = (items) => `<div class="faq">${items.map((i) => `<details><summary>${i.q}</summary><div class="ans"><p>${i.a}</p></div></details>`).join('')}</div>`;
 const faqLd = (items) => ({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map((i) => ({ '@type': 'Question', name: i.q, acceptedAnswer: { '@type': 'Answer', text: i.a } })) });
 
-/* ---------- lead form ---------- */
-function leadForm(c, { pain = '', extras = [], full = false, id = 'lead', title = c.form.title } = {}) {
-  const F = c.form, f = F.f;
-  const req = `<span aria-hidden="true"> *</span><span class="sr-only"> (${F.errors.required})</span>`;
-  const input = (n, label, { type = 'text', required = true, auto = '', cls = '', hint = '' } = {}) => `<div class="field ${cls}"><label for="${id}-${n}">${label}${required ? req : ''}</label><input id="${id}-${n}" name="${n}" type="${type}" ${required ? 'required' : ''} ${auto ? `autocomplete="${auto}"` : ''} aria-describedby="${id}-${n}-e${hint ? ` ${id}-${n}-h` : ''}">${hint ? `<span class="hint" id="${id}-${n}-h">${hint}</span>` : ''}<span class="err" id="${id}-${n}-e" role="alert"></span></div>`;
-  const select = (n, label, opts, { required = true, cls = '' } = {}) => `<div class="field ${cls}"><label for="${id}-${n}">${label}${required ? req : ''}</label><select id="${id}-${n}" name="${n}" ${required ? 'required' : ''} aria-describedby="${id}-${n}-e"><option value="">${F.select}</option>${opts.map((o) => (Array.isArray(o) ? `<option value="${o[0]}">${o[1]}</option>` : `<option>${o}</option>`)).join('')}</select><span class="err" id="${id}-${n}-e" role="alert"></span></div>`;
-  const E = F.errors, O = F.ok;
+/* ---------- lead form: four fields, the rest happens on the call ---------- */
+function leadForm(c, { id = 'lead' } = {}) {
+  const F = c.form, f = F.f, E = F.errors, O = F.ok;
+  const req = `<span aria-hidden="true"> *</span><span class="sr-only"> (${E.required})</span>`;
+  const input = (n, label, { type = 'text', required = true, auto = '' } = {}) => `<div class="field"><label for="${id}-${n}">${label}${required ? req : ''}</label><input id="${id}-${n}" name="${n}" type="${type}" ${required ? 'required' : ''} ${auto ? `autocomplete="${auto}"` : ''} aria-describedby="${id}-${n}-e"><span class="err" id="${id}-${n}-e" role="alert"></span></div>`;
   return `<form class="form-card" data-lead-form id="${id}" novalidate method="post" action="/api/leads" data-lang="${c.lang}"
  data-m-required="${esc(E.required)}" data-m-email="${esc(E.email)}" data-m-consent="${esc(E.consent)}" data-m-fix="${esc(c.ui.fixField)}" data-m-sending="${esc(c.ui.sending)}" data-m-fail="${esc(F.fail)}" data-m-net="${esc(F.failNet)}"
  data-ok-h="${esc(O.h)}" data-ok-p="${esc(O.p)}" data-dev-h="${esc(O.devH)}" data-dev="${esc(O.dev)}" data-book-l="${esc(O.book)}">
-${full ? `<h2>${title}</h2>` : `<h3>${title}</h3>`}
+<h2>${F.title}</h2>
 <div class="form-grid">
 ${input('name', f.name, { auto: 'name' })}
-${select('role', f.role, F.roles)}
 ${input('company', f.company, { auto: 'organization' })}
-${select('size', f.size, F.sizes, { required: false })}
-${full ? select('pain', f.pain, F.pains, { cls: 'full' }) : `<input type="hidden" name="pain" value="${pain}">`}
-${extras.map((x) => (x.t === 'select' ? select(x.n, x.l, x.o, { required: false }) : input(x.n, x.l, { required: false, hint: x.h || '' }))).join('')}
-${full ? `<div class="field full"><label for="${id}-detail">${f.detail}</label><textarea id="${id}-detail" name="detail" maxlength="1500"></textarea></div>${select('urgency', f.urgency, F.urgencies, { required: false })}${select('budget', f.budget, F.budgets, { required: false })}` : ''}
+<div class="field full"><label for="${id}-detail">${f.detail}${req}</label><textarea id="${id}-detail" name="detail" maxlength="1500" required aria-describedby="${id}-detail-h ${id}-detail-e"></textarea><span class="hint" id="${id}-detail-h">${f.detailHint}</span><span class="err" id="${id}-detail-e" role="alert"></span></div>
 ${input('email', f.email, { type: 'email', auto: 'email' })}
+${input('role', f.role, { required: false, auto: 'organization-title' })}
 ${input('phone', f.phone, { type: 'tel', required: false, auto: 'tel' })}
 </div>
-<p class="notice small form-note">${c.contact.priceNote}</p>
 <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
-<input type="hidden" name="lang" value="${c.lang}"><input type="hidden" name="source" value=""><input type="hidden" name="ts" value="">
+<input type="hidden" name="pain" value=""><input type="hidden" name="lang" value="${c.lang}"><input type="hidden" name="source" value=""><input type="hidden" name="ts" value="">
 <div class="field"><div class="checkrow"><input id="${id}-consent" name="consent" type="checkbox" required aria-describedby="${id}-consent-e"><label for="${id}-consent">${F.consent.replace(/ראו מדיניות פרטיות|See the privacy policy/, (m) => `<a href="${href(c.lang, 'privacy')}">${m}</a>`)}</label></div><span class="err" id="${id}-consent-e" role="alert"></span></div>
 <div class="form-status" role="status" aria-live="polite" tabindex="-1"></div>
-<button class="btn btn--primary" type="submit" data-submit>${c.ui.send}${arrow}</button>
+<button class="btn btn--primary" type="submit" data-submit>${c.ui.send}</button>
 </form>`;
 }
 
 /* ---------- shared blocks ---------- */
-// The four stages as standing bars that rise with commitment. Stage 1 is free and carries the booking action;
-// paid stages show their duration only (no prices here), with the price wording ("excl. VAT") dropped from the unit.
-const duration = (u) => u.split(' · ').filter((part) => !/VAT|מע״מ/.test(part)).join(' · ');
-function offerCards(c, ctaLabel = c.ui.book) {
-  const o = c.offers;
-  const [free, ...paid] = o.items;
-  const freeBar = `<li class="stair stair--free"><span class="stage">${free.stage}</span><p class="free-mark">${free.price}</p><h3>${free.h}</h3><p class="dur">${duration(free.unit)}</p>${btn(c, ctaLabel, bookUrl(c), 'btn--primary', 'data-track="cta_offers_free"')}<p>${free.p}</p><p class="guard">${free.guard}</p></li>`;
-  const bars = paid.map((x, i) => `<li class="stair" style="--step:${i + 1}"><span class="stage">${x.stage}</span><h3>${x.h}</h3><p class="dur">${duration(x.unit)}</p><p>${x.p}</p><p class="guard">${x.guard}</p></li>`).join('');
-  return `<ol class="stairs">${freeBar}${bars}</ol>
-<div class="notice"><strong>${o.guarantee.h}.</strong> ${o.guarantee.p}</div>`;
-}
-const ctaBand = (c, title, p, pain) => section(`<div class="cta-band"><h2>${title}</h2><p class="lede">${p}</p><div class="btn-row">${btn(c, c.ui.book, bookUrl(c, pain), 'btn--primary', 'data-track="cta_band"')}${btn(c, c.ui.seeHow, href(c.lang, 'how'), '')}</div></div>`, 'section--dark');
+// Decide → Build → Lead is a real progression of responsibility, so it is drawn as one connected line.
+const waysLine = (c, w) => `<ol class="ways">${w.items.map((x) => `<li class="way"><h3>${x.h}</h3><p>${x.p}</p><p class="way-first">${x.first}</p></li>`).join('')}</ol>`;
+const ctaBand = (c, title, p, pain) => section(`<div class="cta-band"><h2>${title}</h2><p class="lede">${p}</p><div class="btn-row">${btn(c, c.ui.book, bookUrl(c, pain), 'btn--primary', 'data-track="cta_band"')}${btn(c, c.ui.seeHow, href(c.lang, 'how'), '')}</div><p class="cta-note">${c.home.hero.note}</p></div>`, 'section--dark');
 const pageHero = (c, h1, lede) => `<section class="page-hero"><div class="container"><h1>${h1}</h1>${lede ? `<p class="lede">${lede}</p>` : ''}</div></section>`;
 
 /* ---------- pages ---------- */
 const pages = {};
 
 pages.home = (c) => {
-  const h = c.home, hr = h.hero;
-  const outcomePicks = [h.outcomes.items[0], h.outcomes.items[3], h.outcomes.items[5]];
-  const proofSignals = [h.founder.signals[0], h.founder.signals[2], h.founder.signals[5]];
-  const body = `
-<section class="hero"><div class="container hero-stage">
-  <div class="hero-copy"><h1>${hr.h1}</h1>
-  <p class="lede">${hr.sub}</p>
-  <div class="btn-row">${btn(c, h.sales.cta, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, h.sales.secondary, '#deliver', '')}</div>
-  <p class="trust-line"><strong>${hr.trust}</strong> ${hr.proof}</p></div>
-</div></section>
-${section(`<div class="delivery-layout"><div><span class="eyebrow">${h.delivery.eyebrow}</span><h2 id="delivery-title">${h.delivery.title}</h2><p class="lede">${h.delivery.intro}</p></div><ol class="delivery-list">${h.delivery.items.map((x, i) => `<li><span aria-hidden="true">0${i + 1}</span><p>${x}</p></li>`).join('')}</ol></div>`, 'home-delivery', 'deliver', 'delivery-title')}
-${section(`${head(h.sales.eyebrow, h.sales.title, h.sales.intro, 'o')}${offerCards(c, h.sales.cta)}<div class="home-offer-link">${btn(c, c.nav.how, href(c.lang, 'how'), '')}</div>`, 'section--tint home-offers', 'offers', 'o')}
-${section(`<div class="home-focus-grid"><div><span class="eyebrow">${h.outcomes.eyebrow}</span><h2 id="focus-title">${h.outcomes.title}</h2><p class="lede">${h.outcomes.intro}</p></div><div class="outcome-short">${outcomePicks.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div></div>`, 'home-focus', 'work', 'focus-title')}
-${section(`<div class="split split--even">${founderPanel(c)}<div><span class="eyebrow">${h.founder.eyebrow}</span><h2>${h.founder.title}</h2><p class="lede">${h.founder.p}</p>${ticks(proofSignals)}<div class="btn-row">${btn(c, h.founder.link, href(c.lang, 'about'), '')}${btn(c, h.safe.link, href(c.lang, 'security'), '')}</div></div></div>`, 'section--dark home-founder', 'founder')}
+  const h = c.home, hr = h.hero, m = h.memo;
+  // The one bold element: an illustrative Decision Sprint memo. It shows the judgment itself — including
+  // what not to build — instead of describing it. Verdicts are always written out, never colour alone.
+  const verdict = { build: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6 0h12l6 10.5L18 21H6L0 10.5z"/></svg>', later: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6.6 1h10.8l5.4 9.5-5.4 9.5H6.6L1.2 10.5z"/></svg>', no: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6.6 1h10.8l5.4 9.5-5.4 9.5H6.6L1.2 10.5z"/><path d="M5 18 19 3"/></svg>' };
+  const memo = `<aside class="memo" aria-labelledby="memo-title"><div class="memo-head"><h2 id="memo-title">${m.title}</h2><span class="memo-chip">${m.chip}</span></div><p class="memo-for">${m.for}</p><ol class="memo-list">${m.items.map((x) => `<li class="memo-row memo-row--${x.k}"><div><p class="memo-q">${x.q}</p><p class="memo-why">${x.why}</p></div><p class="memo-v">${verdict[x.k]}<span>${x.v}</span></p></li>`).join('')}</ol><p class="memo-foot">${m.foot}</p><p class="memo-by">${m.by}</p></aside>`;
+  const hero = `<section class="hero"><div class="container hero-grid">
+<div class="hero-copy"><h1>${hr.h1}</h1><p class="lede">${hr.sub}</p>
+<div class="btn-row">${btn(c, c.ui.book, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, hr.secondary, href(c.lang, 'how'), '')}</div>
+<p class="hero-note">${hr.note}</p></div>
+${memo}</div></section>`;
+
+  const s = h.situations;
+  const voices = `<ul class="voices">${s.items.map((x, i) => `<li><p class="voice-q">${x.q}</p><p class="voice-a">${x.a}</p><p class="voice-more"><a href="${href(c.lang, 'usecase')}#s-${i}">${s.more}</a></p></li>`).join('')}</ul>`;
+
+  const w = h.ways;
+  const b = h.belief;
+  const belief = `<div class="belief"><figure class="belief-quote"><blockquote><p>${b.quote}</p></blockquote><figcaption>${b.by}</figcaption></figure>${ticks(b.items)}</div>`;
+
+  const f = h.founder;
+  const founder = `<div class="founder-grid"><div><h2 id="founder-title">${f.title}</h2><p class="lede">${f.p}</p></div><div><p class="founder-co">${f.co}</p><div class="btn-row">${btn(c, f.link, href(c.lang, 'about'), '')}${extLink(c.founder.linkedin, c.founder.linkedinLabel, 'btn')}</div></div></div>`;
+
+  const sf = h.safe;
+  const safe = `${head(sf.title, '', 'safe-title')}<div class="grid g4 safe-grid">${sf.items.map((x) => `<article class="card"><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div><p class="safe-link"><a href="${href(c.lang, 'security')}">${sf.link}</a></p>`;
+
+  const body = `${hero}
+${section(`${head(s.title, '', 'voices-title')}${voices}`, 'home-voices', 'situations', 'voices-title')}
+${section(`${head(w.title, w.intro, 'ways-title')}${waysLine(c, w)}<p class="ways-link"><a href="${href(c.lang, 'how')}">${w.link}</a></p>`, 'section--tint home-ways', 'ways', 'ways-title')}
+${section(belief, 'section--dark home-belief', 'belief')}
+${section(founder, 'home-founder', 'founder', 'founder-title')}
+${section(safe, 'section--tint home-safe', 'safe', 'safe-title')}
 ${ctaBand(c, h.cta.title, h.cta.p)}`;
-  const ld = { '@context': 'https://schema.org', '@type': 'Organization', name: 'bee & co.', description: c.descriptor, founder: { '@type': 'Person', name: 'Eran' } };
+  const ld = {
+    '@context': 'https://schema.org', '@type': 'ProfessionalService', name: 'bee & co.', description: c.descriptor,
+    founder: { '@type': 'Person', name: 'Eran Nachum', jobTitle: 'Founder', sameAs: [c.founder.linkedin] },
+    areaServed: 'IL',
+  };
   return { meta: h.meta, body, ld };
 };
 
 pages.usecase = (c) => {
-  const p = c.usecase, pn = p.pains, path = p.path;
-  // The page follows a CEO's line of thought: the pain I feel → where it hides → how we get there
-  // (with my decision at each step) → book. Why this partner lives on the About page.
+  const p = c.usecase, pn = p.pains, path = p.path, ways = c.home.ways.items;
+  // A leader's line of thought: which situation is mine → what's really going on → where it sits (Decide / Build / Lead)
+  // → what Eran does → the first step → how I'll know it worked. Then how it unfolds, with my call at each step.
   const hero = pageHero(c, p.h1, p.lede).replace('</div></section>',
-    `<div class="btn-row">${btn(c, p.heroCta, '#pains', 'btn--primary')}${btn(c, c.ui.book, bookUrl(c, 'usecase'), '')}</div></div></section>`);
+    `<div class="btn-row">${btn(c, p.heroCta, '#situations', 'btn--primary')}${btn(c, c.ui.book, bookUrl(c, 'usecase'), '')}</div></div></section>`);
 
-  // Pain picker: one tab per CEO pain. Each panel lights the step of a five-step lane where the pain hides,
-  // then says what we change and the number that proves it. Without JS every panel simply shows.
-  const lane = (where) => `<ol class="lane">${pn.lane.map((l, i) => `<li${where.includes(i) ? ' class="hit" aria-current="step"' : ''}><span class="lane-hex" aria-hidden="true"></span><span class="lane-l">${l}</span></li>`).join('')}</ol>`;
-  const tabs = pn.items.map((x, i) => `<button type="button" role="tab" id="pt-${i}" aria-controls="pp-${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${x.q}</button>`).join('');
-  const panels = pn.items.map((x, i) => `<div class="pain-panel" role="tabpanel" id="pp-${i}" aria-labelledby="pt-${i}" tabindex="0">
+  // Decide → Build → Lead lane: the engagement types this situation usually needs are lit.
+  // The lane is visual; screen readers get the same answer as a plain list of the lit engagement types.
+  const lane = (hit) => `<ol class="lane lane--ways" aria-hidden="true">${ways.map((w, i) => `<li${hit.includes(i) ? ' class="hit"' : ''}><span class="lane-hex"></span><span class="lane-l">${w.h}</span></li>`).join('')}</ol><p class="sr-only">${hit.map((i) => ways[i].h).join(', ')}</p>`;
+  const tabs = pn.items.map((x, i) => `<button type="button" role="tab" id="st-${i}" aria-controls="s-${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${x.q}</button>`).join('');
+  const panels = pn.items.map((x, i) => `<div class="pain-panel" role="tabpanel" id="s-${i}" aria-labelledby="st-${i}" tabindex="0">
 <p class="pain-quote">${x.q}</p>
-<div class="pain-where"><h3>${pn.whereL}${x.where.length === pn.lane.length ? `<span class="pain-all">${pn.laneAll}</span>` : ''}</h3>${lane(x.where)}<p>${x.whereText}</p></div>
-<div class="pain-fix"><div><h3>${pn.doL}</h3><p>${x.do}</p></div><div class="pain-measure"><h3>${pn.measureL}</h3><p>${x.measure}</p></div></div></div>`).join('');
-  const picker = `<div class="pain-picker" data-ladder data-track-id="pain_picker"><div class="pain-tabs" role="tablist" aria-orientation="vertical" aria-label="${esc(pn.tabsLabel)}">${tabs}</div><div class="pain-panels">${panels}</div></div>`;
+<div class="sit-under"><h3>${pn.underL}</h3><p>${x.under}</p></div>
+<div class="sit-ways"><h3>${pn.waysL}</h3>${lane(x.ways)}</div>
+<div class="sit-do"><h3>${pn.doL}</h3><p>${x.do}</p></div>
+<div class="pain-fix"><div><h3>${pn.firstL}</h3><p>${x.first}</p></div><div class="pain-measure"><h3>${pn.measureL}</h3><p>${x.measure}</p></div></div></div>`).join('');
+  const picker = `<div class="pain-picker" data-ladder data-track-id="situation_picker"><div class="pain-tabs" role="tablist" aria-orientation="vertical" aria-label="${esc(pn.tabsLabel)}">${tabs}</div><div class="pain-panels">${panels}</div></div>`;
 
-  // Decision path: the four stages, with the CEO's go/no-go between them. Durations only, no prices.
-  const stages = c.offers.items.map((o, i) => `<li class="dp-stage${i === 0 ? ' dp-stage--free' : ''}"><span class="dp-n" aria-hidden="true">${i + 1}</span><div><p class="dp-name">${o.stage}</p><h3>${o.h}</h3><p class="dp-dur">${i === 0 ? `<span class="dp-free">${o.price}</span>` : ''}${duration(o.unit)}</p><p class="dp-get"><strong>${path.getL}</strong> ${path.get[i]}</p></div></li>${i < path.gates.length ? `<li class="dp-gate"><span class="dp-gate-mark" aria-hidden="true"></span><p><strong>${path.gateL}</strong> ${path.gates[i]}</p></li>` : ''}`).join('');
+  // Decision path: the four engagement steps, with the leader's go/no-go between them. Durations only, never prices.
+  const stages = c.offers.items.map((o, i) => `<li class="dp-stage${i === 0 ? ' dp-stage--free' : ''}"><span class="dp-n" aria-hidden="true">${i + 1}</span><div><p class="dp-name">${o.stage}</p><h3>${o.h}</h3><p class="dp-dur">${o.price ? `<span class="dp-free">${o.price}</span>` : ''}${o.unit}</p><p class="dp-get"><strong>${path.getL}</strong> ${path.get[i]}</p></div></li>${i < path.gates.length ? `<li class="dp-gate"><span class="dp-gate-mark" aria-hidden="true"></span><p><strong>${path.gateL}</strong> ${path.gates[i]}</p></li>` : ''}`).join('');
 
   const body = `${hero}
-${section(`${head('', pn.title, pn.intro, 'pains-title')}${picker}`, 'usecase-pains', 'pains', 'pains-title')}
-${section(`${head('', path.title, path.intro, 'path-title')}<ol class="decision-path">${stages}</ol>`, 'section--tint usecase-path', 'path', 'path-title')}
+${section(`${head(pn.title, pn.intro, 'situations-title')}${picker}`, 'usecase-pains', 'situations', 'situations-title')}
+${section(`${head(path.title, path.intro, 'path-title')}<ol class="decision-path">${stages}</ol>`, 'section--tint usecase-path', 'path', 'path-title')}
 ${ctaBand(c, p.cta.title, p.cta.p, 'usecase')}`;
   return { meta: p.meta, body };
 };
 
 pages.how = (c) => {
-  const p = c.how;
+  const p = c.how, w = c.home.ways;
+  const stages = `<ol class="stage-list">${p.stages.map((s, i) => `<li class="stage-row"><div class="stage-n" aria-hidden="true">${i + 1}</div><div><h3>${s.h}</h3><p class="who">${s.who}</p></div><div>${s.p.map((x) => `<p>${x}</p>`).join('')}<p class="out">${s.out}</p></div></li>`).join('')}</ol><p class="notice">${c.offers.note}</p>`;
   const body = `${pageHero(c, p.h1, p.lede)}
-${section(p.stages.map((s, i) => `<article class="stage-row"><div class="stage-n" aria-hidden="true">${i + 1}</div><div><h2>${s.h}</h2><p class="who">${s.who}</p></div><div>${s.p.map((x) => `<p>${x}</p>`).join('')}<p class="out">${s.out}</p></div></article>`).join(''))}
-${section(`${head('', p.tableTitle, p.salesIntro, 'stages-title')}${offerCards(c)}`, 'section--tint sales-path', 'stages', 'stages-title')}
-${section(`<div class="split split--even"><div><h2>${p.needTitle}</h2>${ticks(p.need)}</div><div>${btn(c, p.cta, bookUrl(c), 'btn--primary')}</div></div>`)}`;
+${section(`${head(p.waysTitle, '', 'ways-title')}${waysLine(c, w)}`, 'section--tint how-ways', 'ways', 'ways-title')}
+${section(`${head(p.stagesTitle, '', 'stages-title')}${stages}`, 'how-stages', 'stages', 'stages-title')}
+${section(`<div class="split split--even"><div><h2>${p.needTitle}</h2>${ticks(p.need)}</div><div class="how-book">${btn(c, p.cta, bookUrl(c), 'btn--primary')}<p class="cta-note">${c.home.hero.note}</p></div></div>`, 'section--tint')}`;
   return { meta: p.meta, body };
 };
 
 pages.about = (c) => {
-  const p = c.about, w = p.why, mp = p.map, sig = c.home.founder.signals;
-  // A CEO's questions in order: who is he (hero beside the portrait) → why does his experience matter to me
-  // (experience → what it means for you) → why him over the alternatives (comparison) → how he works → book.
+  const p = c.about, w = p.why, mp = p.map;
+  // A CEO's questions in order: who is he → why his experience matters to me → why him over the alternatives → how he works → book.
   const hero = `<section class="about-hero"><div class="container about-hero-in">
 <div class="about-hero-copy"><h1>${p.h1}</h1><p class="lede">${p.lede}</p>
-<div class="btn-row">${btn(c, p.cta, bookUrl(c), 'btn--primary', 'data-track="cta_about_hero"')}</div>
-<div class="about-facts"><h2 class="as-h3">${p.factsTitle}</h2>${ticks([sig[0], sig[1], sig[2]])}</div></div>
+<div class="btn-row">${btn(c, p.cta, bookUrl(c), 'btn--primary', 'data-track="cta_about_hero"')}${extLink(c.founder.linkedin, c.founder.linkedinLabel, 'btn')}</div>
+<div class="about-facts"><h2 class="as-h3">${p.factsTitle}</h2>${ticks(p.facts)}</div></div>
 <div class="about-hero-portrait">${founderPanel(c)}</div></div></section>`;
 
-  const story = `<div class="about-prose">${p.story.map((x) => `<p>${x}</p>`).join('')}</div>`;
+  const story = `<div class="about-story"><div class="about-prose">${p.story.map((x) => `<p>${x}</p>`).join('')}</div><aside class="about-co"><h2 class="as-h3">${p.co.h}</h2><p>${p.co.p}</p></aside></div>`;
 
   // Signature: each line of experience → what it means for the client's project, joined by an arrow.
   const ledger = `<div class="xp-head" aria-hidden="true"><span>${mp.fromL}</span><span>${mp.toL}</span></div><ol class="xp-ledger">${mp.rows.map((x) => `<li><p class="xp-from"><span class="sr-only">${mp.fromL}: </span>${x.from}</p><span class="xp-arrow" aria-hidden="true"></span><p class="xp-to"><span class="sr-only">${mp.toL}: </span>${x.to}</p></li>`).join('')}</ol>`;
@@ -349,21 +240,17 @@ pages.about = (c) => {
 
   const body = `${hero}
 ${section(story, 'about-story-sec')}
-${section(`${head('', mp.title, mp.intro, 'xp-title')}${ledger}`, 'section--tint about-xp', 'experience', 'xp-title')}
-${section(`${head('', w.title, w.intro, 'why-title')}${whyTable}`, 'about-why', 'why', 'why-title')}
+${section(`${head(mp.title, mp.intro, 'xp-title')}${ledger}`, 'section--tint about-xp', 'experience', 'xp-title')}
+${section(`${head(w.title, w.intro, 'why-title')}${whyTable}`, 'about-why', 'why', 'why-title')}
 ${section(`<div class="about-how"><h2 id="how-title">${p.princTitle}</h2>${ticks(p.princ)}</div>`, 'section--tint about-how-sec', 'how-we-work', 'how-title')}
 ${ctaBand(c, p.cta, p.ctaP)}`;
-  return { meta: p.meta, body };
+  const ld = { '@context': 'https://schema.org', '@type': 'Person', name: 'Eran Nachum', jobTitle: 'Founder', worksFor: { '@type': 'Organization', name: 'bee & co.' }, sameAs: [c.founder.linkedin] };
+  return { meta: p.meta, body, ld };
 };
 
 pages.results = (c) => {
   const p = c.results, f = p.flow, m = p.measures, r = p.rules;
-  // Answers a CEO's questions in order: how do you measure (flowchart), what exactly do you track and
-  // what it proves (measures with outcomes) — then the rules and booking.
-
-  // Measurement flowchart: data in → measure → agree the bar ◇ → pilot → compare → cleared? ◇ → run and report.
-  // Steps are numbered hexagons (a real sequence), decisions are diamonds, the data source is a chip.
-  // The "No" branch hangs under the second decision; "Every month" loops under the last step.
+  // How do you measure (flowchart) → what exactly do you track and what it proves (measures with outcomes) → rules → book.
   let n = 0;
   const node = (x, i) => {
     const shape = x.kind === 'step' ? `<span class="mf-shape" aria-hidden="true">${++n}</span>` : `<span class="mf-shape" aria-hidden="true"></span>`;
@@ -373,15 +260,11 @@ pages.results = (c) => {
     return `<li class="mf mf--${x.kind}">${shape}<p class="mf-text"><span class="mf-t">${x.t}</span><span class="mf-s">${x.s}</span></p>${decide}${loop}</li>`;
   };
   const flow = `<ol class="mflow">${f.nodes.map(node).join('')}</ol>`;
-
-  // Measures: same table pattern as the use case comparison (stacks into labelled blocks on phones).
   const table = `<div class="why-wrap"><table class="why measures-table"><thead><tr>${m.cols.map((x) => `<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${m.items.map((x) => `<tr><th scope="row">${x.h}<span class="mt-q">${x.q}</span></th><td data-label="${esc(m.cols[1])}" class="mt-outcome">${x.outcome}</td><td data-label="${esc(m.cols[2])}">${x.calc}</td><td data-label="${esc(m.cols[3])}">${x.src}</td></tr>`).join('')}</tbody></table></div>`;
-
   const rules = `<div class="rules-layout"><div><h2 id="rules-title">${r.title}</h2>${ticks(r.items)}</div><article class="rules-card rules-card--monthly"><h3>${r.monthly.h}</h3><p>${r.monthly.p}</p></article><article class="rules-card"><h3>${r.honest.h}</h3><p>${r.honest.p}</p></article></div>`;
-
   const body = `${pageHero(c, p.h1, p.lede)}
-${section(`${head('', f.title, f.intro, 'flow-title')}${flow}`, 'results-flow', 'flow', 'flow-title')}
-${section(`${head('', m.title, m.intro, 'measures-title')}${table}`, 'section--tint results-measures', 'measures', 'measures-title')}
+${section(`${head(f.title, f.intro, 'flow-title')}${flow}`, 'results-flow', 'flow', 'flow-title')}
+${section(`${head(m.title, m.intro, 'measures-title')}${table}`, 'section--tint results-measures', 'measures', 'measures-title')}
 ${section(rules, 'results-rules', 'rules', 'rules-title')}
 ${ctaBand(c, p.cta.title, p.cta.p)}`;
   return { meta: p.meta, body };
@@ -402,7 +285,7 @@ pages.security = (c) => {
 pages.contact = (c) => {
   const p = c.contact;
   const body = `${pageHero(c, p.h1, p.lede)}
-${section(`<div class="split split--top"><div>${leadForm(c, { full: true, id: 'lead' })}</div><aside class="aside-stack"><div class="card"><h3>${p.next.h}</h3><ol class="steps">${p.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div><div class="card"><h3>${p.bring.h}</h3>${ticks(p.bring.items)}</div></aside></div>`)}`;
+${section(`<div class="split split--top"><div>${leadForm(c)}</div><aside class="aside-stack"><div class="contact-person">${founderPanel(c)}</div><div class="card"><h3>${p.next.h}</h3><ol class="steps">${p.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div><div class="card"><h3>${p.bring.h}</h3>${ticks(p.bring.items)}</div><div class="card"><h3>${p.direct.h}</h3><p>${p.direct.p} ${extLink(c.founder.linkedin, c.founder.linkedinLabel)}</p></div></aside></div>`)}`;
   return { meta: p.meta, body };
 };
 
