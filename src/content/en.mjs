@@ -289,7 +289,7 @@ export default {
     title: 'Your message',
     f: {
       name: 'Full name', company: 'Company', role: 'Your role (optional)', detail: 'What’s on your mind?',
-      detailHint: 'A few sentences are enough: the decision, the problem or the idea.', email: 'Work email', phone: 'Phone (optional)',
+      detailHint: 'A few sentences are enough: the decision, the problem or the idea.', email: 'Email', phone: 'Phone (optional)',
     },
     consent: 'I agree that bee & co. may contact me about this message and store these details for that purpose. See the privacy policy.',
     errors: { required: 'This field is required.', email: 'Enter a valid email address.', consent: 'Please confirm to continue.' },
