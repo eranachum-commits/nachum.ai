@@ -25,7 +25,7 @@ Copy that makes numeric claims (all illustrative, labelled "להמחשה בלב�
 
 | # | Item | Where in code | Current state | Needed |
 |---|------|---------------|---------------|--------|
-| 15 | Founder photo | `founderPanel` in `src/lib/render.mjs` | "EN" monogram card with full name | Professional photo of Eran (replace the monogram) |
+| 15 | Founder photo | `PHOTO` in `src/lib/render.mjs`, files in `public/img/` | **Done** (Nov 2026): home founder section, About hero, Contact, memo signature | To replace it, use new file names (e.g. `-v2`): images are cached for a year |
 | 16 | Contact email | `contact.direct` (content) | LinkedIn link only | A professional address to show beside the form |
 | 17 | Decision Stories page | not built | — | Eran's raw notes for 2 career stories (Agora RE hotfixes −85% is the first candidate) |
 | 18 | References | not shown | one 2017 peer recommendation on LinkedIn | 3–5 recommendations from former CEOs/execs (Resident, Agora RE, WalkMe) |

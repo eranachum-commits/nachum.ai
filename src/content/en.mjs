@@ -5,8 +5,7 @@ export default {
   brand: 'bee & co.',
   descriptor: 'Senior technology and AI leadership, hands-on.',
   founder: {
-    name: 'Eran Nachum', mark: 'EN', by: 'Founded by Eran Nachum', role: 'Founder, bee & co.',
-    exp: 'Former VP R&D, led R&D organizations of 50+',
+    name: 'Eran Nachum', by: 'Founded by Eran Nachum', role: 'Founder, bee & co.',
     linkedin: 'https://www.linkedin.com/in/eran-nachum-2123b03/', linkedinLabel: 'Eran on LinkedIn',
     photoAlt: 'Eran Nachum, founder of bee & co.',
   },
@@ -280,6 +279,7 @@ export default {
   contact: {
     meta: { title: 'Talk to Eran — bee & co.', desc: 'Book a 30-minute call with Eran Nachum about an AI or technology decision. No sales team, no obligation.' },
     h1: 'Talk to Eran',
+    person: 'You’ll be talking to',
     lede: 'Tell us briefly what’s on your mind. Eran reads every message himself and replies personally.',
     next: { h: 'What happens next', steps: ['Eran reads your message and replies personally.', 'You pick a time for a 30-minute call.', 'If there is a fit, you receive a short written proposal for the next step.'] },
     bring: { h: 'Useful to mention', items: ['The decision or problem in front of you', 'Why it matters now', 'Anything you have already tried'] },

@@ -12,8 +12,11 @@ const section = (inner, cls = '', id = '', labelledby = '') => `<section class="
 const extLink = (url, label, cls = '') => `<a${cls ? ` class="${cls}"` : ''} href="${url}" rel="noopener" target="_blank">${label}</a>`;
 const brandMark = () => `<svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true"><path class="mark-b" d="M28 13v62c0 8 6 14 14 14h20c15 0 27-12 27-27 0-14-11-25-25-26H44"/><path class="mark-cell" d="M45 36l13-8 13 8v16l-13 8-13-8z"/></svg>`;
 const brandLockup = (c, full = false) => `<span class="brand-lockup">${brandMark()}<span class="logo-type"><span class="logo-name">bee &amp; co.</span><span class="logo-studio"><span>AI SOLUTIONS &amp;</span><span>TRANSFORMATION</span></span>${full ? `<span class="logo-descriptor"><i>${c.founder.by}</i></span>` : ''}</span></span>`;
-// Portrait placeholder until a professional photo is approved (docs/APPROVALS.md #7). Never a stock image.
-const founderPanel = (c) => `<div class="portrait" role="img" aria-label="${esc(c.founder.photoAlt)}"><span class="portrait-mark">${c.founder.mark}</span><span class="portrait-name">${c.founder.name}</span><span class="portrait-role">${c.founder.role}</span><span class="portrait-exp">${c.founder.exp}</span></div>`;
+// The founder's photo. Two widths via srcset; explicit size so nothing shifts while it loads.
+const PHOTO = { src: '/img/eran-nachum-806.jpg', set: '/img/eran-nachum-420.jpg 420w, /img/eran-nachum-806.jpg 806w', face: '/img/eran-nachum-face-160.jpg' };
+const founderPanel = (c, { eager = false, sizes = '(min-width: 980px) 360px, 80vw' } = {}) => `<figure class="portrait"><span class="portrait-photo"><img src="${PHOTO.src}" srcset="${PHOTO.set}" sizes="${sizes}" width="806" height="772" alt="${esc(c.founder.photoAlt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></span><figcaption><span class="portrait-name">${c.founder.name}</span><span class="portrait-role">${c.founder.role}</span></figcaption></figure>`;
+// Small round face beside a name that is already written out, so the image itself is decorative.
+const avatar = (size = 40) => `<img class="avatar" src="${PHOTO.face}" width="${size}" height="${size}" alt="" loading="lazy" decoding="async">`;
 
 /* ---------- layout ---------- */
 const NAV = ['how', 'about', 'results', 'faq'];
@@ -102,7 +105,7 @@ function isolateNumbers(html) {
     }
     if (skip) return tok;
     // The Latin brand name keeps its trailing period on the right side of the name inside Hebrew lines.
-    return tok.replace(/\d[\d,.]*(?:[–-]\d[\d,.]*)?/g, '<bdi dir="ltr">$&</bdi>').replace(/bee (?:&|&amp;) co\./g, '<bdi dir="ltr">$&</bdi>');
+    return tok.replace(/\d[\d,.]*(?:[–-]\d[\d,.]*)?[+%]?/g, '<bdi dir="ltr">$&</bdi>').replace(/bee (?:&|&amp;) co\./g, '<bdi dir="ltr">$&</bdi>');
   }).join('');
 }
 
@@ -148,7 +151,7 @@ pages.home = (c) => {
   // The one bold element: an illustrative Decision Sprint memo. It shows the judgment itself — including
   // what not to build — instead of describing it. Verdicts are always written out, never colour alone.
   const verdict = { build: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6 0h12l6 10.5L18 21H6L0 10.5z"/></svg>', later: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6.6 1h10.8l5.4 9.5-5.4 9.5H6.6L1.2 10.5z"/></svg>', no: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6.6 1h10.8l5.4 9.5-5.4 9.5H6.6L1.2 10.5z"/><path d="M5 18 19 3"/></svg>' };
-  const memo = `<aside class="memo" aria-labelledby="memo-title"><div class="memo-head"><h2 id="memo-title">${m.title}</h2><span class="memo-chip">${m.chip}</span></div><p class="memo-for">${m.for}</p><ol class="memo-list">${m.items.map((x) => `<li class="memo-row memo-row--${x.k}"><div><p class="memo-q">${x.q}</p><p class="memo-why">${x.why}</p></div><p class="memo-v">${verdict[x.k]}<span>${x.v}</span></p></li>`).join('')}</ol><p class="memo-foot">${m.foot}</p><p class="memo-by">${m.by}</p></aside>`;
+  const memo = `<aside class="memo" aria-labelledby="memo-title"><div class="memo-head"><h2 id="memo-title">${m.title}</h2><span class="memo-chip">${m.chip}</span></div><p class="memo-for">${m.for}</p><ol class="memo-list">${m.items.map((x) => `<li class="memo-row memo-row--${x.k}"><div><p class="memo-q">${x.q}</p><p class="memo-why">${x.why}</p></div><p class="memo-v">${verdict[x.k]}<span>${x.v}</span></p></li>`).join('')}</ol><p class="memo-foot">${m.foot}</p><p class="memo-by">${avatar(36)}<span>${m.by}</span></p></aside>`;
   const hero = `<section class="hero"><div class="container hero-grid">
 <div class="hero-copy"><h1>${hr.h1}</h1><p class="lede">${hr.sub}</p>
 <div class="btn-row">${btn(c, c.ui.book, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, hr.secondary, href(c.lang, 'how'), '')}</div>
@@ -163,7 +166,7 @@ ${memo}</div></section>`;
   const belief = `<div class="belief"><figure class="belief-quote"><blockquote><p>${b.quote}</p></blockquote><figcaption>${b.by}</figcaption></figure>${ticks(b.items)}</div>`;
 
   const f = h.founder;
-  const founder = `<div class="founder-grid"><div><h2 id="founder-title">${f.title}</h2><p class="lede">${f.p}</p></div><div><p class="founder-co">${f.co}</p><div class="btn-row">${btn(c, f.link, href(c.lang, 'about'), '')}${extLink(c.founder.linkedin, c.founder.linkedinLabel, 'btn')}</div></div></div>`;
+  const founder = `<div class="founder-grid">${founderPanel(c, { sizes: '(min-width: 900px) 340px, 80vw' })}<div><h2 id="founder-title">${f.title}</h2><p class="lede">${f.p}</p><p class="founder-co">${f.co}</p><div class="btn-row">${btn(c, f.link, href(c.lang, 'about'), '')}${extLink(c.founder.linkedin, c.founder.linkedinLabel, 'btn')}</div></div></div>`;
 
   const sf = h.safe;
   const safe = `${head(sf.title, '', 'safe-title')}<div class="grid g4 safe-grid">${sf.items.map((x) => `<article class="card"><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div><p class="safe-link"><a href="${href(c.lang, 'security')}">${sf.link}</a></p>`;
@@ -229,7 +232,7 @@ pages.about = (c) => {
 <div class="about-hero-copy"><h1>${p.h1}</h1><p class="lede">${p.lede}</p>
 <div class="btn-row">${btn(c, p.cta, bookUrl(c), 'btn--primary', 'data-track="cta_about_hero"')}${extLink(c.founder.linkedin, c.founder.linkedinLabel, 'btn')}</div>
 <div class="about-facts"><h2 class="as-h3">${p.factsTitle}</h2>${ticks(p.facts)}</div></div>
-<div class="about-hero-portrait">${founderPanel(c)}</div></div></section>`;
+<div class="about-hero-portrait">${founderPanel(c, { eager: true })}</div></div></section>`;
 
   const story = `<div class="about-story"><div class="about-prose">${p.story.map((x) => `<p>${x}</p>`).join('')}</div><aside class="about-co"><h2 class="as-h3">${p.co.h}</h2><p>${p.co.p}</p></aside></div>`;
 
@@ -285,7 +288,7 @@ pages.security = (c) => {
 pages.contact = (c) => {
   const p = c.contact;
   const body = `${pageHero(c, p.h1, p.lede)}
-${section(`<div class="split split--top"><div>${leadForm(c)}</div><aside class="aside-stack"><div class="contact-person">${founderPanel(c)}</div><div class="card"><h3>${p.next.h}</h3><ol class="steps">${p.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div><div class="card"><h3>${p.bring.h}</h3>${ticks(p.bring.items)}</div><div class="card"><h3>${p.direct.h}</h3><p>${p.direct.p} ${extLink(c.founder.linkedin, c.founder.linkedinLabel)}</p></div></aside></div>`)}`;
+${section(`<div class="split split--top"><div><div class="contact-person"><p><span class="contact-person-l">${p.person}</span><span class="contact-person-n">${c.founder.name}</span><span class="contact-person-r">${c.founder.role}</span></p></div>${leadForm(c)}</div><aside class="aside-stack"><div class="card"><h3>${p.next.h}</h3><ol class="steps">${p.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div><div class="card"><h3>${p.bring.h}</h3>${ticks(p.bring.items)}</div><div class="card"><h3>${p.direct.h}</h3><p>${p.direct.p} ${extLink(c.founder.linkedin, c.founder.linkedinLabel)}</p></div></aside></div>`)}`;
   return { meta: p.meta, body };
 };
 

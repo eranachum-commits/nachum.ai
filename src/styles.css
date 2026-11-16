@@ -205,14 +205,6 @@ table.t tbody th strong { color: var(--ink); font-weight: 600; }
 .faq .ans { padding: 0 0 24px; max-width: 68ch; color: var(--ink-2); }
 .faq .ans p { margin: 0; }
 
-/* founder placeholder portrait */
-.portrait { aspect-ratio: 4/5; border-radius: var(--r-sheet); background: var(--night-2); display: flex; flex-direction: column; justify-content: flex-end; position: relative; overflow: hidden; max-width: 340px; width: 100%; justify-self: center; padding: 28px; isolation: isolate; }
-.portrait::before { content: ''; position: absolute; z-index: -1; width: 240px; aspect-ratio: 1.14; inset-inline-end: -76px; top: 18px; clip-path: polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%); background: var(--pollen); opacity: .92; }
-.portrait::after { content: ''; position: absolute; z-index: -1; width: 180px; aspect-ratio: 1.14; inset-inline-start: -70px; top: 144px; clip-path: polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%); background: var(--carbon); opacity: .36; }
-.portrait .portrait-mark { font: 400 clamp(4rem, 8vw, 6.4rem)/.9 Georgia, 'Times New Roman', serif; color: var(--on-night); letter-spacing: -.06em; direction: ltr; }
-.portrait .portrait-role { margin-top: 22px; color: var(--accent-on-night); font-size: .76rem; font-weight: 600; letter-spacing: .11em; text-transform: uppercase; }
-.portrait .portrait-exp { margin-top: 7px; color: var(--on-night-2); font-size: .82rem; line-height: 1.35; }
-.section:not(.section--dark) .portrait { background: var(--night); }
 
 .notice { margin-top: 18px; border-inline-start: 3px solid var(--accent); background: var(--accent-tint); border-radius: var(--r-ctl); border-start-start-radius: 0; border-end-start-radius: 0; padding: 14px 18px; font-size: .94rem; max-width: 80ch; }
 .notice--err { border-color: var(--alert); background: var(--alert-tint); }
@@ -545,9 +537,6 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   @keyframes verdict { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
 }
 
-/* Portrait card (About, Contact): the full name, then the role in sentence case. */
-.portrait .portrait-name { color: var(--on-night); font-size: 1.15rem; font-weight: 500; margin-top: 18px; letter-spacing: -.01em; }
-.portrait .portrait-role { text-transform: none; letter-spacing: 0; font-size: .86rem; font-weight: 500; margin-top: 4px; }
 
 /* ---------- situations: the CEO's own words, set as type ---------- */
 .voices { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 clamp(32px, 5vw, 80px); grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
@@ -604,8 +593,6 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 @media (min-width: 980px) { .about-story { grid-template-columns: minmax(0, 1.4fr) minmax(0, .8fr); } }
 .about-co { padding: clamp(20px, 2.4vw, 28px); background: var(--paper-2); border-radius: var(--r-sheet); border-inline-start: 3px solid var(--pollen); }
 .about-co p { margin: 0; color: var(--ink-2); }
-.contact-person .portrait { aspect-ratio: auto; max-width: none; padding: 22px; }
-.contact-person .portrait-mark { font-size: 2.8rem; }
 
 /* ---------- situations page: Decide / Build / Lead lane inside each panel ---------- */
 .lane--ways { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 420px; }
@@ -615,3 +602,31 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .voice-more { margin: .7em 0 0; font-size: .95rem; }
 .voice-more a { color: var(--accent-deep); }
 @media (max-width: 899px) { .lane--ways { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; } .lane--ways li { grid-template-columns: 1fr; justify-items: center; text-align: center; } .lane--ways li:not(:last-child)::after { top: 17px; bottom: auto; inset-inline-start: calc(50% + 22px); inset-inline-end: calc(-50% + 22px - 6px); width: auto; height: 2px; } }
+
+/* ---------- founder photo ---------- */
+/* The photo sits on its own light paper, framed like a print; the pollen edge ties it to the brand. */
+.portrait { margin: 0; width: 100%; max-width: 360px; background: var(--sheet); border: 1px solid var(--rule); border-bottom: 4px solid var(--pollen); border-radius: var(--r-sheet); overflow: hidden; }
+.portrait-photo { display: block; }
+.portrait img { display: block; width: 100%; height: auto; background: #f6f7fa; }
+.portrait figcaption { display: grid; gap: 2px; padding: 14px 18px 16px; border-top: 1px solid var(--rule); }
+.portrait-name { font-weight: 500; font-size: 1.08rem; color: var(--ink); letter-spacing: -.01em; }
+.portrait-role { font-size: .9rem; color: var(--accent-deep); font-weight: 500; }
+.founder-grid > .portrait { justify-self: start; max-width: 340px; }
+@media (min-width: 900px) { .founder-grid { grid-template-columns: minmax(0, .62fr) minmax(0, 1.38fr); align-items: center; } }
+.founder-grid .founder-co { margin-top: 1.2rem; }
+.avatar { display: inline-block; flex: none; border-radius: 50%; object-fit: cover; background: #f6f7fa; box-shadow: 0 0 0 2px var(--sheet), 0 0 0 3px var(--rule); }
+.memo-by { display: flex; align-items: center; gap: 10px; }
+.contact-person { margin-bottom: 16px; display: flex; align-items: center; gap: 16px; padding: 18px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r-sheet); }
+.contact-person p { margin: 0; display: grid; gap: 1px; }
+.contact-person-l { font-size: .85rem; color: var(--muted); }
+.contact-person-n { font-weight: 500; font-size: 1.08rem; color: var(--ink); }
+.contact-person-r { font-size: .86rem; color: var(--ink-2); }
+
+/* Founder photo (home and About): the photo sits inside the brand's portrait backdrop — a soft wash of night, the pollen cell
+   top-corner and the lavender cell low on the opposite side. The photo's near-white studio background is
+   multiplied into that backdrop, so the colours show through it while the subject stays crisp. */
+.portrait-photo { position: relative; isolation: isolate; overflow: hidden; background: color-mix(in srgb, var(--night) 14%, var(--peri)); }
+.portrait-photo::before, .portrait-photo::after { content: ''; position: absolute; z-index: 0; aspect-ratio: 1.14; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); }
+.portrait-photo::before { width: 58%; inset-inline-end: -16%; top: 4%; background: var(--pollen); opacity: .62; }
+.portrait-photo::after { width: 46%; inset-inline-start: -15%; top: 44%; background: var(--carbon); opacity: .9; }
+.portrait-photo img { position: relative; z-index: 1; background: transparent; mix-blend-mode: multiply; }

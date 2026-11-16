@@ -10,7 +10,7 @@ const SECRET = process.env.LEAD_WEBHOOK_SECRET || '';
 const BOOKING_URL = process.env.BOOKING_URL || '';
 const DATA_DIR = process.env.LEAD_DATA_DIR || (process.env.VERCEL ? '/tmp/bee-co-leads' : 'data');
 const DIST = join(process.cwd(), 'dist');
-const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain', '.json': 'application/json', '.png': 'image/png', '.ico': 'image/x-icon' };
+const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.ico': 'image/x-icon' };
 const SEC = {
   'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Frame-Options': 'DENY',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
@@ -90,7 +90,7 @@ async function serveStatic(req, res) {
     let s = await stat(file);
     if (s.isDirectory()) { file = join(file, 'index.html'); s = await stat(file); }
     const ext = extname(file);
-    const cache = ext === '.html' ? 'no-cache' : /woff2|svg/.test(ext) ? 'public, max-age=31536000, immutable' : 'public, max-age=3600';
+    const cache = ext === '.html' ? 'no-cache' : /woff2|svg/.test(ext) || file.includes('/img/') ? 'public, max-age=31536000, immutable' : 'public, max-age=3600';
     return send(res, 200, await readFile(file), { 'Content-Type': MIME[ext] || 'application/octet-stream', 'Cache-Control': cache });
   } catch {
     const lang = p.startsWith('/en') ? 'en' : 'he';

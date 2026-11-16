@@ -114,6 +114,18 @@ await t('repositioning: named founder, no prices, no size limits, slim form', ()
     for (const f of ['size', 'budget', 'urgency']) assert.doesNotMatch(contact, new RegExp(`name="${f}"`), 'no ' + f + ' field ' + lang);
   }
 });
+await t('founder photo is served, sized and described', async () => {
+  for (const lang of langs) { const c = lang === 'he' ? he : en;
+    const alt = c.founder.photoAlt.replace(/&/g, '&amp;');
+    for (const k of ['home', 'about']) { const img = (pages[href(lang, k)].match(/<img src="\/img\/eran-nachum-806\.jpg"[^>]*>/) || [''])[0];
+      assert.ok(img.includes('width="806" height="772"') && img.includes(`alt="${alt}"`), 'photo with size and alt on ' + k + ' ' + lang); }
+    assert.doesNotMatch(pages[href(lang, 'contact')], /<img [^>]*\/img\//, 'no photo on contact ' + lang);
+    assert.match(pages[href(lang, 'home')], /class="avatar"/, 'avatar on the memo signature ' + lang);
+  }
+  for (const f of ['eran-nachum-806.jpg', 'eran-nachum-420.jpg', 'eran-nachum-face-160.jpg']) {
+    const r = await fetch(base + '/img/' + f); assert.equal(r.status, 200, f); assert.equal(r.headers.get('content-type'), 'image/jpeg', f);
+  }
+});
 await t('sitemap and robots', async () => {
   const sm = (await get('/sitemap.xml')).text; assert.equal((sm.match(/<url>/g) || []).length, (routes.length - 1) * 2);
   assert.match((await get('/robots.txt')).text, /Sitemap:/);
