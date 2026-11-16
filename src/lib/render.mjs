@@ -330,26 +330,29 @@ pages.privacy = (c) => {
 
 
 /* ---------- campaign landing pages: one template, one content entry per industry ---------- */
-// Order follows a referred or clicked-through owner: is this about my world (hero + memo) → do they know my
-// problems (three situations) → why him and not a vendor → how it starts → my questions → book, without leaving.
+// Order follows a cold visitor: is this my problem (question headline) and what do I get (one-line service, memo)
+// → which of these is me ("That's us" jumps to the form) → how it works → why him → my questions → book.
+// On phones a sticky action follows from the hero to the form.
 function landing(c, id) {
   const L = c.lp, d = c.industries[id], sl = L.situationsL;
   const hero = `<section class="hero hero--lp"><div class="container hero-grid">
 <div class="hero-copy"><h1>${d.h1}</h1><p class="lede">${d.lede}</p>
-<div class="btn-row">${btn(c, L.bookHere, '#lead', 'btn--primary', `data-track="cta_lp_hero" data-industry="${id}"`)}</div>
+<div class="btn-row">${btn(c, L.bookHere, '#lead', 'btn--primary', `data-track="cta_lp_hero" data-industry="${id}"`)}${btn(c, L.howLink, '#start', '')}</div>
 <p class="hero-note">${c.home.hero.note}</p>
 <ul class="lp-proof">${L.proof.map((x) => `<li>${x}</li>`).join('')}</ul></div>
 ${memoBlock(c, d.memo)}</div></section>`;
-  const sits = `<ul class="lp-sits">${d.situations.items.map((x) => `<li><p class="voice-q">${x.q}</p><h3>${sl.under}</h3><p>${x.under}</p><h3>${sl.do}</h3><p class="lp-do">${x.do}</p><p class="lp-measure"><span>${sl.measure}</span>${x.measure}</p></li>`).join('')}</ul>`;
+  // Compact pain cards: the pain, its cause, what Eran does, the number. "That's us" picks it in the form and jumps there.
+  const sits = `<ul class="lp-sits">${d.situations.items.map((x, i) => `<li><p class="voice-q">${x.q}</p><p class="lp-under">${x.under}</p><p class="lp-do"><span>${sl.do}</span>${x.do}</p><p class="lp-measure"><span>${sl.measure}</span>${x.measure}</p><a class="btn lp-pick" href="#lead" data-pick="${i}" data-track="cta_lp_pick" data-industry="${id}">${L.thatsUs}</a></li>`).join('')}</ul>`;
   const why = `<div class="founder-grid">${founderPanel(c, { sizes: '(min-width: 900px) 340px, 80vw' })}<div><h2 id="why-title">${L.why.title}</h2><div class="lp-why">${L.why.items.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div><p class="ways-link"><a href="${href(c.lang, 'about')}">${c.home.founder.link}</a></p></div></div>`;
   const start = `${head(L.start.title, L.start.intro, 'start-title')}<ol class="ways lp-start">${L.start.steps.map((x) => `<li class="way"><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ol>`;
   const form = `<div class="split split--top"><div>${leadForm(c, { pain: id, title: L.form.title, topics: d.situations.items.map((x) => x.q), topicL: L.form.topicL, detailHint: L.form.detailHint })}</div><aside class="aside-stack"><p class="lede lp-form-p">${L.form.p}</p>${personCard(c)}<div class="card"><h3>${c.contact.next.h}</h3><ol class="steps">${c.contact.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div></aside></div>`;
   const body = `${hero}
-${section(`${head(d.situations.title, '', 'sits-title')}${sits}`, 'lp-situations', 'situations', 'sits-title')}
-${section(`${why}<div class="lp-mid"><p>${L.midCta}</p>${btn(c, L.bookHere, '#lead', 'btn--primary', `data-track="cta_lp_mid" data-industry="${id}"`)}</div>`, 'section--tint lp-whysec', 'why', 'why-title')}
+${section(`${head(L.sitsTitle, L.sitsIntro, 'sits-title')}${sits}`, 'lp-situations', 'situations', 'sits-title')}
 ${section(start, 'lp-startsec', 'start', 'start-title')}
+${section(`${why}<div class="lp-mid"><p>${L.midCta}</p>${btn(c, L.bookHere, '#lead', 'btn--primary', `data-track="cta_lp_mid" data-industry="${id}"`)}</div>`, 'section--tint lp-whysec', 'why', 'why-title')}
 ${section(`<div class="about-how"><h2 id="faq-title">${L.faqTitle}</h2>${faqList(d.faq)}</div>`, 'section--tint', 'faq', 'faq-title')}
-${section(form, 'lp-formsec', 'book', '')}`;
+${section(form, 'lp-formsec', 'book', '')}
+<a class="btn btn--primary lp-sticky" href="#lead" data-lp-sticky data-track="cta_lp_sticky" data-industry="${id}" hidden>${L.bookHere}</a>`;
   return { meta: d.meta, body, ld: faqLd(d.faq) };
 }
 for (const id of ['distribution', 'manufacturing', 'ecommerce']) pages['lp-' + id] = (c) => landing(c, id);

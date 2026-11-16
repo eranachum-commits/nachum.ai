@@ -140,6 +140,9 @@ await t('campaign landing pages: memo, three situations, form on the page, slim 
       assert.equal((page.match(/name="topic"/g) || []).length, d.situations.items.length, 'situation chips on ' + id);
       assert.match(page, /data-or="topic"/, 'message optional when a situation is picked on ' + id);
       assert.match(page, /class="lp-proof"/, 'proof strip on ' + id);
+      assert.equal((page.match(/data-pick="/g) || []).length, d.situations.items.length, '"That\'s us" on every situation on ' + id);
+      assert.match(page, /data-lp-sticky/, 'sticky phone action on ' + id);
+      assert.match(page, /href="#start"/, 'secondary action to how it works on ' + id);
       assert.match(page, /data-track="cta_lp_mid"/, 'mid-page call to action on ' + id);
       assert.doesNotMatch(page, /Decision Sprint<\/p>|לספרינט החלטה<\/p>/, 'no jargon in the memo intro on ' + id);
     }

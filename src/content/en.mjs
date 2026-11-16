@@ -311,8 +311,12 @@ export default {
   },
   // Campaign landing pages: one template, one entry per industry (src/lib/render.mjs → landing()).
   lp: {
+    howLink: 'How it works',
+    sitsTitle: 'Sounds familiar?',
+    sitsIntro: 'Pick the one closest to you, and the call starts there.',
+    thatsUs: 'That’s us',
     bookHere: 'Talk to Eran',
-    proof: ['Former VP R&D ×3', 'Budget owner under a P&L', 'Led R&D organizations of 50+'],
+    proof: ['Former VP R&D ×3', 'Budget owner under a P&L', 'Led R&D organizations of 50+', 'Still hands-on: designs architectures and builds production systems'],
     midCta: 'Ready to talk it through? 30 minutes, directly with Eran.',
     situationsL: { under: 'What is usually going on', do: 'What Eran does', measure: 'How you will know it worked' },
     why: {
@@ -325,7 +329,7 @@ export default {
       ],
     },
     start: {
-      title: 'How it starts',
+      title: 'How it works',
       intro: 'No commitment until you have seen a written recommendation.',
       steps: [
         { h: 'A 30-minute call with Eran', p: 'You describe the situation. You leave with an honest first view and a clear answer on whether this is a fit.' },
@@ -339,8 +343,8 @@ export default {
   industries: {
     distribution: {
       meta: { title: 'AI and technology leadership for distributors and importers — bee & co.', desc: 'For distribution, import and wholesale companies: decide where AI is worth it in quotes, orders and the ERP, then get it built properly. Led by Eran Nachum, former VP R&D.' },
-      h1: 'Quotes and orders without the retyping. Decide what’s worth it, then build it.',
-      lede: 'For distribution, import and wholesale companies where growth still means more people retyping orders. Eran Nachum, former VP R&D, tells you what is worth building, what is not, and builds what is.',
+      h1: 'Still retyping orders and quotes by hand?',
+      lede: 'Eran Nachum, a former VP R&D, finds what is worth automating in your quotes, orders and ERP, tells you what is not, and builds what is.',
       memo: {
         for: 'Three ideas distributors often raise on the first call',
         items: [
@@ -351,7 +355,6 @@ export default {
         foot: 'The value was in knowing which two not to start with.',
       },
       situations: {
-        title: 'What we hear from distributors',
         items: [
           { q: 'Every new customer means more people retyping orders.', under: 'Orders arrive by email, PDF and phone, and someone keys them into the ERP line by line.', do: 'Read incoming orders automatically, prepare them in the ERP, and let a person approve only what looks unusual.', measure: 'Orders handled per person, per month' },
           { q: 'Quotes take days because pricing lives in three places.', under: 'Price lists, special terms and stock sit in the ERP, in spreadsheets and in one person’s memory.', do: 'Bring the pricing rules into one place and draft quotes from them, with a salesperson approving before anything goes out.', measure: 'Time from request to quote' },
@@ -367,8 +370,8 @@ export default {
     },
     manufacturing: {
       meta: { title: 'Technology and AI leadership for manufacturers — bee & co.', desc: 'For manufacturing and industrial companies: an independent senior view on systems, AI and automation before you commit budget, and hands-on delivery after. Led by Eran Nachum.' },
-      h1: 'Before you buy the next platform, get a senior view you can trust.',
-      lede: 'For manufacturing and industrial companies with old systems, critical knowledge in a few heads, and vendors offering everything. Eran Nachum, former VP R&D, helps you decide what is worth it, then builds it.',
+      h1: 'About to buy a new platform? Get a senior, independent view first.',
+      lede: 'Eran Nachum, a former VP R&D with no product to sell, helps you decide what is worth the investment, then builds it into the systems you already run.',
       memo: {
         for: 'Three ideas manufacturers often raise on the first call',
         items: [
@@ -379,7 +382,6 @@ export default {
         foot: 'The value was in knowing which two not to start with.',
       },
       situations: {
-        title: 'What we hear from manufacturers',
         items: [
           { q: 'Everything depends on two people who know how it works.', under: 'Quoting rules, process knowledge and workarounds live in a few heads and old spreadsheets.', do: 'Capture what those people know, build it into the workflow, and let them handle the exceptions instead of every case.', measure: 'Share of work handled without the key person' },
           { q: 'Vendors are pitching platforms and we can’t tell what is real.', under: 'Every offer looks good in the demo, and nobody on the team has evaluated a system like this before.', do: 'An independent comparison of the options against your real data and processes, with a recommendation and a phased plan.', measure: 'A decision made on time, with the reasoning written down' },
@@ -395,8 +397,8 @@ export default {
     },
     ecommerce: {
       meta: { title: 'Technology and AI leadership for e-commerce and retail brands — bee & co.', desc: 'For e-commerce and retail brands without a technology leader: senior decisions on your stack, AI and agencies, and hands-on delivery. Led by Eran Nachum, former VP R&D.' },
-      h1: 'You have the tools. You need someone senior to run the technology.',
-      lede: 'For e-commerce and retail brands with a store, a stack of apps, an agency or a small dev team, and no technology leader. Eran Nachum has led R&D for e-commerce and SaaS at 50+ people, and still builds.',
+      h1: 'Plenty of tools. Nobody senior running the technology?',
+      lede: 'Eran Nachum, a former VP R&D in e-commerce and SaaS, takes the technology seat part-time: decides what is worth building, manages the agency, and builds what matters.',
       memo: {
         for: 'Three ideas online brands often raise on the first call',
         items: [
@@ -407,7 +409,6 @@ export default {
         foot: 'The value was in knowing which two not to start with.',
       },
       situations: {
-        title: 'What we hear from e-commerce and retail brands',
         items: [
           { q: 'We bought AI tools and nothing really changed.', under: 'Apps were added one by one, nobody owns how they fit together, and usage fades after the first month.', do: 'Pick the one process where AI matters most and build it into the systems the team already uses, with an owner and a measure.', measure: 'Weekly active use, and time saved on that process' },
           { q: 'We have no technology leader, so the agency decides for us.', under: 'Decisions about the platform, apps and integrations are made by whoever is selling the work.', do: 'Eran takes the seat part-time: owns the stack and the roadmap, manages the agency or developers, and makes delivery predictable.', measure: 'The roadmap delivered as planned, quarter after quarter' },

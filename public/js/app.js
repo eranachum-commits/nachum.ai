@@ -272,3 +272,26 @@ $$('[data-memo]').forEach((memo) => {
   play();
   if (replay) { replay.hidden = false; replay.addEventListener('click', () => { play(); track('tool_interaction', { tool: 'decision_memo', action: 'replay' }); }); }
 });
+
+/* ---------- landing pages: "That's us" picks the situation in the form; a sticky action on phones ---------- */
+$$('[data-pick]').forEach((a) => a.addEventListener('click', (e) => {
+  const r = document.getElementById('lead-t' + a.dataset.pick), form = document.getElementById('lead');
+  if (!r || !form) return;
+  e.preventDefault();
+  r.checked = true; r.dispatchEvent(new Event('change', { bubbles: true }));
+  const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  form.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+  // Focus the first field only after the scroll ends: focusing mid-scroll cuts a smooth scroll short.
+  const focus = () => { const n = form.elements.namedItem('name'); if (n) n.focus({ preventScroll: true }); };
+  if (!smooth) focus();
+  else if ('onscrollend' in window) window.addEventListener('scrollend', focus, { once: true });
+  else setTimeout(focus, 1100);
+}));
+$$('[data-lp-sticky]').forEach((bar) => {
+  if (!('IntersectionObserver' in window)) return;
+  const hero = $('.hero--lp'), form = $('.lp-formsec');
+  let pastHero = false, atForm = false;
+  const show = () => { bar.hidden = !(pastHero && !atForm); };
+  new IntersectionObserver(([e]) => { pastHero = !e.isIntersecting; show(); }).observe(hero);
+  new IntersectionObserver(([e]) => { atForm = e.isIntersecting; show(); }).observe(form);
+});
