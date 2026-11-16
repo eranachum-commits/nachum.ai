@@ -120,9 +120,9 @@ await t('founder photo is served, sized and described', async () => {
     for (const k of ['home', 'about']) { const img = (pages[href(lang, k)].match(/<img src="\/img\/eran-nachum-806\.jpg"[^>]*>/) || [''])[0];
       assert.ok(img.includes('width="806" height="772"') && img.includes(`alt="${alt}"`), 'photo with size and alt on ' + k + ' ' + lang); }
     assert.doesNotMatch(pages[href(lang, 'contact')], /<img [^>]*\/img\//, 'no photo on contact ' + lang);
-    assert.match(pages[href(lang, 'home')], /class="avatar"/, 'avatar on the memo signature ' + lang);
+    assert.doesNotMatch(pages[href(lang, 'home')], /face-160|class="avatar"/, 'no small face photo on home ' + lang);
   }
-  for (const f of ['eran-nachum-806.jpg', 'eran-nachum-420.jpg', 'eran-nachum-face-160.jpg']) {
+  for (const f of ['eran-nachum-806.jpg', 'eran-nachum-420.jpg']) {
     const r = await fetch(base + '/img/' + f); assert.equal(r.status, 200, f); assert.equal(r.headers.get('content-type'), 'image/jpeg', f);
   }
 });

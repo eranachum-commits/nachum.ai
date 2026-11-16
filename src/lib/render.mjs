@@ -13,10 +13,8 @@ const extLink = (url, label, cls = '') => `<a${cls ? ` class="${cls}"` : ''} hre
 const brandMark = () => `<svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true"><path class="mark-b" d="M28 13v62c0 8 6 14 14 14h20c15 0 27-12 27-27 0-14-11-25-25-26H44"/><path class="mark-cell" d="M45 36l13-8 13 8v16l-13 8-13-8z"/></svg>`;
 const brandLockup = (c, full = false) => `<span class="brand-lockup">${brandMark()}<span class="logo-type"><span class="logo-name">bee &amp; co.</span><span class="logo-studio"><span>AI SOLUTIONS &amp;</span><span>TRANSFORMATION</span></span>${full ? `<span class="logo-descriptor"><i>${c.founder.by}</i></span>` : ''}</span></span>`;
 // The founder's photo. Two widths via srcset; explicit size so nothing shifts while it loads.
-const PHOTO = { src: '/img/eran-nachum-806.jpg', set: '/img/eran-nachum-420.jpg 420w, /img/eran-nachum-806.jpg 806w', face: '/img/eran-nachum-face-160.jpg' };
+const PHOTO = { src: '/img/eran-nachum-806.jpg', set: '/img/eran-nachum-420.jpg 420w, /img/eran-nachum-806.jpg 806w' };
 const founderPanel = (c, { eager = false, sizes = '(min-width: 980px) 360px, 80vw' } = {}) => `<figure class="portrait"><span class="portrait-photo"><img src="${PHOTO.src}" srcset="${PHOTO.set}" sizes="${sizes}" width="806" height="772" alt="${esc(c.founder.photoAlt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></span><figcaption><span class="portrait-name">${c.founder.name}</span><span class="portrait-role">${c.founder.role}</span></figcaption></figure>`;
-// Small round face beside a name that is already written out, so the image itself is decorative.
-const avatar = (size = 40) => `<img class="avatar" src="${PHOTO.face}" width="${size}" height="${size}" alt="" loading="lazy" decoding="async">`;
 
 /* ---------- layout ---------- */
 const NAV = ['how', 'about', 'results', 'faq'];
@@ -152,7 +150,7 @@ ${input('phone', f.phone, { type: 'tel', required: false, auto: 'tel' })}
 const VERDICT = { build: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6 0h12l6 10.5L18 21H6L0 10.5z"/></svg>', later: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6.6 1h10.8l5.4 9.5-5.4 9.5H6.6L1.2 10.5z"/></svg>', no: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6.6 1h10.8l5.4 9.5-5.4 9.5H6.6L1.2 10.5z"/><path d="M5 18 19 3"/></svg>' };
 function memoBlock(c, m) {
   const h = c.home.memo;
-  return `<aside class="memo" aria-labelledby="memo-title"><div class="memo-head"><h2 id="memo-title">${h.title}</h2><span class="memo-chip">${h.chip}</span></div><p class="memo-for">${m.for}</p><ol class="memo-list">${m.items.map((x) => `<li class="memo-row memo-row--${x.k}"><div><p class="memo-q">${x.q}</p><p class="memo-why">${x.why}</p></div><p class="memo-v">${VERDICT[x.k]}<span>${x.v}</span></p></li>`).join('')}</ol><p class="memo-foot">${m.foot}</p><p class="memo-by">${avatar(36)}<span>${h.by}</span></p></aside>`;
+  return `<aside class="memo" aria-labelledby="memo-title"><div class="memo-head"><h2 id="memo-title">${h.title}</h2><span class="memo-chip">${h.chip}</span></div><p class="memo-for">${m.for}</p><ol class="memo-list">${m.items.map((x) => `<li class="memo-row memo-row--${x.k}"><div><p class="memo-q">${x.q}</p><p class="memo-why">${x.why}</p></div><p class="memo-v">${VERDICT[x.k]}<span>${x.v}</span></p></li>`).join('')}</ol><p class="memo-foot">${m.foot}</p><p class="memo-by">${h.by}</p></aside>`;
 }
 
 /* ---------- shared blocks ---------- */

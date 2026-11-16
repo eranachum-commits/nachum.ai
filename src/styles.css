@@ -615,8 +615,6 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .founder-grid > .portrait { justify-self: start; max-width: 340px; }
 @media (min-width: 900px) { .founder-grid { grid-template-columns: minmax(0, .62fr) minmax(0, 1.38fr); align-items: center; } }
 .founder-grid .founder-co { margin-top: 1.2rem; }
-.avatar { display: inline-block; flex: none; border-radius: 50%; object-fit: cover; background: #f6f7fa; box-shadow: 0 0 0 2px var(--sheet), 0 0 0 3px var(--rule); }
-.memo-by { display: flex; align-items: center; gap: 10px; }
 .contact-person { margin-bottom: 16px; display: flex; align-items: center; gap: 16px; padding: 18px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r-sheet); }
 .contact-person p { margin: 0; display: grid; gap: 1px; }
 .contact-person-l { font-size: .85rem; color: var(--muted); }
