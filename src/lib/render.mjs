@@ -21,6 +21,15 @@ const avatar = (size = 40) => `<img class="avatar" src="${PHOTO.face}" width="${
 /* ---------- layout ---------- */
 const NAV = ['how', 'about', 'results', 'faq'];
 function header(c, key) {
+  // Campaign landing pages keep visitors on the page: logo, language and one action that scrolls to the form.
+  if (key.startsWith('lp-')) {
+    const other = c.lang === 'he' ? 'en' : 'he';
+    return `<header class="site-header site-header--lp"><div class="container header-in">
+  <a class="logo" href="${href(c.lang, 'home')}" aria-label="bee &amp; co. — ${esc(c.ui.home)}">${brandLockup(c)}</a>
+  <nav class="nav nav--lp" aria-label="${esc(c.ui.main)}"><a class="lang-switch" href="__ALT__" hreflang="${other}" lang="${other}" aria-label="${esc(c.switchAria)}">${c.switchLabel}</a></nav>
+  <a class="btn btn--primary btn--sm" href="#lead" data-track="cta_header">${c.lp.bookHere}</a>
+</div></header>`;
+  }
   const link = (k) => `<a href="${href(c.lang, k)}"${key === k ? ' aria-current="page"' : ''}>${c.nav[k]}</a>`;
   const other = c.lang === 'he' ? 'en' : 'he';
   return `<header class="site-header"><div class="container header-in">
@@ -113,14 +122,14 @@ const faqList = (items) => `<div class="faq">${items.map((i) => `<details><summa
 const faqLd = (items) => ({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map((i) => ({ '@type': 'Question', name: i.q, acceptedAnswer: { '@type': 'Answer', text: i.a } })) });
 
 /* ---------- lead form: four fields, the rest happens on the call ---------- */
-function leadForm(c, { id = 'lead' } = {}) {
+function leadForm(c, { id = 'lead', pain = '', title = '' } = {}) {
   const F = c.form, f = F.f, E = F.errors, O = F.ok;
   const req = `<span aria-hidden="true"> *</span><span class="sr-only"> (${E.required})</span>`;
   const input = (n, label, { type = 'text', required = true, auto = '' } = {}) => `<div class="field"><label for="${id}-${n}">${label}${required ? req : ''}</label><input id="${id}-${n}" name="${n}" type="${type}" ${required ? 'required' : ''} ${auto ? `autocomplete="${auto}"` : ''} aria-describedby="${id}-${n}-e"><span class="err" id="${id}-${n}-e" role="alert"></span></div>`;
   return `<form class="form-card" data-lead-form id="${id}" novalidate method="post" action="/api/leads" data-lang="${c.lang}"
  data-m-required="${esc(E.required)}" data-m-email="${esc(E.email)}" data-m-consent="${esc(E.consent)}" data-m-fix="${esc(c.ui.fixField)}" data-m-sending="${esc(c.ui.sending)}" data-m-fail="${esc(F.fail)}" data-m-net="${esc(F.failNet)}"
  data-ok-h="${esc(O.h)}" data-ok-p="${esc(O.p)}" data-dev-h="${esc(O.devH)}" data-dev="${esc(O.dev)}" data-book-l="${esc(O.book)}">
-<h2>${F.title}</h2>
+<h2>${title || F.title}</h2>
 <div class="form-grid">
 ${input('name', f.name, { auto: 'name' })}
 ${input('company', f.company, { auto: 'organization' })}
@@ -130,11 +139,20 @@ ${input('role', f.role, { required: false, auto: 'organization-title' })}
 ${input('phone', f.phone, { type: 'tel', required: false, auto: 'tel' })}
 </div>
 <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
-<input type="hidden" name="pain" value=""><input type="hidden" name="lang" value="${c.lang}"><input type="hidden" name="source" value=""><input type="hidden" name="ts" value="">
+<input type="hidden" name="pain" value="${pain}"><input type="hidden" name="lang" value="${c.lang}"><input type="hidden" name="source" value=""><input type="hidden" name="ts" value="">
 <div class="field"><div class="checkrow"><input id="${id}-consent" name="consent" type="checkbox" required aria-describedby="${id}-consent-e"><label for="${id}-consent">${F.consent.replace(/ראו מדיניות פרטיות|See the privacy policy/, (m) => `<a href="${href(c.lang, 'privacy')}">${m}</a>`)}</label></div><span class="err" id="${id}-consent-e" role="alert"></span></div>
 <div class="form-status" role="status" aria-live="polite" tabindex="-1"></div>
 <button class="btn btn--primary" type="submit" data-submit>${c.ui.send}</button>
 </form>`;
+}
+
+/* ---------- decision memo (home hero and campaign landing pages) ---------- */
+// An illustrative Decision Sprint memo: it shows the judgment itself — including what not to build —
+// instead of describing it. Verdicts are always written out, never colour alone.
+const VERDICT = { build: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6 0h12l6 10.5L18 21H6L0 10.5z"/></svg>', later: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6.6 1h10.8l5.4 9.5-5.4 9.5H6.6L1.2 10.5z"/></svg>', no: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6.6 1h10.8l5.4 9.5-5.4 9.5H6.6L1.2 10.5z"/><path d="M5 18 19 3"/></svg>' };
+function memoBlock(c, m) {
+  const h = c.home.memo;
+  return `<aside class="memo" aria-labelledby="memo-title"><div class="memo-head"><h2 id="memo-title">${h.title}</h2><span class="memo-chip">${h.chip}</span></div><p class="memo-for">${m.for}</p><ol class="memo-list">${m.items.map((x) => `<li class="memo-row memo-row--${x.k}"><div><p class="memo-q">${x.q}</p><p class="memo-why">${x.why}</p></div><p class="memo-v">${VERDICT[x.k]}<span>${x.v}</span></p></li>`).join('')}</ol><p class="memo-foot">${m.foot}</p><p class="memo-by">${avatar(36)}<span>${h.by}</span></p></aside>`;
 }
 
 /* ---------- shared blocks ---------- */
@@ -148,10 +166,8 @@ const pages = {};
 
 pages.home = (c) => {
   const h = c.home, hr = h.hero, m = h.memo;
-  // The one bold element: an illustrative Decision Sprint memo. It shows the judgment itself — including
-  // what not to build — instead of describing it. Verdicts are always written out, never colour alone.
-  const verdict = { build: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6 0h12l6 10.5L18 21H6L0 10.5z"/></svg>', later: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6.6 1h10.8l5.4 9.5-5.4 9.5H6.6L1.2 10.5z"/></svg>', no: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6.6 1h10.8l5.4 9.5-5.4 9.5H6.6L1.2 10.5z"/><path d="M5 18 19 3"/></svg>' };
-  const memo = `<aside class="memo" aria-labelledby="memo-title"><div class="memo-head"><h2 id="memo-title">${m.title}</h2><span class="memo-chip">${m.chip}</span></div><p class="memo-for">${m.for}</p><ol class="memo-list">${m.items.map((x) => `<li class="memo-row memo-row--${x.k}"><div><p class="memo-q">${x.q}</p><p class="memo-why">${x.why}</p></div><p class="memo-v">${verdict[x.k]}<span>${x.v}</span></p></li>`).join('')}</ol><p class="memo-foot">${m.foot}</p><p class="memo-by">${avatar(36)}<span>${m.by}</span></p></aside>`;
+  // The one bold element: the decision memo (see memoBlock).
+  const memo = memoBlock(c, m);
   const hero = `<section class="hero"><div class="container hero-grid">
 <div class="hero-copy"><h1>${hr.h1}</h1><p class="lede">${hr.sub}</p>
 <div class="btn-row">${btn(c, c.ui.book, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, hr.secondary, href(c.lang, 'how'), '')}</div>
@@ -297,6 +313,31 @@ pages.privacy = (c) => {
   const body = `${pageHero(c, p.h1, '')}${section(`<div class="draft-banner"><strong>${p.draft}</strong></div><div class="prose">${p.sections.map((s) => `<h2>${s.h}</h2><p>${s.p}</p>`).join('')}</div>`)}`;
   return { meta: p.meta, body };
 };
+
+
+/* ---------- campaign landing pages: one template, one content entry per industry ---------- */
+// Order follows a referred or clicked-through owner: is this about my world (hero + memo) → do they know my
+// problems (three situations) → why him and not a vendor → how it starts → my questions → book, without leaving.
+function landing(c, id) {
+  const L = c.lp, d = c.industries[id], sl = L.situationsL;
+  const hero = `<section class="hero hero--lp"><div class="container hero-grid">
+<div class="hero-copy"><h1>${d.h1}</h1><p class="lede">${d.lede}</p>
+<div class="btn-row">${btn(c, L.bookHere, '#lead', 'btn--primary', `data-track="cta_lp_hero" data-industry="${id}"`)}</div>
+<p class="hero-note">${c.home.hero.note}</p></div>
+${memoBlock(c, d.memo)}</div></section>`;
+  const sits = `<ul class="lp-sits">${d.situations.items.map((x) => `<li><p class="voice-q">${x.q}</p><h3>${sl.under}</h3><p>${x.under}</p><h3>${sl.do}</h3><p class="lp-do">${x.do}</p><p class="lp-measure"><span>${sl.measure}</span>${x.measure}</p></li>`).join('')}</ul>`;
+  const why = `<div class="founder-grid">${founderPanel(c, { sizes: '(min-width: 900px) 340px, 80vw' })}<div><h2 id="why-title">${L.why.title}</h2><div class="lp-why">${L.why.items.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div><p class="ways-link"><a href="${href(c.lang, 'about')}">${c.home.founder.link}</a></p></div></div>`;
+  const start = `${head(L.start.title, L.start.intro, 'start-title')}<ol class="ways lp-start">${L.start.steps.map((x) => `<li class="way"><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ol>`;
+  const form = `<div class="split split--top"><div>${leadForm(c, { pain: id, title: L.form.title })}</div><aside class="aside-stack"><p class="lede lp-form-p">${L.form.p}</p><div class="contact-person"><p><span class="contact-person-l">${c.contact.person}</span><span class="contact-person-n">${c.founder.name}</span><span class="contact-person-r">${c.founder.role}</span></p></div><div class="card"><h3>${c.contact.next.h}</h3><ol class="steps">${c.contact.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div></aside></div>`;
+  const body = `${hero}
+${section(`${head(d.situations.title, '', 'sits-title')}${sits}`, 'lp-situations', 'situations', 'sits-title')}
+${section(why, 'section--tint lp-whysec', 'why', 'why-title')}
+${section(start, 'lp-startsec', 'start', 'start-title')}
+${section(`<div class="about-how"><h2 id="faq-title">${L.faqTitle}</h2>${faqList(d.faq)}</div>`, 'section--tint', 'faq', 'faq-title')}
+${section(form, 'lp-formsec', 'book', '')}`;
+  return { meta: d.meta, body, ld: faqLd(d.faq) };
+}
+for (const id of ['distribution', 'manufacturing', 'ecommerce']) pages['lp-' + id] = (c) => landing(c, id);
 
 export function render404(c, ctx) {
   const body = section(`<h1>${c.notFound.h}</h1><p class="lede">${c.notFound.p}</p>${btn(c, c.notFound.cta, href(c.lang, 'home'), 'btn--primary')}`);

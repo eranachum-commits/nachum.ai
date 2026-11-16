@@ -9,6 +9,10 @@ export const routes = [
   { key: 'security', path: 'data-and-security' },
   { key: 'contact', path: 'contact' },
   { key: 'privacy', path: 'privacy' },
+  // Campaign landing pages (paid and referral traffic), rendered from content.industries.
+  { key: 'lp-distribution', path: 'for/distribution' },
+  { key: 'lp-manufacturing', path: 'for/manufacturing' },
+  { key: 'lp-ecommerce', path: 'for/ecommerce' },
 ];
 export const langs = ['he', 'en'];
 export function href(lang, key) {

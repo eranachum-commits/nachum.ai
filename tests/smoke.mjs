@@ -126,6 +126,20 @@ await t('founder photo is served, sized and described', async () => {
     const r = await fetch(base + '/img/' + f); assert.equal(r.status, 200, f); assert.equal(r.headers.get('content-type'), 'image/jpeg', f);
   }
 });
+await t('campaign landing pages: memo, three situations, form on the page, slim header', () => {
+  for (const lang of langs) { const c = lang === 'he' ? he : en;
+    for (const id of Object.keys(c.industries)) { const page = pages[href(lang, 'lp-' + id)], d = c.industries[id];
+      assert.ok(page, 'landing page ' + id + ' ' + lang);
+      assert.equal((page.match(/class="memo-row memo-row--/g) || []).length, 3, 'memo on ' + id);
+      assert.ok(page.includes(d.memo.for), 'industry memo on ' + id);
+      assert.equal((page.match(/<p class="voice-q">/g) || []).length, d.situations.items.length, 'situations on ' + id);
+      assert.match(page, new RegExp(`<form[^>]*id="lead"`), 'form on the page ' + id);
+      assert.match(page, new RegExp(`name="pain" value="${id}"`), 'lead tagged with industry ' + id);
+      assert.match(page, /site-header--lp/, 'slim header on ' + id);
+      assert.doesNotMatch(page, /class="mobile-nav"/, 'no site menu on ' + id);
+    }
+  }
+});
 await t('sitemap and robots', async () => {
   const sm = (await get('/sitemap.xml')).text; assert.equal((sm.match(/<url>/g) || []).length, (routes.length - 1) * 2);
   assert.match((await get('/robots.txt')).text, /Sitemap:/);

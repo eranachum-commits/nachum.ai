@@ -310,5 +310,116 @@ export default {
       { h: 'Contact', p: 'Contact details for privacy requests will be added before launch.' },
     ],
   },
+  // Campaign landing pages: one template, one entry per industry (src/lib/render.mjs → landing()).
+  lp: {
+    bookHere: 'Book a call with Eran',
+    situationsL: { under: 'What is usually going on', do: 'What Eran does', measure: 'How you will know it worked' },
+    why: {
+      title: 'Why do this with Eran, and not with a vendor',
+      items: [
+        { h: 'No tool to sell', p: 'The recommendation is not tied to a product, a platform or a licence.' },
+        { h: 'No team to keep busy', p: 'Saying “don’t build this” costs us work. We say it anyway.' },
+        { h: 'The person who decides is the person who builds', p: 'No handoff between the plan and the system, so the plan stays realistic.' },
+        { h: 'Senior, and still hands-on', p: 'A former VP R&D who has owned budgets and led organizations of 50+ people, and still builds production AI systems.' },
+      ],
+    },
+    start: {
+      title: 'How it starts',
+      intro: 'No commitment until you have seen a written recommendation.',
+      steps: [
+        { h: 'A 30-minute call with Eran', p: 'You describe the situation. You leave with an honest first view and a clear answer on whether this is a fit.' },
+        { h: 'A Decision Sprint, 2–3 weeks', p: 'Eran learns how the work is really done and returns a written recommendation: what to build, what not to build, and why. The fee is credited if a build follows.' },
+        { h: 'Build, or not', p: 'If something is worth building, Eran builds it into the systems you already run, with owners, training and numbers.' },
+      ],
+    },
+    faqTitle: 'Questions we usually get',
+    form: { title: 'Book a 30-minute call with Eran', p: 'Tell us briefly what is on your mind. Eran reads every message himself and replies personally.' },
+  },
+  industries: {
+    distribution: {
+      meta: { title: 'AI and technology leadership for distributors and importers — bee & co.', desc: 'For distribution, import and wholesale companies: decide where AI is worth it in quotes, orders and the ERP, then get it built properly. Led by Eran Nachum, former VP R&D.' },
+      h1: 'Quotes, orders and the ERP: decide what AI should fix, then get it built.',
+      lede: 'For distribution, import and wholesale companies where growth still means more people retyping orders. Eran Nachum, former VP R&D, tells you what is worth building, what is not, and builds what is.',
+      memo: {
+        for: 'Three ideas a distributor brought to a Decision Sprint',
+        items: [
+          { q: 'Quote drafts generated from incoming requests and the price list in the ERP', v: 'Build', k: 'build', why: 'Hundreds a month, clear pricing rules, and a salesperson approves the exceptions.' },
+          { q: 'Replace the ERP before anything else', v: 'Not now', k: 'later', why: 'It works. The hours are lost in the retyping around it, not in the ERP itself.' },
+          { q: 'A WhatsApp chatbot for customers', v: 'Don’t build', k: 'no', why: 'Customers order through reps and email. A bot would sit beside the real work.' },
+        ],
+        foot: 'The value was in knowing which two not to start with.',
+      },
+      situations: {
+        title: 'What we hear from distributors',
+        items: [
+          { q: 'Every new customer means more people retyping orders.', under: 'Orders arrive by email, PDF and phone, and someone keys them into the ERP line by line.', do: 'Read incoming orders automatically, prepare them in the ERP, and let a person approve only what looks unusual.', measure: 'Orders handled per person, per month' },
+          { q: 'Quotes take days because pricing lives in three places.', under: 'Price lists, special terms and stock sit in the ERP, in spreadsheets and in one person’s memory.', do: 'Bring the pricing rules into one place and draft quotes from them, with a salesperson approving before anything goes out.', measure: 'Time from request to quote' },
+          { q: 'Our ERP supplier says the answer is a new module.', under: 'Every vendor recommends what it sells, and nobody senior is weighing the options on your side.', do: 'An independent view of the options, their costs and risks, and a recommendation you can defend before you sign.', measure: 'A decision made on time, with the reasoning written down' },
+        ],
+      },
+      faq: [
+        { q: 'Does this work with Priority or SAP Business One?', a: 'Yes. We start from the ERP you already run and connect to it, usually with read-only access first. Replacing it is rarely the first step.' },
+        { q: 'We already have an IT supplier. Why would we need you?', a: 'Your IT supplier keeps the systems running. Eran works above that: deciding what is worth changing, designing it, building it, and working alongside your supplier where needed.' },
+        { q: 'What about our customer and pricing data?', a: 'Confidentiality terms come first. We start with anonymized examples and read-only access, and nothing goes into unapproved AI tools.' },
+        { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
+      ],
+    },
+    manufacturing: {
+      meta: { title: 'Technology and AI leadership for manufacturers — bee & co.', desc: 'For manufacturing and industrial companies: an independent senior view on systems, AI and automation before you commit budget, and hands-on delivery after. Led by Eran Nachum.' },
+      h1: 'Before you buy the next platform, get a senior view you can trust.',
+      lede: 'For manufacturing and industrial companies with old systems, critical knowledge in a few heads, and vendors offering everything. Eran Nachum, former VP R&D, helps you decide what is worth it, then builds it.',
+      memo: {
+        for: 'Three ideas a manufacturer brought to a Decision Sprint',
+        items: [
+          { q: 'An assistant that drafts quotes from drawings and past jobs', v: 'Build', k: 'build', why: 'The rules already exist in past quotes, and an estimator approves every price.' },
+          { q: 'A full smart-factory platform across the plant', v: 'Not now', k: 'later', why: 'The data it needs is not collected yet. Start with one line and one measure.' },
+          { q: 'Predictive maintenance on every machine', v: 'Don’t build', k: 'no', why: 'Breakdowns here are rare and cheap. The money is lost in planning, not in maintenance.' },
+        ],
+        foot: 'The value was in knowing which two not to start with.',
+      },
+      situations: {
+        title: 'What we hear from manufacturers',
+        items: [
+          { q: 'Everything depends on two people who know how it works.', under: 'Quoting rules, process knowledge and workarounds live in a few heads and old spreadsheets.', do: 'Capture what those people know, build it into the workflow, and let them handle the exceptions instead of every case.', measure: 'Share of work handled without the key person' },
+          { q: 'Vendors are pitching platforms and we can’t tell what is real.', under: 'Every offer looks good in the demo, and nobody on the team has evaluated a system like this before.', do: 'An independent comparison of the options against your real data and processes, with a recommendation and a phased plan.', measure: 'A decision made on time, with the reasoning written down' },
+          { q: 'Planning still happens in Excel, and it breaks every week.', under: 'Orders, stock and capacity live in different systems, so the plan is rebuilt by hand whenever something changes.', do: 'Connect the data you already have, automate the repeated parts of planning, and keep the planner in control of the decisions.', measure: 'Hours spent re-planning each week' },
+        ],
+      },
+      faq: [
+        { q: 'Our systems are old. Is that a problem?', a: 'Usually not. We start from the systems you run and connect to them. Replacing them is a decision we weigh with you, not an assumption.' },
+        { q: 'Do you work on the shop floor or the office side?', a: 'Mostly the office side: quoting, planning, orders, documentation and the systems that connect them. Where floor data matters, we start with what is already collected.' },
+        { q: 'What about our designs and customer data?', a: 'Confidentiality terms come first. We start with anonymized examples and read-only access, and nothing goes into unapproved AI tools.' },
+        { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
+      ],
+    },
+    ecommerce: {
+      meta: { title: 'Technology and AI leadership for e-commerce and retail brands — bee & co.', desc: 'For e-commerce and retail brands without a technology leader: senior decisions on your stack, AI and agencies, and hands-on delivery. Led by Eran Nachum, former VP R&D.' },
+      h1: 'You have the tools. You need someone senior to run the technology.',
+      lede: 'For e-commerce and retail brands with a store, a stack of apps, an agency or a small dev team, and no technology leader. Eran Nachum has led R&D for e-commerce and SaaS at 50+ people, and still builds.',
+      memo: {
+        for: 'Three ideas an online brand brought to a Decision Sprint',
+        items: [
+          { q: 'AI drafts for customer service replies, from order and shipping data', v: 'Build', k: 'build', why: 'High volume, repeated questions, and an agent approves before anything is sent.' },
+          { q: 'Rebuild the store on a new platform', v: 'Not now', k: 'later', why: 'The store is not the bottleneck. Fix the stock and order sync first.' },
+          { q: 'AI-written product descriptions for the whole catalogue', v: 'Don’t build', k: 'no', why: 'The catalogue is small and sells on brand. The hours are lost in service, not in copy.' },
+        ],
+        foot: 'The value was in knowing which two not to start with.',
+      },
+      situations: {
+        title: 'What we hear from e-commerce and retail brands',
+        items: [
+          { q: 'We bought AI tools and nothing really changed.', under: 'Apps were added one by one, nobody owns how they fit together, and usage fades after the first month.', do: 'Pick the one process where AI matters most and build it into the systems the team already uses, with an owner and a measure.', measure: 'Weekly active use, and time saved on that process' },
+          { q: 'We have no technology leader, so the agency decides for us.', under: 'Decisions about the platform, apps and integrations are made by whoever is selling the work.', do: 'Eran takes the seat part-time: owns the stack and the roadmap, manages the agency or developers, and makes delivery predictable.', measure: 'The roadmap delivered as planned, quarter after quarter' },
+          { q: 'Stock, orders and the warehouse never quite match.', under: 'Data moves between the store, the ERP and the warehouse through exports, apps and manual fixes.', do: 'Design one reliable flow between your systems, with alerts when something breaks and a person handling only the exceptions.', measure: 'Order and stock errors per 100 orders' },
+        ],
+      },
+      faq: [
+        { q: 'We run on Shopify or WooCommerce with a few apps. Is that a fit?', a: 'Yes. We start from your current stack and change only what earns its place. Moving platforms is a decision, not a default.' },
+        { q: 'We have an agency. Do you replace them?', a: 'No. Eran works as the senior technology lead on your side: setting priorities, reviewing their work, and making sure what they build fits together.' },
+        { q: 'What about our customer data?', a: 'Confidentiality terms come first. We start with anonymized examples and read-only access, and nothing goes into unapproved AI tools.' },
+        { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
+      ],
+    },
+  },
   notFound: { h: 'Page not found', p: 'That page does not exist.', cta: 'Back to the home page' },
 };

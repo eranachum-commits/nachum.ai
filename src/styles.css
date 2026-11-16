@@ -226,7 +226,8 @@ input[aria-invalid='true'], select[aria-invalid='true'], textarea[aria-invalid='
 .form-grid { display: grid; gap: 0 20px; grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 640px) { .form-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .form-grid .full { grid-column: 1 / -1; } }
 .form-note { margin: 8px 0 18px; }
-.hp { position: absolute; inset-inline-start: -9999px; width: 1px; height: 1px; overflow: hidden; }
+/* Spam trap: clipped in place rather than pushed off-screen, which made RTL pages scroll sideways. */
+.hp { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 
 /* how-it-works stage rows */
@@ -630,3 +631,29 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .portrait-photo::before { width: 58%; inset-inline-end: -16%; top: 4%; background: var(--pollen); opacity: .62; }
 .portrait-photo::after { width: 46%; inset-inline-start: -15%; top: 44%; background: var(--carbon); opacity: .9; }
 .portrait-photo img { position: relative; z-index: 1; background: transparent; mix-blend-mode: multiply; }
+
+/* ---------- campaign landing pages ---------- */
+/* Slim header: logo, language and one action, on every screen size. */
+.site-header--lp .nav--lp { display: flex; }
+.site-header--lp .header-in .btn { display: inline-flex; }
+.site-header--lp .header-in .btn { white-space: nowrap; }
+/* Campaign visitors arrive in one language; on phones the action keeps the room. */
+@media (max-width: 480px) { .site-header--lp .nav--lp { display: none; } .site-header--lp .header-in { gap: 10px; } .site-header--lp .header-in .btn { margin-inline-start: auto; padding: 8px 12px; font-size: .86rem; } }
+/* Three situations side by side, each read top to bottom: the pain, what is going on, what Eran does, the measure. */
+.lp-sits { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(20px, 3vw, 40px); grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.lp-sits li { border-top: 1px solid var(--rule-2); padding-top: clamp(18px, 2.4vw, 26px); display: flex; flex-direction: column; }
+.lp-sits .voice-q { margin-bottom: .8em; }
+.lp-sits h3 { font-size: .86rem; font-weight: 600; color: var(--accent-deep); margin: .9em 0 .3em; }
+.lp-sits p { margin: 0; color: var(--ink-2); line-height: 1.55; }
+.lp-sits .lp-do { color: var(--ink); }
+.lp-measure { margin-top: auto !important; padding-top: 18px; }
+.lp-measure span { display: block; font-size: .8rem; color: var(--muted); margin-bottom: 2px; }
+.lp-sits .lp-measure { color: var(--ink); font-weight: 600; }
+.lp-why { display: grid; gap: 18px 32px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); margin-top: 1.2rem; }
+.lp-why article { border-top: 1px solid var(--rule-2); padding-top: 14px; }
+.lp-why h3 { font-size: 1.05rem; margin-bottom: .3em; }
+.lp-why p { margin: 0; color: var(--ink-2); font-size: .96rem; }
+.lp-start .way p { margin-bottom: 0; }
+.lp-form-p { margin-top: 0; }
+.lp-formsec { scroll-margin-top: 90px; }
+#lead { scroll-margin-top: 110px; }

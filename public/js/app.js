@@ -192,7 +192,7 @@ $$('[data-lead-form]').forEach((form) => {
   const params = new URLSearchParams(location.search);
   const pain = $('[name=pain]', form);
   if (pain && /^[a-z-]{1,40}$/.test(params.get('pain') || '')) pain.value = params.get('pain');
-  $('[name=source]', form).value = location.pathname;
+  $('[name=source]', form).value = location.pathname + location.search;
   $('[name=ts]', form).value = Date.now();
   let started = false;
   form.addEventListener('focusin', () => { if (!started) { started = true; track('booking_initiated', { form: form.id }); } });
@@ -235,7 +235,7 @@ $$('[data-lead-form]').forEach((form) => {
         status.innerHTML = `<strong>${dev ? D.devH : D.okH}</strong><br>${dev ? D.dev : D.okP}`;
         if (body.bookingUrl) status.insertAdjacentHTML('beforeend', `<br><a class="btn btn--primary btn--sm" style="margin-top:12px" href="${body.bookingUrl}" rel="noopener">${D.bookL}</a>`);
         if (!dev) track('booking_completed', { form: form.id, pain: data.pain });
-        form.reset(); $('[name=source]', form).value = location.pathname;
+        form.reset(); $('[name=source]', form).value = location.pathname + location.search;
         status.focus();
       } else {
         status.className = 'form-status notice notice--err'; status.textContent = D.mFail;
