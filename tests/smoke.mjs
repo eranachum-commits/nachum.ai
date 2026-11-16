@@ -84,7 +84,7 @@ await t('results page shows the measurement flow and the measures with outcomes'
   for (const lang of langs) { const c = lang === 'he' ? he : en, r = c.results, page = pages[href(lang, 'results')];
     assert.equal((page.match(/<li class="mf mf--/g) || []).length, r.flow.nodes.length, 'flow nodes ' + lang);
     assert.equal((page.match(/class="mf mf--gate"/g) || []).length, 2, 'two decisions ' + lang);
-    assert.equal((page.match(/<tr><th scope="row">/g) || []).length, r.measures.items.length, 'measures rows ' + lang);
+    assert.equal((page.match(/<li class="kpi /g) || []).length, r.measures.items.length, 'measure cards ' + lang);
     for (const x of r.measures.items) assert.ok(x.outcome && page.includes(x.outcome), 'outcome for ' + x.h);
   }
 });

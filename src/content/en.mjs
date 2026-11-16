@@ -36,16 +36,17 @@ export default {
       secondary: 'Ways to work together',
     },
     memo: {
-      title: 'Recommendation',
-      chip: 'Illustrative example',
-      for: 'Three ideas a distribution company brought to a Decision Sprint',
+      title: 'Three AI ideas. Three honest answers.',
+      chip: 'Example',
+      for: 'The ideas most companies bring to the first call, and what Eran usually answers.',
       items: [
-        { q: 'An AI agent that drafts quotes from incoming requests', v: 'Build', k: 'build', why: 'High volume, clear pricing rules, and a person can approve the exceptions.' },
-        { q: 'Replace the ERP before anything else', v: 'Not now', k: 'later', why: 'It works. The cost is in the retyping around it, not in the system itself.' },
-        { q: 'A chatbot on the website', v: 'Don’t build', k: 'no', why: 'Few customers ask questions there. The hours are lost in the inbox, not on the site.' },
+        { q: '“Let’s add an AI chatbot to our website.”', v: 'Don’t build', k: 'no', why: 'Most customers call or email. The bot would answer questions nobody asks there.' },
+        { q: '“Can AI draft replies to the emails we answer every day?”', v: 'Build', k: 'build', why: 'The same questions all day, and a person checks every reply before it goes out.' },
+        { q: '“Should we replace all our systems with one new platform?”', v: 'Not now', k: 'later', why: 'The systems work. The hours are lost moving data between them. Fix that first.' },
       ],
-      foot: 'Most of the value is in the two ideas we said no to.',
+      foot: 'Telling these apart before you spend is the job.',
       by: 'Eran Nachum, bee & co.',
+      replay: 'Watch again',
     },
     situations: {
       title: 'What leadership teams usually say on the first call',
@@ -280,10 +281,10 @@ export default {
     meta: { title: 'Talk to Eran — bee & co.', desc: 'Book a 30-minute call with Eran Nachum about an AI or technology decision. No sales team, no obligation.' },
     h1: 'Talk to Eran',
     person: 'You’ll be talking to',
+    call: ['30 minutes', 'Directly with Eran, no sales team', 'No obligation and no pitch deck'],
     lede: 'Tell us briefly what’s on your mind. Eran reads every message himself and replies personally.',
     next: { h: 'What happens next', steps: ['Eran reads your message and replies personally.', 'You pick a time for a 30-minute call.', 'If there is a fit, you receive a short written proposal for the next step.'] },
     bring: { h: 'Useful to mention', items: ['The decision or problem in front of you', 'Why it matters now', 'Anything you have already tried'] },
-    direct: { h: 'Prefer LinkedIn?', p: 'You can also message Eran directly.' },
   },
 
   form: {

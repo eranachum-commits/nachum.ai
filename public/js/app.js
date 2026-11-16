@@ -261,3 +261,12 @@ if ('IntersectionObserver' in window) {
     io.observe(st);
   }
 }
+
+/* ---------- decision memo: play the verdicts, and replay on request ---------- */
+$$('[data-memo]').forEach((memo) => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const replay = $('[data-memo-replay]', memo);
+  const play = () => { memo.removeAttribute('data-play'); void memo.offsetWidth; memo.setAttribute('data-play', ''); };
+  play();
+  if (replay) { replay.hidden = false; replay.addEventListener('click', () => { play(); track('tool_interaction', { tool: 'decision_memo', action: 'replay' }); }); }
+});

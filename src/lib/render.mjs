@@ -148,10 +148,16 @@ ${input('phone', f.phone, { type: 'tel', required: false, auto: 'tel' })}
 // An illustrative Decision Sprint memo: it shows the judgment itself — including what not to build —
 // instead of describing it. Verdicts are always written out, never colour alone.
 const VERDICT = { build: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6 0h12l6 10.5L18 21H6L0 10.5z"/></svg>', later: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6.6 1h10.8l5.4 9.5-5.4 9.5H6.6L1.2 10.5z"/></svg>', no: '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6.6 1h10.8l5.4 9.5-5.4 9.5H6.6L1.2 10.5z"/><path d="M5 18 19 3"/></svg>' };
+// The pending "?" cell is shown only while the verdicts are being revealed (data-play, set by app.js);
+// without JS or with reduced motion the final verdicts simply show.
+const PENDING = '<svg viewBox="0 0 24 21" aria-hidden="true"><path d="M6.6 1h10.8l5.4 9.5-5.4 9.5H6.6L1.2 10.5z"/><text x="12" y="14.6" text-anchor="middle">?</text></svg>';
 function memoBlock(c, m) {
   const h = c.home.memo;
-  return `<aside class="memo" aria-labelledby="memo-title"><div class="memo-head"><h2 id="memo-title">${h.title}</h2><span class="memo-chip">${h.chip}</span></div><p class="memo-for">${m.for}</p><ol class="memo-list">${m.items.map((x) => `<li class="memo-row memo-row--${x.k}"><div><p class="memo-q">${x.q}</p><p class="memo-why">${x.why}</p></div><p class="memo-v">${VERDICT[x.k]}<span>${x.v}</span></p></li>`).join('')}</ol><p class="memo-foot">${m.foot}</p><p class="memo-by">${h.by}</p></aside>`;
+  return `<aside class="memo" aria-labelledby="memo-title" data-memo><div class="memo-head"><h2 id="memo-title">${h.title}</h2><span class="memo-chip">${h.chip}</span></div><p class="memo-for">${m.for}</p><ol class="memo-list">${m.items.map((x, i) => `<li class="memo-row memo-row--${x.k}" style="--d:${(0.9 + i * 1.1).toFixed(1)}s"><div><p class="memo-q">${x.q}</p><p class="memo-why">${x.why}</p></div><p class="memo-v"><span class="memo-pending" aria-hidden="true">${PENDING}</span><span class="memo-final">${VERDICT[x.k]}<span>${x.v}</span></span></p></li>`).join('')}</ol><p class="memo-foot">${m.foot}</p><div class="memo-by"><span>${h.by}</span><button class="memo-replay" type="button" data-memo-replay hidden>${h.replay}</button></div></aside>`;
 }
+
+// Who you'll be talking to, and what the call is: answers "what happens if I send this?" before the form.
+const personCard = (c) => `<div class="person-card"><span class="person-mark" aria-hidden="true"></span><p class="person-l">${c.contact.person}</p><p class="person-n">${c.founder.name}</p><p class="person-r">${c.founder.role}</p><ul class="person-call">${c.contact.call.map((x) => `<li>${x}</li>`).join('')}</ul><p class="person-link">${extLink(c.founder.linkedin, c.founder.linkedinLabel)}</p></div>`;
 
 /* ---------- shared blocks ---------- */
 // Decide → Build → Lead is a real progression of responsibility, so it is drawn as one connected line.
@@ -277,11 +283,20 @@ pages.results = (c) => {
     return `<li class="mf mf--${x.kind}">${shape}<p class="mf-text"><span class="mf-t">${x.t}</span><span class="mf-s">${x.s}</span></p>${decide}${loop}</li>`;
   };
   const flow = `<ol class="mflow">${f.nodes.map(node).join('')}</ol>`;
-  const table = `<div class="why-wrap"><table class="why measures-table"><thead><tr>${m.cols.map((x) => `<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${m.items.map((x) => `<tr><th scope="row">${x.h}<span class="mt-q">${x.q}</span></th><td data-label="${esc(m.cols[1])}" class="mt-outcome">${x.outcome}</td><td data-label="${esc(m.cols[2])}">${x.calc}</td><td data-label="${esc(m.cols[3])}">${x.src}</td></tr>`).join('')}</tbody></table></div>`;
+  const visuals = [
+    '<span class="kv-clock"><i></i></span>',
+    '<span class="kv-response"><i></i><i></i><i></i></span>',
+    '<span class="kv-volume"><i></i><i></i><i></i><i></i></span>',
+    '<span class="kv-quality"><i></i><i></i><i></i><i></i><i></i></span>',
+    '<span class="kv-human"><i></i><i></i><i></i></span>',
+    '<span class="kv-adoption"><i></i><i></i><i></i><i></i><i></i></span>',
+    '<span class="kv-money"><i></i><b>×</b><i></i><b>=</b><i></i></span>',
+  ];
+  const board = `<ol class="kpi-board">${m.items.map((x, i) => `<li class="kpi kpi--${i + 1}"><div class="kpi-top"><span class="kpi-n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><h3>${x.h}</h3></div><div class="kpi-visual" aria-hidden="true">${visuals[i]}</div><p class="kpi-outcome">${x.outcome}</p><details class="kpi-method"><summary>${m.cols[2]}</summary><div><p><span>${m.cols[2]}</span>${x.calc}</p><p><span>${m.cols[3]}</span>${x.src}</p></div></details></li>`).join('')}</ol>`;
   const rules = `<div class="rules-layout"><div><h2 id="rules-title">${r.title}</h2>${ticks(r.items)}</div><article class="rules-card rules-card--monthly"><h3>${r.monthly.h}</h3><p>${r.monthly.p}</p></article><article class="rules-card"><h3>${r.honest.h}</h3><p>${r.honest.p}</p></article></div>`;
   const body = `${pageHero(c, p.h1, p.lede)}
 ${section(`${head(f.title, f.intro, 'flow-title')}${flow}`, 'results-flow', 'flow', 'flow-title')}
-${section(`${head(m.title, m.intro, 'measures-title')}${table}`, 'section--tint results-measures', 'measures', 'measures-title')}
+${section(`${head(m.title, m.intro, 'measures-title')}${board}`, 'section--tint results-measures', 'measures', 'measures-title')}
 ${section(rules, 'results-rules', 'rules', 'rules-title')}
 ${ctaBand(c, p.cta.title, p.cta.p)}`;
   return { meta: p.meta, body };
@@ -302,7 +317,7 @@ pages.security = (c) => {
 pages.contact = (c) => {
   const p = c.contact;
   const body = `${pageHero(c, p.h1, p.lede)}
-${section(`<div class="split split--top"><div><div class="contact-person"><p><span class="contact-person-l">${p.person}</span><span class="contact-person-n">${c.founder.name}</span><span class="contact-person-r">${c.founder.role}</span></p></div>${leadForm(c)}</div><aside class="aside-stack"><div class="card"><h3>${p.next.h}</h3><ol class="steps">${p.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div><div class="card"><h3>${p.bring.h}</h3>${ticks(p.bring.items)}</div><div class="card"><h3>${p.direct.h}</h3><p>${p.direct.p} ${extLink(c.founder.linkedin, c.founder.linkedinLabel)}</p></div></aside></div>`)}`;
+${section(`<div class="split split--top"><div>${personCard(c)}${leadForm(c)}</div><aside class="aside-stack"><div class="card"><h3>${p.next.h}</h3><ol class="steps">${p.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div><div class="card"><h3>${p.bring.h}</h3>${ticks(p.bring.items)}</div></aside></div>`)}`;
   return { meta: p.meta, body };
 };
 
@@ -326,7 +341,7 @@ ${memoBlock(c, d.memo)}</div></section>`;
   const sits = `<ul class="lp-sits">${d.situations.items.map((x) => `<li><p class="voice-q">${x.q}</p><h3>${sl.under}</h3><p>${x.under}</p><h3>${sl.do}</h3><p class="lp-do">${x.do}</p><p class="lp-measure"><span>${sl.measure}</span>${x.measure}</p></li>`).join('')}</ul>`;
   const why = `<div class="founder-grid">${founderPanel(c, { sizes: '(min-width: 900px) 340px, 80vw' })}<div><h2 id="why-title">${L.why.title}</h2><div class="lp-why">${L.why.items.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div><p class="ways-link"><a href="${href(c.lang, 'about')}">${c.home.founder.link}</a></p></div></div>`;
   const start = `${head(L.start.title, L.start.intro, 'start-title')}<ol class="ways lp-start">${L.start.steps.map((x) => `<li class="way"><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ol>`;
-  const form = `<div class="split split--top"><div>${leadForm(c, { pain: id, title: L.form.title })}</div><aside class="aside-stack"><p class="lede lp-form-p">${L.form.p}</p><div class="contact-person"><p><span class="contact-person-l">${c.contact.person}</span><span class="contact-person-n">${c.founder.name}</span><span class="contact-person-r">${c.founder.role}</span></p></div><div class="card"><h3>${c.contact.next.h}</h3><ol class="steps">${c.contact.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div></aside></div>`;
+  const form = `<div class="split split--top"><div>${leadForm(c, { pain: id, title: L.form.title })}</div><aside class="aside-stack"><p class="lede lp-form-p">${L.form.p}</p>${personCard(c)}<div class="card"><h3>${c.contact.next.h}</h3><ol class="steps">${c.contact.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div></aside></div>`;
   const body = `${hero}
 ${section(`${head(d.situations.title, '', 'sits-title')}${sits}`, 'lp-situations', 'situations', 'sits-title')}
 ${section(why, 'section--tint lp-whysec', 'why', 'why-title')}
