@@ -84,6 +84,7 @@ English display headings use an editorial serif stack; Hebrew headings, body cop
 | Transformation flow + method track | Home | Discover → Prioritize → Design → Prove → Deploy → Scale, with a proof decision gate, refinement loop, executive flow chart and detailed list |
 | Offers as standing bars | Home | Stage 1 emphasised in navy with "Free" and the booking button; stages 2–4 rise as bars on a shared baseline and show duration only, no prices |
 | How-it-works stage rail | How it works | Stage rows joined by a vertical connector; the stages table shows a Duration column instead of prices |
+| About page | `/about` | A CEO's questions in order: hero about the person (headline, lede, booking and three facts beside the portrait) → the story → "What 20 years of technology leadership means for your project" (five rows: experience from the bio → what it means for the client, joined by pollen arrows) → "Why work with Eran" comparison → "How we work" principles → booking |
 | Results page (measurement method) | `/results` | Answers "how do you measure / what do you track and what does it prove": measurement flowchart (data → measure today → agree the bar ◇ → pilot → compare → cleared? ◇ → run and report, with a No branch and a monthly loop; horizontal on desktop, vertical on phones, mirrored in Hebrew), seven measures with the outcome each proves, its formula and data source, then rules and the monthly one-pager |
 | Capacity calculator, two-minute check | Not currently rendered | Code and copy still exist (`calculator()`, `check()` in `render.mjs`), but no page shows them since the bee & co. redesign; the quiz results now point to the use case |
 
@@ -155,7 +156,8 @@ Still present:
 | `4ce08c4` | Before/after AI diagram moved from home to the use case page, which now shows the diagram plus "Where the effort goes" (before, with AI, what it saves); use case preview removed from home; diagram also removed from how it works |
 | `4a64f91` | Use case page rebuilt around CEO pains: pain picker, decision path, why-Eran comparison; before/after diagram section and its savings rows removed; reusable tab behaviour extended (vertical tabs, Home/End, works without JS) |
 | `061d73a` | Results page rebuilt from scratch: measurement flowchart, worked calculation, measures with formulas, rules |
-| (this change) | Results page: worked calculation removed; outcome added to the measures title and table |
+| `ca0a45b` | Results page: worked calculation removed; outcome added to the measures title and table |
+| (this change) | About page rebuilt from scratch: hero beside the portrait, experience-to-client ledger, comparison, principles; the four "in practice" items folded into the ledger |
 | `061d73a` | "Why work with Eran" comparison moved from the use case page to About; About relaid for reading: story beside a sticky portrait and fact list, comparison, practice in a 2×2 grid, how we work ending on the booking button; larger logo; tighter spacing between blocks |
 
 Process used for the redesigns: the `frontend-design` skill for direction, `design-critique` and `accessibility-review` passes, and two parallel review agents (design critic, WCAG auditor) whose findings were applied.

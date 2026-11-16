@@ -88,6 +88,14 @@ await t('results page shows the measurement flow and the measures with outcomes'
     for (const x of r.measures.items) assert.ok(x.outcome && page.includes(x.outcome), 'outcome for ' + x.h);
   }
 });
+await t('about page: hero beside the portrait, experience ledger, comparison', () => {
+  for (const lang of langs) { const c = lang === 'he' ? he : en, a = c.about, page = pages[href(lang, 'about')];
+    assert.match(page, /class="about-hero"[\s\S]*class="portrait"/, 'portrait in hero ' + lang);
+    assert.equal((page.match(/<p class="xp-from">/g) || []).length, a.map.rows.length, 'experience rows ' + lang);
+    for (const x of a.map.rows) assert.ok(page.includes(x.to), 'what it means: ' + x.to);
+    assert.ok(page.includes(a.why.title), 'comparison on about ' + lang);
+  }
+});
 await t('illustrative content is labelled; no invented proof', () => {
   for (const [u, html] of Object.entries(pages)) { assert.doesNotMatch(html, /testimonial|עדות מלקוח\b(?!ות)/i, u); }
   assert.match(pages['/'], /להמחשה/); assert.match(pages['/en'], /Illustrative/);

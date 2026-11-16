@@ -332,16 +332,28 @@ ${section(`<div class="split split--even"><div><h2>${p.needTitle}</h2>${ticks(p.
 };
 
 pages.about = (c) => {
-  const p = c.about, w = p.why, sig = c.home.founder.signals;
-  // Reading order: who (story beside the portrait, then the hard facts) → why this partner over the alternatives
-  // (fair three-way comparison) → what that means day to day → how we work, ending on the booking action.
-  const facts = `<aside class="about-facts" aria-labelledby="facts-title"><h2 id="facts-title" class="as-h3">${p.factsTitle}</h2>${ticks([sig[0], sig[1], sig[2], sig[5]])}</aside>`;
+  const p = c.about, w = p.why, mp = p.map, sig = c.home.founder.signals;
+  // A CEO's questions in order: who is he (hero beside the portrait) → why does his experience matter to me
+  // (experience → what it means for you) → why him over the alternatives (comparison) → how he works → book.
+  const hero = `<section class="about-hero"><div class="container about-hero-in">
+<div class="about-hero-copy"><p class="page-kicker"><span>${brandDescriptor(c)}</span><span>${founderLine(c)}</span></p><h1>${p.h1}</h1><p class="lede">${p.lede}</p>
+<div class="btn-row">${btn(c, p.cta, bookUrl(c), 'btn--primary', 'data-track="cta_about_hero"')}</div>
+<div class="about-facts"><h2 class="as-h3">${p.factsTitle}</h2>${ticks([sig[0], sig[1], sig[2]])}</div></div>
+<div class="about-hero-portrait">${founderPanel(c)}</div></div></section>`;
+
+  const story = `<div class="about-prose">${p.story.map((x) => `<p>${x}</p>`).join('')}</div>`;
+
+  // Signature: each line of experience → what it means for the client's project, joined by an arrow.
+  const ledger = `<div class="xp-head" aria-hidden="true"><span>${mp.fromL}</span><span>${mp.toL}</span></div><ol class="xp-ledger">${mp.rows.map((x) => `<li><p class="xp-from"><span class="sr-only">${mp.fromL}: </span>${x.from}</p><span class="xp-arrow" aria-hidden="true"></span><p class="xp-to"><span class="sr-only">${mp.toL}: </span>${x.to}</p></li>`).join('')}</ol>`;
+
   const whyTable = `<div class="why-wrap"><table class="why"><thead><tr><td></td>${w.cols.map((x, i) => `<th scope="col"${i === 2 ? ' class="why-us"' : ''}>${x}</th>`).join('')}</tr></thead><tbody>${w.rows.map((r) => `<tr><th scope="row">${r.h}</th>${r.cells.map((x, i) => `<td data-label="${esc(w.cols[i])}"${i === 2 ? ' class="why-us"' : ''}>${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-  const body = `${pageHero(c, p.h1, p.lede)}
-${section(`<div class="about-story"><div class="about-side">${founderPanel(c)}</div><div class="about-main"><div class="about-prose">${p.story.map((x) => `<p>${x}</p>`).join('')}</div>${facts}</div></div>`, 'about-intro')}
-${section(`${head('', w.title, w.intro, 'why-title')}${whyTable}`, 'section--tint about-why', 'why', 'why-title')}
-${section(`${head('', p.sigTitle, '', 'practice-title')}<div class="about-practice">${p.sigs.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div>`, 'about-practice-sec', 'practice', 'practice-title')}
-${section(`<div class="about-how"><h2 id="how-title">${p.princTitle}</h2>${ticks(p.princ)}<div class="btn-row">${btn(c, p.cta, bookUrl(c), 'btn--primary', 'data-track="cta_about"')}</div></div>`, 'section--tint', 'how-we-work', 'how-title')}`;
+
+  const body = `${hero}
+${section(story, 'about-story-sec')}
+${section(`${head('', mp.title, mp.intro, 'xp-title')}${ledger}`, 'section--tint about-xp', 'experience', 'xp-title')}
+${section(`${head('', w.title, w.intro, 'why-title')}${whyTable}`, 'about-why', 'why', 'why-title')}
+${section(`<div class="about-how"><h2 id="how-title">${p.princTitle}</h2>${ticks(p.princ)}</div>`, 'section--tint about-how-sec', 'how-we-work', 'how-title')}
+${ctaBand(c, p.cta, p.ctaP)}`;
   return { meta: p.meta, body };
 };
 
