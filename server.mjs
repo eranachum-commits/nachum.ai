@@ -8,6 +8,11 @@ const ADAPTER = process.env.LEAD_ADAPTER || 'dev';
 const WEBHOOK = process.env.LEAD_WEBHOOK_URL || '';
 const SECRET = process.env.LEAD_WEBHOOK_SECRET || '';
 const BOOKING_URL = process.env.BOOKING_URL || '';
+// Email delivery (LEAD_ADAPTER=email): each lead is emailed through Resend (https://resend.com) — a plain HTTPS call, no SDK.
+const EMAIL_KEY = process.env.RESEND_API_KEY || '';
+const EMAIL_TO = process.env.LEAD_EMAIL_TO || '';
+const EMAIL_FROM = process.env.LEAD_EMAIL_FROM || 'bee & co. website <onboarding@resend.dev>';
+const EMAIL_API = process.env.RESEND_API_URL || 'https://api.resend.com/emails';
 const DATA_DIR = process.env.LEAD_DATA_DIR || (process.env.VERCEL ? '/tmp/bee-co-leads' : 'data');
 const DIST = join(process.cwd(), 'dist');
 const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.ico': 'image/x-icon' };
@@ -17,7 +22,7 @@ const SEC = {
   'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'",
 };
 
-const MISCONFIGURED = ADAPTER === 'webhook' && !WEBHOOK;
+const MISCONFIGURED = (ADAPTER === 'webhook' && !WEBHOOK) || (ADAPTER === 'email' && (!EMAIL_KEY || !EMAIL_TO));
 
 /* ---- lead validation (server-side, authoritative) ---- */
 const ROLE_MAX = 120;
@@ -38,8 +43,22 @@ export function validateLead(b) {
 }
 
 /* ---- delivery adapters ---- */
+// Plain-text email: nothing from the visitor is ever rendered as HTML.
+export function leadEmail(lead) {
+  const rows = [['Name', lead.name], ['Company', lead.company], ['Role', lead.role], ['Email', lead.email], ['Phone', lead.phone],
+    ['Page', lead.source], ['Topic', lead.pain], ['Language', lead.lang]].filter(([, v]) => v);
+  const text = `${rows.map(([k, v]) => `${k}: ${v}`).join('\n')}\n\nMessage:\n${lead.detail}\n`;
+  const subject = `New message from ${lead.name}${lead.company ? ` (${lead.company})` : ''} — bee & co.`.replace(/[\r\n]+/g, ' ');
+  return { from: EMAIL_FROM, to: [EMAIL_TO], reply_to: lead.email, subject, text };
+}
+
 async function deliver(lead) {
-  if (MISCONFIGURED) throw new Error('LEAD_ADAPTER=webhook requires LEAD_WEBHOOK_URL');
+  if (MISCONFIGURED) throw new Error(ADAPTER === 'email' ? 'LEAD_ADAPTER=email requires RESEND_API_KEY and LEAD_EMAIL_TO' : 'LEAD_ADAPTER=webhook requires LEAD_WEBHOOK_URL');
+  if (ADAPTER === 'email') {
+    const res = await fetch(EMAIL_API, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${EMAIL_KEY}` }, body: JSON.stringify(leadEmail(lead)), signal: AbortSignal.timeout(10000) });
+    if (!res.ok) throw new Error('email ' + res.status);
+    return 'email';
+  }
   if (ADAPTER === 'webhook') {
     const res = await fetch(WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json', ...(SECRET ? { Authorization: `Bearer ${SECRET}` } : {}) }, body: JSON.stringify(lead), signal: AbortSignal.timeout(10000) });
     if (!res.ok) throw new Error('webhook ' + res.status);

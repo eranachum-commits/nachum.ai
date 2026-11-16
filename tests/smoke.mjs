@@ -74,7 +74,7 @@ await t('generic use case replaces the solution pages', () => {
     assert.equal((page.match(/class="dp-gate"/g) || []).length, c.usecase.path.gates.length, 'a decision between stages ' + lang);
     assert.doesNotMatch(page, /class="why"/, 'comparison moved off the use case page ' + lang);
     const about = pages[href(lang, 'about')];
-    assert.equal((about.match(/<td data-label=/g) || []).length, c.about.why.rows.length * 3, 'comparison cells on about ' + lang);
+    assert.equal((about.match(/class="yb-bar /g) || []).length, c.about.why.rows.length * 3, 'comparison bars on about ' + lang);
     for (const k of ['home', 'how', 'usecase']) assert.doesNotMatch(pages[href(lang, k)], /data-pipeline/, 'no before/after diagram on ' + k + ' ' + lang);
     assert.ok(pages[href(lang, 'home')].includes(`href="${href(lang, 'usecase')}"`), 'home links to use case ' + lang);
   }
@@ -168,6 +168,23 @@ await t('lead API: honeypot stores nothing; valid lead reports dev mode honestly
 });
 await t('lead API: rate limit kicks in', async () => {
   let last; for (let i = 0; i < 8; i++) last = await post({ ...good, email: `x${i}@example.com` }); assert.equal(last.status, 429);
+});
+await t('lead API: email adapter sends a plain-text email with reply-to the sender', async () => {
+  const { createServer } = await import('node:http');
+  const got = [];
+  const fake = createServer((req, res) => { let b = ''; req.on('data', (d) => (b += d)); req.on('end', () => { got.push({ auth: req.headers.authorization, body: JSON.parse(b) }); res.writeHead(200, { 'Content-Type': 'application/json' }); res.end('{"id":"test"}'); }); });
+  await new Promise((r) => fake.listen(0, r));
+  const ePort = 4000 + Math.floor(Math.random() * 90);
+  const es = spawn('node', ['server.mjs'], { env: { ...process.env, PORT: String(ePort), LEAD_ADAPTER: 'email', RESEND_API_KEY: 'test-key', LEAD_EMAIL_TO: 'owner@example.com', RESEND_API_URL: `http://localhost:${fake.address().port}/emails` }, stdio: 'pipe' });
+  await new Promise((r) => es.stdout.on('data', (d) => /on http/.test(d) && r()));
+  try {
+    const r = await fetch(`http://localhost:${ePort}/api/leads`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...good, name: 'Dana <b>Test</b>' }) });
+    const j = await r.json(); assert.equal(r.status, 200); assert.equal(j.mode, 'email');
+    assert.equal(got.length, 1); const m = got[0].body;
+    assert.equal(got[0].auth, 'Bearer test-key'); assert.deepEqual(m.to, ['owner@example.com']); assert.equal(m.reply_to, good.email);
+    assert.ok(m.text.includes(good.detail) && m.text.includes('Example Ltd'), 'message and company in the email');
+    assert.equal(m.html, undefined, 'plain text only');
+  } finally { es.kill(); fake.close(); }
 });
 await t('security headers present', async () => { const r = await fetch(base + '/'); assert.ok(r.headers.get('content-security-policy')); assert.equal(r.headers.get('x-content-type-options'), 'nosniff'); });
 

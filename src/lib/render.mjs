@@ -257,14 +257,14 @@ pages.about = (c) => {
   const story = `<div class="about-story"><div class="about-prose">${p.story.map((x) => `<p>${x}</p>`).join('')}</div><aside class="about-co"><h2 class="as-h3">${p.co.h}</h2><p>${p.co.p}</p></aside></div>`;
 
   // Signature: each line of experience → what it means for the client's project, joined by an arrow.
-  const ledger = `<div class="xp-head" aria-hidden="true"><span>${mp.fromL}</span><span>${mp.toL}</span></div><ol class="xp-ledger">${mp.rows.map((x) => `<li><p class="xp-from"><span class="sr-only">${mp.fromL}: </span>${x.from}</p><span class="xp-arrow" aria-hidden="true"></span><p class="xp-to"><span class="sr-only">${mp.toL}: </span>${x.to}</p></li>`).join('')}</ol>`;
+  const ledger = `<ol class="xp-ledger">${mp.rows.map((x, i) => `<li><span class="xp-n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><p class="xp-from"><span class="sr-only">${mp.fromL}: </span>${x.from}</p><p class="xp-to"><span class="sr-only">${mp.toL}: </span>${x.to}</p></li>`).join('')}</ol>`;
 
-  const whyTable = `<div class="why-wrap"><table class="why"><thead><tr><td></td>${w.cols.map((x, i) => `<th scope="col"${i === 2 ? ' class="why-us"' : ''}>${x}</th>`).join('')}</tr></thead><tbody>${w.rows.map((r) => `<tr><th scope="row">${r.h}</th>${r.cells.map((x, i) => `<td data-label="${esc(w.cols[i])}"${i === 2 ? ' class="why-us"' : ''}>${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  const whyBars = `<div class="why-bars"><div class="yb-head" aria-hidden="true"><span></span>${w.cols.map((x) => `<span>${x}</span>`).join('')}</div><dl class="yb-list">${w.rows.map((r) => `<div class="yb-row"><dt>${r.h}</dt>${r.cells.map((x, i) => `<dd class="yb-bar ${i === 2 ? 'yb-us' : i === 1 ? 'yb-consult' : 'yb-tool'}" data-label="${esc(w.cols[i])}"><span class="sr-only">${w.cols[i]}: </span>${x}</dd>`).join('')}</div>`).join('')}</dl></div>`;
 
   const body = `${hero}
 ${section(story, 'about-story-sec')}
 ${section(`${head(mp.title, mp.intro, 'xp-title')}${ledger}`, 'section--tint about-xp', 'experience', 'xp-title')}
-${section(`${head(w.title, w.intro, 'why-title')}${whyTable}`, 'about-why', 'why', 'why-title')}
+${section(`${head(w.title, w.intro, 'why-title')}${whyBars}`, 'about-why', 'why', 'why-title')}
 ${section(`<div class="about-how"><h2 id="how-title">${p.princTitle}</h2>${ticks(p.princ)}</div>`, 'section--tint about-how-sec', 'how-we-work', 'how-title')}
 ${ctaBand(c, p.cta, p.ctaP)}`;
   const ld = { '@context': 'https://schema.org', '@type': 'Person', name: 'Eran Nachum', jobTitle: 'Founder', worksFor: { '@type': 'Organization', name: 'bee & co.' }, sameAs: [c.founder.linkedin] };

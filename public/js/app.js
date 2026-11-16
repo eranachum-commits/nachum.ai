@@ -230,7 +230,7 @@ $$('[data-lead-form]').forEach((form) => {
         Object.entries(body.errors).forEach(([k, v]) => setErr(k, v === 'email' ? D.mEmail : k === 'consent' ? D.mConsent : D.mRequired));
         status.className = 'form-status notice notice--err'; status.textContent = D.mFix;
       } else if (res.ok && body.ok) {
-        const dev = body.mode !== 'webhook';
+        const dev = body.mode === 'dev';
         status.className = 'form-status notice ' + (dev ? '' : 'notice--ok');
         status.innerHTML = `<strong>${dev ? D.devH : D.okH}</strong><br>${dev ? D.dev : D.okP}`;
         if (body.bookingUrl) status.insertAdjacentHTML('beforeend', `<br><a class="btn btn--primary btn--sm" style="margin-top:12px" href="${body.bookingUrl}" rel="noopener">${D.bookL}</a>`);

@@ -13,7 +13,7 @@ Everything below is implemented as **cautious draft copy**. Nothing here is fina
 | 7 | Founder photo | `.portrait` (monogram "EN") | Placeholder; no fabricated imagery | Provide/approve a photo |
 | 8 | Domain | `SITE_URL` | `http://localhost:3000` | Confirm the production domain and ownership |
 | 9 | Contact email / privacy contact | not present | none shown | Professional email address |
-| 10 | CRM / booking / email provider | `server.mjs` adapters | dev adapter + generic webhook | Choose provider, supply credentials |
+| 10 | Lead delivery | `server.mjs` adapters (`dev`, `webhook`, `email`) | **Email adapter built** (Nov 2026): each message is emailed via Resend, reply-to the sender | Create a Resend account with the receiving address, create an API key, then set `LEAD_ADAPTER=email`, `RESEND_API_KEY`, `LEAD_EMAIL_TO` in Vercel and redeploy |
 | 11 | Analytics + consent | `public/js/app.js` | Consent banner; events to `dataLayer` only after opt-in; no vendor loaded | Choose vendor; legal check of consent approach |
 | 12 | Case studies / testimonials / logos | `/results` | **None.** Page explains how results are measured | Only with written client permission |
 | 13 | "Who does the work" claim | FAQ, About | "Eran leads every engagement personally" | Confirm this holds as volume grows |
