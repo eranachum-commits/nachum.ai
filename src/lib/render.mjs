@@ -120,7 +120,7 @@ const faqList = (items) => `<div class="faq">${items.map((i) => `<details><summa
 const faqLd = (items) => ({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map((i) => ({ '@type': 'Question', name: i.q, acceptedAnswer: { '@type': 'Answer', text: i.a } })) });
 
 /* ---------- lead form: four fields, the rest happens on the call ---------- */
-function leadForm(c, { id = 'lead', pain = '', title = '' } = {}) {
+function leadForm(c, { id = 'lead', pain = '', title = '', topics = [], topicL = '', detailHint = '' } = {}) {
   const F = c.form, f = F.f, E = F.errors, O = F.ok;
   const req = `<span aria-hidden="true"> *</span><span class="sr-only"> (${E.required})</span>`;
   const input = (n, label, { type = 'text', required = true, auto = '' } = {}) => `<div class="field"><label for="${id}-${n}">${label}${required ? req : ''}</label><input id="${id}-${n}" name="${n}" type="${type}" ${required ? 'required' : ''} ${auto ? `autocomplete="${auto}"` : ''} aria-describedby="${id}-${n}-e"><span class="err" id="${id}-${n}-e" role="alert"></span></div>`;
@@ -131,7 +131,8 @@ function leadForm(c, { id = 'lead', pain = '', title = '' } = {}) {
 <div class="form-grid">
 ${input('name', f.name, { auto: 'name' })}
 ${input('company', f.company, { auto: 'organization' })}
-<div class="field full"><label for="${id}-detail">${f.detail}${req}</label><textarea id="${id}-detail" name="detail" maxlength="1500" required aria-describedby="${id}-detail-h ${id}-detail-e"></textarea><span class="hint" id="${id}-detail-h">${f.detailHint}</span><span class="err" id="${id}-detail-e" role="alert"></span></div>
+${topics.length ? `<fieldset class="field full topics"><legend>${topicL}</legend><div class="topic-opts">${topics.map((t, i) => `<label class="topic"><input type="radio" name="topic" value="${esc(t)}" id="${id}-t${i}"><span>${t}</span></label>`).join('')}</div></fieldset>` : ''}
+<div class="field full"><label for="${id}-detail">${f.detail}${topics.length ? '' : req}</label><textarea id="${id}-detail" name="detail" maxlength="1500" ${topics.length ? 'data-or="topic"' : 'required'} aria-describedby="${id}-detail-h ${id}-detail-e"></textarea><span class="hint" id="${id}-detail-h">${detailHint || f.detailHint}</span><span class="err" id="${id}-detail-e" role="alert"></span></div>
 ${input('email', f.email, { type: 'email', auto: 'email' })}
 ${input('role', f.role, { required: false, auto: 'organization-title' })}
 ${input('phone', f.phone, { type: 'tel', required: false, auto: 'tel' })}
@@ -336,15 +337,16 @@ function landing(c, id) {
   const hero = `<section class="hero hero--lp"><div class="container hero-grid">
 <div class="hero-copy"><h1>${d.h1}</h1><p class="lede">${d.lede}</p>
 <div class="btn-row">${btn(c, L.bookHere, '#lead', 'btn--primary', `data-track="cta_lp_hero" data-industry="${id}"`)}</div>
-<p class="hero-note">${c.home.hero.note}</p></div>
+<p class="hero-note">${c.home.hero.note}</p>
+<ul class="lp-proof">${L.proof.map((x) => `<li>${x}</li>`).join('')}</ul></div>
 ${memoBlock(c, d.memo)}</div></section>`;
   const sits = `<ul class="lp-sits">${d.situations.items.map((x) => `<li><p class="voice-q">${x.q}</p><h3>${sl.under}</h3><p>${x.under}</p><h3>${sl.do}</h3><p class="lp-do">${x.do}</p><p class="lp-measure"><span>${sl.measure}</span>${x.measure}</p></li>`).join('')}</ul>`;
   const why = `<div class="founder-grid">${founderPanel(c, { sizes: '(min-width: 900px) 340px, 80vw' })}<div><h2 id="why-title">${L.why.title}</h2><div class="lp-why">${L.why.items.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div><p class="ways-link"><a href="${href(c.lang, 'about')}">${c.home.founder.link}</a></p></div></div>`;
   const start = `${head(L.start.title, L.start.intro, 'start-title')}<ol class="ways lp-start">${L.start.steps.map((x) => `<li class="way"><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ol>`;
-  const form = `<div class="split split--top"><div>${leadForm(c, { pain: id, title: L.form.title })}</div><aside class="aside-stack"><p class="lede lp-form-p">${L.form.p}</p>${personCard(c)}<div class="card"><h3>${c.contact.next.h}</h3><ol class="steps">${c.contact.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div></aside></div>`;
+  const form = `<div class="split split--top"><div>${leadForm(c, { pain: id, title: L.form.title, topics: d.situations.items.map((x) => x.q), topicL: L.form.topicL, detailHint: L.form.detailHint })}</div><aside class="aside-stack"><p class="lede lp-form-p">${L.form.p}</p>${personCard(c)}<div class="card"><h3>${c.contact.next.h}</h3><ol class="steps">${c.contact.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div></aside></div>`;
   const body = `${hero}
 ${section(`${head(d.situations.title, '', 'sits-title')}${sits}`, 'lp-situations', 'situations', 'sits-title')}
-${section(why, 'section--tint lp-whysec', 'why', 'why-title')}
+${section(`${why}<div class="lp-mid"><p>${L.midCta}</p>${btn(c, L.bookHere, '#lead', 'btn--primary', `data-track="cta_lp_mid" data-industry="${id}"`)}</div>`, 'section--tint lp-whysec', 'why', 'why-title')}
 ${section(start, 'lp-startsec', 'start', 'start-title')}
 ${section(`<div class="about-how"><h2 id="faq-title">${L.faqTitle}</h2>${faqList(d.faq)}</div>`, 'section--tint', 'faq', 'faq-title')}
 ${section(form, 'lp-formsec', 'book', '')}`;

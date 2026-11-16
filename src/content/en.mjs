@@ -10,7 +10,7 @@ export default {
     photoAlt: 'Eran Nachum, founder of bee & co.',
   },
   ui: {
-    skip: 'Skip to content', menu: 'Menu', close: 'Close', book: 'Book a call with Eran', seeHow: 'Ways to work together',
+    skip: 'Skip to content', menu: 'Menu', close: 'Close', book: 'Talk to Eran', seeHow: 'Ways to work together',
     illustrative: 'Illustrative', home: 'Home', send: 'Send message', sending: 'Sending…',
     required: 'Required', fixField: 'Please check the highlighted fields.', main: 'Main navigation',
   },
@@ -311,7 +311,9 @@ export default {
   },
   // Campaign landing pages: one template, one entry per industry (src/lib/render.mjs → landing()).
   lp: {
-    bookHere: 'Book a call with Eran',
+    bookHere: 'Talk to Eran',
+    proof: ['Former VP R&D ×3', 'Budget owner under a P&L', 'Led R&D organizations of 50+'],
+    midCta: 'Ready to talk it through? 30 minutes, directly with Eran.',
     situationsL: { under: 'What is usually going on', do: 'What Eran does', measure: 'How you will know it worked' },
     why: {
       title: 'Why do this with Eran, and not with a vendor',
@@ -332,15 +334,15 @@ export default {
       ],
     },
     faqTitle: 'Questions we usually get',
-    form: { title: 'Book a 30-minute call with Eran', p: 'Tell us briefly what is on your mind. Eran reads every message himself and replies personally.' },
+    form: { topicL: 'What is closest to your situation?', detailHint: 'Optional if you picked one above. A few sentences are enough.', title: 'Talk to Eran: a 30-minute call', p: 'Tell us briefly what is on your mind. Eran reads every message himself and replies personally.' },
   },
   industries: {
     distribution: {
       meta: { title: 'AI and technology leadership for distributors and importers — bee & co.', desc: 'For distribution, import and wholesale companies: decide where AI is worth it in quotes, orders and the ERP, then get it built properly. Led by Eran Nachum, former VP R&D.' },
-      h1: 'Quotes, orders and the ERP: decide what AI should fix, then get it built.',
+      h1: 'Quotes and orders without the retyping. Decide what’s worth it, then build it.',
       lede: 'For distribution, import and wholesale companies where growth still means more people retyping orders. Eran Nachum, former VP R&D, tells you what is worth building, what is not, and builds what is.',
       memo: {
-        for: 'Three ideas a distributor brought to a Decision Sprint',
+        for: 'Three ideas distributors often raise on the first call',
         items: [
           { q: 'Quote drafts generated from incoming requests and the price list in the ERP', v: 'Build', k: 'build', why: 'Hundreds a month, clear pricing rules, and a salesperson approves the exceptions.' },
           { q: 'Replace the ERP before anything else', v: 'Not now', k: 'later', why: 'It works. The hours are lost in the retyping around it, not in the ERP itself.' },
@@ -368,7 +370,7 @@ export default {
       h1: 'Before you buy the next platform, get a senior view you can trust.',
       lede: 'For manufacturing and industrial companies with old systems, critical knowledge in a few heads, and vendors offering everything. Eran Nachum, former VP R&D, helps you decide what is worth it, then builds it.',
       memo: {
-        for: 'Three ideas a manufacturer brought to a Decision Sprint',
+        for: 'Three ideas manufacturers often raise on the first call',
         items: [
           { q: 'An assistant that drafts quotes from drawings and past jobs', v: 'Build', k: 'build', why: 'The rules already exist in past quotes, and an estimator approves every price.' },
           { q: 'A full smart-factory platform across the plant', v: 'Not now', k: 'later', why: 'The data it needs is not collected yet. Start with one line and one measure.' },
@@ -396,7 +398,7 @@ export default {
       h1: 'You have the tools. You need someone senior to run the technology.',
       lede: 'For e-commerce and retail brands with a store, a stack of apps, an agency or a small dev team, and no technology leader. Eran Nachum has led R&D for e-commerce and SaaS at 50+ people, and still builds.',
       memo: {
-        for: 'Three ideas an online brand brought to a Decision Sprint',
+        for: 'Three ideas online brands often raise on the first call',
         items: [
           { q: 'AI drafts for customer service replies, from order and shipping data', v: 'Build', k: 'build', why: 'High volume, repeated questions, and an agent approves before anything is sent.' },
           { q: 'Rebuild the store on a new platform', v: 'Not now', k: 'later', why: 'The store is not the bottleneck. Fix the stock and order sync first.' },

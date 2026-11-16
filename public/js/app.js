@@ -205,10 +205,12 @@ $$('[data-lead-form]').forEach((form) => {
   const check = () => {
     let first = null;
     for (const f of form.elements) {
-      if (!f.name || f.type === 'hidden' || f.name === 'website') continue;
+      if (!f.name || f.type === 'hidden' || f.type === 'radio' || f.name === 'website') continue;
       let msg = '';
       if (f.type === 'checkbox') { if (f.required && !f.checked) msg = D.mConsent; }
       else if (f.required && !f.value.trim()) msg = D.mRequired;
+      // Landing pages: the message is optional when a situation was picked.
+      else if (f.dataset.or && !f.value.trim() && !form.querySelector(`[name=${f.dataset.or}]:checked`)) msg = D.mRequired;
       else if (f.type === 'email' && f.value && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.value.trim())) msg = D.mEmail;
       setErr(f.name, msg);
       if (msg && !first) first = f;

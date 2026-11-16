@@ -102,7 +102,7 @@ await t('illustrative content is labelled; no invented proof', () => {
 });
 await t('repositioning: named founder, no prices, no size limits, slim form', () => {
   for (const [u, html] of Object.entries(pages)) {
-    for (const bad of [/30[–-]300/, /WalkMe|Resident\b|Agora|ClickDimensions|Sizmek|Amdocs/i, /₪\s?\d/, /\d+\s?אלף/, /free working session/i, /פגישת עבודה ללא עלות/, /unlock/i, /mid-market budget/i, /20\+ years of senior/i]) assert.doesNotMatch(html.replace(/<script[\s\S]*?<\/script>/g, ''), bad, `${bad} on ${u}`);
+    for (const bad of [/30[–-]300/, /WalkMe|Resident\b|Agora|ClickDimensions|Sizmek|Amdocs/i, /₪\s?\d/, /\d+\s?אלף/, /free working session/i, /פגישת עבודה ללא עלות/, /unlock/i, /mid-market budget/i, /hotfix|85%|תיקוני חירום|eight months|שמונה חודשים/i, /20\+ years of senior/i]) assert.doesNotMatch(html.replace(/<script[\s\S]*?<\/script>/g, ''), bad, `${bad} on ${u}`);
   }
   for (const lang of langs) { const c = lang === 'he' ? he : en, home = pages[href(lang, 'home')], contact = pages[href(lang, 'contact')];
     assert.ok(home.includes(c.founder.name), 'founder full name on home ' + lang);
@@ -137,6 +137,11 @@ await t('campaign landing pages: memo, three situations, form on the page, slim 
       assert.match(page, new RegExp(`name="pain" value="${id}"`), 'lead tagged with industry ' + id);
       assert.match(page, /site-header--lp/, 'slim header on ' + id);
       assert.doesNotMatch(page, /class="mobile-nav"/, 'no site menu on ' + id);
+      assert.equal((page.match(/name="topic"/g) || []).length, d.situations.items.length, 'situation chips on ' + id);
+      assert.match(page, /data-or="topic"/, 'message optional when a situation is picked on ' + id);
+      assert.match(page, /class="lp-proof"/, 'proof strip on ' + id);
+      assert.match(page, /data-track="cta_lp_mid"/, 'mid-page call to action on ' + id);
+      assert.doesNotMatch(page, /Decision Sprint<\/p>|לספרינט החלטה<\/p>/, 'no jargon in the memo intro on ' + id);
     }
   }
 });
@@ -156,6 +161,7 @@ await t('lead API rejects invalid input server-side', async () => {
   r = await post({ ...good, consent: false }); assert.equal(r.status, 400);
   r = await post({ ...good, name: '' }); assert.equal(r.status, 400);
   r = await post({ ...good, detail: '' }); assert.equal(r.status, 400);
+  r = await post({ ...good, detail: '', topic: 'Every new customer means more people retyping orders.', email: 'topic@example.com' }); assert.notEqual(r.status, 400, 'a picked situation stands in for the message');
   r = await post({ ...good, role: undefined, phone: undefined }); assert.notEqual(r.status, 400);
   r = await post('{bad json'); assert.equal(r.status, 400);
   r = await post({ ...good, detail: 'x'.repeat(30000) }); assert.equal(r.status, 413);
@@ -163,7 +169,7 @@ await t('lead API rejects invalid input server-side', async () => {
 await t('lead API: honeypot stores nothing; valid lead reports dev mode honestly', async () => {
   let r = await post({ ...good, website: 'http://spam' }); assert.equal(r.status, 200);
   r = await post(good); const j = await r.json(); assert.equal(r.status, 200); assert.equal(j.ok, true); assert.equal(j.mode, 'dev');
-  const lines = (await readFile(join(dataDir, 'leads.jsonl'), 'utf8')).trim().split('\n'); assert.equal(lines.length, 2, 'one lead without optional fields, one full lead; the honeypot stored nothing');
+  const lines = (await readFile(join(dataDir, 'leads.jsonl'), 'utf8')).trim().split('\n'); assert.equal(lines.length, 3, 'one lead without optional fields, one with a picked situation, one full lead; the honeypot stored nothing');
   assert.equal(JSON.parse(lines.at(-1)).extra.volume, '50–200');
 });
 await t('lead API: rate limit kicks in', async () => {

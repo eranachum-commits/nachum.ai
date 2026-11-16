@@ -31,12 +31,13 @@ export function validateLead(b) {
   const errors = {};
   const lead = {
     name: clean(b.name, 120), role: clean(b.role, ROLE_MAX), company: clean(b.company, 160), size: clean(b.size, 40), pain: clean(b.pain, 40),
-    detail: clean(b.detail, 1500), urgency: clean(b.urgency, 60), budget: clean(b.budget, 120), email: clean(b.email, 200).toLowerCase(), phone: clean(b.phone, 40),
+    detail: clean(b.detail, 1500), topic: clean(b.topic, 200), urgency: clean(b.urgency, 60), budget: clean(b.budget, 120), email: clean(b.email, 200).toLowerCase(), phone: clean(b.phone, 40),
     lang: b.lang === 'en' ? 'en' : 'he', source: clean(b.source, 200),
     extra: {},
   };
   for (const k of ['volume', 'system', 'channels', 'process', 'team', 'tools', 'stalled']) if (b[k]) lead.extra[k] = clean(b[k], 300);
-  for (const k of ['name', 'company', 'email', 'detail']) if (!lead[k]) errors[k] = 'required';
+  for (const k of ['name', 'company', 'email']) if (!lead[k]) errors[k] = 'required';
+  if (!lead.detail && !lead.topic) errors.detail = 'required'; // a picked situation (landing pages) can stand in for the message
   if (lead.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(lead.email)) errors.email = 'email';
   if (!(b.consent === true || b.consent === 'true' || b.consent === 'on')) errors.consent = 'required';
   return { lead, errors };
@@ -46,8 +47,8 @@ export function validateLead(b) {
 // Plain-text email: nothing from the visitor is ever rendered as HTML.
 export function leadEmail(lead) {
   const rows = [['Name', lead.name], ['Company', lead.company], ['Role', lead.role], ['Email', lead.email], ['Phone', lead.phone],
-    ['Page', lead.source], ['Topic', lead.pain], ['Language', lead.lang]].filter(([, v]) => v);
-  const text = `${rows.map(([k, v]) => `${k}: ${v}`).join('\n')}\n\nMessage:\n${lead.detail}\n`;
+    ['Page', lead.source], ['Industry', lead.pain], ['Situation', lead.topic], ['Language', lead.lang]].filter(([, v]) => v);
+  const text = `${rows.map(([k, v]) => `${k}: ${v}`).join('\n')}\n\nMessage:\n${lead.detail || '(none — situation picked above)'}\n`;
   const subject = `New message from ${lead.name}${lead.company ? ` (${lead.company})` : ''} — bee & co.`.replace(/[\r\n]+/g, ' ');
   return { from: EMAIL_FROM, to: [EMAIL_TO], reply_to: lead.email, subject, text };
 }

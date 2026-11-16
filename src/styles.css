@@ -761,3 +761,21 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   @keyframes memo-in { from { opacity: 0; transform: scale(.82); } to { opacity: 1; transform: none; } }
   @keyframes memo-fade { from { opacity: 0; } to { opacity: 1; } }
 }
+
+/* ---------- landing pages: proof strip, mid-page call to action, situation chips ---------- */
+.lp-proof { list-style: none; margin: 22px 0 0; padding: 16px 0 0; border-top: 1px solid var(--rule-2); display: flex; flex-wrap: wrap; gap: 8px 22px; max-width: 60ch; }
+.lp-proof li { position: relative; padding-inline-start: 18px; font-size: .92rem; font-weight: 500; color: var(--ink); }
+.lp-proof li::before { content: ''; position: absolute; inset-inline-start: 0; top: .42em; width: 11px; height: 10px; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: var(--pollen); }
+.lp-mid { margin-top: clamp(32px, 4vw, 48px); padding-top: 22px; border-top: 1px solid var(--rule-2); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; }
+.lp-mid p { margin: 0; font-size: 1.08rem; color: var(--ink); }
+.topics { border: 0; padding: 0; margin: 0 0 18px; }
+.topics legend { font-weight: 500; font-size: .95rem; margin-bottom: 8px; padding: 0; }
+.topic-opts { display: grid; gap: 8px; }
+.topic { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border: 0; border-radius: var(--r-ctl); background: var(--paper-2); cursor: pointer; line-height: 1.4; }
+.topic:hover { background: var(--peri); }
+.topic input { width: 20px; height: 20px; min-height: 0; margin: 1px 0 0; flex: none; accent-color: var(--accent); padding: 0; }
+.topic:has(input:checked) { background: var(--accent-tint); }
+.topic:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+/* Landing headlines carry a full sentence: a step smaller than the home hero so they stay within three or four lines on phones. */
+.hero--lp h1 { font-size: clamp(2.4rem, 4.6vw, 4.4rem); }
+[lang='he'] .hero--lp h1 { font-size: clamp(2.1rem, 4.2vw, 4rem); }
