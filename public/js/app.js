@@ -92,7 +92,7 @@ $$('[data-pipeline]').forEach((root) => {
 /* ---------- ladder tabs ---------- */
 $$('[data-ladder]').forEach((root) => {
   const tabs = $$('[role=tab]', root);
-  const vertical = root.matches('.pain-picker');
+  const vertical = root.matches('.pain-picker, [data-vertical]');
   const sel = (i, focus) => tabs.forEach((t, j) => {
     const on = i === j;
     t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
@@ -192,6 +192,9 @@ $$('[data-lead-form]').forEach((form) => {
   const params = new URLSearchParams(location.search);
   const pain = $('[name=pain]', form);
   if (pain && /^[a-z-]{1,40}$/.test(params.get('pain') || '')) pain.value = params.get('pain');
+  // A situation picked on the home page arrives as ?q=: start the message with it so the visitor only adds detail.
+  const q = (params.get('q') || '').trim(), detail = $('[name=detail]', form);
+  if (q && q.length <= 200 && detail && !detail.value) detail.value = q + '\n\n';
   $('[name=source]', form).value = location.pathname + location.search;
   $('[name=ts]', form).value = Date.now();
   let started = false;

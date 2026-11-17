@@ -71,7 +71,7 @@ await t('generic use case replaces the solution pages', () => {
     assert.ok(page, 'use case page ' + lang);
     assert.equal((page.match(/role="tab"/g) || []).length, c.usecase.pains.items.length, 'one tab per pain ' + lang);
     assert.equal((page.match(/role="tabpanel"/g) || []).length, c.usecase.pains.items.length, 'one panel per pain ' + lang);
-    assert.equal((page.match(/class="dp-gate"/g) || []).length, c.usecase.path.gates.length, 'a decision between stages ' + lang);
+    assert.doesNotMatch(page, /class="decision-path"/, 'no decision path on the use case page ' + lang);
     assert.doesNotMatch(page, /class="why"/, 'comparison moved off the use case page ' + lang);
     const about = pages[href(lang, 'about')];
     assert.equal((about.match(/<ol class="why-points">[\s\S]*?<\/ol>/)[0].match(/<li /g) || []).length, c.about.why.points.length, 'why-me card on about ' + lang);
@@ -123,7 +123,11 @@ await t('home: one-partner hero, journey map, five services, three pillars, outc
   for (const lang of langs) { const c = lang === 'he' ? he : en, h = c.home, home = pages[href(lang, 'home')];
     assert.ok(home.includes(`<h1>${h.hero.h1}</h1>`), 'one-partner headline ' + lang);
     assert.match(home, /class="hero hero--home"[\s\S]*data-track="cta_hero"[\s\S]*href="#services"/, 'two actions above the fold ' + lang);
-    assert.doesNotMatch(home, /class="record"|class="handoff"/, 'no side card in the hero ' + lang);
+    assert.doesNotMatch(home, /class="record"|class="handoff"/, 'no ownership ledger in the hero ' + lang);
+    assert.match(home, /class="hero hero--home"[\s\S]*?<aside class="hero-pick" data-ladder data-vertical/, 'situation picker beside the headline ' + lang);
+    assert.equal((home.match(/id="hp-t-\d"/g) || []).length, h.picker.items.length, 'one choice per situation ' + lang);
+    assert.equal((home.match(/class="pick-panel" role="tabpanel"[^>]*hidden/g) || []).length, h.picker.items.length - 1, 'only the first answer shows before a pick ' + lang);
+    for (const x of h.picker.items) assert.ok(home.includes(`${href(lang, 'contact')}?pain=${x.id}&amp;q=`), 'pick opens the form with the situation: ' + x.id);
     assert.match(home, /id="services"/, 'secondary action has a target ' + lang);
     assert.doesNotMatch(home, /class="jr-stage"|jr-lane|data-armed/, 'journey lives on the how-it-works page, not home ' + lang);
     assert.match(home, /<\/section>\s*<section class="section home-services" id="services"/, 'services come right after the hero ' + lang);

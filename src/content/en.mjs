@@ -37,6 +37,19 @@ export default {
       secondary: 'See what we deliver',
       note: '30 minutes, directly with Eran. No sales team.',
     },
+    picker: {
+      title: 'Which of these sounds like your business?',
+      intro: 'Pick the closest one, and see where we would start.',
+      underL: 'What’s usually going on', startL: 'Where we’d start',
+      cta: 'Talk about this with Eran',
+      note: '30 minutes. Your situation is already filled in.',
+      items: [
+        { id: 'ai-tools', q: 'We bought AI tools. Nothing really changed.', under: 'The tools sit beside the work, not inside it, and nobody owns the change.', start: 'Pick the one process where AI matters most and build it into daily work, with owners and a measure.' },
+        { id: 'manual-work', q: 'Every new customer adds manual work.', under: 'The repeated part is done by hand, between email, spreadsheets and the ERP or CRM.', start: 'Map where the hours really go, then build the repeated part into the systems you already run.' },
+        { id: 'tech-decision', q: 'There’s a big technology decision on the table.', under: 'It’s expensive to reverse, and most of the advice comes from people selling one of the options.', start: 'An independent recommendation with costs, risks and a go/no-go, in a 2–3 week Decision Sprint.' },
+        { id: 'no-cto', q: 'We don’t have a senior technology leader.', under: 'Decisions about systems, vendors and AI are made by people for whom technology is a side job.', start: 'A fractional CTO seat: priorities, architecture and vendor decisions, with a written 90-day agenda.' },
+      ],
+    },
     memo: {
       title: 'Three AI ideas. Three honest answers.',
       chip: 'Example',
@@ -148,13 +161,6 @@ export default {
         { q: 'There’s a big technology decision on the table.', under: 'A platform, a vendor, a rebuild or an AI initiative. It is expensive to reverse, and most of the advice comes from people selling one of the options.', ways: [0], do: 'An independent senior view: the real options, their costs and risks, what to leave alone, and a recommendation you can defend to your board and your team.', first: 'A Decision Sprint with a written recommendation and a go/no-go.', measure: 'A decision made on time, with the reasoning written down' },
         { q: 'Everything depends on two people who know how it works.', under: 'The rules live in a few heads, old emails and systems nobody wants to touch. When one of those people is away, the work slows down or stops.', ways: [1, 2], do: 'Capture the rules and sources those people use, document the systems, and build the work so your experts handle the exceptions instead of every case.', first: 'A Decision Sprint that maps the knowledge and the risk.', measure: 'Share of work handled without the key person' },
       ],
-    },
-    path: {
-      title: 'How it usually unfolds, with a decision at every step',
-      intro: 'Each step ends with a choice that stays yours.',
-      getL: 'You get', gateL: 'Your call',
-      get: ['An honest first view of the situation, and whether bee & co. is the right fit', 'A written recommendation: what to do, what not to do, and why', 'The agreed system in production and in daily use, with owners and numbers', 'Senior technology leadership on hand, with a monthly scorecard'],
-      gates: ['Is it worth a closer look?', 'Is it worth building?', 'Do we want ongoing leadership?'],
     },
     cta: { title: 'Bring the situation you’re in.', p: 'In a 30-minute call with Eran, talk it through and leave with a clearer view of what to do next.' },
   },

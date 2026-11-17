@@ -178,12 +178,21 @@ const stageCover = (c, st, label) => { const S = c.how.journey.stages;
 const pages = {};
 
 pages.home = (c) => {
-  const h = c.home, hr = h.hero, j = c.how.journey, sv = h.services, wy = h.why, oc = h.outcomes;
+  const h = c.home, hr = h.hero, pk = h.picker, j = c.how.journey, sv = h.services, wy = h.why, oc = h.outcomes;
   // Five-second test: what we do (h1), why it matters (lede), why trust us (trust line), what next (two actions).
+  // Beside it, the visitor finds themselves: four situations in an executive's own words. Picking one shows what is
+  // usually going on and where we would start, and the action opens the contact form with that situation filled in.
+  // Tabs reuse the situations-page script (data-ladder); panels after the first start hidden so nothing shifts on load.
+  const pickTabs = pk.items.map((x, i) => `<button type="button" role="tab" id="hp-t-${i}" aria-controls="hp-p-${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}"><span class="pick-dot" aria-hidden="true"></span><span>${x.q}</span></button>`).join('');
+  const pickPanels = pk.items.map((x, i) => `<div class="pick-panel" role="tabpanel" id="hp-p-${i}" aria-labelledby="hp-t-${i}" tabindex="0"${i ? ' hidden' : ''}><p class="pick-l">${pk.underL}</p><p class="pick-under">${x.under}</p><p class="pick-l">${pk.startL}</p><p class="pick-start">${x.start}</p>${btn(c, pk.cta, `${href(c.lang, 'contact')}?pain=${x.id}&amp;q=${encodeURIComponent(x.q)}`, 'btn--primary pick-cta', `data-track="cta_hero_pick" data-situation="${x.id}"`)}</div>`).join('');
+  const picker = `<aside class="hero-pick" data-ladder data-vertical data-track-id="hero_situation" aria-labelledby="pick-title"><h2 id="pick-title">${pk.title}</h2><p class="pick-intro">${pk.intro}</p>
+<div class="pick-tabs" role="tablist" aria-orientation="vertical" aria-labelledby="pick-title">${pickTabs}</div>
+<div class="pick-panels">${pickPanels}</div><p class="pick-note">${pk.note}</p></aside>`;
   const hero = `<section class="hero hero--home"><div class="container hero-grid">
 <div class="hero-copy"><h1>${hr.h1}</h1><p class="lede">${hr.sub}</p>
 <div class="btn-row">${btn(c, hr.primary, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, hr.secondary, '#services', '')}</div>
-<p class="hero-trust">${hr.trust}</p></div></div></section>`;
+<p class="hero-trust">${hr.trust}</p></div>
+${picker}</div></section>`;
 
   // Services are one model, not five products: each row shows which journey stages it covers.
   const cover = (st) => stageCover(c, st, sv.coversL);
@@ -210,7 +219,7 @@ ${cta}`;
 };
 
 pages.usecase = (c) => {
-  const p = c.usecase, pn = p.pains, path = p.path, ways = c.home.ways.items;
+  const p = c.usecase, pn = p.pains, ways = c.home.ways.items;
   // A leader's line of thought: which situation is mine → what's really going on → where it sits (Decide / Build / Lead)
   // → what Eran does → the first step → how I'll know it worked. Then how it unfolds, with my call at each step.
   const hero = pageHero(c, p.h1, p.lede).replace('</div></section>',
@@ -228,12 +237,8 @@ pages.usecase = (c) => {
 <div class="pain-fix"><div><h3>${pn.firstL}</h3><p>${x.first}</p></div><div class="pain-measure"><h3>${pn.measureL}</h3><p>${x.measure}</p></div></div></div>`).join('');
   const picker = `<div class="pain-picker" data-ladder data-track-id="situation_picker"><div class="pain-tabs" role="tablist" aria-orientation="vertical" aria-label="${esc(pn.tabsLabel)}">${tabs}</div><div class="pain-panels">${panels}</div></div>`;
 
-  // Decision path: the four engagement steps, with the leader's go/no-go between them. Durations only, never prices.
-  const stages = c.offers.items.map((o, i) => `<li class="dp-stage${i === 0 ? ' dp-stage--free' : ''}"><span class="dp-n" aria-hidden="true">${i + 1}</span><div><p class="dp-name">${o.stage}</p><h3>${o.h}</h3><p class="dp-dur">${o.price ? `<span class="dp-free">${o.price}</span>` : ''}${o.unit}</p><p class="dp-get"><strong>${path.getL}</strong> ${path.get[i]}</p></div></li>${i < path.gates.length ? `<li class="dp-gate"><span class="dp-gate-mark" aria-hidden="true"></span><p><strong>${path.gateL}</strong> ${path.gates[i]}</p></li>` : ''}`).join('');
-
   const body = `${hero}
 ${section(`${head(pn.title, pn.intro, 'situations-title')}${picker}`, 'usecase-pains', 'situations', 'situations-title')}
-${section(`${head(path.title, path.intro, 'path-title')}<ol class="decision-path">${stages}</ol>`, 'section--tint usecase-path', 'path', 'path-title')}
 ${ctaBand(c, p.cta.title, p.cta.p, 'usecase')}`;
   return { meta: p.meta, body };
 };

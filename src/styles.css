@@ -323,22 +323,6 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 
 
 /* ---------- use case: decision path (four stages, the CEO's call between them) ---------- */
-.decision-path { list-style: none; margin: 0; padding: 0; position: relative; max-width: 980px; }
-.decision-path::before { content: ''; position: absolute; top: 24px; bottom: 24px; inset-inline-start: 23px; width: 2px; background: var(--flow-v); border-radius: 2px; }
-.dp-stage { position: relative; display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: clamp(18px, 3vw, 32px); padding-block: 18px; }
-.dp-stage > div { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 4px clamp(20px, 3vw, 40px); align-items: start; }
-.dp-n { position: relative; z-index: 1; display: grid; place-items: center; width: 48px; aspect-ratio: 1.14; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: var(--accent-tint); color: var(--accent-deep); font-weight: 600; }
-.dp-stage--free .dp-n { background: var(--night); color: var(--accent-on-night); }
-.dp-name { grid-column: 1; margin: 0; color: var(--muted); font-size: .86rem; }
-.dp-stage h3 { grid-column: 1; margin: 0; }
-.dp-dur { grid-column: 1; margin: 0; color: var(--accent-deep); font-size: .92rem; font-weight: 500; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.dp-free { background: var(--night); color: var(--on-night); padding: 2px 10px; border-radius: 999px; font-size: .8rem; font-weight: 600; }
-.dp-get { grid-column: 2; grid-row: 1 / span 3; margin: 0; color: var(--ink-2); line-height: 1.55; align-self: center; }
-.dp-get strong, .dp-gate strong { display: block; color: var(--ink); font-weight: 600; font-size: .86rem; margin-bottom: 2px; }
-.dp-gate { position: relative; display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: clamp(18px, 3vw, 32px); align-items: center; padding-block: 6px; }
-.dp-gate-mark { justify-self: center; width: 18px; height: 18px; transform: rotate(45deg); background: var(--paper); border: 2px solid var(--pollen); position: relative; z-index: 1; }
-.dp-gate p { margin: 0; padding: 10px 16px; background: var(--accent-tint); border-radius: var(--r-ctl); justify-self: start; color: var(--ink); font-weight: 500; }
-.dp-gate strong { color: var(--accent-deep); }
 
 @media (prefers-reduced-motion: no-preference) {
   .pain-picker[data-touched] .pain-panel:not([hidden]) { animation: fade var(--t-med) var(--ease-out); }
@@ -352,8 +336,6 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   .lane li { grid-template-columns: 34px minmax(0, 1fr); justify-items: start; align-items: center; text-align: start; padding-block: 5px; }
   .lane li:not(:last-child)::after { top: 34px; bottom: -6px; inset-inline-start: 16px; inset-inline-end: auto; width: 2px; height: auto; }
   .lane-hex { width: 32px; }
-  .dp-stage > div { grid-template-columns: 1fr; }
-  .dp-get { grid-column: 1; grid-row: auto; margin-top: 8px; }
 }
 
 /* ---------- about ---------- */
@@ -723,6 +705,27 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 [lang='he'] .hero--home h1 { max-width: 12ch; }
 .hero--home .lede { max-width: 54ch; }
 .hero-trust { margin: 1.4rem 0 0; padding-top: 1rem; border-top: 1px solid var(--rule-2); max-width: 54ch; font-weight: 500; color: var(--ink); }
+
+/* "Which of these sounds like your business?": the visitor picks their own words; the answer and the action follow.
+   Selected = pollen (where bee & co. would act). The answer only changes when the visitor picks, never on its own. */
+.hero-pick { align-self: center; background: var(--sheet); border: 1px solid var(--rule); border-top: 4px solid var(--ink); border-radius: var(--r-sheet); padding: clamp(18px, 2.4vw, 28px); box-shadow: var(--lift); }
+.hero-pick h2 { margin: 0 0 4px; font-size: clamp(1.3rem, 1.9vw, 1.6rem); letter-spacing: -.02em; }
+.pick-intro { margin: 0 0 14px; font-size: .93rem; color: var(--ink-2); }
+.pick-tabs { display: grid; gap: 6px; }
+.pick-tabs [role='tab'] { display: flex; align-items: flex-start; gap: 10px; width: 100%; min-height: 44px; padding: 10px 12px; text-align: start; font: 500 .95rem/1.4 var(--sans); color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: var(--r-ctl); cursor: pointer; transition: border-color var(--t-fast), background var(--t-fast); }
+.pick-tabs [role='tab']:hover { border-color: var(--field); }
+.pick-tabs [aria-selected='true'] { background: var(--accent-tint); border-color: var(--pollen); }
+.pick-dot { flex: none; width: 14px; height: 14px; margin-top: 3px; border-radius: 50%; border: 1.5px solid var(--field); background: var(--sheet); }
+.pick-tabs [aria-selected='true'] .pick-dot { border: 4px solid var(--accent-deep); background: var(--pollen); }
+.pick-panels { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.pick-panel[hidden] { display: none; }
+.pick-panel:focus-visible { outline-offset: 6px; }
+.pick-l { margin: 0 0 2px; font-size: .8rem; font-weight: 600; color: var(--accent-deep); }
+.pick-under { margin: 0 0 10px; font-size: .93rem; line-height: 1.45; color: var(--ink-2); }
+.pick-start { margin: 0 0 14px; font-weight: 500; line-height: 1.45; color: var(--ink); }
+.pick-cta { width: 100%; }
+.pick-note { margin: 10px 0 0; font-size: .84rem; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { .hero-pick[data-touched] .pick-panel:not([hidden]) { animation: fade var(--t-med) var(--ease-out); } }
 
 /* ---------- journey: the accountability map ---------- */
 .journey { margin-top: 4px; }
