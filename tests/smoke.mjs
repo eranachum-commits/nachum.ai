@@ -81,12 +81,12 @@ await t('generic use case replaces the solution pages', () => {
   }
   for (const [u, html] of Object.entries(pages)) assert.doesNotMatch(html, /href="(\/en)?\/solutions\//, 'link to removed solution page on ' + u);
 });
-await t('results page shows the measurement flow and the measures with outcomes', () => {
+await t('results page: goal-to-decision flow and rules', () => {
   for (const lang of langs) { const c = lang === 'he' ? he : en, r = c.results, page = pages[href(lang, 'results')];
     assert.equal((page.match(/<li class="mf mf--/g) || []).length, r.flow.nodes.length, 'flow nodes ' + lang);
     assert.equal((page.match(/class="mf mf--gate"/g) || []).length, 2, 'two decisions ' + lang);
-    assert.equal((page.match(/<li class="kpi /g) || []).length, r.measures.items.length, 'measure cards ' + lang);
-    for (const x of r.measures.items) assert.ok(x.outcome && page.includes(x.outcome), 'outcome for ' + x.h);
+    assert.doesNotMatch(page, /class="sa-/, 'no success agreement sheet ' + lang);
+    assert.doesNotMatch(page, /class="kpi/, 'no process-only KPI board ' + lang);
   }
 });
 await t('about page: first-person hero with the portrait, career line, story, experience ledger, comparison', () => {

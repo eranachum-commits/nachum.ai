@@ -291,8 +291,8 @@ ${ctaBand(c, p.ctaTitle, p.ctaP, '', { label: p.cta })}`;
 };
 
 pages.results = (c) => {
-  const p = c.results, f = p.flow, m = p.measures, r = p.rules;
-  // How do you measure (flowchart) → what exactly do you track and what it proves (measures with outcomes) → rules → book.
+  const p = c.results, f = p.flow, r = p.rules;
+  // General for every kind of engagement: the path from goal to decision (flowchart) → rules → talk.
   let n = 0;
   const node = (x, i) => {
     const shape = x.kind === 'step' ? `<span class="mf-shape" aria-hidden="true">${++n}</span>` : `<span class="mf-shape" aria-hidden="true"></span>`;
@@ -302,21 +302,11 @@ pages.results = (c) => {
     return `<li class="mf mf--${x.kind}">${shape}<p class="mf-text"><span class="mf-t">${x.t}</span><span class="mf-s">${x.s}</span></p>${decide}${loop}</li>`;
   };
   const flow = `<ol class="mflow">${f.nodes.map(node).join('')}</ol>`;
-  const visuals = [
-    '<span class="kv-clock"><i></i></span>',
-    '<span class="kv-response"><i></i><i></i><i></i></span>',
-    '<span class="kv-volume"><i></i><i></i><i></i><i></i></span>',
-    '<span class="kv-quality"><i></i><i></i><i></i><i></i><i></i></span>',
-    '<span class="kv-human"><i></i><i></i><i></i></span>',
-    '<span class="kv-adoption"><i></i><i></i><i></i><i></i><i></i></span>',
-    '<span class="kv-money"><i></i><b>×</b><i></i><b>=</b><i></i></span>',
-  ];
-  const board = `<ol class="kpi-board">${m.items.map((x, i) => `<li class="kpi kpi--${i + 1}"><div class="kpi-top"><span class="kpi-n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><h3>${x.h}</h3></div><div class="kpi-visual" aria-hidden="true">${visuals[i]}</div><p class="kpi-outcome">${x.outcome}</p><details class="kpi-method"><summary>${m.cols[2]}</summary><div><p><span>${m.cols[2]}</span>${x.calc}</p><p><span>${m.cols[3]}</span>${x.src}</p></div></details></li>`).join('')}</ol>`;
-  const rules = `<div class="rules-layout"><div><h2 id="rules-title">${r.title}</h2>${ticks(r.items)}</div><article class="rules-card rules-card--monthly"><h3>${r.monthly.h}</h3><p>${r.monthly.p}</p></article><article class="rules-card"><h3>${r.honest.h}</h3><p>${r.honest.p}</p></article></div>`;
+  // The rules are the commitments, so they are set large and read as statements; the two notes sit under them as footnotes.
+  const rules = `<div class="rules"><h2 id="rules-title">${r.title}</h2><ul class="rules-list">${r.items.map((x) => `<li><span class="rules-hex" aria-hidden="true"></span>${x}</li>`).join('')}</ul><div class="rules-notes"><div><h3>${r.monthly.h}</h3><p>${r.monthly.p}</p></div><div><h3>${r.honest.h}</h3><p>${r.honest.p}</p></div></div></div>`;
   const body = `${pageHero(c, p.h1, p.lede)}
 ${section(`${head(f.title, f.intro, 'flow-title')}${flow}`, 'results-flow', 'flow', 'flow-title')}
-${section(`${head(m.title, m.intro, 'measures-title')}${board}`, 'section--tint results-measures', 'measures', 'measures-title')}
-${section(rules, 'results-rules', 'rules', 'rules-title')}
+${section(rules, 'section--tint results-rules', 'rules', 'rules-title')}
 ${ctaBand(c, p.cta.title, p.cta.p)}`;
   return { meta: p.meta, body };
 };
