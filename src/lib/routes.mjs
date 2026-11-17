@@ -13,6 +13,10 @@ export const routes = [
   { key: 'lp-distribution', path: 'for/distribution' },
   { key: 'lp-manufacturing', path: 'for/manufacturing' },
   { key: 'lp-ecommerce', path: 'for/ecommerce' },
+  { key: 'lp-insurance', path: 'for/insurance' },
+  { key: 'lp-accounting', path: 'for/accounting' },
+  { key: 'lp-law', path: 'for/law' },
+  { key: 'lp-real-estate', path: 'for/real-estate' },
 ];
 export const langs = ['he', 'en'];
 export function href(lang, key) {

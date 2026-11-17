@@ -415,40 +415,41 @@ export default {
   },
   // Campaign landing pages: one template, one entry per industry (src/lib/render.mjs → landing()).
   lp: {
-    howLink: 'How it works',
-    sitsTitle: 'Sounds familiar?',
-    sitsIntro: 'Pick the one closest to you, and the call starts there.',
-    thatsUs: 'That’s us',
     bookHere: 'Talk to Eran',
-    proof: ['Former VP R&D ×3', 'Budget owner under a P&L', 'Led R&D organizations of 50+', 'Still hands-on: designs architectures and builds production systems'],
-    midCta: 'Ready to talk it through? 30 minutes, directly with Eran.',
-    situationsL: { under: 'What is usually going on', do: 'What Eran does', measure: 'How you will know it worked' },
-    why: {
-      title: 'Why do this with Eran, and not with a vendor',
-      items: [
-        { h: 'No tool to sell', p: 'The recommendation is not tied to a product, a platform or a licence.' },
-        { h: 'No team to keep busy', p: 'Saying “don’t build this” costs us work. We say it anyway.' },
-        { h: 'The person who decides is the person who builds', p: 'No handoff between the plan and the system, so the plan stays realistic.' },
-        { h: 'Senior, and still hands-on', p: 'A former VP R&D who has owned budgets and led organizations of 50+ people, and still builds production AI systems.' },
-      ],
-    },
-    start: {
-      title: 'How it works',
-      intro: 'No commitment until you have seen a written recommendation.',
-      steps: [
-        { h: 'A 30-minute call with Eran', p: 'You describe the situation. You leave with an honest first view and a clear answer on whether this is a fit.' },
-        { h: 'A Decision Sprint, 2–3 weeks', p: 'Eran learns how the work is really done and returns a written recommendation: what to build, what not to build, and why. The fee is credited if a build follows.' },
-        { h: 'Build, or not', p: 'If something is worth building, Eran builds it into the systems you already run, with owners, training and numbers.' },
-      ],
-    },
+    primary: 'Let’s explore your opportunities',
+    secondary: 'See how it works',
+    picker: { title: 'Which of these sounds familiar?', intro: 'Pick the closest one, and see where we would start.', underL: 'What’s usually going on', startL: 'Where we’d start', measureL: 'How you’ll know it worked', cta: 'Talk about this with Eran', note: '30 minutes. Your situation is already filled in on the form.' },
+    journey: { title: 'One partner. The entire journey.', intro: 'Five stages with one owner. You make the call at every step, and we carry the work from understanding the business to results you can measure.' },
+    memo: { title: 'Sometimes the right answer is not AI', p: 'Every Decision Sprint ends with a written recommendation, and it includes what not to build. This is how three ideas we often hear usually come out.' },
     faqTitle: 'Questions we usually get',
+    start: {
+      title: 'How it starts',
+      steps: [
+        { h: 'A 30-minute call', dur: 'This week', p: 'You describe the situation. You leave with an honest first view and a clear answer on whether we are the right fit.' },
+        { h: 'A Decision Sprint', dur: '2–3 weeks', p: 'A written recommendation: what to build, what not to build, and why. The fee is credited if a build follows.' },
+        { h: 'Build, integrate, improve', dur: 'Scoped in writing', p: 'Only if it is worth it, and with your go-ahead at every step.' },
+      ],
+    },
     form: { topicL: 'What is closest to your situation?', detailHint: 'Optional if you picked one above. A few sentences are enough.', title: 'Talk to Eran: a 30-minute call', p: 'Tell us briefly what is on your mind. Eran reads every message himself and replies personally.' },
   },
   industries: {
     distribution: {
-      meta: { title: 'AI and technology leadership for distributors and importers — bee & co.', desc: 'For distribution, import and wholesale companies: decide where AI is worth it in quotes, orders and the ERP, then get it built properly. Led by Eran Nachum, former VP R&D.' },
+      meta: { title: 'AI for distributors and importers: one partner, end to end — bee & co.', desc: 'For distribution, import and wholesale companies: one accountable partner to find where AI pays off in quotes, orders and the ERP, then build it, connect it and get it used. Led by Eran Nachum.' },
       h1: 'Still retyping orders and quotes by hand?',
-      lede: 'Eran Nachum, a former VP R&D, finds what is worth automating in your quotes, orders and ERP, tells you what is not, and builds what is.',
+      lede: 'One partner from the business challenge to AI in daily use. We find where AI pays off in your quotes, orders and ERP, then build it, connect it to the systems you run and get your team using it.',
+      here: 'In a distribution company',
+      situations: [
+        { q: 'Every new customer means more people retyping orders.', under: 'Orders arrive by email, PDF and phone, and someone keys them into the ERP line by line.', start: 'Read incoming orders automatically, prepare them in the ERP, and let a person approve only what looks unusual.', measure: 'Orders handled per person, per month' },
+        { q: 'Quotes take days because pricing lives in three places.', under: 'Price lists, special terms and stock sit in the ERP, in spreadsheets and in one person’s memory.', start: 'Bring the pricing rules into one place and draft quotes from them, with a salesperson approving before anything goes out.', measure: 'Time from request to quote' },
+        { q: 'Our ERP supplier says the answer is a new module.', under: 'Every vendor recommends what it sells, and nobody senior is weighing the options on your side.', start: 'An independent view of the options, their costs and risks, and a recommendation you can defend before you sign.', measure: 'A decision made on time, with the reasoning written down' },
+      ],
+      journey: [
+        'Follow an order from the customer’s email to the ERP, and count the hours lost on the way.',
+        'Pick the first process, usually orders or quotes, and agree the measure. The ERP stays.',
+        'Order reading and quote drafts, built on your own price lists and pricing rules.',
+        'Connected to the ERP, with a salesperson approving every exception, and the team trained.',
+        'Orders per person tracked every month, then the next process: stock, returns or supplier invoices.',
+      ],
       memo: {
         for: 'Three ideas distributors often raise on the first call',
         items: [
@@ -458,24 +459,30 @@ export default {
         ],
         foot: 'The value was in knowing which two not to start with.',
       },
-      situations: {
-        items: [
-          { q: 'Every new customer means more people retyping orders.', under: 'Orders arrive by email, PDF and phone, and someone keys them into the ERP line by line.', do: 'Read incoming orders automatically, prepare them in the ERP, and let a person approve only what looks unusual.', measure: 'Orders handled per person, per month' },
-          { q: 'Quotes take days because pricing lives in three places.', under: 'Price lists, special terms and stock sit in the ERP, in spreadsheets and in one person’s memory.', do: 'Bring the pricing rules into one place and draft quotes from them, with a salesperson approving before anything goes out.', measure: 'Time from request to quote' },
-          { q: 'Our ERP supplier says the answer is a new module.', under: 'Every vendor recommends what it sells, and nobody senior is weighing the options on your side.', do: 'An independent view of the options, their costs and risks, and a recommendation you can defend before you sign.', measure: 'A decision made on time, with the reasoning written down' },
-        ],
-      },
       faq: [
         { q: 'Does this work with Priority or SAP Business One?', a: 'Yes. We start from the ERP you already run and connect to it, usually with read-only access first. Replacing it is rarely the first step.' },
-        { q: 'We already have an IT supplier. Why would we need you?', a: 'Your IT supplier keeps the systems running. Eran works above that: deciding what is worth changing, designing it, building it, and working alongside your supplier where needed.' },
+        { q: 'We already have an IT supplier. Why would we need you?', a: 'Your IT supplier keeps the systems running. We work above that: deciding what is worth changing, designing it, building it, and working alongside your supplier where needed.' },
         { q: 'What about our customer and pricing data?', a: 'Confidentiality terms come first. We start with anonymized examples and read-only access, and nothing goes into unapproved AI tools.' },
         { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
       ],
     },
     manufacturing: {
-      meta: { title: 'Technology and AI leadership for manufacturers — bee & co.', desc: 'For manufacturing and industrial companies: an independent senior view on systems, AI and automation before you commit budget, and hands-on delivery after. Led by Eran Nachum.' },
-      h1: 'About to buy a new platform? Get a senior, independent view first.',
-      lede: 'Eran Nachum, a former VP R&D with no product to sell, helps you decide what is worth the investment, then builds it into the systems you already run.',
+      meta: { title: 'AI for manufacturers: one partner, end to end — bee & co.', desc: 'For manufacturing and industrial companies: one accountable partner for AI and systems, from an independent decision before you commit budget to delivery on the systems you run. Led by Eran Nachum.' },
+      h1: 'Planning in Excel, and know-how in two people’s heads?',
+      lede: 'One partner from the business challenge to AI in daily use. We find where AI pays off in quoting, planning and the office systems around the plant, then build it, connect it and get your team using it.',
+      here: 'In a manufacturing company',
+      situations: [
+        { q: 'Everything depends on two people who know how it works.', under: 'Quoting rules, process knowledge and workarounds live in a few heads and old spreadsheets.', start: 'Capture what those people know, build it into the workflow, and let them handle the exceptions instead of every case.', measure: 'Share of work handled without the key person' },
+        { q: 'Vendors are pitching platforms and we can’t tell what is real.', under: 'Every offer looks good in the demo, and nobody on the team has evaluated a system like this before.', start: 'An independent comparison of the options against your real data and processes, with a recommendation and a phased plan.', measure: 'A decision made on time, with the reasoning written down' },
+        { q: 'Planning still happens in Excel, and it breaks every week.', under: 'Orders, stock and capacity live in different systems, so the plan is rebuilt by hand whenever something changes.', start: 'Connect the data you already have, automate the repeated parts of planning, and keep the planner in control of the decisions.', measure: 'Hours spent re-planning each week' },
+      ],
+      journey: [
+        'Sit with the estimators and planners, and map where the knowledge lives only in people’s heads.',
+        'Weigh the vendors’ platforms against a smaller first step, with costs and risks in writing.',
+        'A quoting assistant built from past jobs and drawings, with the estimator approving every price.',
+        'Connected to the ERP and the planning files you already use, on one line or product family first.',
+        'Re-planning hours tracked every week, then extended to the next line.',
+      ],
       memo: {
         for: 'Three ideas manufacturers often raise on the first call',
         items: [
@@ -485,13 +492,6 @@ export default {
         ],
         foot: 'The value was in knowing which two not to start with.',
       },
-      situations: {
-        items: [
-          { q: 'Everything depends on two people who know how it works.', under: 'Quoting rules, process knowledge and workarounds live in a few heads and old spreadsheets.', do: 'Capture what those people know, build it into the workflow, and let them handle the exceptions instead of every case.', measure: 'Share of work handled without the key person' },
-          { q: 'Vendors are pitching platforms and we can’t tell what is real.', under: 'Every offer looks good in the demo, and nobody on the team has evaluated a system like this before.', do: 'An independent comparison of the options against your real data and processes, with a recommendation and a phased plan.', measure: 'A decision made on time, with the reasoning written down' },
-          { q: 'Planning still happens in Excel, and it breaks every week.', under: 'Orders, stock and capacity live in different systems, so the plan is rebuilt by hand whenever something changes.', do: 'Connect the data you already have, automate the repeated parts of planning, and keep the planner in control of the decisions.', measure: 'Hours spent re-planning each week' },
-        ],
-      },
       faq: [
         { q: 'Our systems are old. Is that a problem?', a: 'Usually not. We start from the systems you run and connect to them. Replacing them is a decision we weigh with you, not an assumption.' },
         { q: 'Do you work on the shop floor or the office side?', a: 'Mostly the office side: quoting, planning, orders, documentation and the systems that connect them. Where floor data matters, we start with what is already collected.' },
@@ -500,9 +500,22 @@ export default {
       ],
     },
     ecommerce: {
-      meta: { title: 'Technology and AI leadership for e-commerce and retail brands — bee & co.', desc: 'For e-commerce and retail brands without a technology leader: senior decisions on your stack, AI and agencies, and hands-on delivery. Led by Eran Nachum, former VP R&D.' },
+      meta: { title: 'AI for e-commerce and retail brands: one partner, end to end — bee & co.', desc: 'For e-commerce and retail brands without a technology leader: one accountable partner for your stack, AI and agencies, from decision to daily use. Led by Eran Nachum.' },
       h1: 'Plenty of tools. Nobody senior running the technology?',
-      lede: 'Eran Nachum, a former VP R&D in e-commerce and SaaS, takes the technology seat part-time: decides what is worth building, manages the agency, and builds what matters.',
+      lede: 'One partner from the business challenge to AI in daily use. We take the technology seat part-time, decide what is worth building in your store, service and stock flows, then build it with your agency and get it used.',
+      here: 'In an online brand',
+      situations: [
+        { q: 'We bought AI tools and nothing really changed.', under: 'Apps were added one by one, nobody owns how they fit together, and usage fades after the first month.', start: 'Pick the one process where AI matters most and build it into the systems the team already uses, with an owner and a measure.', measure: 'Weekly active use, and time saved on that process' },
+        { q: 'We have no technology leader, so the agency decides for us.', under: 'Decisions about the platform, apps and integrations are made by whoever is selling the work.', start: 'We take the technology seat part-time: own the stack and the roadmap, manage the agency or developers, and make delivery predictable.', measure: 'The roadmap delivered as planned, quarter after quarter' },
+        { q: 'Stock, orders and the warehouse never quite match.', under: 'Data moves between the store, the ERP and the warehouse through exports, apps and manual fixes.', start: 'Design one reliable flow between your systems, with alerts when something breaks and a person handling only the exceptions.', measure: 'Order and stock errors per 100 orders' },
+      ],
+      journey: [
+        'Map how orders, stock and service move between the store, the apps and the warehouse.',
+        'Set the technology roadmap, and decide what the agency builds and what it doesn’t.',
+        'Service reply drafts from order and shipping data, and one reliable sync for stock and orders.',
+        'Inside the helpdesk and store the team already use, with an agent approving every reply.',
+        'Errors per 100 orders and service time tracked every month, with the roadmap reviewed each quarter.',
+      ],
       memo: {
         for: 'Three ideas online brands often raise on the first call',
         items: [
@@ -512,17 +525,142 @@ export default {
         ],
         foot: 'The value was in knowing which two not to start with.',
       },
-      situations: {
-        items: [
-          { q: 'We bought AI tools and nothing really changed.', under: 'Apps were added one by one, nobody owns how they fit together, and usage fades after the first month.', do: 'Pick the one process where AI matters most and build it into the systems the team already uses, with an owner and a measure.', measure: 'Weekly active use, and time saved on that process' },
-          { q: 'We have no technology leader, so the agency decides for us.', under: 'Decisions about the platform, apps and integrations are made by whoever is selling the work.', do: 'Eran takes the seat part-time: owns the stack and the roadmap, manages the agency or developers, and makes delivery predictable.', measure: 'The roadmap delivered as planned, quarter after quarter' },
-          { q: 'Stock, orders and the warehouse never quite match.', under: 'Data moves between the store, the ERP and the warehouse through exports, apps and manual fixes.', do: 'Design one reliable flow between your systems, with alerts when something breaks and a person handling only the exceptions.', measure: 'Order and stock errors per 100 orders' },
-        ],
-      },
       faq: [
         { q: 'We run on Shopify or WooCommerce with a few apps. Is that a fit?', a: 'Yes. We start from your current stack and change only what earns its place. Moving platforms is a decision, not a default.' },
-        { q: 'We have an agency. Do you replace them?', a: 'No. Eran works as the senior technology lead on your side: setting priorities, reviewing their work, and making sure what they build fits together.' },
+        { q: 'We have an agency. Do you replace them?', a: 'No. We work as the senior technology lead on your side: setting priorities, reviewing their work, and making sure what they build fits together.' },
         { q: 'What about our customer data?', a: 'Confidentiality terms come first. We start with anonymized examples and read-only access, and nothing goes into unapproved AI tools.' },
+        { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
+      ],
+    },
+    insurance: {
+      meta: { title: 'AI for insurance agencies: one partner, end to end — bee & co.', desc: 'For insurance agencies and financial-advisory firms: one accountable partner to take paperwork off the team with AI, securely, from decision to daily use. Led by Eran Nachum.' },
+      h1: 'Your agents spend the day on paperwork, not on clients?',
+      lede: 'One partner from the business challenge to AI in daily use. We find where AI takes the paperwork off your team without putting client data or compliance at risk, then build it, connect it and get it used.',
+      here: 'In an insurance agency',
+      situations: [
+        { q: 'Every renewal season, the whole office stops to chase documents.', under: 'Quotes, policies and forms arrive from several insurers in different formats, and someone copies the details into your system by hand.', start: 'Read the incoming documents automatically, prepare the data in your system, and let a person approve only what does not match.', measure: 'Hours per renewal, and files handled per employee' },
+        { q: 'We bought another agency, and now we run two of everything.', under: 'Two systems, two client lists and two ways of working, and nobody senior owning how they come together.', start: 'A clear plan for merging the systems and data in the right order, then delivery with the vendors, so service does not drop during the move.', measure: 'One client record and one system, on the agreed date' },
+        { q: 'The team already pastes client files into ChatGPT.', under: 'People found shortcuts on their own, and nobody has decided what is allowed with sensitive financial and medical data.', start: 'Clear rules, approved and secured tools your compliance officer can sign off on, and the uses that are actually worth building.', measure: 'Approved tools in daily use, and no client data in unapproved ones' },
+      ],
+      journey: [
+        'Follow a renewal from the insurer’s quote to the signed policy, and count the hours of copying.',
+        'Agree with the owners and the compliance officer what AI may touch, and where to start.',
+        'Document reading and pre-meeting client summaries, on approved and secured services.',
+        'Connected to the agency management system, with an agent checking every summary, and the team trained.',
+        'Hours per renewal tracked every month, then the next workflow: claims follow-up or client onboarding.',
+      ],
+      memo: {
+        for: 'Three ideas insurance agencies often raise on the first call',
+        items: [
+          { q: 'A summary of the client’s policy and pension reports, ready before every meeting', v: 'Build', k: 'build', why: 'Dozens of documents per client, the same questions every time, and the agent checks the summary before the meeting.' },
+          { q: 'Replace the agency management system', v: 'Not now', k: 'later', why: 'It holds every policy and commission. The hours are lost copying between it and the insurers’ portals.' },
+          { q: 'An AI bot that gives clients coverage advice', v: 'Don’t build', k: 'no', why: 'Advice is regulated and personal. A bot that gets it wrong is a liability, not a saving.' },
+        ],
+        foot: 'The value was in knowing which two not to start with.',
+      },
+      faq: [
+        { q: 'Does this work with our agency management system and the insurers’ portals?', a: 'We start from the systems you already run and connect to what they allow, usually with read-only access first. Where a portal offers no connection, we design around it rather than promise one.' },
+        { q: 'Our client data is financial and medical. How is it protected?', a: 'Confidentiality terms come first. We start with anonymized examples and read-only access, data stays in approved, secured services, and nothing goes into unapproved AI tools. Your compliance officer sees the design before anything is built.' },
+        { q: 'Will AI replace our agents?', a: 'No. The aim is to take the copying and chasing off them, so they spend more of the day with clients. Every recommendation to a client stays with a licensed person.' },
+        { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
+      ],
+    },
+    accounting: {
+      meta: { title: 'AI for accounting firms: one partner, end to end — bee & co.', desc: 'For CPA and bookkeeping firms: one accountable partner to take document chasing, data entry and reconciliation off the team with AI, with client confidentiality designed in. Led by Eran Nachum.' },
+      h1: 'Reporting season stops the whole office again?',
+      lede: 'One partner from the business challenge to AI in daily use. We find where AI takes document chasing, data entry and reconciliation off your team, then build it into the software the firm already runs and get the team using it.',
+      here: 'In an accounting firm',
+      situations: [
+        { q: 'We chase clients for documents all year.', under: 'Receipts, statements and forms arrive by email, WhatsApp and on paper, incomplete and late, and someone tracks by hand who is missing what.', start: 'Automatic requests and reminders for each client, incoming documents sorted into the right client file, and a person handling only what is missing or unclear.', measure: 'Days from year-end to a complete client file' },
+        { q: 'Staff spend their days keying in and reconciling.', under: 'Invoices and receipts are typed into the accounting software and matched to bank and card statements line by line.', start: 'Read documents automatically, propose entries and matches in the software you run, and let a professional approve the exceptions.', measure: 'Client files handled per person, per month' },
+        { q: 'People already use ChatGPT on client files.', under: 'Staff found shortcuts on their own, and the firm has no policy on where client financial data may go.', start: 'A clear usage policy, approved and secured tools, and training, so AI is used openly instead of quietly.', measure: 'Approved tools in daily use, and no client data in unapproved ones' },
+      ],
+      journey: [
+        'Follow one client file from the first document request to the filed report, and count the hours.',
+        'Choose the first workflow, usually document collection or reconciliation, agree the measure and set a usage policy.',
+        'Document sorting, suggested entries and bank matching, built on the firm’s own rules and chart of accounts.',
+        'Inside the accounting software the firm runs, with a professional approving every exception, and the team trained.',
+        'Files per person tracked every month, then the next workflow: payroll, reports or client onboarding.',
+      ],
+      memo: {
+        for: 'Three ideas accounting firms often raise on the first call',
+        items: [
+          { q: 'Incoming documents sorted and matched against bank statements automatically', v: 'Build', k: 'build', why: 'Thousands of documents a season, clear matching rules, and a professional approves the exceptions.' },
+          { q: 'Move the firm to new accounting software', v: 'Not now', k: 'later', why: 'The software works. The hours are lost in the typing and chasing around it.' },
+          { q: 'A bot that answers clients’ tax questions', v: 'Don’t build', k: 'no', why: 'Tax advice carries the firm’s name and licence. One wrong answer costs more than the time saved.' },
+        ],
+        foot: 'The value was in knowing which two not to start with.',
+      },
+      faq: [
+        { q: 'We work with Hashavshevet, Rivhit or Priority. Is that a fit?', a: 'Yes. We start from the software you already run and connect to what it allows, usually with read-only access first. Replacing it is a decision we weigh with you, not an assumption.' },
+        { q: 'How is our clients’ financial data protected?', a: 'Confidentiality terms come first. We start with anonymized examples, data stays in approved, secured services, and nothing goes into unapproved AI tools. The partners approve the design before anything is built.' },
+        { q: 'We are a small firm. Is this only for large offices?', a: 'It depends less on size than on volume. If the same work repeats across many client files, there is usually something worth building. The first call is where we find out.' },
+        { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
+      ],
+    },
+    law: {
+      meta: { title: 'AI for law firms: one partner, end to end — bee & co.', desc: 'For law firms: one accountable partner to choose the AI worth using, with privilege and confidentiality designed in, and get it into daily work. Led by Eran Nachum.' },
+      h1: 'Every vendor is pitching your firm an AI tool. Which one is real?',
+      lede: 'One partner from the business challenge to AI in daily use. We help the partners decide which legal AI is worth the investment and the risk, then build it into the way the firm already works, with privilege and confidentiality designed in.',
+      here: 'In a law firm',
+      situations: [
+        { q: 'Vendors keep pitching AI tools, and the partners can’t tell them apart.', under: 'Every demo looks good, each vendor sells its own product, and nobody at the firm has evaluated systems like these before.', start: 'An independent comparison against your real documents and workflows, covering cost, confidentiality and risk, with a recommendation the partners can agree on.', measure: 'A decision made on time, with the reasoning written down' },
+        { q: 'Seniors spend hours on work a junior, or a system, should do.', under: 'Searching past files and precedents, comparing versions and formatting drafts take up the most expensive hours.', start: 'Find the repeated steps, automate them inside the tools the firm already uses, and keep every judgment with a lawyer.', measure: 'Senior hours per matter, on the chosen process' },
+        { q: 'People already use ChatGPT on client files.', under: 'Staff found shortcuts on their own, and the firm has no policy on what may go where, despite privilege and the duty of confidentiality.', start: 'A clear usage policy, approved and secured tools, and training, so AI is used openly instead of quietly.', measure: 'Approved tools in daily use, and no client data in unapproved ones' },
+      ],
+      journey: [
+        'Map where senior hours go on a typical matter, and which tools people already use quietly.',
+        'Test the vendors’ tools on your own documents, set a usage policy, and choose one practice area to start.',
+        'First drafts from the firm’s templates and past files, and search across the firm’s own precedents.',
+        'Inside the document system the firm uses, with a lawyer reviewing every draft.',
+        'Senior hours per matter tracked every month, then extended to the next practice area.',
+      ],
+      memo: {
+        for: 'Three ideas law firms often raise on the first call',
+        items: [
+          { q: 'First drafts of recurring documents, from the firm’s own templates and past files', v: 'Build', k: 'build', why: 'The same documents every week, the knowledge is already in past files, and a lawyer reviews every draft.' },
+          { q: 'A firm-wide AI platform licence for everyone', v: 'Not now', k: 'later', why: 'Licences without one clear use become a cost line. Start with one practice area and one measure.' },
+          { q: 'An AI on the website that answers clients’ legal questions', v: 'Don’t build', k: 'no', why: 'The advice carries your name and your liability. The time saved is not worth one wrong answer.' },
+        ],
+        foot: 'The value was in knowing which two not to start with.',
+      },
+      faq: [
+        { q: 'We use a dedicated practice-management system. Is that a fit?', a: 'Yes. We start from the systems you already run and connect to them, usually with read-only access first. Replacing them is a decision we weigh with you, not an assumption.' },
+        { q: 'How do you handle privilege and client confidentiality?', a: 'Confidentiality terms come first. We start with anonymized examples, data stays in approved, secured services, and nothing goes into unapproved AI tools. The partners approve the design before anything is built.' },
+        { q: 'We bill by the hour. Doesn’t AI work against us?', a: 'It is a real question, and part of the decision. We look at where saved hours turn into capacity, faster turnaround or fixed-fee work, and recommend only what makes business sense for the firm.' },
+        { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
+      ],
+    },
+    'real-estate': {
+      meta: { title: 'AI for real-estate developers and contractors: one partner, end to end — bee & co.', desc: 'For real-estate developers and construction companies: one accountable partner for project data, tenders and reporting, from decision to daily use. Led by Eran Nachum, who also led engineering in real-estate investment tech.' },
+      h1: 'Ten projects running, and the real status lives in Excel?',
+      lede: 'One partner from the business challenge to AI in daily use. We find what is worth changing in your project reporting, tenders and subcontractor bills, then build it, connect it and get your project managers using it.',
+      here: 'In a development or construction company',
+      situations: [
+        { q: 'Every month, someone rebuilds the project report by hand.', under: 'Budget, schedule and progress sit with each project manager, the bookkeeping team and the site, in different files.', start: 'Connect the data you already have into one report that updates itself, and leave people the parts that need judgment.', measure: 'Days to close the monthly project report' },
+        { q: 'Tenders and subcontractor bills take up the engineers’ week.', under: 'Bills of quantities, quotes and progress bills are checked line by line against contracts and drawings.', start: 'Automate the comparison and the flags, so engineers review only the lines that do not match.', measure: 'Hours per bill review, and errors caught before payment' },
+        { q: 'A software vendor wants a big contract, and nobody can judge it.', under: 'Construction-management and ERP vendors each recommend what they sell, and there is no senior technology person on your side.', start: 'An independent view of the options, costs and risks against your real projects, and a phased plan you can defend before you sign.', measure: 'A decision made on time, with the reasoning written down' },
+      ],
+      journey: [
+        'Trace how the monthly project report is built, and where budget, schedule and progress really live.',
+        'Choose the first project and report, and weigh the vendors’ platforms against a smaller step.',
+        'An automatic check of subcontractor bills against the contract, and a report that updates itself.',
+        'Connected to the ERP and the bookkeeping systems, with project managers approving the exceptions.',
+        'Days to close the report tracked every month, then rolled out project by project.',
+      ],
+      memo: {
+        for: 'Three ideas developers and contractors often raise on the first call',
+        items: [
+          { q: 'Subcontractor bills checked automatically against the contract and measured progress', v: 'Build', k: 'build', why: 'Dozens a month on every project, the rules are in the contracts, and the project manager approves the exceptions.' },
+          { q: 'One construction-management platform across every project at once', v: 'Not now', k: 'later', why: 'Rolled out everywhere at once, it stalls on the first site. Start with one project and one report.' },
+          { q: 'A chatbot that answers apartment buyers', v: 'Don’t build', k: 'no', why: 'Buyers decide with a sales rep and a lawyer. The hours are lost in project reporting, not in answering buyers.' },
+        ],
+        foot: 'The value was in knowing which two not to start with.',
+      },
+      faq: [
+        { q: 'Our project managers are not technology people. Will they use it?', a: 'That is the first design question, not the last. We build into the tools they already open every day, start with one project, and measure real use before going further.' },
+        { q: 'Does this work with our ERP and the bookkeeping systems?', a: 'Usually, yes. We start from what you already run and connect to it, read-only first. Replacing systems is a decision we weigh with you, not an assumption.' },
+        { q: 'What about tender prices and buyer data?', a: 'Confidentiality terms come first. We start with anonymized examples and read-only access, and nothing goes into unapproved AI tools.' },
         { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
       ],
     },

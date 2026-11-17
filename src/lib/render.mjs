@@ -347,33 +347,48 @@ ${p.sections.map((x) => `<h2 id="${x.id}">${x.h}</h2>${x.blocks.map(block).join(
 };
 
 
-/* ---------- campaign landing pages: one template, one content entry per industry ---------- */
-// Order follows a cold visitor: is this my problem (question headline) and what do I get (one-line service, memo)
-// → which of these is me ("That's us" jumps to the form) → how it works → why him → my questions → book.
+/* ---------- campaign landing pages: one template, one content entry per domain ---------- */
+// Same language as the home page, narrowed to one domain. A cold visitor's path:
+// is this my business (question headline) → which of these is me (picker, as on home; its action fills the form)
+// → what "one partner, end to end" means here (the five journey stages traced through this domain: the page's signature)
+// → proof of judgment (the memo, including what not to build) → why bee & co. (home pillars) → my questions → talk.
 // On phones a sticky action follows from the hero to the form.
 function landing(c, id) {
-  const L = c.lp, d = c.industries[id], sl = L.situationsL;
-  const hero = `<section class="hero hero--lp"><div class="container hero-grid">
+  const L = c.lp, d = c.industries[id], pk = L.picker, J = c.how.journey, track = (k) => `data-track="${k}" data-industry="${id}"`;
+  const tabs = d.situations.map((x, i) => `<button type="button" role="tab" id="lp-t-${i}" aria-controls="lp-p-${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}"><span class="pick-dot" aria-hidden="true"></span><span>${x.q}</span></button>`).join('');
+  const panels = d.situations.map((x, i) => `<div class="pick-panel" role="tabpanel" id="lp-p-${i}" aria-labelledby="lp-t-${i}" tabindex="0"${i ? ' hidden' : ''}><p class="pick-l">${pk.underL}</p><p class="pick-under">${x.under}</p><p class="pick-l">${pk.startL}</p><p class="pick-start">${x.start}</p><p class="pick-measure"><span>${pk.measureL}</span>${x.measure}</p><a class="btn btn--primary pick-cta" href="#lead" data-pick="${i}" ${track('cta_lp_pick')}>${pk.cta}</a></div>`).join('');
+  const picker = `<aside class="hero-pick" data-ladder data-vertical data-track-id="lp_situation" aria-labelledby="pick-title"><h2 id="pick-title">${pk.title}</h2><p class="pick-intro">${pk.intro}</p>
+<div class="pick-tabs" role="tablist" aria-orientation="vertical" aria-labelledby="pick-title">${tabs}</div>
+<div class="pick-panels">${panels}</div><p class="pick-note">${pk.note}</p></aside>`;
+  const hero = `<section class="hero hero--home hero--lp"><div class="container hero-grid">
 <div class="hero-copy"><h1>${d.h1}</h1><p class="lede">${d.lede}</p>
-<div class="btn-row">${btn(c, L.bookHere, '#lead', 'btn--primary', `data-track="cta_lp_hero" data-industry="${id}"`)}${btn(c, L.howLink, '#start', '')}</div>
-<p class="hero-note">${c.home.hero.note}</p>
-<ul class="lp-proof">${L.proof.map((x) => `<li>${x}</li>`).join('')}</ul></div>
-${memoBlock(c, d.memo)}</div></section>`;
-  // Compact pain cards: the pain, its cause, what Eran does, the number. "That's us" picks it in the form and jumps there.
-  const sits = `<ul class="lp-sits">${d.situations.items.map((x, i) => `<li><p class="voice-q">${x.q}</p><p class="lp-under">${x.under}</p><p class="lp-do"><span>${sl.do}</span>${x.do}</p><p class="lp-measure"><span>${sl.measure}</span>${x.measure}</p><a class="btn lp-pick" href="#lead" data-pick="${i}" data-track="cta_lp_pick" data-industry="${id}">${L.thatsUs}</a></li>`).join('')}</ul>`;
-  const why = `<div class="founder-grid">${founderPanel(c, { sizes: '(min-width: 900px) 340px, 80vw' })}<div><h2 id="why-title">${L.why.title}</h2><div class="lp-why">${L.why.items.map((x) => `<article><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div><p class="ways-link"><a href="${href(c.lang, 'about')}">${c.home.founder.link}</a></p></div></div>`;
-  const start = `${head(L.start.title, L.start.intro, 'start-title')}<ol class="ways lp-start">${L.start.steps.map((x) => `<li class="way"><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ol>`;
-  const form = `<div class="split split--top"><div>${leadForm(c, { pain: id, title: L.form.title, topics: d.situations.items.map((x) => x.q), topicL: L.form.topicL, detailHint: L.form.detailHint })}</div><aside class="aside-stack"><p class="lede lp-form-p">${L.form.p}</p>${personCard(c)}<div class="card"><h3>${c.contact.next.h}</h3><ol class="steps">${c.contact.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div></aside></div>`;
+<div class="btn-row">${btn(c, L.primary, '#lead', 'btn--primary', track('cta_lp_hero'))}${btn(c, L.secondary, '#journey', '')}</div>
+<p class="hero-trust">${c.home.hero.trust}</p></div>
+${picker}</div></section>`;
+
+  // The signature: the same five stages as the home page and How it works, each carried through this domain.
+  // Stage names and your decision stay shared; the sentence in between is this business.
+  const journey = `${head(L.journey.title, L.journey.intro, 'journey-title')}<div class="journey lp-journey"><p class="lp-here-l">${d.here}</p><ol class="jr-stages">${J.stages.map((s, i) => `<li class="jr-stage"><span class="jr-n" aria-hidden="true">${i + 1}</span><h3>${s.h}</h3><p class="lp-here">${d.journey[i]}</p>${s.gate ? `<p class="jr-gate"><span>${J.gateL}</span>${s.gate}</p>` : ''}</li>`).join('')}</ol><p class="jr-note">${J.note}</p></div>`;
+
+  const memo = `<div class="lp-memo"><div class="lp-memo-copy"><h2 id="memo-sec-title">${L.memo.title}</h2><p class="lede">${L.memo.p}</p>${btn(c, L.bookHere, '#lead', 'btn--primary', track('cta_lp_mid'))}</div>${memoBlock(c, d.memo)}</div>`;
+
+  const wy = c.home.why;
+  const why = `${head(wy.title, wy.intro, 'why-title')}<div class="pillars">${wy.items.map((x) => `<article class="pillar"><h3>${x.h}</h3><p>${x.p}</p><p class="pillar-not"><span>${wy.notL}:</span> ${x.not}</p></article>`).join('')}</div>`;
+
+  const startList = `<div class="lp-steps"><h3>${L.start.title}</h3><ol>${L.start.steps.map((x) => `<li><p class="lp-steps-dur">${x.dur}</p><div><p class="lp-steps-h">${x.h}</p><p>${x.p}</p></div></li>`).join('')}</ol></div>`;
+  const form = `<div class="split split--top"><div>${leadForm(c, { pain: id, title: L.form.title, topics: d.situations.map((x) => x.q), topicL: L.form.topicL, detailHint: L.form.detailHint })}</div><aside class="aside-stack"><p class="lede lp-form-p">${L.form.p}</p>${personCard(c)}${startList}</aside></div>`;
+
   const body = `${hero}
-${section(`${head(L.sitsTitle, L.sitsIntro, 'sits-title')}${sits}`, 'lp-situations', 'situations', 'sits-title')}
-${section(start, 'lp-startsec', 'start', 'start-title')}
-${section(`${why}<div class="lp-mid"><p>${L.midCta}</p>${btn(c, L.bookHere, '#lead', 'btn--primary', `data-track="cta_lp_mid" data-industry="${id}"`)}</div>`, 'section--tint lp-whysec', 'why', 'why-title')}
-${section(`<div class="about-how"><h2 id="faq-title">${L.faqTitle}</h2>${faqList(d.faq)}</div>`, 'section--tint', 'faq', 'faq-title')}
-${section(form, 'lp-formsec', 'book', '')}
-<a class="btn btn--primary lp-sticky" href="#lead" data-lp-sticky data-track="cta_lp_sticky" data-industry="${id}" hidden>${L.bookHere}</a>`;
+${section(journey, 'lp-journeysec', 'journey', 'journey-title')}
+${section(memo, 'section--tint lp-memosec', 'memo-sec', 'memo-sec-title')}
+${section(why, 'section--dark home-why lp-whysec', 'why', 'why-title')}
+${section(`<div class="about-how"><h2 id="faq-title">${L.faqTitle}</h2>${faqList(d.faq)}</div>`, '', 'faq', 'faq-title')}
+${section(form, 'section--tint lp-formsec', 'book', '')}
+<a class="btn btn--primary lp-sticky" href="#lead" data-lp-sticky ${track('cta_lp_sticky')} hidden>${L.bookHere}</a>`;
   return { meta: d.meta, body, ld: faqLd(d.faq) };
 }
-for (const id of ['distribution', 'manufacturing', 'ecommerce']) pages['lp-' + id] = (c) => landing(c, id);
+// Every lp-* route renders from content.industries[id]; adding a domain = one route + one content entry per language.
+for (const { key } of routes) if (key.startsWith('lp-')) { const id = key.slice(3); pages[key] = (c) => landing(c, id); }
 
 export function render404(c, ctx) {
   const body = section(`<h1>${c.notFound.h}</h1><p class="lede">${c.notFound.p}</p>${btn(c, c.notFound.cta, href(c.lang, 'home'), 'btn--primary')}`);

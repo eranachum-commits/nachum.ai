@@ -597,27 +597,13 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .portrait-photo img { position: relative; z-index: 1; background: transparent; mix-blend-mode: multiply; }
 
 /* ---------- campaign landing pages ---------- */
+/* Header, sticky phone action and form chips below; the page sections are at the end of the file ("Landing pages, Nov 2026"). */
 /* Slim header: logo, language and one action, on every screen size. */
 .site-header--lp .nav--lp { display: flex; }
 .site-header--lp .header-in .btn { display: inline-flex; }
 .site-header--lp .header-in .btn { white-space: nowrap; }
 /* Campaign visitors arrive in one language; on phones the action keeps the room. */
 @media (max-width: 480px) { .site-header--lp .nav--lp { display: none; } .site-header--lp .header-in { gap: 10px; } .site-header--lp .header-in .btn { margin-inline-start: auto; padding: 8px 12px; font-size: .86rem; } }
-/* Three situations side by side, each read top to bottom: the pain, what is going on, what Eran does, the measure. */
-.lp-sits { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(20px, 3vw, 40px); grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
-.lp-sits li { border-top: 1px solid var(--rule-2); padding-top: clamp(18px, 2.4vw, 26px); display: flex; flex-direction: column; }
-.lp-sits .voice-q { margin-bottom: .8em; }
-.lp-sits h3 { font-size: .86rem; font-weight: 600; color: var(--accent-deep); margin: .9em 0 .3em; }
-.lp-sits p { margin: 0; color: var(--ink-2); line-height: 1.55; }
-.lp-sits .lp-do { color: var(--ink); }
-.lp-measure { margin-top: auto !important; padding-top: 18px; }
-.lp-measure span { display: block; font-size: .8rem; color: var(--muted); margin-bottom: 2px; }
-.lp-sits .lp-measure { color: var(--ink); font-weight: 600; }
-.lp-why { display: grid; gap: 18px 32px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); margin-top: 1.2rem; }
-.lp-why article { border-top: 1px solid var(--rule-2); padding-top: 14px; }
-.lp-why h3 { font-size: 1.05rem; margin-bottom: .3em; }
-.lp-why p { margin: 0; color: var(--ink-2); font-size: .96rem; }
-.lp-start .way p { margin-bottom: 0; }
 .lp-form-p { margin-top: 0; }
 .lp-formsec { scroll-margin-top: 90px; }
 #lead { scroll-margin-top: 110px; }
@@ -662,12 +648,6 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   @keyframes memo-fade { from { opacity: 0; } to { opacity: 1; } }
 }
 
-/* ---------- landing pages: proof strip, mid-page call to action, situation chips ---------- */
-.lp-proof { list-style: none; margin: 22px 0 0; padding: 16px 0 0; border-top: 1px solid var(--rule-2); display: flex; flex-wrap: wrap; gap: 8px 22px; max-width: 60ch; }
-.lp-proof li { position: relative; padding-inline-start: 18px; font-size: .92rem; font-weight: 500; color: var(--ink); }
-.lp-proof li::before { content: ''; position: absolute; inset-inline-start: 0; top: .42em; width: 11px; height: 10px; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: var(--pollen); }
-.lp-mid { margin-top: clamp(32px, 4vw, 48px); padding-top: 22px; border-top: 1px solid var(--rule-2); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; }
-.lp-mid p { margin: 0; font-size: 1.08rem; color: var(--ink); }
 .topics { border: 0; padding: 0; margin: 0 0 18px; }
 .topics legend { font-weight: 500; font-size: .95rem; margin-bottom: 8px; padding: 0; }
 .topic-opts { display: grid; gap: 8px; }
@@ -680,13 +660,6 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .hero--lp h1 { font-size: clamp(2.4rem, 4.6vw, 4.4rem); }
 [lang='he'] .hero--lp h1 { font-size: clamp(2.1rem, 4.2vw, 4rem); }
 
-/* ---------- landing pages, revision 2: pain cards that act, a sticky action on phones ---------- */
-.lp-sits li { gap: 0; }
-.lp-sits .lp-under { color: var(--muted); font-size: .95rem; }
-.lp-sits .lp-do { margin: 14px 0; color: var(--ink); }
-.lp-sits .lp-do span, .lp-measure span { display: block; font-size: .8rem; font-weight: 600; color: var(--accent-deep); margin-bottom: 2px; }
-.lp-sits .lp-measure { margin-top: auto !important; padding: 10px 12px; background: var(--paper-2); border-radius: var(--r-ctl); font-weight: 600; color: var(--ink); }
-.lp-pick { margin-top: 16px; align-self: flex-start; }
 .lp-sticky { position: fixed; z-index: 40; inset-inline: 16px; bottom: 16px; justify-content: center; box-shadow: 0 10px 30px -12px rgba(37, 33, 42, .55); }
 .lp-sticky[hidden] { display: none; }
 @media (min-width: 900px) { .lp-sticky { display: none !important; } }
@@ -874,3 +847,43 @@ bdi[dir='ltr'] { white-space: nowrap; }
 .pv > p, .pv > ul { margin: 0 0 1em; color: var(--ink-2); line-height: 1.7; }
 .pv > ul { padding-inline-start: 1.2em; display: grid; gap: .4em; }
 .pv > .btn { margin-top: .4em; }
+
+/* =====================================================================
+   Landing pages, Nov 2026: the home page's language narrowed to one domain.
+   Reuses the hero picker, journey, memo, pillars and person card; only the domain trace, the memo band
+   and the "how it starts" list are new.
+   ===================================================================== */
+/* Hero: the picker panel adds the measure, set on paper so it reads as the answer to "how will I know?" */
+.pick-measure { margin: 0 0 14px; padding: 9px 12px; background: var(--paper-2); border-radius: var(--r-ctl); font-weight: 600; font-size: .93rem; line-height: 1.4; color: var(--ink); }
+.pick-measure span { display: block; font-size: .78rem; font-weight: 600; color: var(--accent-deep); margin-bottom: 1px; }
+
+/* Signature: the five shared stages, each carried through this business. The domain line is the content,
+   so it is set at reading size in ink under a pollen hairline (bee & co. owns the step); your call stays peach. */
+.lp-journey .jr-stage { border-top-width: 2px; }
+.lp-here { position: relative; margin: 0 0 4px; padding-top: 12px; font-size: 1.02rem; line-height: 1.5; color: var(--ink); }
+.lp-here::before { content: ''; position: absolute; inset-inline-start: 0; top: 0; width: 28px; height: 3px; background: var(--pollen); border-radius: 2px; }
+.lp-here-l { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 18px; padding: 6px 12px 6px 10px; background: var(--accent-tint); border-radius: var(--r-ctl); font-weight: 600; font-size: .95rem; color: var(--accent-deep); }
+.lp-here-l::before { content: ''; width: 13px; height: 12px; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: var(--pollen); }
+@media (min-width: 900px) { .lp-journey .jr-gate { margin-top: auto; } .lp-here { margin-bottom: 16px; } }
+
+/* Memo band: the argument on one side, the evidence (the memo) on the other. */
+.lp-memo { display: grid; gap: clamp(28px, 4vw, 64px); grid-template-columns: minmax(0, 1fr); align-items: center; }
+@media (min-width: 900px) { .lp-memo { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); } }
+.lp-memo-copy h2 { max-width: 16ch; }
+.lp-memo-copy .lede { margin-bottom: 1.4rem; }
+
+
+/* How it starts: three steps beside the form, the duration set first so the commitment is clear. */
+.lp-steps { padding: clamp(18px, 2.4vw, 24px); background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r-sheet); }
+.lp-steps h3 { margin: 0 0 6px; }
+.lp-steps ol { list-style: none; margin: 0; padding: 0; }
+.lp-steps li { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 4px 14px; padding-block: 12px; border-top: 1px solid var(--rule); }
+.lp-steps li:first-child { border-top: 0; }
+.lp-steps-dur { margin: 0; font-size: .86rem; font-weight: 600; color: var(--accent-deep); padding-top: .1em; }
+.lp-steps-h { margin: 0; font-weight: 500; color: var(--ink); }
+.lp-steps li p:not([class]) { margin: 2px 0 0; font-size: .93rem; color: var(--ink-2); line-height: 1.45; }
+@media (max-width: 420px) { .lp-steps li { grid-template-columns: 1fr; } }
+
+/* LP headlines are full questions: wider than the home promise, and a step smaller (see .hero--lp above). */
+.hero--home.hero--lp h1 { max-width: 16ch; }
+[lang='he'] .hero--home.hero--lp h1 { max-width: 15ch; }
