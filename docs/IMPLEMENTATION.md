@@ -68,11 +68,25 @@ English display headings use an editorial serif stack; Hebrew headings, body cop
 
 ## 4. Messaging
 
-- Hero headline names AI solutions explicitly:
-  - EN: "AI solutions that do real work inside your business."
-  - HE: "פתרונות AI שעושים עבודה אמיתית בתוך העסק שלכם."
-- Page titles and the footer line position bee & co. as a hands-on AI-solutions partner.
-- Stage 1 of the four-stage path is **Observe / מתבוננים** (previously See / רואים). The stages are Observe → Prove → Embed → Expand.
+Home redesign (2026-11-17): **one accountable partner for end-to-end AI transformation**, made credible by a senior technology executive who still builds.
+
+- Hero: EN "One partner. End-to-end AI transformation." / HE "שותף אחד. מהאתגר העסקי ועד AI שעובד." (adapted, not translated).
+- Home order: hero (promise + "Who owns the result?" ledger) → five services → why bee & co. (three pillars) → outcomes → conversation. No founder section on home (Eran is named in the hero trust line; the About page carries his story).
+- "One-stop shop" means one accountable owner, not a large in-house team: a note under the journey says specialists are selected and managed by bee & co.
+- Experience is stated as on LinkedIn: 22 years in software, Director / Head of Engineering / VP R&D since 2020, organizations of 50+. Never "20+ years of senior leadership" (a test guards this).
+- Outcomes are qualitative only. No client metrics, testimonials or case studies until there is written permission.
+- Banned phrases (tested on home): revolutionize, cutting-edge, next-generation, "power of AI", unlock.
+
+### Home patterns added to the design system
+
+| Pattern | Classes | Rules |
+|---|---|---|
+| "Who owns the result?" ledger | `.handoff`, `.ho-table`, `.ho-usual`, `.ho-break`, `.ho-ours` | Hero companion, a real `<table>`. Rows are the five journey stages; the usual owner merges across stages (`rowspan`) and each change of owner is a dashed peach break; the unowned last stage is peach. bee & co. is one tinted cell across all five rows with the brand mark and a pollen bar. Static, no motion. |
+| Journey | `.journey`, `.jr-stage`, `.jr-gate`, `.jr-note` | On the how-it-works page (content in `how.journey`; home reads the stage names from there). Five stages in reading direction (mirrored in Hebrew), each with what you get and your decision (peach). One lavender-edged note about specialists. No lanes, no automatic animation. |
+| Engagement timeline | `.run`, `.run-step`, `.run-gate` | How it works. A pollen rail (bee & co. owns every step) with the duration as the large type, what happens, what you get and the journey stages it covers; your decision is a peach diamond on the rail between steps. Mirrors in Hebrew; stacks on phones. |
+| Service row | `.svc-list`, `.svc`, `.svc-cover` | Ruled rows, not cards. Each row shows the journey stages it covers as five hexes plus the stage names in text. Stage indexes live in content (`services.items[].stages`). |
+| Pillar | `.pillars`, `.pillar`, `.pillar-not` | Dark band. Each pillar ends with a "Not:" contrast line that names what a typical provider does. |
+| Outcomes | `.outcomes` | Ruled auto-fit grid, title + one line each, then a link to the measurement method. |
 
 ## 5. Signature components and diagrams
 

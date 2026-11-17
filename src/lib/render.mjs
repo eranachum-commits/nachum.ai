@@ -163,46 +163,63 @@ const personCard = (c) => `<div class="person-card"><span class="person-mark" ar
 /* ---------- shared blocks ---------- */
 // Decide → Build → Lead is a real progression of responsibility, so it is drawn as one connected line.
 const waysLine = (c, w) => `<ol class="ways">${w.items.map((x) => `<li class="way"><h3>${x.h}</h3><p>${x.p}</p><p class="way-first">${x.first}</p></li>`).join('')}</ol>`;
-const ctaBand = (c, title, p, pain) => section(`<div class="cta-band"><h2>${title}</h2><p class="lede">${p}</p><div class="btn-row">${btn(c, c.ui.book, bookUrl(c, pain), 'btn--primary', 'data-track="cta_band"')}${btn(c, c.ui.seeHow, href(c.lang, 'how'), '')}</div><p class="cta-note">${c.home.hero.note}</p></div>`, 'section--dark');
+const ctaBand = (c, title, p, pain, { how = true } = {}) => section(`<div class="cta-band"><h2>${title}</h2><p class="lede">${p}</p><div class="btn-row">${btn(c, c.ui.book, bookUrl(c, pain), 'btn--primary', 'data-track="cta_band"')}${how ? btn(c, c.ui.seeHow, href(c.lang, 'how'), '') : ''}</div><p class="cta-note">${c.home.hero.note}</p></div>`, 'section--dark');
 const pageHero = (c, h1, lede) => `<section class="page-hero"><div class="container"><h1>${h1}</h1>${lede ? `<p class="lede">${lede}</p>` : ''}</div></section>`;
+
+/* ---------- the journey and stage coverage (home services, how it works) ---------- */
+// Five stages in reading direction (mirrored in Hebrew), each with what you get and the decision that stays yours.
+const journeyMap = (c) => { const j = c.how.journey;
+  return `<div class="journey"><ol class="jr-stages">${j.stages.map((x, i) => `<li class="jr-stage"><span class="jr-n" aria-hidden="true">${i + 1}</span><h3>${x.h}</h3><p class="jr-p">${x.p}</p><p class="jr-get"><span>${j.getL}</span>${x.get}</p>${x.gate ? `<p class="jr-gate"><span>${j.gateL}</span>${x.gate}</p>` : ''}</li>`).join('')}</ol><p class="jr-note">${j.note}</p></div>`; };
+// Which of the five stages something covers: hexes for the eye, the stage names as text.
+const stageCover = (c, st, label) => { const S = c.how.journey.stages;
+  return `<p class="svc-cover"><span class="svc-hexes" aria-hidden="true">${S.map((x, i) => `<i${st.includes(i) ? ' class="on"' : ''}></i>`).join('')}</span><span class="svc-cover-t"><span class="svc-cover-l">${label}:</span> ${st.map((i) => S[i].h).join(', ')}</span></p>`; };
 
 /* ---------- pages ---------- */
 const pages = {};
 
 pages.home = (c) => {
-  const h = c.home, hr = h.hero, m = h.memo;
-  // The one bold element: the decision memo (see memoBlock).
-  const memo = memoBlock(c, m);
-  const hero = `<section class="hero"><div class="container hero-grid">
+  const h = c.home, hr = h.hero, ho = h.handoff, j = c.how.journey, sv = h.services, wy = h.why, oc = h.outcomes;
+  // Five-second test: what we do (h1), why it matters (lede), why trust us (trust line), what next (two actions).
+  // Beside it, the one-stop-shop promise as a small ledger: the same five stages, who usually owns each one
+  // (the owner changes three times and the last stage often has none) against one bee & co. bar across all five.
+  let row = 0;
+  const usualCell = [];
+  ho.usual.forEach((u) => { usualCell[row] = u; row += u.span; });
+  const ledger = j.stages.map((st, i) => {
+    const u = usualCell[i];
+    const usual = u ? `<td class="ho-usual${u.gap ? ' ho-usual--gap' : ''}${i ? ' ho-break' : ''}" rowspan="${u.span}">${u.who}</td>` : '';
+    const ours = i === 0 ? `<td class="ho-ours" rowspan="${j.stages.length}"><span class="ho-bar" aria-hidden="true">${brandMark()}</span><span class="ho-ours-t">${ho.ours}</span></td>` : '';
+    return `<tr><th scope="row"><span class="ho-n" aria-hidden="true">${i + 1}</span>${st.h}</th>${usual}${ours}</tr>`;
+  }).join('');
+  const handoff = `<aside class="handoff" aria-labelledby="handoff-title"><h2 id="handoff-title">${ho.title}</h2>
+<table class="ho-table"><thead><tr><th scope="col">${ho.stageL}</th><th scope="col">${ho.usualL}</th><th scope="col">${ho.oursL}</th></tr></thead><tbody>${ledger}</tbody></table>
+<p class="ho-summary">${ho.summary}</p></aside>`;
+  const hero = `<section class="hero hero--home"><div class="container hero-grid">
 <div class="hero-copy"><h1>${hr.h1}</h1><p class="lede">${hr.sub}</p>
-<div class="btn-row">${btn(c, c.ui.book, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, hr.secondary, href(c.lang, 'how'), '')}</div>
-<p class="hero-note">${hr.note}</p></div>
-${memo}</div></section>`;
+<div class="btn-row">${btn(c, hr.primary, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, hr.secondary, '#services', '')}</div>
+<p class="hero-trust">${hr.trust}</p></div>
+${handoff}</div></section>`;
 
-  const s = h.situations;
-  const voices = `<ul class="voices">${s.items.map((x, i) => `<li><p class="voice-q">${x.q}</p><p class="voice-a">${x.a}</p><p class="voice-more"><a href="${href(c.lang, 'usecase')}#s-${i}">${s.more}</a></p></li>`).join('')}</ul>`;
+  // Services are one model, not five products: each row shows which journey stages it covers.
+  const cover = (st) => stageCover(c, st, sv.coversL);
+  const services = `${head(sv.title, sv.intro, 'services-title')}<ul class="svc-list">${sv.items.map((x) => `<li class="svc"><h3>${x.h}</h3><p class="svc-p">${x.p}</p>${cover(x.stages)}</li>`).join('')}</ul>`;
 
-  const w = h.ways;
-  const b = h.belief;
-  const belief = `<div class="belief"><figure class="belief-quote"><blockquote><p>${b.quote}</p></blockquote><figcaption>${b.by}</figcaption></figure>${ticks(b.items)}</div>`;
+  const why = `${head(wy.title, wy.intro, 'why-title')}<div class="pillars">${wy.items.map((x) => `<article class="pillar"><h3>${x.h}</h3><p>${x.p}</p><p class="pillar-not"><span>${wy.notL}:</span> ${x.not}</p></article>`).join('')}</div>`;
 
-  const f = h.founder;
-  const founder = `<div class="founder-grid">${founderPanel(c, { sizes: '(min-width: 900px) 340px, 80vw' })}<div><h2 id="founder-title">${f.title}</h2><p class="lede">${f.p}</p><p class="founder-co">${f.co}</p><div class="btn-row">${btn(c, f.link, href(c.lang, 'about'), '')}${extLink(c.founder.linkedin, c.founder.linkedinLabel, 'btn')}</div></div></div>`;
+  const outcomes = `${head(oc.title, oc.intro, 'outcomes-title')}<ul class="outcomes">${oc.items.map((x) => `<li><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ul><p class="ways-link"><a href="${href(c.lang, 'results')}">${oc.link}</a></p>`;
 
-  const sf = h.safe;
-  const safe = `${head(sf.title, '', 'safe-title')}<div class="grid g4 safe-grid">${sf.items.map((x) => `<article class="card"><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div><p class="safe-link"><a href="${href(c.lang, 'security')}">${sf.link}</a></p>`;
+  const cta = section(`<div class="cta-band"><h2 id="cta-title">${h.cta.title}</h2><p class="lede">${h.cta.p}</p><div class="btn-row">${btn(c, h.cta.button, bookUrl(c), 'btn--primary', 'data-track="cta_band"')}${btn(c, c.ui.seeHow, href(c.lang, 'how'), '')}</div><p class="cta-note">${hr.note}</p></div>`, 'section--dark', 'talk', 'cta-title');
 
   const body = `${hero}
-${section(`${head(s.title, '', 'voices-title')}${voices}`, 'home-voices', 'situations', 'voices-title')}
-${section(`${head(w.title, w.intro, 'ways-title')}${waysLine(c, w)}<p class="ways-link"><a href="${href(c.lang, 'how')}">${w.link}</a></p>`, 'section--tint home-ways', 'ways', 'ways-title')}
-${section(belief, 'section--dark home-belief', 'belief')}
-${section(founder, 'home-founder', 'founder', 'founder-title')}
-${section(safe, 'section--tint home-safe', 'safe', 'safe-title')}
-${ctaBand(c, h.cta.title, h.cta.p)}`;
+${section(services, 'home-services', 'services', 'services-title')}
+${section(why, 'section--dark home-why', 'why', 'why-title')}
+${section(outcomes, 'section--tint home-outcomes', 'outcomes', 'outcomes-title')}
+${cta}`;
   const ld = {
     '@context': 'https://schema.org', '@type': 'ProfessionalService', name: 'bee & co.', description: c.descriptor,
     founder: { '@type': 'Person', name: 'Eran Nachum', jobTitle: 'Founder', sameAs: [c.founder.linkedin] },
     areaServed: 'IL',
+    hasOfferCatalog: { '@type': 'OfferCatalog', name: sv.title, itemListElement: sv.items.map((x) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: x.h, description: x.p } })) },
   };
   return { meta: h.meta, body, ld };
 };
@@ -237,12 +254,18 @@ ${ctaBand(c, p.cta.title, p.cta.p, 'usecase')}`;
 };
 
 pages.how = (c) => {
-  const p = c.how, w = c.home.ways;
-  const stages = `<ol class="stage-list">${p.stages.map((s, i) => `<li class="stage-row"><div class="stage-n" aria-hidden="true">${i + 1}</div><div><h3>${s.h}</h3><p class="who">${s.who}</p></div><div>${s.p.map((x) => `<p>${x}</p>`).join('')}<p class="out">${s.out}</p></div></li>`).join('')}</ol><p class="notice">${c.offers.note}</p>`;
-  const body = `${pageHero(c, p.h1, p.lede)}
-${section(`${head(p.waysTitle, '', 'ways-title')}${waysLine(c, w)}`, 'section--tint how-ways', 'ways', 'ways-title')}
-${section(`${head(p.stagesTitle, '', 'stages-title')}${stages}`, 'how-stages', 'stages', 'stages-title')}
-${section(`<div class="split split--even"><div><h2>${p.needTitle}</h2>${ticks(p.need)}</div><div class="how-book">${btn(c, p.cta, bookUrl(c), 'btn--primary')}<p class="cta-note">${c.home.hero.note}</p></div></div>`, 'section--tint')}`;
+  const p = c.how, j = p.journey, r = p.run;
+  // The journey first (what one partner covers), then how an engagement actually runs along it.
+  const hero = pageHero(c, p.h1, p.lede).replace('</div></section>',
+    `<div class="btn-row">${btn(c, c.ui.book, bookUrl(c), 'btn--primary', 'data-track="cta_how_hero"')}${btn(c, p.heroLink, '#runs', '')}</div></div></section>`);
+  // Timeline: a pollen rail (bee & co. owns every step) with the duration set large, what happens beside it,
+  // and the journey stages each step covers. Your decision sits on the rail between steps.
+  const run = `<ol class="run">${r.steps.map((x, i) => `<li class="run-step"><span class="run-n" aria-hidden="true">${i + 1}</span><div class="run-when"><p class="run-dur">${x.dur}</p></div><div class="run-what"><h3>${x.h}</h3><p>${x.p}</p></div><div class="run-out"><p class="jr-get"><span>${r.getL}</span>${x.get}</p>${stageCover(c, x.covers, r.coversL)}</div></li>${x.gate ? `<li class="run-gate"><p><span>${r.gateL}</span>${x.gate}</p></li>` : ''}`).join('')}</ol><p class="notice">${c.offers.note}</p>`;
+  const body = `${hero}
+${section(`${head(j.title, j.intro, 'journey-title')}${journeyMap(c)}`, 'section--tint how-journey', 'journey', 'journey-title')}
+${section(`${head(r.title, r.intro, 'runs-title')}${run}`, 'how-runs', 'runs', 'runs-title')}
+${section(`<div class="how-need"><h2 id="need-title">${p.needTitle}</h2>${ticks(p.need)}</div>`, 'section--tint how-needsec', 'need', 'need-title')}
+${ctaBand(c, p.ctaTitle, p.ctaP, '', { how: false })}`;
   return { meta: p.meta, body };
 };
 

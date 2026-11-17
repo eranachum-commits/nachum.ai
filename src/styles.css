@@ -230,17 +230,6 @@ input[aria-invalid='true'], select[aria-invalid='true'], textarea[aria-invalid='
 .hp { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 
-/* how-it-works stage rows */
-.stage-row { position: relative; display: grid; gap: 8px 32px; grid-template-columns: 52px minmax(0, 1fr); padding-block: 32px; }
-.stage-row:first-child { border-top: 1px solid var(--rule); }
-.stage-row:not(:last-child)::before { content: ''; position: absolute; inset-inline-start: 21px; top: 84px; bottom: -32px; width: 2px; background: var(--flow-v); border-radius: 2px; }
-.stage-row > div:last-child { grid-column: 2; }
-.stage-n { position: relative; z-index: 1; width: 44px; height: 44px; background: var(--accent-tint); color: var(--accent-deep); border-radius: 50%; font: 500 1.1rem/44px var(--sans); text-align: center; }
-.stage-row h2 { margin-bottom: .2em; }
-.stage-row .who { color: var(--muted); margin: 0; }
-.stage-row p { max-width: 62ch; }
-.stage-row .out { font-weight: 500; color: var(--ink); padding-inline-start: 14px; border-inline-start: 3px solid var(--accent); margin-bottom: 0; }
-@media (min-width: 900px) { .stage-row { grid-template-columns: 64px minmax(0, .9fr) minmax(0, 1.1fr); } .stage-row > div:last-child { grid-column: auto; } }
 
 /* cta band + cross-links */
 .cta-band { position: relative; overflow: hidden; padding-inline-end: clamp(0px, 12vw, 180px); }
@@ -634,15 +623,6 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .ways-link, .safe-link { margin: 1.8rem 0 0; }
 .ways-link a, .safe-link a { color: var(--accent-deep); }
 
-/* ---------- belief: the founder's point of view, the page's one dark band ---------- */
-.belief { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: end; }
-@media (min-width: 980px) { .belief { grid-template-columns: minmax(0, 1.45fr) minmax(0, .8fr); } }
-.belief-quote { margin: 0; }
-.belief-quote blockquote { margin: 0; }
-.belief-quote p { margin: 0; font-size: clamp(1.35rem, 2.35vw, 1.95rem); font-weight: 300; line-height: 1.42; letter-spacing: -.012em; color: var(--on-night); max-width: 40ch; }
-.belief-quote figcaption { margin-top: 1.2rem; color: var(--accent-on-night); font-weight: 500; }
-.belief .ticks { margin: 0; color: var(--on-night-2); }
-
 /* ---------- founder ---------- */
 .founder-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(24px, 4vw, 72px); align-items: start; }
 @media (min-width: 900px) { .founder-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); } }
@@ -650,15 +630,7 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .founder-co { margin: 0; padding-inline-start: 16px; border-inline-start: 3px solid var(--pollen); color: var(--ink); max-width: 48ch; }
 .founder-grid .btn-row { margin-top: 1.4rem; }
 
-/* ---------- safeguards ---------- */
-.safe-grid .card h3 { font-size: 1.05rem; }
-.safe-grid .card p { color: var(--ink-2); font-size: .96rem; }
-
 /* ---------- ways to work page ---------- */
-.stage-list { list-style: none; margin: 0; padding: 0; }
-.stage-row h3 { font-size: clamp(1.5rem, 2.4vw, 1.9rem); font-weight: 300; letter-spacing: -.02em; margin-bottom: .2em; }
-.stage-list + .notice { margin-top: 28px; }
-.how-book { align-self: center; }
 
 /* ---------- about + contact additions ---------- */
 .about-story { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 4vw, 72px); align-items: start; }
@@ -792,3 +764,121 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 @media (min-width: 900px) { .lp-sticky { display: none !important; } }
 .hero--lp h1 { max-width: 16ch; }
 [lang='he'] .hero--lp h1 { max-width: 15ch; }
+
+/* =====================================================================
+   Home redesign (Nov 2026): one partner, end-to-end AI transformation.
+   Colour keeps its meaning: pollen = bee & co.'s ownership, peach = your decision or a handoff, lavender = supporting specialists.
+   ===================================================================== */
+:root { --jr-gap: clamp(16px, 2vw, 28px); }
+[lang='en'] :is(.jr-stage h3, .svc h3, .pillar h3) { font-family: Georgia, 'Times New Roman', serif; }
+
+/* ---------- hero: the promise, and the problem it removes ---------- */
+.hero--home h1 { max-width: 13ch; }
+[lang='he'] .hero--home h1 { max-width: 12ch; }
+.hero--home .lede { max-width: 54ch; }
+.hero-trust { margin: 1.4rem 0 0; padding-top: 1rem; border-top: 1px solid var(--rule-2); max-width: 54ch; font-weight: 500; color: var(--ink); }
+/* "Who owns the result?": a small ledger. Same five stages as the journey; the usual owner changes at every
+   dashed peach break (a handoff you coordinate) and the last stage is often unowned; bee & co. is one bar across all five. */
+.handoff { background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r-sheet); padding: clamp(18px, 2.4vw, 28px); box-shadow: var(--lift); align-self: center; }
+.handoff h2 { margin: 0 0 14px; font-size: clamp(1.35rem, 2vw, 1.65rem); letter-spacing: -.02em; }
+.ho-table { width: 100%; border-collapse: collapse; font-size: .92rem; line-height: 1.35; }
+.ho-table thead th { padding: 0 0 8px; font-size: .8rem; font-weight: 600; color: var(--muted); text-align: start; border-bottom: 1px solid var(--rule); }
+.ho-table thead th:last-child { padding-inline-start: 46px; color: var(--accent-deep); }
+.ho-table tbody th { padding: 10px 12px 10px 0; padding-inline: 0 12px; font-weight: 500; color: var(--ink); text-align: start; white-space: nowrap; border-bottom: 1px solid var(--paper-2); }
+.ho-n { display: inline-block; min-width: 1.4em; color: var(--muted); font-weight: 400; }
+.ho-usual { padding: 10px 12px; color: var(--ink-2); background: var(--paper); vertical-align: middle; }
+.ho-break { border-top: 2px dashed var(--human-line); }
+.ho-usual--gap { background: var(--human-tint); color: var(--human-ink); font-weight: 500; }
+.ho-ours { position: relative; padding: 10px 12px; padding-inline-start: 46px; vertical-align: middle; width: 36%; background: color-mix(in srgb, var(--accent-tint) 45%, var(--sheet)); }
+.ho-bar { position: absolute; inset-block: 8px; inset-inline-start: 10px; width: 28px; display: flex; flex-direction: column; align-items: center; }
+.ho-bar .brand-mark { width: 28px; height: 28px; flex: none; color: var(--ink); }
+.ho-bar::after { content: ''; flex: 1; width: 6px; margin-top: 4px; border-radius: 3px; background: var(--pollen); }
+.ho-ours-t { display: block; font-weight: 600; color: var(--ink); }
+.ho-summary { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--rule); font-size: .9rem; color: var(--ink-2); }
+@media (max-width: 420px) { .ho-table { font-size: .86rem; } .ho-usual { padding-inline: 8px; } .ho-ours, .ho-table thead th:last-child { padding-inline-start: 40px; } }
+
+/* ---------- journey: the accountability map ---------- */
+.journey { margin-top: 4px; }
+.jr-stages { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.jr-stage { position: relative; padding: 20px 0 24px; padding-inline-start: 56px; border-top: 2px solid var(--ink); }
+.jr-n { position: absolute; inset-inline-start: 0; top: 18px; width: 38px; aspect-ratio: 1.14; display: grid; place-items: center; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: var(--sheet); color: var(--accent-deep); font-weight: 600; font-size: .95rem; }
+.jr-stage h3 { font-size: clamp(1.45rem, 2.1vw, 1.8rem); font-weight: 300; letter-spacing: -.02em; margin-bottom: .35em; }
+.jr-p { margin: 0 0 14px; color: var(--ink-2); font-size: .97rem; line-height: 1.5; }
+.jr-get, .jr-gate { margin: 0; font-size: .93rem; line-height: 1.4; }
+.jr-get span, .jr-gate span { display: block; font-size: .8rem; font-weight: 600; margin-bottom: 2px; }
+.jr-get { color: var(--ink); font-weight: 500; }
+.jr-get span { color: var(--accent-deep); }
+.jr-gate { margin-top: 12px; padding: 8px 11px; background: var(--human-tint); border-radius: var(--r-ctl); color: var(--human-ink); font-weight: 500; }
+.jr-gate span { color: var(--human-ink); font-weight: 600; opacity: .85; }
+@media (min-width: 900px) {
+  .jr-stages { grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: var(--jr-gap); }
+  .jr-stage { padding-inline-start: 0; padding-top: 18px; display: flex; flex-direction: column; }
+  .jr-n { position: static; margin-bottom: 16px; }
+  .jr-gate { margin-top: auto; }
+  .jr-get { margin-bottom: 12px; }
+}
+
+/* Specialists: one quiet line under the stages; lavender marks supporting context. */
+.jr-note { margin: clamp(22px, 3vw, 32px) 0 0; padding: 12px 16px; max-width: 72ch; background: var(--sheet); border-inline-start: 3px solid #a99fc0; border-radius: var(--r-ctl); border-start-start-radius: 0; border-end-start-radius: 0; color: var(--ink-2); font-size: .95rem; }
+
+/* ---------- services: one model, each row shows the stages it covers ---------- */
+.svc-list { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
+.svc { display: grid; gap: 8px 32px; padding-block: clamp(20px, 2.4vw, 28px); border-bottom: 1px solid var(--rule); }
+.svc h3 { margin: 0; font-size: clamp(1.3rem, 1.9vw, 1.55rem); font-weight: 400; letter-spacing: -.015em; max-width: 22ch; }
+.svc-p { margin: 0; color: var(--ink-2); max-width: 54ch; }
+.svc-cover { margin: 4px 0 0; display: grid; gap: 6px; align-content: start; }
+.svc-hexes { display: inline-flex; gap: 4px; }
+.svc-hexes i { width: 20px; aspect-ratio: 1.14; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: var(--rule); }
+.svc-hexes i.on { background: var(--pollen); }
+.svc-cover-t { font-size: .86rem; color: var(--ink-2); }
+.svc-cover-l { font-weight: 600; color: var(--accent-deep); }
+@media (min-width: 900px) { .svc { grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, .75fr); align-items: start; } .svc-cover { margin-top: 2px; } }
+
+/* ---------- why: three pillars on the page's dark band ---------- */
+.pillars { display: grid; gap: clamp(28px, 4vw, 56px); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .pillars { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.pillar { border-top: 1px solid var(--night-line); padding-top: 22px; display: flex; flex-direction: column; }
+.pillar h3 { font-size: clamp(1.6rem, 2.5vw, 2.05rem); font-weight: 300; letter-spacing: -.02em; color: var(--on-night); margin-bottom: .5em; }
+.pillar p { color: var(--on-night-2); margin: 0; }
+.pillar .pillar-not { margin-top: auto; padding-top: 1.4em; font-size: .93rem; }
+.pillar-not span { color: var(--accent-on-night); font-weight: 600; }
+.home-why .section-head .lede { color: var(--on-night-2); }
+
+/* ---------- outcomes: plain business results, ruled ---------- */
+.outcomes { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 clamp(24px, 3vw, 40px); grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.outcomes li { border-top: 1px solid var(--rule-2); padding-block: 18px 24px; }
+.outcomes h3 { font-size: 1.1rem; font-weight: 500; margin-bottom: .35em; }
+.outcomes p { margin: 0; color: var(--ink-2); font-size: .96rem; line-height: 1.5; }
+/* Short Latin isolates inside Hebrew (the brand name, numbers) never split across lines. */
+bdi[dir='ltr'] { white-space: nowrap; }
+
+/* ---------- how it works: the engagement timeline ---------- */
+/* A pollen rail runs the full length: bee & co. owns every step. Durations are the large type, because "how long
+   until I know?" is the executive's first question. Your decision sits on the rail between steps, in peach. */
+.run { --rail: 15px; list-style: none; margin: 0; padding: 0; position: relative; }
+.run::before { content: ''; position: absolute; inset-inline-start: calc(var(--rail) - 3px); top: 24px; bottom: 24px; width: 6px; border-radius: 3px; background: var(--pollen); }
+.run-step { position: relative; display: grid; gap: 8px 40px; padding-block: 22px 26px; padding-inline-start: 56px; }
+.run-n { position: absolute; inset-inline-start: 0; top: 22px; width: 32px; aspect-ratio: 1.14; display: grid; place-items: center; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: var(--ink); color: var(--sheet); font-weight: 600; font-size: .9rem; }
+.run-dur { margin: 0; font-size: clamp(1.7rem, 2.8vw, 2.4rem); font-weight: 300; line-height: 1.05; letter-spacing: -.025em; color: var(--ink); }
+[lang='en'] .run-dur, [lang='en'] .run-what h3 { font-family: Georgia, 'Times New Roman', serif; }
+.run-what h3 { margin: 0 0 .35em; font-size: clamp(1.25rem, 1.8vw, 1.45rem); font-weight: 400; }
+.run-what p { margin: 0; color: var(--ink-2); max-width: 56ch; }
+.run-out { display: grid; gap: 14px; align-content: start; }
+.run-out .svc-cover { margin: 0; }
+.run-gate { position: relative; padding-block: 2px; padding-inline-start: 56px; }
+.run-gate::before { content: ''; position: absolute; inset-inline-start: calc(var(--rail) - 8px); top: 50%; width: 16px; height: 16px; margin-top: -8px; transform: rotate(45deg); background: var(--human-tint); border: 1.5px solid var(--human); }
+.run-gate p { display: inline-block; margin: 0; padding: 8px 12px; background: var(--human-tint); border-radius: var(--r-ctl); color: var(--human-ink); font-weight: 500; font-size: .95rem; }
+.run-gate span { display: block; font-size: .8rem; font-weight: 600; }
+.run-step + .run-step, .run-gate + .run-step { border-top: 1px solid var(--rule); }
+.run-gate + .run-step { border-top: 0; }
+@media (min-width: 900px) {
+  .run-step { grid-template-columns: minmax(0, .62fr) minmax(0, 1.3fr) minmax(0, 1fr); align-items: start; padding-block: 30px 34px; }
+  .run-n { top: 32px; }
+  .run-gate { display: grid; grid-template-columns: minmax(0, .62fr) minmax(0, 1.3fr) minmax(0, 1fr); column-gap: 40px; }
+  .run-gate p { grid-column: 2; justify-self: start; }
+}
+.how-runs .notice { margin-top: 28px; }
+.how-need { display: grid; gap: 12px clamp(32px, 5vw, 80px); align-items: start; }
+.how-need h2 { margin: 0; }
+.how-need .ticks { margin: 0; }
+@media (min-width: 900px) { .how-need { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); } .how-need .ticks { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 32px; } }

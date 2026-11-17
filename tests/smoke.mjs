@@ -107,17 +107,47 @@ await t('repositioning: named founder, no prices, no size limits, slim form', ()
   for (const lang of langs) { const c = lang === 'he' ? he : en, home = pages[href(lang, 'home')], contact = pages[href(lang, 'contact')];
     assert.ok(home.includes(c.founder.name), 'founder full name on home ' + lang);
     assert.ok(home.includes(c.founder.linkedin), 'LinkedIn on home ' + lang);
-    assert.equal((home.match(/<li class="way">/g) || []).length, 3, 'Decide / Build / Lead ' + lang);
-    assert.equal((home.match(/class="memo-row memo-row--/g) || []).length, c.home.memo.items.length, 'decision memo in hero ' + lang);
+    assert.doesNotMatch(home, /class="memo-row/, 'no decision memo on the redesigned home ' + lang);
     assert.doesNotMatch(home, /class="spine/, 'no career timeline on home ' + lang);
     for (const f of ['name', 'company', 'detail', 'email']) assert.match(contact, new RegExp(`name="${f}"[^>]*required`), 'required ' + f + ' ' + lang);
     for (const f of ['size', 'budget', 'urgency']) assert.doesNotMatch(contact, new RegExp(`name="${f}"`), 'no ' + f + ' field ' + lang);
   }
 });
+await t('home: one-partner hero, journey map, five services, three pillars, outcomes, one conversion section', () => {
+  for (const lang of langs) { const c = lang === 'he' ? he : en, h = c.home, home = pages[href(lang, 'home')];
+    assert.ok(home.includes(`<h1>${h.hero.h1}</h1>`), 'one-partner headline ' + lang);
+    assert.match(home, /class="hero hero--home"[\s\S]*data-track="cta_hero"[\s\S]*href="#services"[\s\S]*class="handoff"/, 'two actions and the handoff panel above the fold ' + lang);
+    assert.match(home, /id="services"/, 'secondary action has a target ' + lang);
+    assert.equal((home.match(/<td class="ho-usual/g) || []).length, h.handoff.usual.length, 'usual owners in the handoff ledger ' + lang);
+    assert.match(home, /<td class="ho-ours" rowspan="5">/, 'one owner across all five stages ' + lang);
+    assert.equal(h.handoff.usual.reduce((n, u) => n + u.span, 0), c.how.journey.stages.length, 'handoff ledger covers every stage ' + lang);
+    assert.doesNotMatch(home, /class="jr-stage"|jr-lane|data-armed/, 'journey lives on the how-it-works page, not home ' + lang);
+    assert.match(home, /<\/section>\s*<section class="section home-services" id="services"/, 'services come right after the hero ' + lang);
+    assert.doesNotMatch(home, /id="founder"|class="portrait"/, 'no founder section on home ' + lang);
+    assert.equal((home.match(/<li class="svc">/g) || []).length, 5, 'five services ' + lang);
+    for (const x of h.services.items) assert.ok(x.stages.length && x.stages.every((i) => i >= 0 && i < 5), 'service maps to stages: ' + x.h);
+    assert.equal((home.match(/<article class="pillar">/g) || []).length, 3, 'three pillars ' + lang);
+    assert.equal((home.match(/<ul class="outcomes">[\s\S]*?<\/ul>/)[0].match(/<li>/g) || []).length, h.outcomes.items.length, 'outcomes ' + lang);
+    assert.ok(home.includes(`href="${href(lang, 'results')}"`), 'outcomes link to the measurement method ' + lang);
+    assert.match(home, /data-track="cta_band"/, 'closing conversation section ' + lang);
+    assert.doesNotMatch(home.replace(/<script[\s\S]*?<\/script>/g, ''), /revolutioni[sz]e|cutting-edge|next-generation|power of AI/i, 'no generic AI phrases ' + lang);
+  }
+});
+await t('how it works: the journey and the engagement timeline with decisions', () => {
+  for (const lang of langs) { const c = lang === 'he' ? he : en, p = c.how, page = pages[href(lang, 'how')];
+    assert.equal((page.match(/<li class="jr-stage">/g) || []).length, p.journey.stages.length, 'journey stages ' + lang);
+    assert.equal((page.match(/<li class="run-step">/g) || []).length, p.run.steps.length, 'engagement steps ' + lang);
+    assert.equal((page.match(/<li class="run-gate">/g) || []).length, p.run.steps.length - 1, 'a decision between steps ' + lang);
+    for (const x of p.run.steps) assert.ok(x.covers.length && x.covers.every((i) => i >= 0 && i < p.journey.stages.length), 'step maps to journey stages: ' + x.h);
+    assert.doesNotMatch(page, /<li class="way">/, 'no "where you can start" section ' + lang);
+    assert.match(page, /href="#runs"/, 'hero links to the timeline ' + lang);
+    assert.doesNotMatch(page, new RegExp(`class="cta-band"[\\s\\S]*href="${href(lang, 'how')}"[\\s\\S]*</section>`), 'no link to itself in the closing band ' + lang);
+  }
+});
 await t('founder photo is served, sized and described', async () => {
   for (const lang of langs) { const c = lang === 'he' ? he : en;
     const alt = c.founder.photoAlt.replace(/&/g, '&amp;');
-    for (const k of ['home', 'about']) { const img = (pages[href(lang, k)].match(/<img src="\/img\/eran-nachum-806\.jpg"[^>]*>/) || [''])[0];
+    for (const k of ['about']) { const img = (pages[href(lang, k)].match(/<img src="\/img\/eran-nachum-806\.jpg"[^>]*>/) || [''])[0];
       assert.ok(img.includes('width="806" height="772"') && img.includes(`alt="${alt}"`), 'photo with size and alt on ' + k + ' ' + lang); }
     assert.doesNotMatch(pages[href(lang, 'contact')], /<img [^>]*\/img\//, 'no photo on contact ' + lang);
     assert.doesNotMatch(pages[href(lang, 'home')], /face-160|class="avatar"/, 'no small face photo on home ' + lang);

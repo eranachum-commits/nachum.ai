@@ -251,7 +251,7 @@ $$('[data-lead-form]').forEach((form) => {
 // Diagram connectors flow for a few cycles when they come into view, then rest (WCAG 2.2.2: under 5s).
 if ('IntersectionObserver' in window) {
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } }), { threshold: 0.35 });
-  document.querySelectorAll('.work-order, .track:not(.track--offers), .stage-row').forEach((el) => io.observe(el));
+  document.querySelectorAll('.work-order, .track:not(.track--offers)').forEach((el) => io.observe(el));
 }
 
 // The approval stamp lands when the work order is actually on screen (matters on phones).

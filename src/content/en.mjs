@@ -1,9 +1,9 @@
 // English content. Localised intent, not a literal mirror of the Hebrew. Both files must keep an identical shape (tests/smoke.mjs).
-// Positioning (approved 2026-11-16): the senior technology executive a company doesn't have. Decide / Build / Lead. No public prices.
+// Positioning (home redesign, 2026-11-17): one accountable partner for end-to-end AI transformation, led by a senior technology executive. Decide / Build / Lead remain the engagement types. No public prices.
 export default {
   lang: 'en', dir: 'ltr', ogLocale: 'en_US', langName: 'English', switchLabel: 'עברית', switchAria: 'מעבר לעברית',
   brand: 'bee & co.',
-  descriptor: 'Senior technology and AI leadership, hands-on.',
+  descriptor: 'One accountable partner for end-to-end AI transformation: strategy, engineering, integration and adoption.',
   founder: {
     name: 'Eran Nachum', by: 'Founded by Eran Nachum', role: 'Founder, bee & co.',
     linkedin: 'https://www.linkedin.com/in/eran-nachum-2123b03/', linkedinLabel: 'Eran on LinkedIn',
@@ -16,7 +16,7 @@ export default {
   },
   nav: { how: 'Ways to work', usecase: 'Common situations', about: 'About Eran', results: 'How we measure', faq: 'FAQ' },
   footer: {
-    tag: 'Senior technology and AI leadership for companies that don’t have it in-house. Led by Eran Nachum.',
+    tag: 'One accountable partner for AI transformation, from the business challenge to the system in daily use. Led by Eran Nachum.',
     cols: { site: 'bee & co.', example: 'Situations', legal: 'Legal' },
     privacy: 'Privacy policy', security: 'Data & security', contact: 'Contact',
     note: 'Examples on this site are illustrative and use sample data.',
@@ -28,34 +28,68 @@ export default {
   },
 
   home: {
-    meta: { title: 'bee & co. — senior technology and AI leadership, hands-on', desc: 'A senior technology executive for companies that don’t have one: decide where AI and technology are worth investing, then build it to production standard. Led by Eran Nachum, former VP R&D.' },
+    meta: { title: 'bee & co. — one partner for end-to-end AI transformation', desc: 'One accountable partner from the business challenge to AI in daily use: strategy, solution architecture, engineering, integration and adoption. Led by Eran Nachum, former VP R&D.' },
     hero: {
-      h1: 'Decide well on AI. Then get it built properly.',
-      sub: 'bee & co. gives leadership teams a senior technology executive: Eran Nachum, former VP R&D. He helps you decide where AI and technology are worth the investment, then takes personal responsibility for building it, putting it into production and getting it used.',
+      h1: 'One partner. End-to-end AI transformation.',
+      sub: 'From the business challenge to AI that works in daily operations. bee & co. finds where AI will improve how you run, then designs, builds, integrates and gets it adopted, so you never coordinate consultants, developers and vendors yourself.',
+      trust: 'Led by Eran Nachum, former VP R&D, with 22 years building software.',
+      primary: 'Let’s explore your opportunities',
+      secondary: 'See what we deliver',
       note: '30 minutes, directly with Eran. No sales team.',
-      secondary: 'Ways to work together',
+    },
+    handoff: {
+      title: 'Who owns the result?',
+      stageL: 'Stage', usualL: 'The usual way', oursL: 'With bee & co.',
+      usual: [
+        { who: 'Strategy consultant', span: 2 },
+        { who: 'Development agency', span: 1 },
+        { who: 'IT integrator and a training vendor', span: 1 },
+        { who: 'Often nobody', span: 1, gap: true },
+      ],
+      ours: 'One accountable partner, start to finish',
+      summary: 'The usual way: three handoffs and a gap at the end. With bee & co.: one owner for the whole result.',
     },
     memo: {
       title: 'Three AI ideas. Three honest answers.',
       chip: 'Example',
-      for: 'The ideas most companies bring to the first call, and what Eran usually answers.',
-      items: [
-        { q: '“Let’s add an AI chatbot to our website.”', v: 'Don’t build', k: 'no', why: 'Most customers call or email. The bot would answer questions nobody asks there.' },
-        { q: '“Can AI draft replies to the emails we answer every day?”', v: 'Build', k: 'build', why: 'The same questions all day, and a person checks every reply before it goes out.' },
-        { q: '“Should we replace all our systems with one new platform?”', v: 'Not now', k: 'later', why: 'The systems work. The hours are lost moving data between them. Fix that first.' },
-      ],
-      foot: 'Telling these apart before you spend is the job.',
       by: 'Eran Nachum, bee & co.',
       replay: 'Watch again',
     },
-    situations: {
-      title: 'What leadership teams usually say on the first call',
-      more: 'How Eran approaches it',
+    services: {
+      title: 'What we deliver',
+      intro: 'Five capabilities in one service model. Most engagements combine several of them, and you work with one partner for all of them.',
+      coversL: 'Covers',
       items: [
-        { q: 'We bought AI tools. Nothing really changed.', a: 'The tools sit beside the work instead of inside it. We start from one process and change how the work flows, with owners and numbers.' },
-        { q: 'We don’t have a senior technology leader.', a: 'Decisions about systems, vendors and AI get made without anyone who has run engineering at scale. Eran can take that seat, part-time.' },
-        { q: 'Every new customer adds manual work.', a: 'We find the repeated part and build it into the systems you already run, so volume can grow without headcount growing at the same pace.' },
-        { q: 'There’s a big technology decision on the table.', a: 'A platform, a vendor, a rebuild or an AI initiative. Get an independent senior view before you commit the budget.' },
+        { h: 'AI strategy & business transformation', p: 'Find where AI will move the business, remove bottlenecks and build a practical roadmap tied to measurable value.', stages: [0, 1] },
+        { h: 'Intelligent automation & AI agents', p: 'Workflows and AI agents that take on complex, repeated work: less manual effort, better accuracy, more capacity.', stages: [2, 3] },
+        { h: 'AI solution architecture & engineering', p: 'Reliable, secure, production-ready systems that work with what you already run and scale as you grow.', stages: [1, 2, 3] },
+        { h: 'Technology leadership & fractional CTO', p: 'Senior technology leadership: architecture, key decisions, roadmap and oversight, without a full-time executive hire.', stages: [0, 1, 2, 3, 4] },
+        { h: 'AI adoption & organizational change', p: 'Redesigned workflows, enabled teams and new working habits, so the solution is used and its impact is measured.', stages: [3, 4] },
+      ],
+    },
+    why: {
+      title: 'Why bee & co.',
+      intro: 'Many firms now promise end-to-end AI. The difference is who does the thinking, and who does the work.',
+      notL: 'Not',
+      items: [
+        { h: 'Business-first thinking', p: 'We understand the business problem before we choose the technology. Sometimes the right answer is not AI, and we say so.', not: 'a tool looking for a problem' },
+        { h: 'Executive-level experience', p: '22 years in software, with VP R&D and Head of Engineering roles, organizations of 50+ people and budgets owned under a P&L. Technology decisions made the way an executive makes them.', not: 'a junior team learning on your project' },
+        { h: 'From strategy to production', p: 'The person who helps you decide is the person who builds. Designed, engineered, integrated and running, with no handoff in between.', not: 'a slide deck and a goodbye' },
+      ],
+    },
+    outcomes: {
+      title: 'Outcomes, not technology',
+      intro: 'What leadership teams are after when they call us. For your process, we agree in writing how each one will be measured before work begins.',
+      link: 'How we measure results',
+      items: [
+        { h: 'Fewer operational bottlenecks', p: 'Work stops waiting on the same few steps and people.' },
+        { h: 'Faster complex workflows', p: 'Quotes, orders, approvals and reports move with less waiting between steps.' },
+        { h: 'More productive teams', p: 'People spend their time on judgment and customers, not retyping.' },
+        { h: 'Less repetitive manual work', p: 'The repeated part is built into the systems you already run.' },
+        { h: 'Better accuracy and consistency', p: 'The same rules applied every time, with a person checking what matters.' },
+        { h: 'Capacity without matching headcount', p: 'Volume can grow faster than the team has to.' },
+        { h: 'Better decisions from your own data', p: 'The information you already hold, available when decisions are made.' },
+        { h: 'Operations that scale', p: 'Processes designed for growth, not only for today’s volume.' },
       ],
     },
     ways: {
@@ -68,34 +102,13 @@ export default {
       ],
       link: 'How each engagement works',
     },
-    belief: {
-      quote: 'Most AI problems aren’t AI problems. They’re decisions about where to invest, what to change and what to leave alone. After twenty years in software, the most valuable thing I’ve learned is when not to build. I started bee & co. to give companies that judgment, and then to build what’s worth building myself, so nothing gets lost between the plan and the system.',
-      by: 'Eran Nachum, founder',
-      items: [
-        'We say what not to build, even when it means less work for us.',
-        'Built for production from day one: security, failure handling and maintenance, not just the demo.',
-        'Success is agreed in writing before work starts and measured against your own baseline.',
-      ],
-    },
     founder: {
-      title: 'A technology executive who still builds.',
-      p: 'Eran has spent 22 years building software and, since 2020, has run R&D as Director of Engineering and VP R&D. He has owned a budget under a P&L, scaled organizations to 50+ people, and still designs and builds production AI systems himself: multi-agent workflows, LLM applications, retrieval and integrations.',
-      co: 'Your first conversation is with Eran, and so is the work. When a project needs extra hands, such as design, data or specialist engineering, Eran brings in senior specialists he has worked with and stays accountable for the result.',
       link: 'More about Eran',
     },
-    safe: {
-      title: 'Built to be trusted by the people who use it',
-      items: [
-        { h: 'People approve what matters', p: 'Anything that reaches a customer, moves money or changes an important record has a named person approving it.' },
-        { h: 'Safe access by default', p: 'Anonymized examples first, read-only access next, and only the permissions the work needs.' },
-        { h: 'Your data stays yours', p: 'Confidentiality terms come first. Confidential material never goes into unapproved AI tools.' },
-        { h: 'No black boxes', p: 'Documentation, runbooks and named owners on your side, so you never depend on one person.' },
-      ],
-      link: 'Read the data & security principles',
-    },
     cta: {
-      title: 'Bring the decision you’re facing.',
-      p: 'A 30-minute call, directly with Eran. You leave with a clearer view of the problem and an honest answer on whether bee & co. is the right fit.',
+      title: 'Your business challenge. One partner to solve it.',
+      p: 'Whether you are exploring AI opportunities, held back by inefficient processes or ready to implement, bee & co. can help define the right approach and take it forward.',
+      button: 'Let’s talk about your business',
     },
   },
 
@@ -158,19 +171,38 @@ export default {
     cta: { title: 'Bring the situation you’re in.', p: 'In a 30-minute call with Eran, talk it through and leave with a clearer view of what to do next.' },
   },
   how: {
-    meta: { title: 'Ways to work together — bee & co.', desc: 'Decide, Build or Lead: how an engagement with bee & co. starts, what each step delivers, and the decision that stays yours at every stage.' },
+    meta: { title: 'Ways to work together — bee & co.', desc: 'How an engagement with bee & co. runs: one partner from discovery to optimization, a written recommendation before any build, and a decision that stays yours at every step.' },
     h1: 'Ways to work together',
-    lede: 'Start where you are: a decision to make, a system to build, or a technology seat to fill. Each step ends with a decision that stays yours.',
-    waysTitle: 'Three kinds of engagement',
-    stagesTitle: 'How an engagement usually runs',
-    stages: [
-      { h: 'Talk', who: 'Intro call · 30 minutes', p: ['A conversation with Eran about the decision or problem in front of you. You get his honest first view, and a clear answer on whether bee & co. is the right fit.'], out: 'A shared view of the problem, and a yes or no on the next step.' },
-      { h: 'Decide', who: 'Decision Sprint · 2–3 weeks', p: ['Eran learns how the work is really done: the people, the systems, the numbers and the constraints. Then he maps the opportunities, including the ones not worth pursuing.', 'You receive a written recommendation with a rough business case, an architecture or vendor view where relevant, and a go/no-go. The fee is credited if a build follows.'], out: 'A decision you can defend to your board, your team and yourself.' },
-      { h: 'Build', who: 'Build & Embed · scoped to the work', p: ['The agreed system built into production: integration with the systems you run, process change, human checkpoints, training, named owners and measures.', 'When technical risk is high, we start with a short proof of value on your approved examples, against acceptance criteria agreed in writing.'], out: 'A working, owned and measured system in daily use.' },
-      { h: 'Lead', who: 'Ongoing leadership · monthly', p: ['Monitoring, steady improvement and senior technology leadership as your needs grow: as a fractional CTO or Head of AI, with a one-page scorecard every month.'], out: 'Senior technology judgment on hand, with visible numbers.' },
-    ],
+    lede: 'One partner across the whole journey, one decision at a time. Most engagements start with a 30-minute conversation and a short Decision Sprint. Nothing larger is committed until you have a written recommendation.',
+    heroLink: 'How an engagement runs',
+    journey: {
+      title: 'One partner. The entire journey.',
+      intro: 'Five stages with one owner. You make the call at every step; we carry the work from understanding the business to results you can measure.',
+      getL: 'You get', gateL: 'Your call',
+      stages: [
+        { h: 'Discover', p: 'Understand how the business really runs, and where time, money and attention are lost.', get: 'A clear map of bottlenecks and opportunities', gate: 'Worth pursuing?' },
+        { h: 'Strategize', p: 'Set priorities, agree the outcomes and plan a realistic roadmap, including what not to do.', get: 'A written recommendation and roadmap', gate: 'Worth building?' },
+        { h: 'Build', p: 'Architect and develop the solution to production standard, on your real data and rules.', get: 'A working, secure solution', gate: 'Ready to roll out?' },
+        { h: 'Integrate', p: 'Connect it to the systems you run, redesign the workflow and train the people who use it.', get: 'A solution in daily use, with owners', gate: 'Expand it?' },
+        { h: 'Optimize', p: 'Measure against the baseline, improve what works and extend it to the next process.', get: 'A monthly one-page scorecard', gate: '' },
+      ],
+      note: 'When a project needs specialist skills, bee & co. selects and manages the specialists. You keep one point of accountability.',
+    },
+    run: {
+      title: 'How an engagement usually runs',
+      intro: 'Four steps, each scoped and priced in writing before it starts. Every step ends with a decision that stays yours.',
+      getL: 'You get', coversL: 'Journey stages', gateL: 'Your call',
+      steps: [
+        { h: 'Intro call', dur: '30 minutes', p: 'A conversation with Eran about the challenge or decision in front of you. No pitch deck, no demo, no obligation.', get: 'An honest first view, and a clear answer on whether bee & co. is the right fit', covers: [0], gate: 'Worth a closer look?' },
+        { h: 'Decision Sprint', dur: '2–3 weeks', p: 'We learn how the work is really done: the people, the systems, the numbers and the constraints. Then we map the opportunities, including the ones not worth pursuing.', get: 'A written recommendation with a rough business case, an architecture view and a go/no-go. The fee is credited if a build follows.', covers: [0, 1], gate: 'Worth building?' },
+        { h: 'Build & integrate', dur: 'Scoped to the work', p: 'The agreed solution built to production standard and connected to the systems you run, with workflow changes, human checkpoints, training and named owners. When technical risk is high, it starts with a short proof of value against criteria agreed in writing.', get: 'A working solution in daily use, owned and measured', covers: [2, 3], gate: 'Keep improving it, with ongoing leadership?' },
+        { h: 'Optimize & lead', dur: 'Monthly', p: 'Monitoring against the baseline, steady improvement and extension to the next process, with senior technology leadership as a fractional CTO or Head of AI when you need it.', get: 'A one-page scorecard every month', covers: [4], gate: '' },
+      ],
+    },
     needTitle: 'What makes an engagement work',
     need: ['A decision maker in the conversation', 'An honest look at how the work is done today', 'A named owner on your side for anything we build', 'Willingness to have a person review outputs where it matters'],
+    ctaTitle: 'Start with a conversation.',
+    ctaP: '30 minutes with Eran. You leave with a clearer view of the challenge and the right first step, whether or not that step is with us.',
     cta: 'Book a call with Eran',
   },
 
