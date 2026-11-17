@@ -14,7 +14,7 @@ export default {
     illustrative: 'Illustrative', home: 'Home', send: 'Send message', sending: 'Sending…',
     required: 'Required', fixField: 'Please check the highlighted fields.', main: 'Main navigation',
   },
-  nav: { how: 'Ways to work', usecase: 'Common situations', about: 'About Eran', results: 'How we measure', faq: 'FAQ' },
+  nav: { how: 'Ways to work', usecase: 'Common situations', about: 'About', results: 'How we measure', faq: 'FAQ' },
   footer: {
     tag: 'One accountable partner for AI transformation, from the business challenge to the system in daily use. Led by Eran Nachum.',
     cols: { site: 'bee & co.', example: 'Situations', legal: 'Legal' },
