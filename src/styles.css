@@ -358,11 +358,6 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 
 /* ---------- about ---------- */
 /* Story beside the portrait; the hard facts close the story column so both columns stay balanced. */
-@media (min-width: 640px) { .about-facts .ticks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.about-prose { max-width: 62ch; font-size: clamp(1.06rem, 1.25vw, 1.18rem); line-height: 1.75; color: var(--ink-2); }
-.about-prose p { margin: 0 0 1.15em; }
-.about-prose p:first-child { font-size: 1.14em; line-height: 1.55; color: var(--ink); }
-.about-prose p:last-child { margin-bottom: 0; padding-top: 1.1em; border-top: 1px solid var(--rule-2); color: var(--ink); font-weight: 500; }
 
 /* ---------- results: measurement flowchart ---------- */
 /* Desktop: one row of seven nodes joined by connectors; the decision's "No" branch hangs below it,
@@ -493,41 +488,67 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 
 /* ---------- about: hero beside the portrait ---------- */
 .about-hero { padding-block: clamp(22px, 3vw, 40px) clamp(36px, 5vw, 64px); border-bottom: 1px solid var(--rule); background: var(--paper); }
-.about-hero-in { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: clamp(36px, 6vw, 96px); align-items: start; }
-.about-hero h1 { font-size: clamp(2.7rem, 5.7vw, 5rem); max-width: 17ch; }
 .about-hero .lede { margin-bottom: 0; }
 .about-hero-portrait .portrait { width: 100%; max-width: 360px; justify-self: end; margin-inline-start: auto; }
-.about-facts { margin-top: clamp(32px, 4vw, 44px); padding-top: 18px; border-top: 4px solid var(--pollen); max-width: 62ch; }
-.about-facts h2 { margin-bottom: 12px; }
-.about-facts .ticks { margin: 0; gap: .55rem; font-size: .97rem; line-height: 1.45; color: var(--ink-2); }
 
-/* ---------- about: three proof signals ---------- */
+/* ---------- about: experience → what you get ----------
+   Three rows that each read as one sentence, left to right: the proof in plain ink, a pollen link, the benefit set larger.
+   Labels sit once above the rows on wide screens and move into each row on narrow ones. */
 .about-xp .section-head { max-width: 620px; }
-.xp-ledger { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block: 1px solid var(--rule-2); }
-.xp-ledger li { min-width: 0; padding: clamp(22px, 3vw, 36px); border-inline-end: 1px solid var(--rule); }
-.xp-ledger li:first-child { padding-inline-start: 0; }
-.xp-ledger li:last-child { padding-inline-end: 0; border-inline-end: 0; }
-.xp-ledger p { margin: 0; line-height: 1.45; }
-.xp-n { display: block; margin-bottom: clamp(34px, 5vw, 58px); font: 500 .72rem/1 var(--sans); letter-spacing: .1em; color: var(--accent-deep); }
-.xp-from { min-height: 3em; color: var(--muted); font-size: .9rem; }
-.xp-to { position: relative; margin-top: 18px !important; padding-top: 18px; color: var(--ink); font-weight: 500; font-size: clamp(1.08rem, 1.55vw, 1.32rem); }
-.xp-to::before { content: ''; position: absolute; inset-inline-start: 0; top: 0; width: 38px; height: 4px; background: var(--pollen); }
+.xp-head, .xp-row { display: grid; grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1.15fr); column-gap: clamp(12px, 2vw, 24px); align-items: center; }
+.xp-head { margin: 0 0 10px; font-size: .86rem; font-weight: 600; color: var(--muted); }
+.xp-head span:last-child { grid-column: 3; color: var(--accent-deep); }
+.xp-rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink-2); }
+.xp-row { padding-block: clamp(20px, 2.6vw, 30px); border-bottom: 1px solid var(--rule-2); }
+.xp-row p { margin: 0; }
+.xp-from { font-size: 1.05rem; line-height: 1.5; color: var(--ink-2); max-width: 40ch; }
+.xp-to { font-size: clamp(1.15rem, 1.7vw, 1.4rem); line-height: 1.35; font-weight: 500; color: var(--ink); letter-spacing: -.01em; max-width: 30ch; }
+.xp-link { position: relative; height: 16px; }
+.xp-link::before { content: ''; position: absolute; inset-inline: 0 14px; top: 7px; height: 2px; background: var(--rule-2); }
+.xp-link::after { content: ''; position: absolute; inset-inline-end: 0; top: 0; width: 18px; height: 16px; background: var(--pollen); clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); }
+.xp-l { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-/* ---------- about: comparison as two quiet horizontal bands ---------- */
-.about-why .section-head { max-width: 660px; }
-.yb-head, .yb-row { display: grid; grid-template-columns: minmax(160px, .62fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.08fr); gap: 10px; }
-.yb-head { margin-bottom: 8px; }
-.yb-head span { padding-inline: clamp(16px, 2vw, 24px); font-size: .76rem; font-weight: 600; color: var(--muted); }
-.yb-head span:last-child { color: #000; font-size: .95rem; font-weight: 700; }
-.yb-list { margin: 0; display: grid; gap: 10px; }
-.yb-row { align-items: stretch; }
-.yb-row dt { align-self: center; margin: 0; padding-inline-end: 18px; font-weight: 600; line-height: 1.35; }
-.yb-bar { position: relative; display: flex; align-items: center; min-height: 72px; margin: 0; padding: 15px clamp(16px, 2vw, 24px); line-height: 1.4; }
-.yb-tool { border: 1px solid var(--rule-2); color: var(--muted); background: transparent; }
-.yb-consult { border: 1px solid var(--rule); background: var(--sheet); color: var(--ink-2); }
-.yb-us { padding-inline-start: clamp(22px, 2.5vw, 30px); background: var(--accent-tint); color: #000; font-weight: 500; }
-.yb-us::before { content: ''; position: absolute; inset-inline-start: 0; inset-block: 0; width: 6px; background: var(--pollen); }
-
+/* ---------- about: why me, as a signed first-person card ----------
+   Two halves: a night panel that speaks (title, lead, the one action) and a sheet that promises (decide → build → stay)
+   on a hex line. When the card scrolls into view the hexes light up in turn and the line draws between them;
+   app.js arms this only when motion is allowed, so without JS or with reduced motion the final state simply shows. */
+.why-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); max-width: 1040px; margin-inline: auto; border-radius: var(--r-sheet); overflow: hidden; box-shadow: var(--lift); border: 1px solid var(--rule); }
+.why-main { display: flex; flex-direction: column; justify-content: center; padding: clamp(28px, 4vw, 56px); background: var(--night); color: var(--on-night); }
+.why-main h2 { margin: 0 0 16px; font-size: clamp(1.9rem, 3.2vw, 2.6rem); line-height: 1.1; letter-spacing: -.02em; color: var(--on-night); }
+.why-lead { margin: 0 0 30px; font-size: 1.1rem; line-height: 1.6; color: var(--on-night-2); max-width: 44ch; }
+.why-act { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; }
+.why-main .btn--primary { background: var(--accent-on-night); border-color: var(--accent-on-night); color: var(--night); }
+.why-main .btn--primary:hover { background: #fff; border-color: #fff; color: var(--night); }
+.why-main :focus-visible { outline-color: var(--focus-on-night); }
+.why-sign { font-weight: 600; color: var(--on-night); }
+.why-points { list-style: none; margin: 0; padding: clamp(28px, 4vw, 56px); display: grid; align-content: center; gap: 30px; background: var(--sheet); }
+.why-points li { position: relative; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 18px; }
+.why-points li:not(:last-child)::before, .why-points li:not(:last-child)::after { content: ''; position: absolute; inset-inline-start: 14px; top: 32px; bottom: -28px; width: 2px; background: var(--paper-2); }
+.why-points li:not(:last-child)::after { background: var(--pollen); transform-origin: top; }
+.why-hex { position: relative; z-index: 1; width: 30px; height: 26px; margin-top: 2px; background: var(--pollen); clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); }
+.why-points h3 { margin: 0 0 4px; font-size: 1.15rem; line-height: 1.3; font-weight: 600; color: var(--ink); }
+[lang='en'] .why-points h3 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 1.3rem; }
+.why-points p { margin: 0; line-height: 1.5; color: var(--ink-2); max-width: 46ch; }
+@media (prefers-reduced-motion: no-preference) {
+  .why-card.armed .why-hex { background: var(--paper-2); }
+  .why-card.armed .why-points li > div { opacity: .35; }
+  .why-card.armed .why-points li::after { transform: scaleY(0); }
+  .why-card.armed.in-view .why-hex { animation: why-light .5s var(--ease-out) calc(.2s + var(--i) * .55s) forwards; }
+  .why-card.armed.in-view .why-points li > div { animation: why-text .5s ease-out calc(.2s + var(--i) * .55s) forwards; }
+  .why-card.armed.in-view .why-points li::after { animation: why-draw .4s ease-in-out calc(.45s + var(--i) * .55s) forwards; }
+  @keyframes why-light { 0% { background: var(--paper-2); transform: scale(1); } 45% { background: var(--pollen); transform: scale(1.25); } 100% { background: var(--pollen); transform: scale(1); } }
+  @keyframes why-text { to { opacity: 1; } }
+  @keyframes why-draw { to { transform: scaleY(1); } }
+}
+/* "& co.": an open strip under the card, aligned to its width. The name itself, set large, is the visual. */
+.co-note { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(20px, 4vw, 56px); align-items: center; max-width: 1040px; margin: clamp(28px, 4vw, 48px) auto 0; padding: clamp(20px, 3vw, 32px) clamp(4px, 2vw, 24px) 0; border-top: 1px solid var(--rule-2); }
+.co-mark { margin: 0; font: 400 clamp(3.4rem, 7vw, 5.6rem)/.9 Georgia, 'Times New Roman', serif; letter-spacing: -.03em; color: var(--accent); white-space: nowrap; }
+.co-note h3 { margin: 0 0 .35em; font-size: 1.15rem; font-weight: 600; color: var(--ink); }
+.co-note p { margin: 0; line-height: 1.6; color: var(--ink-2); max-width: 62ch; }
+@media (max-width: 760px) {
+  .why-card { grid-template-columns: 1fr; }
+  .co-note { grid-template-columns: 1fr; gap: 10px; }
+}
 
 /* ---------- about: how we work ---------- */
 .about-how { max-width: 720px; }
@@ -540,20 +561,13 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 }
 
 @media (max-width: 640px) {
-  .xp-ledger { grid-template-columns: 1fr; }
-  .xp-ledger li, .xp-ledger li:first-child, .xp-ledger li:last-child { padding: 22px 0; border-inline-end: 0; border-bottom: 1px solid var(--rule); }
-  .xp-ledger li:last-child { border-bottom: 0; }
-  .xp-n { margin-bottom: 24px; }
-  .xp-from { min-height: 0; }
-  .yb-head { display: none; }
-  .yb-list { gap: 0; }
-  .yb-row { display: grid; grid-template-columns: 1fr; gap: 8px; padding-block: 20px; border-bottom: 1px solid var(--rule-2); }
-  .yb-row:first-child { border-top: 1px solid var(--ink-2); }
-  .yb-row dt { padding: 0 0 4px; }
-  .yb-bar { min-height: 0; padding: 30px 14px 12px; }
-  .yb-bar::after { content: attr(data-label); position: absolute; inset-inline-start: 14px; top: 8px; font-size: .7rem; font-weight: 600; color: var(--muted); }
-  .yb-us { padding-inline-start: 20px; }
-  .yb-us::after { inset-inline-start: 20px; color: #000; font-size: .86rem; font-weight: 700; }
+  .xp-head { display: none; }
+  .xp-row { grid-template-columns: 1fr; row-gap: 10px; }
+  .xp-link { display: none; }
+  .xp-l { position: static; width: auto; height: auto; overflow: visible; clip: auto; display: block; margin-bottom: 4px; font-size: .8rem; font-weight: 600; color: var(--muted); letter-spacing: 0; }
+  .xp-to .xp-l { color: var(--accent-deep); }
+  .xp-to { padding-inline-start: 14px; border-inline-start: 4px solid var(--pollen); }
+  .why-act .btn { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
@@ -633,10 +647,6 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 /* ---------- ways to work page ---------- */
 
 /* ---------- about + contact additions ---------- */
-.about-story { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 4vw, 72px); align-items: start; }
-@media (min-width: 980px) { .about-story { grid-template-columns: minmax(0, 1.4fr) minmax(0, .8fr); } }
-.about-co { padding: clamp(20px, 2.4vw, 28px); background: var(--paper-2); border-radius: var(--r-sheet); border-inline-start: 3px solid var(--pollen); }
-.about-co p { margin: 0; color: var(--ink-2); }
 
 /* ---------- situations page: Decide / Build / Lead lane inside each panel ---------- */
 .lane--ways { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 420px; }
@@ -777,25 +787,6 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 [lang='he'] .hero--home h1 { max-width: 12ch; }
 .hero--home .lede { max-width: 54ch; }
 .hero-trust { margin: 1.4rem 0 0; padding-top: 1rem; border-top: 1px solid var(--rule-2); max-width: 54ch; font-weight: 500; color: var(--ink); }
-/* "Who owns the result?": a small ledger. Same five stages as the journey; the usual owner changes at every
-   dashed peach break (a handoff you coordinate) and the last stage is often unowned; bee & co. is one bar across all five. */
-.handoff { background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r-sheet); padding: clamp(18px, 2.4vw, 28px); box-shadow: var(--lift); align-self: center; }
-.handoff h2 { margin: 0 0 14px; font-size: clamp(1.35rem, 2vw, 1.65rem); letter-spacing: -.02em; }
-.ho-table { width: 100%; border-collapse: collapse; font-size: .92rem; line-height: 1.35; }
-.ho-table thead th { padding: 0 0 8px; font-size: .8rem; font-weight: 600; color: var(--muted); text-align: start; border-bottom: 1px solid var(--rule); }
-.ho-table thead th:last-child { padding-inline-start: 46px; color: var(--accent-deep); }
-.ho-table tbody th { padding: 10px 12px 10px 0; padding-inline: 0 12px; font-weight: 500; color: var(--ink); text-align: start; white-space: nowrap; border-bottom: 1px solid var(--paper-2); }
-.ho-n { display: inline-block; min-width: 1.4em; color: var(--muted); font-weight: 400; }
-.ho-usual { padding: 10px 12px; color: var(--ink-2); background: var(--paper); vertical-align: middle; }
-.ho-break { border-top: 2px dashed var(--human-line); }
-.ho-usual--gap { background: var(--human-tint); color: var(--human-ink); font-weight: 500; }
-.ho-ours { position: relative; padding: 10px 12px; padding-inline-start: 46px; vertical-align: middle; width: 36%; background: color-mix(in srgb, var(--accent-tint) 45%, var(--sheet)); }
-.ho-bar { position: absolute; inset-block: 8px; inset-inline-start: 10px; width: 28px; display: flex; flex-direction: column; align-items: center; }
-.ho-bar .brand-mark { width: 28px; height: 28px; flex: none; color: var(--ink); }
-.ho-bar::after { content: ''; flex: 1; width: 6px; margin-top: 4px; border-radius: 3px; background: var(--pollen); }
-.ho-ours-t { display: block; font-weight: 600; color: var(--ink); }
-.ho-summary { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--rule); font-size: .9rem; color: var(--ink-2); }
-@media (max-width: 420px) { .ho-table { font-size: .86rem; } .ho-usual { padding-inline: 8px; } .ho-ours, .ho-table thead th:last-child { padding-inline-start: 40px; } }
 
 /* ---------- journey: the accountability map ---------- */
 .journey { margin-top: 4px; }
@@ -882,3 +873,54 @@ bdi[dir='ltr'] { white-space: nowrap; }
 .how-need h2 { margin: 0; }
 .how-need .ticks { margin: 0; }
 @media (min-width: 900px) { .how-need { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); } .how-need .ticks { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 32px; } }
+
+/* =====================================================================
+   About (Nov 2026): first person. The career line is the page's one bold element.
+   ===================================================================== */
+.about-hero-in { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, .65fr); gap: clamp(36px, 6vw, 96px); align-items: center; }
+.about-hero h1 { font-size: clamp(2.5rem, 4.8vw, 4.3rem); line-height: 1.02; letter-spacing: -.04em; max-width: 16ch; }
+[lang='he'] .about-hero h1 { line-height: 1.12; letter-spacing: -.01em; max-width: 15ch; }
+.about-hero .lede { max-width: 54ch; }
+
+/* Career line: one continuous rule in ink that turns pollen at "Today". Read in the document's direction. */
+.career-wrap { margin-top: clamp(40px, 5vw, 64px); }
+.career-wrap > h2 { margin: 0 0 22px; color: var(--muted); font-weight: 600; font-size: .9rem; letter-spacing: 0; }
+.career { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.career li { position: relative; padding-top: 26px; padding-inline-end: clamp(16px, 2.4vw, 32px); border-top: 2px solid var(--ink); }
+.career li::before { content: ''; position: absolute; top: -9px; inset-inline-start: 0; width: 18px; aspect-ratio: 1.14; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: var(--ink); }
+.career li.now { border-top: 6px solid var(--pollen); }
+.career li.now::before { top: -14px; width: 26px; background: var(--pollen); }
+.cl-when { margin: 0 0 8px; font-size: clamp(1.9rem, 3.2vw, 2.7rem); font-weight: 300; line-height: 1; letter-spacing: -.03em; color: var(--ink); }
+[lang='en'] .cl-when, [lang='en'] .about-quote p { font-family: Georgia, 'Times New Roman', serif; }
+.career h3 { margin: 0 0 .3em; font-size: 1.02rem; font-weight: 600; }
+.cl-p { margin: 0; font-size: .93rem; line-height: 1.45; color: var(--ink-2); max-width: 28ch; }
+@media (max-width: 899px) {
+  .about-hero-in { grid-template-columns: 1fr; }
+  .about-hero-portrait { order: -1; }
+  .about-hero-portrait .portrait { max-width: 220px; margin-inline-start: 0; }
+  .career { grid-template-columns: 1fr; }
+  .career li { border-top: 0; border-inline-start: 2px solid var(--ink); padding: 0 0 26px; padding-inline-start: 26px; }
+  .career li::before { top: 4px; inset-inline-start: -10px; }
+  .career li.now { border-top: 0; border-inline-start: 6px solid var(--pollen); padding-bottom: 0; }
+  .career li.now::before { top: 2px; inset-inline-start: -16px; }
+  .cl-when { font-size: 1.7rem; }
+}
+
+/* Story: the founder's belief set large, the story beside it, and the hands-on proof under the story. */
+.about-story { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 5vw, 88px); align-items: start; }
+@media (min-width: 980px) { .about-story { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); } .about-quote { position: sticky; top: 130px; } }
+.about-quote { margin: 0; }
+.about-quote blockquote { margin: 0; padding-top: 22px; border-top: 6px solid var(--pollen); }
+.about-quote p { margin: 0; font-size: clamp(1.9rem, 3.4vw, 3rem); font-weight: 300; line-height: 1.14; letter-spacing: -.025em; color: var(--ink); text-wrap: balance; }
+[lang='he'] .about-quote p { line-height: 1.25; letter-spacing: -.01em; }
+.about-quote figcaption { margin-top: 1.1rem; color: var(--accent-deep); font-weight: 500; }
+.about-prose { max-width: 62ch; }
+.about-prose h2 { margin-bottom: .6em; }
+.about-prose > p { margin: 0 0 1.1em; font-size: clamp(1.05rem, 1.25vw, 1.15rem); line-height: 1.7; color: var(--ink-2); }
+.about-prose > p:first-of-type { color: var(--ink); }
+.hands { margin-top: 28px; padding: clamp(18px, 2.4vw, 26px); background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r-sheet); }
+.hands h3 { margin: 0 0 .4em; font-size: 1.1rem; }
+.hands p { margin: 0; color: var(--ink-2); font-size: .97rem; }
+.hands-tags { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.hands-tags li { padding: 5px 10px; background: var(--paper-2); border-radius: var(--r-ctl); font-size: .88rem; font-weight: 500; color: var(--ink); }
+

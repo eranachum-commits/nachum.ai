@@ -74,7 +74,8 @@ await t('generic use case replaces the solution pages', () => {
     assert.equal((page.match(/class="dp-gate"/g) || []).length, c.usecase.path.gates.length, 'a decision between stages ' + lang);
     assert.doesNotMatch(page, /class="why"/, 'comparison moved off the use case page ' + lang);
     const about = pages[href(lang, 'about')];
-    assert.equal((about.match(/class="yb-bar /g) || []).length, c.about.why.rows.length * 3, 'comparison bars on about ' + lang);
+    assert.equal((about.match(/<ol class="why-points">[\s\S]*?<\/ol>/)[0].match(/<li /g) || []).length, c.about.why.points.length, 'why-me card on about ' + lang);
+    assert.match(about, /class="why-card"[\s\S]*data-track="cta_about_why"/, 'why-me card has a booking action ' + lang);
     for (const k of ['home', 'how', 'usecase']) assert.doesNotMatch(pages[href(lang, k)], /data-pipeline/, 'no before/after diagram on ' + k + ' ' + lang);
     assert.ok(pages[href(lang, 'home')].includes(`href="${href(lang, 'usecase')}"`), 'home links to use case ' + lang);
   }
@@ -88,12 +89,17 @@ await t('results page shows the measurement flow and the measures with outcomes'
     for (const x of r.measures.items) assert.ok(x.outcome && page.includes(x.outcome), 'outcome for ' + x.h);
   }
 });
-await t('about page: hero beside the portrait, experience ledger, comparison', () => {
+await t('about page: first-person hero with the portrait, career line, story, experience ledger, comparison', () => {
   for (const lang of langs) { const c = lang === 'he' ? he : en, a = c.about, page = pages[href(lang, 'about')];
     assert.match(page, /class="about-hero"[\s\S]*class="portrait"/, 'portrait in hero ' + lang);
     assert.equal((page.match(/<p class="xp-from">/g) || []).length, a.map.rows.length, 'experience rows ' + lang);
     for (const x of a.map.rows) assert.ok(page.includes(x.to), 'what it means: ' + x.to);
-    assert.ok(page.includes(a.why.title), 'comparison on about ' + lang);
+    assert.ok(page.includes(a.why.title), 'why-me card on about ' + lang);
+    assert.equal((page.match(/<ol class="career"[\s\S]*?<\/ol>/)[0].match(/<li/g) || []).length, a.career.items.length, 'career line in the hero ' + lang);
+    assert.match(page, /<li class="now">/, 'career line ends at bee & co. ' + lang);
+    assert.ok(page.includes('id="story-title"') && page.includes('class="about-quote"'), 'first-person story with the founder quote ' + lang);
+    assert.equal((page.match(/<ul class="hands-tags">[\s\S]*?<\/ul>/)[0].match(/<li>/g) || []).length, a.hands.tags.length, 'hands-on tags ' + lang);
+    assert.doesNotMatch(page, /class="about-facts"/, 'no duplicate facts list ' + lang);
   }
 });
 await t('illustrative content is labelled; no invented proof', () => {
@@ -116,11 +122,9 @@ await t('repositioning: named founder, no prices, no size limits, slim form', ()
 await t('home: one-partner hero, journey map, five services, three pillars, outcomes, one conversion section', () => {
   for (const lang of langs) { const c = lang === 'he' ? he : en, h = c.home, home = pages[href(lang, 'home')];
     assert.ok(home.includes(`<h1>${h.hero.h1}</h1>`), 'one-partner headline ' + lang);
-    assert.match(home, /class="hero hero--home"[\s\S]*data-track="cta_hero"[\s\S]*href="#services"[\s\S]*class="handoff"/, 'two actions and the handoff panel above the fold ' + lang);
+    assert.match(home, /class="hero hero--home"[\s\S]*data-track="cta_hero"[\s\S]*href="#services"/, 'two actions above the fold ' + lang);
+    assert.doesNotMatch(home, /class="record"|class="handoff"/, 'no side card in the hero ' + lang);
     assert.match(home, /id="services"/, 'secondary action has a target ' + lang);
-    assert.equal((home.match(/<td class="ho-usual/g) || []).length, h.handoff.usual.length, 'usual owners in the handoff ledger ' + lang);
-    assert.match(home, /<td class="ho-ours" rowspan="5">/, 'one owner across all five stages ' + lang);
-    assert.equal(h.handoff.usual.reduce((n, u) => n + u.span, 0), c.how.journey.stages.length, 'handoff ledger covers every stage ' + lang);
     assert.doesNotMatch(home, /class="jr-stage"|jr-lane|data-armed/, 'journey lives on the how-it-works page, not home ' + lang);
     assert.match(home, /<\/section>\s*<section class="section home-services" id="services"/, 'services come right after the hero ' + lang);
     assert.doesNotMatch(home, /id="founder"|class="portrait"/, 'no founder section on home ' + lang);

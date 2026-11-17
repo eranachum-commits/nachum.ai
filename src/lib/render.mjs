@@ -163,7 +163,7 @@ const personCard = (c) => `<div class="person-card"><span class="person-mark" ar
 /* ---------- shared blocks ---------- */
 // Decide → Build → Lead is a real progression of responsibility, so it is drawn as one connected line.
 const waysLine = (c, w) => `<ol class="ways">${w.items.map((x) => `<li class="way"><h3>${x.h}</h3><p>${x.p}</p><p class="way-first">${x.first}</p></li>`).join('')}</ol>`;
-const ctaBand = (c, title, p, pain, { how = true } = {}) => section(`<div class="cta-band"><h2>${title}</h2><p class="lede">${p}</p><div class="btn-row">${btn(c, c.ui.book, bookUrl(c, pain), 'btn--primary', 'data-track="cta_band"')}${how ? btn(c, c.ui.seeHow, href(c.lang, 'how'), '') : ''}</div><p class="cta-note">${c.home.hero.note}</p></div>`, 'section--dark');
+const ctaBand = (c, title, p, pain, { how = true, label = c.ui.book } = {}) => section(`<div class="cta-band"><h2>${title}</h2><p class="lede">${p}</p><div class="btn-row">${btn(c, label, bookUrl(c, pain), 'btn--primary', 'data-track="cta_band"')}${how ? btn(c, c.ui.seeHow, href(c.lang, 'how'), '') : ''}</div><p class="cta-note">${c.home.hero.note}</p></div>`, 'section--dark');
 const pageHero = (c, h1, lede) => `<section class="page-hero"><div class="container"><h1>${h1}</h1>${lede ? `<p class="lede">${lede}</p>` : ''}</div></section>`;
 
 /* ---------- the journey and stage coverage (home services, how it works) ---------- */
@@ -178,27 +178,12 @@ const stageCover = (c, st, label) => { const S = c.how.journey.stages;
 const pages = {};
 
 pages.home = (c) => {
-  const h = c.home, hr = h.hero, ho = h.handoff, j = c.how.journey, sv = h.services, wy = h.why, oc = h.outcomes;
+  const h = c.home, hr = h.hero, j = c.how.journey, sv = h.services, wy = h.why, oc = h.outcomes;
   // Five-second test: what we do (h1), why it matters (lede), why trust us (trust line), what next (two actions).
-  // Beside it, the one-stop-shop promise as a small ledger: the same five stages, who usually owns each one
-  // (the owner changes three times and the last stage often has none) against one bee & co. bar across all five.
-  let row = 0;
-  const usualCell = [];
-  ho.usual.forEach((u) => { usualCell[row] = u; row += u.span; });
-  const ledger = j.stages.map((st, i) => {
-    const u = usualCell[i];
-    const usual = u ? `<td class="ho-usual${u.gap ? ' ho-usual--gap' : ''}${i ? ' ho-break' : ''}" rowspan="${u.span}">${u.who}</td>` : '';
-    const ours = i === 0 ? `<td class="ho-ours" rowspan="${j.stages.length}"><span class="ho-bar" aria-hidden="true">${brandMark()}</span><span class="ho-ours-t">${ho.ours}</span></td>` : '';
-    return `<tr><th scope="row"><span class="ho-n" aria-hidden="true">${i + 1}</span>${st.h}</th>${usual}${ours}</tr>`;
-  }).join('');
-  const handoff = `<aside class="handoff" aria-labelledby="handoff-title"><h2 id="handoff-title">${ho.title}</h2>
-<table class="ho-table"><thead><tr><th scope="col">${ho.stageL}</th><th scope="col">${ho.usualL}</th><th scope="col">${ho.oursL}</th></tr></thead><tbody>${ledger}</tbody></table>
-<p class="ho-summary">${ho.summary}</p></aside>`;
   const hero = `<section class="hero hero--home"><div class="container hero-grid">
 <div class="hero-copy"><h1>${hr.h1}</h1><p class="lede">${hr.sub}</p>
 <div class="btn-row">${btn(c, hr.primary, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, hr.secondary, '#services', '')}</div>
-<p class="hero-trust">${hr.trust}</p></div>
-${handoff}</div></section>`;
+<p class="hero-trust">${hr.trust}</p></div></div></section>`;
 
   // Services are one model, not five products: each row shows which journey stages it covers.
   const cover = (st) => stageCover(c, st, sv.coversL);
@@ -270,27 +255,37 @@ ${ctaBand(c, p.ctaTitle, p.ctaP, '', { how: false })}`;
 };
 
 pages.about = (c) => {
-  const p = c.about, w = p.why, mp = p.map;
-  // A CEO's questions in order: who is he → why his experience matters to me → why him over the alternatives → how he works → book.
-  const hero = `<section class="about-hero"><div class="container about-hero-in">
+  const p = c.about, w = p.why, mp = p.map, cr = p.career, st = p.story, hd = p.hands;
+  // First person, in the order a CEO asks: who are you → how did you get here → why this company → what it means for me
+  // → why you over the alternatives → how you work → talk.
+  // Signature: the career line under the hero. One continuous rule in ink, turning pollen at "Today": the same person all the way.
+  const career = `<div class="career-wrap"><h2 class="as-h3" id="career-title">${cr.title}</h2><ol class="career" aria-labelledby="career-title">${cr.items.map((x, i) => `<li${i === cr.items.length - 1 ? ' class="now"' : ''}><p class="cl-when">${x.when}</p><h3>${x.h}</h3><p class="cl-p">${x.p}</p></li>`).join('')}</ol></div>`;
+  const hero = `<section class="about-hero"><div class="container"><div class="about-hero-in">
 <div class="about-hero-copy"><h1>${p.h1}</h1><p class="lede">${p.lede}</p>
-<div class="btn-row">${btn(c, p.cta, bookUrl(c), 'btn--primary', 'data-track="cta_about_hero"')}${extLink(c.founder.linkedin, c.founder.linkedinLabel, 'btn')}</div>
-<div class="about-facts"><h2 class="as-h3">${p.factsTitle}</h2>${ticks(p.facts)}</div></div>
-<div class="about-hero-portrait">${founderPanel(c, { eager: true })}</div></div></section>`;
+<div class="btn-row">${btn(c, p.cta, bookUrl(c), 'btn--primary', 'data-track="cta_about_hero"')}${extLink(c.founder.linkedin, c.founder.linkedinLabel, 'btn')}</div></div>
+<div class="about-hero-portrait">${founderPanel(c, { eager: true })}</div></div>
+${career}</div></section>`;
 
-  const story = `<div class="about-story"><div class="about-prose">${p.story.map((x) => `<p>${x}</p>`).join('')}</div><aside class="about-co"><h2 class="as-h3">${p.co.h}</h2><p>${p.co.p}</p></aside></div>`;
+  const story = `<div class="about-story"><figure class="about-quote"><blockquote><p>${st.quote}</p></blockquote><figcaption>${c.founder.name}</figcaption></figure>
+<div class="about-prose"><h2 id="story-title">${st.title}</h2>${st.paras.map((x) => `<p>${x}</p>`).join('')}
+<aside class="hands"><h3>${hd.title}</h3><p>${hd.p}</p><ul class="hands-tags">${hd.tags.map((x) => `<li>${x}</li>`).join('')}</ul></aside></div></div>`;
 
-  // Signature: each line of experience → what it means for the client's project, joined by an arrow.
-  const ledger = `<ol class="xp-ledger">${mp.rows.map((x, i) => `<li><span class="xp-n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><p class="xp-from"><span class="sr-only">${mp.fromL}: </span>${x.from}</p><p class="xp-to"><span class="sr-only">${mp.toL}: </span>${x.to}</p></li>`).join('')}</ol>`;
+  // Each line reads left to right as one sentence: what I've done → what you get. The column labels are shown
+  // once above the rows on wide screens and inside each row on narrow ones.
+  const ledger = `<div class="xp"><p class="xp-head" aria-hidden="true"><span>${mp.fromL}</span><span>${mp.toL}</span></p><ul class="xp-rows">${mp.rows.map((x) => `<li class="xp-row"><p class="xp-from"><span class="xp-l">${mp.fromL}</span>${x.from}</p><span class="xp-link" aria-hidden="true"></span><p class="xp-to"><span class="xp-l">${mp.toL}</span>${x.to}</p></li>`).join('')}</ul></div>`;
 
-  const whyBars = `<div class="why-bars"><div class="yb-head" aria-hidden="true"><span></span>${w.cols.map((x) => `<span>${x}</span>`).join('')}</div><dl class="yb-list">${w.rows.map((r) => `<div class="yb-row"><dt>${r.h}</dt>${r.cells.map((x, i) => `<dd class="yb-bar ${i === 2 ? 'yb-us' : i === 1 ? 'yb-consult' : 'yb-tool'}" data-label="${esc(w.cols[i])}"><span class="sr-only">${w.cols[i]}: </span>${x}</dd>`).join('')}</div>`).join('')}</dl></div>`;
+  // Why me, in my own words: a signed card with one action. The three promises are a real sequence
+  // (decide → build → stay), drawn as a hex line that lights up once when the card scrolls into view.
+  const whyCard = `<div class="why-card" data-why><div class="why-main"><h2 id="why-title">${w.title}</h2><p class="why-lead">${w.lead}</p><div class="why-act">${btn(c, p.cta, bookUrl(c), 'btn--primary', 'data-track="cta_about_why"')}<span class="why-sign">${c.founder.name}</span></div></div><ol class="why-points">${w.points.map((x, i) => `<li style="--i:${i}"><span class="why-hex" aria-hidden="true"></span><div><h3>${x.h}</h3><p>${x.p}</p></div></li>`).join('')}</ol></div>`;
+
+  // What "& co." means sits right under the card whose promise mentions the specialists: the name set large as the visual.
+  const co = `<div class="co-note"><p class="co-mark" aria-hidden="true" dir="ltr">&amp; co.</p><div><h3>${p.co.h}</h3><p>${p.co.p}</p></div></div>`;
 
   const body = `${hero}
-${section(story, 'about-story-sec')}
+${section(story, 'about-story-sec', 'story', 'story-title')}
 ${section(`${head(mp.title, mp.intro, 'xp-title')}${ledger}`, 'section--tint about-xp', 'experience', 'xp-title')}
-${section(`${head(w.title, w.intro, 'why-title')}${whyBars}`, 'about-why', 'why', 'why-title')}
-${section(`<div class="about-how"><h2 id="how-title">${p.princTitle}</h2>${ticks(p.princ)}</div>`, 'section--tint about-how-sec', 'how-we-work', 'how-title')}
-${ctaBand(c, p.cta, p.ctaP)}`;
+${section(whyCard + co, 'about-why', 'why', 'why-title')}
+${ctaBand(c, p.ctaTitle, p.ctaP, '', { label: p.cta })}`;
   const ld = { '@context': 'https://schema.org', '@type': 'Person', name: 'Eran Nachum', jobTitle: 'Founder', worksFor: { '@type': 'Organization', name: 'bee & co.' }, sameAs: [c.founder.linkedin] };
   return { meta: p.meta, body, ld };
 };

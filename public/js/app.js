@@ -252,6 +252,14 @@ $$('[data-lead-form]').forEach((form) => {
 if ('IntersectionObserver' in window) {
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } }), { threshold: 0.35 });
   document.querySelectorAll('.work-order, .track:not(.track--offers)').forEach((el) => io.observe(el));
+  // About: the why-me promises light up in turn. Armed only when motion is allowed; otherwise the final state shows.
+  // Watches the promises list, not the whole card: on phones the card is taller than the screen.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('[data-why]').forEach((el) => {
+    const list = el.querySelector('.why-points');
+    el.classList.add('armed');
+    const wo = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('in-view'); wo.disconnect(); } }, { threshold: 0.5 });
+    wo.observe(list);
+  });
 }
 
 // The approval stamp lands when the work order is actually on screen (matters on phones).
