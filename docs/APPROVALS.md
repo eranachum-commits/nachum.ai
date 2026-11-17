@@ -7,7 +7,7 @@ Everything below is implemented as **cautious draft copy**. Nothing here is fina
 | 1 | Prices (Sprint ₪18–28K, Program ₪28–45K/mo, Run ₪15–25K/mo) | `offers.items`, `home.cta`, `contact.priceNote`, FAQ | Shown as **indicative, excl. VAT**, "not a binding offer" | Founder confirms ranges and whether to publish them |
 | 2 | Guarantee / waiver wording | `offers.guarantee`, FAQ "What if the Sprint does not deliver?" | "May be waived… for reasons within our control… terms in the agreement" | Legal review; never "free PoC", "guaranteed ROI", "production in 10 days" (none used) |
 | 3 | Sprint → Program credit | **Not published anywhere** | omitted on purpose (100% credit not approved; 25–50% under consideration) | Unit-economics decision first |
-| 4 | Privacy policy | `/privacy`, `/en/privacy` | Draft, `noindex`, visible DRAFT banner | Israeli-law review; add contact for requests |
+| 4 | Privacy policy | `/privacy`, `/en/privacy` | Full policy written (2026-11-17), banner removed, still `noindex`. Requests go through the contact form. To confirm: 24-month retention, legal entity name, provider list (Vercel, Resend, scheduling tool) | Israeli-law review (Privacy Protection Law incl. Amendment 13, transfer-abroad regulations); add a privacy email |
 | 5 | Data & security principles | `/data-and-security` | Draft banner | Legal/DPA review |
 | 6 | Logo / identity | `.logo` wordmark + CSS mark, `favicon.svg` | Placeholder wordmark | Final identity |
 | 7 | Founder photo | `.portrait` (monogram "EN") | Placeholder; no fabricated imagery | Provide/approve a photo |

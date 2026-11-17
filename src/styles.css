@@ -863,3 +863,14 @@ bdi[dir='ltr'] { white-space: nowrap; }
 .hands-tags { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .hands-tags li { padding: 5px 10px; background: var(--paper-2); border-radius: var(--r-ctl); font-size: .88rem; font-weight: 500; color: var(--ink); }
 
+
+/* ---------- privacy policy: one simple reading column ---------- */
+.pv-updated { margin: 1rem 0 0; font-size: .92rem; color: var(--muted); }
+.pv { max-width: 68ch; }
+.pv-short { margin-bottom: clamp(28px, 4vw, 40px); padding: clamp(18px, 2.4vw, 24px); background: var(--paper-2); border-radius: var(--r-sheet); }
+.pv-short h2 { margin: 0 0 12px; font-size: 1.3rem; }
+.pv-short .ticks { margin: 0; }
+.pv > h2 { margin: 1.8em 0 .5em; font-size: clamp(1.3rem, 2vw, 1.6rem); scroll-margin-top: 110px; }
+.pv > p, .pv > ul { margin: 0 0 1em; color: var(--ink-2); line-height: 1.7; }
+.pv > ul { padding-inline-start: 1.2em; display: grid; gap: .4em; }
+.pv > .btn { margin-top: .4em; }

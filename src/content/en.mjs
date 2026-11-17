@@ -322,16 +322,96 @@ export default {
     failNet: 'We could not reach the server, so nothing was sent. Please try again.',
   },
   privacy: {
-    meta: { title: 'Privacy policy (draft) — bee & co.', desc: 'Draft privacy policy for bee & co. Pending legal review.' },
+    meta: { title: 'Privacy policy — bee & co.', desc: 'What bee & co. collects when you get in touch, why, who processes it on our behalf, how long we keep it, and how to see, correct or delete your details.' },
     h1: 'Privacy policy',
-    draft: 'DRAFT — pending legal review for Israeli law and other applicable requirements. Do not launch publicly without sign-off.',
-    sections: [
-      { h: 'What we collect', p: 'When you send a message we collect the details you enter (name, company, role, contact details and your message). If you accept analytics, we also record anonymous usage events.' },
-      { h: 'Why we use it', p: 'To reply to your message, schedule a call and assess whether we can help. We do not sell your details.' },
-      { h: 'Analytics and cookies', p: 'Analytics are off until you accept. You can decline without losing any functionality.' },
-      { h: 'Your rights', p: 'You may ask to access, correct or delete your details at any time.' },
-      { h: 'Contact', p: 'Contact details for privacy requests will be added before launch.' },
+    lede: 'What we collect when you contact bee & co., why we collect it, who handles it and how to reach us about it. Written to be read, not skimmed past.',
+    updatedL: 'Last updated', updated: '17 November 2026',
+    shortTitle: 'In short',
+    short: [
+      'We only collect what you send us through the contact form, plus the minimum technical data needed to run the site safely.',
+      'We use it to reply, to arrange a call and to decide together whether we can help. Nothing else.',
+      'We don’t sell your details, share them with advertisers or send you marketing.',
+      'You can ask to see, correct or delete your details at any time.',
     ],
+    sections: [
+      { id: 'who', h: 'Who we are', blocks: [
+        { p: 'bee & co. is an AI and technology consultancy owned and run by Eran Nachum in Israel. For the personal data described here, bee & co. is the database owner (the “controller”): we decide why and how it is used.' },
+        { p: 'This policy covers this website and the messages you send us through it. It does not cover the work we do for clients, which is governed by the confidentiality and data-processing terms we agree in each engagement.' },
+      ] },
+      { id: 'collect', h: 'What we collect', blocks: [
+        { list: [
+          'Your name, company and email (required), so we can reply.',
+          'Your message, or the situation you picked (one of them is required), so we understand what you need.',
+          'Your role and phone number, only if you choose to add them.',
+          'The page you wrote from and your language, sent automatically with the form.',
+          'Your IP address and basic request data, used only to keep the site secure.',
+        ] },
+        { p: 'You are not legally required to give us any of this information. Without a name, company, email and a message we simply can’t reply.' },
+        { p: 'Please don’t send confidential business information or other people’s personal data in the first message. If we work together, we agree how that kind of information is handled first.' },
+      ] },
+      { id: 'use', h: 'How we use it', blocks: [
+        { list: [
+          'To read and answer your message, and to schedule a call if you want one.',
+          'To decide together whether bee & co. is the right fit, and to prepare a proposal if you ask for one.',
+          'To keep a record of our correspondence.',
+          'To protect the site and the form against abuse.',
+        ] },
+        { p: 'We process your details because you asked us to contact you and agreed to it when you sent the form. You can withdraw that agreement at any time; it does not affect anything we did before.' },
+        { p: 'We don’t use your details for advertising, automated decisions or profiling, and we don’t put them into AI tools that use them for training.' },
+      ] },
+      { id: 'cookies', h: 'Cookies and analytics', blocks: [
+        { p: 'The site doesn’t set advertising or tracking cookies. Fonts and scripts are served from our own site, so loading a page doesn’t contact third parties.' },
+        { p: 'When you accept or decline analytics, your choice is saved in your browser’s local storage so we don’t ask again. You can clear it in your browser settings at any time.' },
+        { p: 'We don’t currently run a third-party analytics service. If we add one, it will load only after you accept, and we will name it here first.' },
+      ] },
+      { id: 'share', h: 'Who handles your details', blocks: [
+        { p: 'Only Eran Nachum reads the messages. To run the site and deliver your message, we use a small number of service providers who process data on our behalf and only according to our instructions:' },
+        { list: [
+          'Vercel, which hosts the site (United States and other regions).',
+          'Resend and our email inbox, which deliver your message to us (United States or the EU).',
+          'A scheduling tool, if you book a call. Its booking page names it.',
+        ] },
+        { p: 'If a project later needs a specialist, we share only what that work needs, and only after you agree. We may disclose information when the law requires it. We never sell personal data.' },
+      ] },
+      { id: 'abroad', h: 'Data stored outside Israel', blocks: [
+        { p: 'Some of our providers store data outside Israel, mainly in the United States and the European Union. We use providers that commit by contract to protect the data and to use it only to provide their service to us, in line with the Israeli rules on transferring data abroad.' },
+      ] },
+      { id: 'keep', h: 'How long we keep it', blocks: [
+        { list: [
+          'Messages that don’t lead to an engagement: up to 24 months from our last contact, then deleted.',
+          'Correspondence with clients: for the engagement and as long as the law requires afterwards, for example for tax and accounting records.',
+          'Security data such as IP addresses: only as long as the hosting provider keeps its standard logs.',
+        ] },
+        { p: 'You can ask us to delete your message earlier, unless the law requires us to keep it.' },
+      ] },
+      { id: 'security', h: 'How we protect it', blocks: [
+        { p: 'Data travels over encrypted connections. Access is limited to the person who needs it, accounts are protected with strong authentication, and our providers maintain their own security programs. No system is perfectly secure; if a breach affects your data, we will tell you and the authorities as the law requires.' },
+      ] },
+      { id: 'rights', h: 'Your rights', blocks: [
+        { p: 'Under the Israeli Privacy Protection Law you can:' },
+        { list: [
+          'See the personal data we hold about you.',
+          'Ask us to correct it if it is wrong, incomplete or out of date, or to delete it.',
+          'Withdraw your consent and ask us to stop contacting you.',
+          'Ask to be removed from any direct-mailing list. We don’t run one, but the right stays yours.',
+        ] },
+        { p: 'If you are in the European Union or the United Kingdom, you also have rights under the GDPR, including data portability, restricting processing and complaining to your local data protection authority.' },
+        { p: 'We reply within 30 days. We may ask you to confirm your identity first, so we don’t give your details to someone else. If you are unhappy with our answer, you can complain to the Israeli Privacy Protection Authority.' },
+      ] },
+      { id: 'marketing', h: 'Marketing', blocks: [
+        { p: 'We don’t send newsletters or marketing messages. We write to you only about the message you sent. If that ever changes, we will ask for your explicit consent first, and every message will let you unsubscribe.' },
+      ] },
+      { id: 'children', h: 'Children', blocks: [
+        { p: 'This site is meant for businesses and is not directed at anyone under 18. We don’t knowingly collect children’s data.' },
+      ] },
+      { id: 'changes', h: 'Changes to this policy', blocks: [
+        { p: 'If we change how we handle personal data, we will update this page and the date at the top. For significant changes, we will also tell anyone we are in active contact with.' },
+      ] },
+      { id: 'contact', h: 'Contact us about privacy', blocks: [
+        { p: 'Send a message through the contact form and write “Privacy request” at the start. Eran Nachum handles every request personally.' },
+      ] },
+    ],
+    contactCta: 'Send a privacy request',
   },
   // Campaign landing pages: one template, one entry per industry (src/lib/render.mjs → landing()).
   lp: {

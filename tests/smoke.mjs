@@ -152,6 +152,16 @@ await t('how it works: the journey and the engagement timeline with decisions', 
     assert.doesNotMatch(page, new RegExp(`class="cta-band"[\\s\\S]*href="${href(lang, 'how')}"[\\s\\S]*</section>`), 'no link to itself in the closing band ' + lang);
   }
 });
+await t('privacy policy: summary first, every section, simple layout, no draft banner', () => {
+  for (const lang of langs) { const c = lang === 'he' ? he : en, p = c.privacy, page = pages[href(lang, 'privacy')];
+    assert.doesNotMatch(page, /draft-banner|DRAFT|טיוטה/, 'no draft banner ' + lang);
+    assert.match(page, /class="pv-short"/, 'summary first ' + lang);
+    for (const x of p.sections) assert.match(page, new RegExp(`<h2 id="${x.id}">`), 'section ' + x.id + ' ' + lang);
+    assert.doesNotMatch(page, /<table|pv-toc/, 'no tables or side contents ' + lang);
+    assert.ok(page.includes(`${href(lang, 'contact')}?pain=privacy`), 'privacy request goes to the contact form ' + lang);
+    assert.match(page, /<meta name="robots" content="noindex">/, 'kept out of search until legal sign-off ' + lang);
+  }
+});
 await t('founder photo is served, sized and described', async () => {
   for (const lang of langs) { const c = lang === 'he' ? he : en;
     const alt = c.founder.photoAlt.replace(/&/g, '&amp;');

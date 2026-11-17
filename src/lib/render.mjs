@@ -337,7 +337,12 @@ ${section(`<div class="split split--top"><div>${personCard(c)}${leadForm(c)}</di
 
 pages.privacy = (c) => {
   const p = c.privacy;
-  const body = `${pageHero(c, p.h1, '')}${section(`<div class="draft-banner"><strong>${p.draft}</strong></div><div class="prose">${p.sections.map((s) => `<h2>${s.h}</h2><p>${s.p}</p>`).join('')}</div>`)}`;
+  // Kept simple: one readable column, the four-line summary first, then short sections of plain text and lists.
+  const block = (b) => b.p ? `<p>${b.p}</p>` : `<ul>${b.list.map((x) => `<li>${x}</li>`).join('')}</ul>`;
+  const contact = btn(c, p.contactCta, `${href(c.lang, 'contact')}?pain=privacy&amp;q=${encodeURIComponent(c.lang === 'he' ? 'בקשת פרטיות' : 'Privacy request')}`, 'btn--primary');
+  const body = `${pageHero(c, p.h1, p.lede).replace('</div></section>', `<p class="pv-updated">${p.updatedL}: <time>${p.updated}</time></p></div></section>`)}
+${section(`<div class="pv"><div class="pv-short"><h2>${p.shortTitle}</h2>${ticks(p.short)}</div>
+${p.sections.map((x) => `<h2 id="${x.id}">${x.h}</h2>${x.blocks.map(block).join('')}${x.id === 'contact' ? contact : ''}`).join('\n')}</div>`)}`;
   return { meta: p.meta, body };
 };
 
