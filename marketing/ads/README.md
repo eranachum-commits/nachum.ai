@@ -4,9 +4,9 @@ Everything here is created **paused**. Nothing spends money until you review it 
 
 | File | What it is |
 |---|---|
-| `google-ads-editor.csv` | Two Google Search campaigns (one per domain): ad group, keywords, negative keywords, one responsive search ad each |
-| `meta-ads-import.csv` | Two Facebook/Instagram traffic campaigns, four ads each: the landing-page headline and three hooks |
-| `images/` | Hebrew banners for five domains (accounting, distribution, insurance, law, real-estate): `{domain}-{angle}-{size}.png`. Angles: `headline` (the page's question, on sage) and `hook-{id}` (one sharp line, on dark). Sizes: `square` 1080×1080 and `portrait` 1080×1350 (Facebook/Instagram feed), `wide` 1200×627 (LinkedIn, Facebook link ads). No photos of people. |
+| `google-ads-editor.csv` | Three Google Search campaigns (accounting, distribution, AI for business): ad group, keywords, negative keywords, one responsive search ad each. `google-ads-editor-business.csv` is the AI for business campaign alone, for importing it without re-adding the other two campaigns' ads |
+| `meta-ads-import.csv` | Three Facebook/Instagram traffic campaigns (accounting, distribution, AI for business), four ads each: the landing-page headline and three hooks |
+| `images/` | Hebrew banners for six domains (accounting, distribution, AI for business, insurance, law, real-estate): `{domain}-{angle}-{size}.png`. Angles: `headline` (the page's question, on sage) and `hook-{id}` (one sharp line, on dark). Sizes: `square` 1080×1080 and `portrait` 1080×1350 (Facebook/Instagram feed), `wide` 1200×627 (LinkedIn, Facebook link ads). No photos of people. |
 
 | `search-images/` | Text-free brand images for Google Search image assets (square 1200×1200, landscape 1200×628, sage and night). Add them with the business name and `brand/logo-300.png` after Google's advertiser verification: until then Google rejects all three on a new account. Regenerate: `node scripts/make-search-images.mjs`. |
 
@@ -47,7 +47,7 @@ Then switch the campaigns on.
 
 **Set by hand after import**
 - **Images:** each ad is named `{domain} – {angle}`. Upload `images/{domain}-{angle}-square.png` for Facebook feed and `-portrait.png` for Instagram feed (Meta lets you set one image per placement). Example: ad `accounting – hook-studied` → `accounting-hook-studied-square.png`.
-- **Detailed targeting** (ad set): Israel, age 30–65, and interests or job titles such as accounting, certified public accountant, bookkeeping (accounting) and wholesale, import, logistics, ERP, small business owner (distribution). Keep "Advantage+ audience" off for the first two weeks.
+- **Detailed targeting** (ad set): Israel, age 30–65, and interests or job titles such as accounting, certified public accountant, bookkeeping (accounting); wholesale, import, logistics, ERP, small business owner (distribution); business owner, CEO, COO, managing director, small and medium business (AI for business, which lands on the home page). Keep "Advantage+ audience" off for the first two weeks.
 - **Placements:** Facebook and Instagram feeds only to start; turn off Audience Network and Messenger.
 - **Optimization:** link clicks, and keep it there for now. The Meta pixel (dataset `928177403595090`, `META_PIXEL_ID` in Vercel) is live behind the consent banner and reports `PageView` and `Lead`, but only for visitors who accept it, so landing page views or Lead would under-count and starve the learning. Judge Meta by the lead sheet and GA, not Meta's own conversion numbers. Switch to the `Lead` conversion only if Meta reports roughly 50 leads a week, which at this budget it won't.
 - **Copy and images are generated from `scripts/ad-copy.mjs`**, the same source as the banners, so changing a hook means re-running `node scripts/make-ad-files.mjs` and `node scripts/make-ad-images.mjs` and re-uploading that ad's image.
@@ -60,7 +60,7 @@ Then switch the campaigns on.
 | Countries | IL |
 | Call to action | Learn more |
 | Display link | beenco.tech |
-| Links | `https://beenco.tech/for/{accounting,distribution}?utm_source=facebook&utm_medium=paid&utm_campaign={domain}-w1` |
+| Links | `https://beenco.tech/for/{accounting,distribution}` or `https://beenco.tech/` (AI for business), plus `?utm_source=facebook&utm_medium=paid&utm_campaign={domain}-w1&utm_content={angle}` |
 
 ## Tracking
 

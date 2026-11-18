@@ -25,6 +25,17 @@ export const HOOKS = {
       { id: 'quote', h: 'הלקוח ביקש הצעת מחיר. היא עדיין בדרך.', s: 'AI מכין טיוטת הצעה מהמחירון שלכם. איש מכירות מאשר ושולח.', title: 'הצעות מחיר מהמחירון, עם AI' },
     ],
   },
+  // General service campaign (Google "AI for business"): lands on the home page, for owners and managers of any 10-200 person company.
+  // The headline banner carries the home page's H1; the hooks are the home page's "situations", in the reader's words.
+  business: {
+    who: 'לעסקים',
+    headline: { body: 'רוצים AI בעסק ולא בטוחים מאיפה להתחיל? אנחנו מאתרים איפה AI חוסך עבודה, בונים בתוך המערכות שכבר יש לכם ודואגים שהצוות באמת משתמש.', title: 'AI בעסק, מקצה לקצה' },
+    hooks: [
+      { id: 'tools', h: 'קניתם כלי AI. שום דבר לא באמת השתנה.', s: 'אנחנו בונים AI בתוך העבודה עצמה, ומלווים את הצוות עד שמשתמשים בו.', title: 'AI שהצוות באמת משתמש בו' },
+      { id: 'manual', h: 'כל לקוח חדש מוסיף עוד עבודה ידנית.', s: 'AI שעושה את החלק החוזר, בתוך המערכות שכבר יש לכם. אדם בודק חריגים.', title: 'AI בתוך המערכות שכבר יש לכם' },
+      { id: 'vendor', h: 'כל ספק AI ימליץ על המוצר שלו. מי ימליץ לכם?', s: 'מבט עצמאי: מה שווה לבנות, מה לא עכשיו ומה בכלל לא.', title: 'מה שווה לבנות עם AI, ומה לא' },
+    ],
+  },
   insurance: {
     who: 'לסוכנויות ביטוח',
     hooks: [

@@ -153,7 +153,7 @@ const mCols = ['Campaign Name', 'Campaign Status', 'Campaign Objective', 'Buying
 const m = [mCols];
 // One ad per banner: the landing-page headline plus each hook. utm_content tells them apart in GA;
 // the image to attach is marketing/ads/images/{domain}-{angle}-square.png (or -portrait for Instagram).
-for (const d of DOMAINS.filter((x) => HOOKS[x.id] && x.id !== 'business')) {
+for (const d of DOMAINS.filter((x) => HOOKS[x.id])) {
   const camp = `bee&co | ${d.name} | Traffic | W1`, set = `${d.name} – Israel 30-65`, H = HOOKS[d.id];
   const ads = [
     { angle: 'headline', body: H.headline.body, title: H.headline.title },
