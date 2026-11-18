@@ -26,7 +26,10 @@ const ga = /^G-[A-Z0-9]{4,}$/.test(process.env.GA_MEASUREMENT_ID || '') ? proces
 // Google Ads conversion: set GOOGLE_ADS_CONVERSION (AW-…/label) in Vercel production. Sent through the same consent-gated gtag
 // when a lead is delivered, with advertising cookies off. Unset (local, previews): no Ads code at all.
 const adsConversion = /^AW-\d{6,}\/[\w-]{6,}$/.test(process.env.GOOGLE_ADS_CONVERSION || '') ? process.env.GOOGLE_ADS_CONVERSION : '';
-const ctx = { site, cssHash: hash(css), jsHash: hash(jsSrc), draftNoindex: true, ga, adsConversion };
+// Meta (Facebook/Instagram) pixel: set META_PIXEL_ID (digits) in Vercel production. Loads only after the visitor accepts analytics.
+// Unset (local, previews): no Meta code at all.
+const metaPixel = /^\d{10,20}$/.test(process.env.META_PIXEL_ID || '') ? process.env.META_PIXEL_ID : '';
+const ctx = { site, cssHash: hash(css), jsHash: hash(jsSrc), draftNoindex: true, ga, adsConversion, metaPixel };
 
 let count = 0;
 for (const lang of langs) {

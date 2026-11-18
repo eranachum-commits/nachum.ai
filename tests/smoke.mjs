@@ -216,10 +216,13 @@ await t('analytics: Google is never in the page HTML; the tag loads only after c
     assert.doesNotMatch(html, /googletagmanager|google-analytics/, 'no Google script in the HTML of ' + url);
     assert.doesNotMatch(html, /name="ga-id"/, 'no GA ID without GA_MEASUREMENT_ID: ' + url);
     assert.doesNotMatch(html, /name="ads-conversion"|AW-\d/, 'no Google Ads ID without GOOGLE_ADS_CONVERSION: ' + url);
+    assert.doesNotMatch(html, /facebook\.net|fbevents|name="meta-pixel"/, 'no Meta code in the HTML without META_PIXEL_ID: ' + url);
   }
   // The Ads conversion only goes through the consent-gated gtag, and only for a delivered lead.
   const js = await readFile(new URL('../public/js/app.js', import.meta.url), 'utf8');
   assert.match(js, /if \(gaOn && ADS_ON && name === 'generate_lead'\) window\.gtag\('event', 'conversion'/, 'Ads conversion is gated');
+  assert.match(js, /if \(consent\(\) === 'yes'\) \{ loadGA\(\); loadMeta\(\); \}/, 'Meta pixel loads only with consent');
+  assert.match(js, /autoConfig: false/, 'Meta automatic configuration is off');
 });
 await t('sitemap and robots', async () => {
   const sm = (await get('/sitemap.xml')).text; assert.equal((sm.match(/<url>/g) || []).length, (routes.length - 1) * 2);

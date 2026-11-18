@@ -15,6 +15,19 @@ const consent = () => store.get('bee-co-consent');
 const GA_ID = document.querySelector('meta[name="ga-id"]')?.content || '';
 const ADS = document.querySelector('meta[name="ads-conversion"]')?.content || '';
 const ADS_ON = /^AW-\d{6,}\/[\w-]{6,}$/.test(ADS);
+const META = document.querySelector('meta[name="meta-pixel"]')?.content || '';
+let metaOn = false;
+/* Meta pixel: loaded only after consent and only if the build set <meta name="meta-pixel">. Reports PageView and, for a delivered lead, Lead.
+   Automatic advanced matching is off, so no name, email or message is ever sent. */
+function loadMeta() {
+  if (metaOn || !/^\d{10,20}$/.test(META)) return;
+  metaOn = true;
+  /* eslint-disable */
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  /* eslint-enable */
+  window.fbq('init', META, {}, { autoConfig: false });
+  window.fbq('track', 'PageView');
+}
 let gaOn = false;
 function loadGA() {
   if (gaOn || !/^G-[A-Z0-9]{4,}$/.test(GA_ID)) return;
@@ -33,15 +46,16 @@ export function track(name, props = {}) {
   if (consent() !== 'yes') return;
   const params = { lang: document.documentElement.lang, page_path: location.pathname, ...props };
   if (gaOn) window.gtag('event', name, { ...params, send_to: GA_ID }); // events go to GA only, never to Ads
+  if (metaOn && name === 'generate_lead') window.fbq('track', 'Lead');
   if (gaOn && ADS_ON && name === 'generate_lead') window.gtag('event', 'conversion', { send_to: ADS });
   else (window.dataLayer = window.dataLayer || []).push({ event: name, ...params });
 }
-if (consent() === 'yes') loadGA();
+if (consent() === 'yes') { loadGA(); loadMeta(); }
 (function initConsent() {
   const box = $('[data-consent]');
   if (!box) return;
   if (!consent()) box.hidden = false;
-  const set = (v) => { store.set('bee-co-consent', v); box.hidden = true; if (v === 'yes') { loadGA(); track('consent_granted'); } };
+  const set = (v) => { store.set('bee-co-consent', v); box.hidden = true; if (v === 'yes') { loadGA(); loadMeta(); track('consent_granted'); } };
   $('[data-consent-yes]', box).addEventListener('click', () => set('yes'));
   $('[data-consent-no]', box).addEventListener('click', () => set('no'));
 })();
