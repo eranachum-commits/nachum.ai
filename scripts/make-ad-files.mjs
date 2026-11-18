@@ -8,6 +8,7 @@ import { HOOKS, CTA_END } from './ad-copy.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const SITE = 'https://beenco.tech';
+const GOOGLE_ACCOUNT = '913-227-0780'; // Google Ads Editor needs the customer ID on every row (Israel time zone, ILS)
 const DAILY_ILS = { google: 100, meta: 60 }; // starting budgets per campaign; change in the platform if needed
 
 // Shared negatives: job seekers, students, free tools. Domain negatives below (from the campaign review).
@@ -63,11 +64,11 @@ const csv = (rows) => '﻿' + rows.map((r) => r.map((v) => { const s = String(v 
 
 // ---- Google Ads Editor (Account → Import → From file) ----
 const H = 15, D = 4;
-const gCols = ['Campaign', 'Campaign Type', 'Networks', 'Budget', 'Budget type', 'Bid Strategy Type', 'Campaign Status', 'Final URL suffix', 'Location',
+const gCols = ['Account', 'Campaign', 'Campaign Type', 'Networks', 'Budget', 'Budget type', 'Bid Strategy Type', 'Campaign Status', 'Final URL suffix', 'Location',
   'Ad Group', 'Ad Group Status', 'Keyword', 'Criterion Type', 'Ad type', 'Status', 'Final URL', 'Path 1', 'Path 2',
   ...Array.from({ length: H }, (_, i) => `Headline ${i + 1}`), 'Headline 1 position', ...Array.from({ length: D }, (_, i) => `Description ${i + 1}`)];
 const g = [gCols];
-const row = (o) => gCols.map((c) => o[c] ?? '');
+const row = (o) => gCols.map((c) => (c === 'Account' ? GOOGLE_ACCOUNT : o[c] ?? ''));
 for (const d of DOMAINS) {
   const camp = `bee&co | ${d.name} | Search | W1`, ag = `${d.name} – core`;
   g.push(row({ Campaign: camp, 'Campaign Type': 'Search', Networks: 'Google search', Budget: DAILY_ILS.google, 'Budget type': 'Daily',
