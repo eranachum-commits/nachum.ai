@@ -4,6 +4,7 @@
 //   sizes: square 1080×1080 and portrait 1080×1350 (Facebook/Instagram feed), wide 1200×627 (LinkedIn, Facebook link ads)
 // Legibility rules (from the campaign review): at least ~30px text at 1080 wide, heavy headline weight,
 // no logo tagline, content centred instead of a large empty band.
+// One line per sentence; the last two words of each sentence stay together so no line ends on a single word.
 // `node scripts/make-ad-images.mjs` → marketing/ads/images/{domain}-{angle}-{size}.png
 import { mkdtemp, writeFile, mkdir, readdir, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
@@ -29,7 +30,7 @@ function page(id, angle, [W, H]) {
   const main = hk ? hk.h : he.industries[id].h1;
   const sub = hk ? hk.s : 'מאתרים איפה AI חוסך עבודה, ובונים את זה בתוך המערכות שכבר יש לכם.';
   const s = wide ? 0.66 : 1; // type scale
-  const big = Math.round((main.length > 34 ? 84 : 96) * s * (tall && main.length <= 34 ? 1.12 : 1));
+  const big = Math.round((main.length > 34 ? 84 : 96) * s); // portrait is as wide as square: same type size, same line breaks
   return `<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><style>${faces}
 * { margin: 0; box-sizing: border-box; } html, body { width: ${W}px; height: ${H}px; overflow: hidden; }
 body { background: ${dark ? '#25212a' : '#dce4d8'}; color: ${ink}; font-family: Plex, sans-serif; position: relative; }
@@ -50,7 +51,7 @@ h1 { font: 600 ${big}px/1.12 Plex; letter-spacing: -.5px; text-wrap: balance; }
 </style></head><body><div class="cell c1"></div><div class="cell c2"></div>
 <div class="in">
   <div class="top"><span class="chip"><bdi dir="ltr">AI</bdi> ${HOOKS[id].who}</span><div class="lock">${mark(Math.round(60 * s), ink)}<span class="name">bee &amp; co.</span></div></div>
-  <div class="mid"><div class="bar"></div><h1>${main.replace(/([.?]) (?=\S)/g, '$1<br>')}</h1><p class="sub">${sub}</p></div>
+  <div class="mid"><div class="bar"></div><h1>${main.split(/(?<=[.?]) (?=\S)/).map((x) => x.replace(/ (\S+)$/, '&nbsp;$1')).join('<br>')}</h1><p class="sub">${sub}</p></div>
   <div class="foot"><span>קובעים שיחה של 30 דקות, בלי התחייבות</span><b dir="ltr">beenco.tech</b></div>
 </div></body></html>`;
 }
