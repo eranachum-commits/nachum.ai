@@ -94,7 +94,7 @@ export async function handleLead(req, res) {
     if (limited(ip)) return sendJson(res, 429, { ok: false, error: 'rate' }); // only valid submissions count
     lead.receivedAt = new Date().toISOString();
     const mode = await deliver(lead);
-    sendJson(res, 200, { ok: true, mode, bookingUrl: mode === 'webhook' ? BOOKING_URL : '' });
+    sendJson(res, 200, { ok: true, mode, bookingUrl: mode === 'dev' ? '' : BOOKING_URL });
   } catch (e) {
     console.error('lead error', e.message);
     sendJson(res, 502, { ok: false, error: 'delivery' });
