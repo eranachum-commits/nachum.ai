@@ -12,39 +12,58 @@ const GOOGLE_ACCOUNT = '913-227-0780'; // Google Ads Editor needs the customer I
 const DAILY_ILS = { google: 100, meta: 60 }; // starting budgets per campaign; change in the platform if needed
 
 // Shared negatives: job seekers, students, free tools. Domain negatives below (from the campaign review).
-const NEGATIVES = ['קורס', 'קורסים', 'לימודים', 'תואר', 'משרה', 'משרות', 'דרושים', 'חינם', 'הורדה', 'pdf', 'מבחן', 'סטודנט', 'שכר',
-  'סדנה', 'הכשרה', 'וובינר', 'מדריך', 'מה זה', 'פרומפט'];
+// Shared negatives: job seekers, students, events, free tools, how-to, software logins (reviews 2026-11-18).
+// Hebrew prefixes make separate words, so "קורס" doesn't block "לקורס": the variants are listed.
+// Not "pdf": order PDFs are a core distribution search.
+const NEGATIVES = ['קורס', 'קורסים', 'לקורס', 'קורסי', 'לימודים', 'ללמוד', 'תואר', 'משרה', 'משרות', 'דרושים', 'דרוש', 'דרושה', 'דרושות',
+  'עבודה', 'שכר', 'משכורת', 'חינם', 'בחינם', 'חינמי', 'חינמית', 'הורדה', 'מבחן', 'בחינות', 'סטודנט', 'התמחות', 'מתמחה',
+  'סדנה', 'הכשרה', 'השתלמות', 'השתלמויות', 'כנס', 'הרצאה', 'וובינר', 'לשכת', 'מדריך', 'מה זה', 'איך', 'דוגמה', 'דוגמא', 'תבנית',
+  'פרומפט', 'chatgpt', "צ'אט", 'כניסה', 'התחברות', 'login', 'תמיכה'];
 
+// keywords: phrase match. paused: keywords from the first upload that drew the wrong searchers (kept, switched off).
+// pins: headline indexes Google may show in position 1 (it rotates between them).
 const DOMAINS = [
   {
     id: 'accounting', name: 'Accounting firms', page: '/for/accounting',
     keywords: ['אוטומציה למשרד רואי חשבון', 'AI לרואי חשבון', 'בינה מלאכותית לרואי חשבון', 'בינה מלאכותית למשרד רואה חשבון',
-      'אוטומציה להנהלת חשבונות', 'AI להנהלת חשבונות', 'קליטת מסמכים אוטומטית', 'התאמות בנק אוטומטיות'],
-    headlines: ['AI למשרדי רואי חשבון', 'פחות הקלדה ופחות התאמות', 'עונת הדוחות בלי לעצור הכל', 'בונים בתוך התוכנה הקיימת',
-      'איסוף מסמכים אוטומטי', 'שותף אחד מקצה לקצה', 'שיחה של 30 דקות עם ערן', '22 שנה בהייטק',
-      'למדתם ראיית חשבון, לא הקלדה', 'תנו ל-AI לרדוף אחרי מסמכים', 'סודיות מובנית מהיום הראשון', 'AI בתוך התוכנה שכבר יש לכם'],
-    descriptions: ['מאתרים איפה AI חוסך עבודה במשרד, בונים את זה בתוך התוכנה שלכם ודואגים שהצוות משתמש.',
-      'איסוף מסמכים, הקלדה והתאמות בנק – אוטומטית, ואיש מקצוע מאשר רק את החריגים.',
+      'אוטומציה להנהלת חשבונות', 'קליטת מסמכים אוטומטית', 'אוטומציה לרואה חשבון', 'בינה מלאכותית במשרד רואי חשבון',
+      'AI במשרד רואי חשבון', 'אוטומציה למשרד הנהלת חשבונות', 'איסוף מסמכים מלקוחות'],
+    paused: ['AI להנהלת חשבונות', 'התאמות בנק אוטומטיות'],
+    headlines: ['AI למשרדי רואי חשבון', 'אוטומציה למשרדי רואי חשבון', 'בינה מלאכותית לרואי חשבון', 'עונת הדוחות בלי לעצור הכל',
+      'קליטת מסמכים והתאמות בנק', 'איסוף מסמכים אוטומטי', 'קבעו שיחה של 30 דקות', '22 שנה בניהול פיתוח',
+      'פחות הקלדה, יותר זמן לייעוץ', 'תנו ל-AI לרדוף אחרי מסמכים', 'סודיות לקוחות מהיום הראשון', 'AI בתוך התוכנה שכבר יש לכם',
+      'בלי להחליף את תוכנת הנה"ח'],
+    pins: [0, 1, 2],
+    descriptions: ['מאתרים איפה AI חוסך עבודה במשרד, בונים בתוך התוכנה שלכם ומלווים את הצוות עד שזה עובד.',
+      'איסוף מסמכים, הקלדה והתאמות בנק ב-AI, בתוך התוכנה שהמשרד כבר עובד איתה. קבעו שיחה.',
       'מתחילים בשיחה של 30 דקות עם ערן נחום. בלי אנשי מכירות ובלי התחייבות.',
-      'מידע הלקוחות נשאר אצלכם: גישת קריאה בלבד, כלים מאושרים, ושום דבר לא נכנס לכלי AI פתוח.'],
+      'מידע הלקוחות נשאר אצלכם: הרשאת צפייה בלבד, כלים מאושרים, ושום דבר לא עובר לכלי AI ציבורי.'],
     paths: ['רואי-חשבון', 'AI'],
-    negatives: ['עוסק פטור', 'חשבונית ירוקה', 'מורנינג', 'אפליקציה'],
+    negatives: ['עוסק פטור', 'חשבונית ירוקה', 'מורנינג', 'אפליקציה', 'תוכנה', 'תוכנת', 'אייקאונט', 'ריווחית', 'חשבונית', 'עצמאי',
+      'עסק קטן', 'OCR', 'סורק'],
   },
   {
     id: 'distribution', name: 'Import & distribution', page: '/for/distribution',
     keywords: ['אוטומציה להזמנות', 'קליטת הזמנות אוטומטית', 'הקלדת הזמנות', 'אוטומציה בפריוריטי', 'אוטומציה Priority',
-      'AI לחברת הפצה', 'בינה מלאכותית ליבואנים', 'אוטומציה ל-ERP', 'אוטומציה להצעות מחיר'],
+      'AI לחברת הפצה', 'בינה מלאכותית ליבואנים', 'אוטומציה ל-ERP', 'אוטומציה להצעות מחיר',
+      'אוטומציה לחברת הפצה', 'AI לחברות הפצה', 'אוטומציה ליבואנים', 'אוטומציה לסיטונאים', 'קליטת הזמנות לפריוריטי',
+      'קליטת הזמנות מהמייל', 'SAP B1 אוטומציה', 'אוטומציה SAP Business One'],
+    paused: [],
     // No product names in headlines: "works with Priority / SAP" reads as a partnership and risks trademark disapproval.
-    headlines: ['AI לחברות הפצה ויבוא', 'די להקליד הזמנות ידנית', 'מהזמנה במייל ישר ל-ERP', 'מתחברים ל-ERP שכבר יש לכם',
-      'הצעות מחיר מהמחירון שלכם', 'שותף אחד מקצה לקצה', 'שיחה של 30 דקות עם ערן', '22 שנה בהייטק',
-      'יותר לקוחות, לא יותר מקלידים', 'כל הזמנה מוקלדת רק פעם אחת', 'אדם מאשר רק את החריגים', 'AI בתוך ה-ERP שכבר יש לכם'],
-    descriptions: ['קוראים הזמנות אוטומטית ומכינים אותן ב-ERP. אדם מאשר רק את מה שחריג.',
-      'מבט עצמאי ובכיר: מה שווה לאוטמט, מה לא, ובנייה בתוך המערכות שכבר יש לכם.',
+    headlines: ['די להקליד הזמנות ידנית', 'אוטומציה לחברות הפצה', 'AI לחברות הפצה ויבוא', 'בינה מלאכותית ליבוא והפצה',
+      'מהזמנה במייל ישר ל-ERP', 'קליטת הזמנות ממייל ו-PDF', 'הצעות מחיר מהמחירון שלכם', 'בלי להחליף את ה-ERP',
+      'קבעו שיחה של 30 דקות', '22 שנה בניהול פיתוח', 'יותר לקוחות, לא יותר מקלידים', 'כל הזמנה מוקלדת רק פעם אחת',
+      'אדם מאשר רק את החריגים', 'AI בתוך ה-ERP שכבר יש לכם'],
+    pins: [0, 1, 2],
+    descriptions: ['קוראים הזמנות ממייל ומ-PDF ומכינים אותן ב-ERP. אדם מאשר רק את החריגות.',
+      'מבט חיצוני ובלתי תלוי: מה שווה אוטומציה ומה לא, ובנייה בתוך המערכות שכבר יש לכם.',
       'מתחילים בשיחה של 30 דקות עם ערן נחום. בלי אנשי מכירות ובלי התחייבות.',
-      'מתחילים מה-ERP שכבר יש לכם, בגישת קריאה בלבד. החלפת מערכת היא אף פעם לא הצעד הראשון.'],
+      'מתחילים מה-ERP שכבר יש לכם, בהרשאת צפייה בלבד. החלפת מערכת היא אף פעם לא הצעד הראשון.'],
     paths: ['חברות-הפצה', 'AI'],
-    // "הקלדת הזמנות" attracts typing-from-home jobs; "אוטומציה להזמנות" catches appointment and restaurant bookings.
-    negatives: ['מהבית', 'עבודה מהבית', 'תור', 'תורים', 'מסעדה', 'מלון', 'אירוע', 'וולט', 'shopify'],
+    // "הקלדת הזמנות" attracts typing-from-home jobs; "אוטומציה להזמנות" catches appointment and restaurant bookings;
+    // quotes draw contractors; Priority draws developers.
+    negatives: ['מהבית', 'עבודה מהבית', 'תור', 'תורים', 'מסעדה', 'מלון', 'אירוע', 'וולט', 'shopify', 'קבלן', 'שיפוצים', 'מפתח',
+      'מתכנת', 'SDK', 'וורד', 'אקסל', 'יועץ פריוריטי'],
   },
 ];
 
@@ -66,7 +85,7 @@ const csv = (rows) => '﻿' + rows.map((r) => r.map((v) => { const s = String(v 
 const H = 15, D = 4;
 const gCols = ['Account', 'Campaign', 'Campaign Type', 'Networks', 'Budget', 'Budget type', 'Bid Strategy Type', 'Campaign Status', 'Final URL suffix', 'Location',
   'Ad Group', 'Ad Group Status', 'Keyword', 'Criterion Type', 'Ad type', 'Status', 'Final URL', 'Path 1', 'Path 2',
-  ...Array.from({ length: H }, (_, i) => `Headline ${i + 1}`), 'Headline 1 position', ...Array.from({ length: D }, (_, i) => `Description ${i + 1}`)];
+  ...Array.from({ length: H }, (_, i) => [`Headline ${i + 1}`, `Headline ${i + 1} position`]).flat(), ...Array.from({ length: D }, (_, i) => `Description ${i + 1}`)];
 const g = [gCols];
 const row = (o) => gCols.map((c) => (c === 'Account' ? GOOGLE_ACCOUNT : o[c] ?? ''));
 for (const d of DOMAINS) {
@@ -76,10 +95,11 @@ for (const d of DOMAINS) {
   g.push(row({ Campaign: camp, Location: 'Israel' }));
   g.push(row({ Campaign: camp, 'Ad Group': ag, 'Ad Group Status': 'Enabled' }));
   d.keywords.forEach((k) => g.push(row({ Campaign: camp, 'Ad Group': ag, Keyword: k, 'Criterion Type': 'Phrase', Status: 'Enabled' })));
+  d.paused.forEach((k) => g.push(row({ Campaign: camp, 'Ad Group': ag, Keyword: k, 'Criterion Type': 'Phrase', Status: 'Paused' })));
   [...NEGATIVES, ...d.negatives].forEach((k) => g.push(row({ Campaign: camp, Keyword: k, 'Criterion Type': 'Campaign Negative Broad' })));
   const ad = { Campaign: camp, 'Ad Group': ag, 'Ad type': 'Responsive search ad', Status: 'Enabled', 'Final URL': SITE + d.page, 'Path 1': d.paths[0], 'Path 2': d.paths[1] };
   d.headlines.forEach((h, i) => { ad[`Headline ${i + 1}`] = h; });
-  ad['Headline 1 position'] = 1; // pin "AI ל…" first: Google rotates the rest
+  d.pins.forEach((i) => { ad[`Headline ${i + 1} position`] = 1; }); // Google rotates these in position 1, the rest anywhere
   d.descriptions.forEach((x, i) => { ad[`Description ${i + 1}`] = x; });
   g.push(row(ad));
 }

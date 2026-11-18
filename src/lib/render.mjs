@@ -384,7 +384,7 @@ function landing(c, id) {
 <div class="pick-tabs" role="tablist" aria-orientation="vertical" aria-labelledby="pick-title">${tabs}</div>
 <div class="pick-panels">${panels}</div><p class="pick-note">${pk.note}</p></aside>`;
   const hero = `<section class="hero hero--home hero--lp"><div class="container hero-grid">
-<div class="hero-copy"><h1>${d.h1}</h1><p class="lede">${d.lede}</p>
+<div class="hero-copy"><p class="lp-kicker">${d.kicker}</p><h1>${d.h1}</h1><p class="lede">${d.lede}</p>
 <div class="btn-row">${btn(c, L.primary, '#lead', 'btn--primary', track('cta_lp_hero'))}${btn(c, L.secondary, '#journey', '')}</div>
 <p class="hero-trust">${c.home.hero.trust}</p></div>
 ${picker}</div></section>`;

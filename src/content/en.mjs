@@ -438,6 +438,7 @@ export default {
   industries: {
     distribution: {
       meta: { title: 'AI for distributors and importers: one partner, end to end — bee & co.', desc: 'For distribution, import and wholesale companies: one accountable partner to find where AI pays off in quotes, orders and the ERP, then build it, connect it and get it used. Led by Eran Nachum.' },
+      kicker: 'AI and automation for distributors and importers',
       h1: 'Still retyping orders and quotes by hand?',
       lede: 'One partner from the business challenge to AI in daily use. We find where AI pays off in your quotes, orders and ERP, then build it, connect it to the systems you run and get your team using it.',
       here: 'In a distribution company',
@@ -460,7 +461,7 @@ export default {
           { q: 'Replace the ERP before anything else', v: 'Not now', k: 'later', why: 'It works. The hours are lost in the retyping around it, not in the ERP itself.' },
           { q: 'A WhatsApp chatbot for customers', v: 'Don’t build', k: 'no', why: 'Customers order through reps and email. A bot would sit beside the real work.' },
         ],
-        foot: 'The value was in knowing which two not to start with.',
+        foot: 'Sometimes the value is knowing what not to start with.',
       },
       faq: [
         { q: 'Does this work with Priority or SAP Business One?', a: 'Yes. We start from the ERP you already run and connect to it, usually with read-only access first. Replacing it is rarely the first step.' },
@@ -471,6 +472,7 @@ export default {
     },
     manufacturing: {
       meta: { title: 'AI for manufacturers: one partner, end to end — bee & co.', desc: 'For manufacturing and industrial companies: one accountable partner for AI and systems, from an independent decision before you commit budget to delivery on the systems you run. Led by Eran Nachum.' },
+      kicker: 'AI and automation for manufacturers',
       h1: 'Planning in Excel, and know-how in two people’s heads?',
       lede: 'One partner from the business challenge to AI in daily use. We find where AI pays off in quoting, planning and the office systems around the plant, then build it, connect it and get your team using it.',
       here: 'In a manufacturing company',
@@ -493,7 +495,7 @@ export default {
           { q: 'A full smart-factory platform across the plant', v: 'Not now', k: 'later', why: 'The data it needs is not collected yet. Start with one line and one measure.' },
           { q: 'Predictive maintenance on every machine', v: 'Don’t build', k: 'no', why: 'Breakdowns here are rare and cheap. The money is lost in planning, not in maintenance.' },
         ],
-        foot: 'The value was in knowing which two not to start with.',
+        foot: 'Sometimes the value is knowing what not to start with.',
       },
       faq: [
         { q: 'Our systems are old. Is that a problem?', a: 'Usually not. We start from the systems you run and connect to them. Replacing them is a decision we weigh with you, not an assumption.' },
@@ -504,6 +506,7 @@ export default {
     },
     ecommerce: {
       meta: { title: 'AI for e-commerce and retail brands: one partner, end to end — bee & co.', desc: 'For e-commerce and retail brands without a technology leader: one accountable partner for your stack, AI and agencies, from decision to daily use. Led by Eran Nachum.' },
+      kicker: 'AI and automation for online retailers',
       h1: 'Plenty of tools. Nobody senior running the technology?',
       lede: 'One partner from the business challenge to AI in daily use. We take the technology seat part-time, decide what is worth building in your store, service and stock flows, then build it with your agency and get it used.',
       here: 'In an online brand',
@@ -526,7 +529,7 @@ export default {
           { q: 'Rebuild the store on a new platform', v: 'Not now', k: 'later', why: 'The store is not the bottleneck. Fix the stock and order sync first.' },
           { q: 'AI-written product descriptions for the whole catalogue', v: 'Don’t build', k: 'no', why: 'The catalogue is small and sells on brand. The hours are lost in service, not in copy.' },
         ],
-        foot: 'The value was in knowing which two not to start with.',
+        foot: 'Sometimes the value is knowing what not to start with.',
       },
       faq: [
         { q: 'We run on Shopify or WooCommerce with a few apps. Is that a fit?', a: 'Yes. We start from your current stack and change only what earns its place. Moving platforms is a decision, not a default.' },
@@ -537,6 +540,7 @@ export default {
     },
     insurance: {
       meta: { title: 'AI for insurance agencies: one partner, end to end — bee & co.', desc: 'For insurance agencies and financial-advisory firms: one accountable partner to take paperwork off the team with AI, securely, from decision to daily use. Led by Eran Nachum.' },
+      kicker: 'AI and automation for insurance agencies',
       h1: 'Your agents spend the day on paperwork, not on clients?',
       lede: 'One partner from the business challenge to AI in daily use. We find where AI takes the paperwork off your team without putting client data or compliance at risk, then build it, connect it and get it used.',
       here: 'In an insurance agency',
@@ -559,7 +563,7 @@ export default {
           { q: 'Replace the agency management system', v: 'Not now', k: 'later', why: 'It holds every policy and commission. The hours are lost copying between it and the insurers’ portals.' },
           { q: 'An AI bot that gives clients coverage advice', v: 'Don’t build', k: 'no', why: 'Advice is regulated and personal. A bot that gets it wrong is a liability, not a saving.' },
         ],
-        foot: 'The value was in knowing which two not to start with.',
+        foot: 'Sometimes the value is knowing what not to start with.',
       },
       faq: [
         { q: 'Does this work with our agency management system and the insurers’ portals?', a: 'We start from the systems you already run and connect to what they allow, usually with read-only access first. Where a portal offers no connection, we design around it rather than promise one.' },
@@ -570,6 +574,7 @@ export default {
     },
     accounting: {
       meta: { title: 'AI for accounting firms: one partner, end to end — bee & co.', desc: 'For CPA and bookkeeping firms: one accountable partner to take document chasing, data entry and reconciliation off the team with AI, with client confidentiality designed in. Led by Eran Nachum.' },
+      kicker: 'AI and automation for accounting firms',
       h1: 'Reporting season stops the whole office again?',
       lede: 'One partner from the business challenge to AI in daily use. We find where AI takes document chasing, data entry and reconciliation off your team, then build it into the software the firm already runs and get the team using it.',
       here: 'In an accounting firm',
@@ -592,7 +597,7 @@ export default {
           { q: 'Move the firm to new accounting software', v: 'Not now', k: 'later', why: 'The software works. The hours are lost in the typing and chasing around it.' },
           { q: 'A bot that answers clients’ tax questions', v: 'Don’t build', k: 'no', why: 'Tax advice carries the firm’s name and licence. One wrong answer costs more than the time saved.' },
         ],
-        foot: 'The value was in knowing which two not to start with.',
+        foot: 'Sometimes the value is knowing what not to start with.',
       },
       faq: [
         { q: 'We work with Hashavshevet, Rivhit or Priority. Is that a fit?', a: 'Yes. We start from the software you already run and connect to what it allows, usually with read-only access first. Replacing it is a decision we weigh with you, not an assumption.' },
@@ -603,6 +608,7 @@ export default {
     },
     law: {
       meta: { title: 'AI for law firms: one partner, end to end — bee & co.', desc: 'For law firms: one accountable partner to choose the AI worth using, with privilege and confidentiality designed in, and get it into daily work. Led by Eran Nachum.' },
+      kicker: 'AI for law firms',
       h1: 'Every vendor is pitching your firm an AI tool. Which one is real?',
       lede: 'One partner from the business challenge to AI in daily use. We help the partners decide which legal AI is worth the investment and the risk, then build it into the way the firm already works, with privilege and confidentiality designed in.',
       here: 'In a law firm',
@@ -625,7 +631,7 @@ export default {
           { q: 'A firm-wide AI platform licence for everyone', v: 'Not now', k: 'later', why: 'Licences without one clear use become a cost line. Start with one practice area and one measure.' },
           { q: 'An AI on the website that answers clients’ legal questions', v: 'Don’t build', k: 'no', why: 'The advice carries your name and your liability. The time saved is not worth one wrong answer.' },
         ],
-        foot: 'The value was in knowing which two not to start with.',
+        foot: 'Sometimes the value is knowing what not to start with.',
       },
       faq: [
         { q: 'We use a dedicated practice-management system. Is that a fit?', a: 'Yes. We start from the systems you already run and connect to them, usually with read-only access first. Replacing them is a decision we weigh with you, not an assumption.' },
@@ -636,6 +642,7 @@ export default {
     },
     'real-estate': {
       meta: { title: 'AI for real-estate developers and contractors: one partner, end to end — bee & co.', desc: 'For real-estate developers and construction companies: one accountable partner for project data, tenders and reporting, from decision to daily use. Led by Eran Nachum, who also led engineering in real-estate investment tech.' },
+      kicker: 'AI and automation for developers and builders',
       h1: 'Ten projects running, and the real status lives in Excel?',
       lede: 'One partner from the business challenge to AI in daily use. We find what is worth changing in your project reporting, tenders and subcontractor bills, then build it, connect it and get your project managers using it.',
       here: 'In a development or construction company',
@@ -658,7 +665,7 @@ export default {
           { q: 'One construction-management platform across every project at once', v: 'Not now', k: 'later', why: 'Rolled out everywhere at once, it stalls on the first site. Start with one project and one report.' },
           { q: 'A chatbot that answers apartment buyers', v: 'Don’t build', k: 'no', why: 'Buyers decide with a sales rep and a lawyer. The hours are lost in project reporting, not in answering buyers.' },
         ],
-        foot: 'The value was in knowing which two not to start with.',
+        foot: 'Sometimes the value is knowing what not to start with.',
       },
       faq: [
         { q: 'Our project managers are not technology people. Will they use it?', a: 'That is the first design question, not the last. We build into the tools they already open every day, start with one project, and measure real use before going further.' },

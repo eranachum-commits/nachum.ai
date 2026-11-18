@@ -887,3 +887,6 @@ bdi[dir='ltr'] { white-space: nowrap; }
 /* LP headlines are full questions: wider than the home promise, and a step smaller (see .hero--lp above). */
 .hero--home.hero--lp h1 { max-width: 16ch; }
 [lang='he'] .hero--home.hero--lp h1 { max-width: 15ch; }
+
+/* Landing pages: the search phrase above the question headline, so the page says what was searched. */
+.lp-kicker { margin: 0 0 12px; font-size: .95rem; font-weight: 600; color: var(--muted); }
