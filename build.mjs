@@ -21,7 +21,9 @@ await cp('public', 'dist', { recursive: true });
 const css = (await readFile('src/fonts.css', 'utf8')) + (await readFile('src/styles.css', 'utf8'));
 await writeFile('dist/assets/site.css', css);
 const jsSrc = (await readFile('public/js/app.js', 'utf8')) + (await readFile('public/js/calc.js', 'utf8'));
-const ctx = { site, cssHash: hash(css), jsHash: hash(jsSrc), draftNoindex: true };
+// Google Analytics 4: set GA_MEASUREMENT_ID (G-…) in Vercel. The tag loads only after the visitor accepts analytics (public/js/app.js).
+const ga = /^G-[A-Z0-9]{4,}$/.test(process.env.GA_MEASUREMENT_ID || '') ? process.env.GA_MEASUREMENT_ID : '';
+const ctx = { site, cssHash: hash(css), jsHash: hash(jsSrc), draftNoindex: true, ga };
 
 let count = 0;
 for (const lang of langs) {

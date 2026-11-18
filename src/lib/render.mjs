@@ -83,6 +83,7 @@ export function layout({ c, key, meta, body, ctx, ld = '' }) {
 <meta property="og:url" content="${url(c.lang)}"><meta property="og:locale" content="${c.ogLocale}"><meta property="og:locale:alternate" content="${other === 'he' ? 'he_IL' : 'en_US'}">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#dce4d8">
+${ctx.ga ? `<meta name="ga-id" content="${ctx.ga}">` : ''}
 ${ctx.noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 ${fontPre.map((f) => `<link rel="preload" href="/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`).join('\n')}

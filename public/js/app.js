@@ -8,21 +8,42 @@ const store = {
 };
 
 /* ---------- consent-gated tracking ----------
-   Events go to window.dataLayer ONLY after the visitor accepts. Connect GTM/GA/Plausible etc. at launch (docs/LAUNCH.md). */
+   Nothing is sent anywhere until the visitor accepts analytics. Then Google Analytics 4 loads (if the build set an ID in
+   <meta name="ga-id">), with advertising storage and ad personalization denied, and every event goes to it. */
 const consent = () => store.get('bee-co-consent');
+const GA_ID = document.querySelector('meta[name="ga-id"]')?.content || '';
+let gaOn = false;
+function loadGA() {
+  if (gaOn || !/^G-[A-Z0-9]{4,}$/.test(GA_ID)) return;
+  gaOn = true;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag() { window.dataLayer.push(arguments); };
+  window.gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+  window.gtag('js', new Date());
+  window.gtag('config', GA_ID);
+  const s = document.createElement('script');
+  s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID);
+  document.head.append(s);
+}
 export function track(name, props = {}) {
   if (consent() !== 'yes') return;
-  (window.dataLayer = window.dataLayer || []).push({ event: name, lang: document.documentElement.lang, path: location.pathname, ...props });
+  const params = { lang: document.documentElement.lang, page_path: location.pathname, ...props };
+  if (gaOn) window.gtag('event', name, params);
+  else (window.dataLayer = window.dataLayer || []).push({ event: name, ...params });
 }
+if (consent() === 'yes') loadGA();
 (function initConsent() {
   const box = $('[data-consent]');
   if (!box) return;
   if (!consent()) box.hidden = false;
-  const set = (v) => { store.set('bee-co-consent', v); box.hidden = true; if (v === 'yes') track('consent_granted'); };
+  const set = (v) => { store.set('bee-co-consent', v); box.hidden = true; if (v === 'yes') { loadGA(); track('consent_granted'); } };
   $('[data-consent-yes]', box).addEventListener('click', () => set('yes'));
   $('[data-consent-no]', box).addEventListener('click', () => set('no'));
 })();
-document.addEventListener('click', (e) => { const a = e.target.closest('[data-track]'); if (a) track('cta_click', { id: a.dataset.track }); });
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('[data-track]'); if (a) track('cta_click', { id: a.dataset.track, industry: a.dataset.industry || '' });
+  const b = e.target.closest('[data-booking]'); if (b) track('booking_link_click', { lead_source: b.dataset.booking || 'general' });
+});
 
 /* ---------- navigation ---------- */
 (function nav() {
@@ -238,8 +259,9 @@ $$('[data-lead-form]').forEach((form) => {
         const dev = body.mode === 'dev';
         status.className = 'form-status notice ' + (dev ? '' : 'notice--ok');
         status.innerHTML = `<strong>${dev ? D.devH : D.okH}</strong><br>${dev ? D.dev : D.okP}`;
-        if (body.bookingUrl) status.insertAdjacentHTML('beforeend', `<br><a class="btn btn--primary btn--sm" style="margin-top:12px" href="${body.bookingUrl}" rel="noopener">${D.bookL}</a>`);
-        if (!dev) track('booking_completed', { form: form.id, pain: data.pain });
+        if (body.bookingUrl) status.insertAdjacentHTML('beforeend', `<br><a class="btn btn--primary btn--sm" style="margin-top:12px" href="${body.bookingUrl}" rel="noopener" data-booking="${data.pain || ''}">${D.bookL}</a>`);
+        // generate_lead is GA4's recommended event for a delivered lead: mark it as a key event in GA4.
+        if (!dev) { track('booking_completed', { form: form.id, pain: data.pain }); track('generate_lead', { lead_source: data.pain || 'general', form: form.id }); }
         form.reset(); $('[name=source]', form).value = location.pathname + location.search;
         status.focus();
       } else {

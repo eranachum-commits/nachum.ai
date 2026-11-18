@@ -211,6 +211,12 @@ await t('campaign landing pages: home language narrowed to one domain', () => {
     }
   }
 });
+await t('analytics: Google is never in the page HTML; the tag loads only after consent', () => {
+  for (const [url, html] of Object.entries(pages)) {
+    assert.doesNotMatch(html, /googletagmanager|google-analytics/, 'no Google script in the HTML of ' + url);
+    assert.doesNotMatch(html, /name="ga-id"/, 'no GA ID without GA_MEASUREMENT_ID: ' + url);
+  }
+});
 await t('sitemap and robots', async () => {
   const sm = (await get('/sitemap.xml')).text; assert.equal((sm.match(/<url>/g) || []).length, (routes.length - 1) * 2);
   assert.match((await get('/robots.txt')).text, /Sitemap:/);

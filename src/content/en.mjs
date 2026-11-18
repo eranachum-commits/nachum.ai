@@ -23,7 +23,7 @@ export default {
     rights: '© 2026 bee & co.',
   },
   consent: {
-    text: 'We use privacy-respecting analytics only if you agree, to learn which pages are useful. Nothing is loaded until you choose.',
+    text: 'We use Google Analytics only if you agree, to learn which pages are useful. Nothing is loaded until you choose.',
     accept: 'Accept analytics', decline: 'Decline', more: 'Privacy policy',
   },
 
@@ -325,7 +325,7 @@ export default {
     meta: { title: 'Privacy policy — bee & co.', desc: 'What bee & co. collects when you get in touch, why, who processes it on our behalf, how long we keep it, and how to see, correct or delete your details.' },
     h1: 'Privacy policy',
     lede: 'What we collect when you contact bee & co., why we collect it, who handles it and how to reach us about it. Written to be read, not skimmed past.',
-    updatedL: 'Last updated', updated: '17 November 2026',
+    updatedL: 'Last updated', updated: '18 November 2026',
     shortTitle: 'In short',
     short: [
       'We only collect what you send us through the contact form, plus the minimum technical data needed to run the site safely.',
@@ -360,16 +360,17 @@ export default {
         { p: 'We don’t use your details for advertising, automated decisions or profiling, and we don’t put them into AI tools that use them for training.' },
       ] },
       { id: 'cookies', h: 'Cookies and analytics', blocks: [
-        { p: 'The site doesn’t set advertising or tracking cookies. Fonts and scripts are served from our own site, so loading a page doesn’t contact third parties.' },
+        { p: 'The site doesn’t set advertising cookies. Fonts and scripts are served from our own site, so until you accept analytics, loading a page doesn’t contact third parties.' },
         { p: 'When you accept or decline analytics, your choice is saved in your browser’s local storage so we don’t ask again. You can clear it in your browser settings at any time.' },
-        { p: 'We don’t currently run a third-party analytics service. If we add one, it will load only after you accept, and we will name it here first.' },
+        { p: 'If you accept analytics, we load Google Analytics 4 to count visits and see which pages and buttons are used, including whether a message was sent. It sets cookies in your browser. Advertising storage and ad personalization are turned off, and we don’t send it your name, email or message. If you decline, it never loads.' },
       ] },
       { id: 'share', h: 'Who handles your details', blocks: [
         { p: 'Only Eran Nachum reads the messages. To run the site and deliver your message, we use a small number of service providers who process data on our behalf and only according to our instructions:' },
         { list: [
           'Vercel, which hosts the site (United States and other regions).',
           'Resend and our email inbox, which deliver your message to us (United States or the EU).',
-          'A scheduling tool, if you book a call. Its booking page names it.',
+          'Google, for Google Analytics, only if you accept analytics (United States and other regions).',
+          'Google Calendar, if you book a call through its booking page.',
         ] },
         { p: 'If a project later needs a specialist, we share only what that work needs, and only after you agree. We may disclose information when the law requires it. We never sell personal data.' },
       ] },
