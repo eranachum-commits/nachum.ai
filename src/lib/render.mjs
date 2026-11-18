@@ -81,7 +81,9 @@ export function layout({ c, key, meta, body, ctx, ld = '' }) {
 <meta property="og:type" content="website"><meta property="og:site_name" content="bee & co.">
 <meta property="og:title" content="${esc(meta.title)}"><meta property="og:description" content="${esc(meta.desc)}">
 <meta property="og:url" content="${url(c.lang)}"><meta property="og:locale" content="${c.ogLocale}"><meta property="og:locale:alternate" content="${other === 'he' ? 'he_IL' : 'en_US'}">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="${ctx.site}/og/og-${c.lang}.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${esc(c.descriptor)}">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="${ctx.site}/og/og-${c.lang}.png">
 <meta name="theme-color" content="#dce4d8">
 ${ctx.ga ? `<meta name="ga-id" content="${ctx.ga}">` : ''}
 ${ctx.noindex ? '<meta name="robots" content="noindex">' : ''}
