@@ -1,5 +1,6 @@
 // Builds the paid-ads import files for wave 1 (accounting firms, import & distribution) and checks platform limits.
 // `node scripts/make-ad-files.mjs` → marketing/ads/google-ads-editor.csv, marketing/ads/meta-ads-import.csv
+// Default output updates the live campaigns (keywords, negatives, ads). NEW_CAMPAIGNS=1 also creates the campaigns.
 // Everything is created PAUSED: nothing spends until it is reviewed and switched on in each platform.
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
@@ -90,10 +91,14 @@ const g = [gCols];
 const row = (o) => gCols.map((c) => (c === 'Account' ? GOOGLE_ACCOUNT : o[c] ?? ''));
 for (const d of DOMAINS) {
   const camp = `bee&co | ${d.name} | Search | W1`, ag = `${d.name} – core`;
-  g.push(row({ Campaign: camp, 'Campaign Type': 'Search', Networks: 'Google search', Budget: DAILY_ILS.google, 'Budget type': 'Daily',
-    'Bid Strategy Type': 'Maximize clicks', 'Campaign Status': 'Paused', 'Final URL suffix': utm('google', 'cpc', d, '&utm_term={keyword}') }));
-  g.push(row({ Campaign: camp, Location: 'Israel' }));
-  g.push(row({ Campaign: camp, 'Ad Group': ag, 'Ad Group Status': 'Enabled' }));
+  // Campaign, location and ad group rows only for a first upload (NEW_CAMPAIGNS=1). On the live account they would
+  // reset the budget, status and bid settings set by hand and duplicate the location.
+  if (process.env.NEW_CAMPAIGNS === '1') {
+    g.push(row({ Campaign: camp, 'Campaign Type': 'Search', Networks: 'Google search', Budget: DAILY_ILS.google, 'Budget type': 'Daily',
+      'Bid Strategy Type': 'Maximize clicks', 'Campaign Status': 'Paused', 'Final URL suffix': utm('google', 'cpc', d, '&utm_term={keyword}') }));
+    g.push(row({ Campaign: camp, Location: 'Israel' }));
+    g.push(row({ Campaign: camp, 'Ad Group': ag, 'Ad Group Status': 'Enabled' }));
+  }
   d.keywords.forEach((k) => g.push(row({ Campaign: camp, 'Ad Group': ag, Keyword: k, 'Criterion Type': 'Phrase', Status: 'Enabled' })));
   d.paused.forEach((k) => g.push(row({ Campaign: camp, 'Ad Group': ag, Keyword: k, 'Criterion Type': 'Phrase', Status: 'Paused' })));
   [...NEGATIVES, ...d.negatives].forEach((k) => g.push(row({ Campaign: camp, Keyword: k, 'Criterion Type': 'Campaign Negative Broad' })));
