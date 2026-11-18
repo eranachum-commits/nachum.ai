@@ -5,10 +5,10 @@ Everything here is created **paused**. Nothing spends money until you review it 
 | File | What it is |
 |---|---|
 | `google-ads-editor.csv` | Two Google Search campaigns (one per domain): ad group, keywords, negative keywords, one responsive search ad each |
-| `meta-ads-import.csv` | Two Facebook/Instagram traffic campaigns, two ads each (headline angle and "what not to build" angle) |
-| `images/` | Ad images in Hebrew: `{domain}-{angle}-{size}.png`. `square` = 1080×1080 (Facebook/Instagram feed), `wide` = 1200×627 (LinkedIn and Facebook link ads) |
+| `meta-ads-import.csv` | Two Facebook/Instagram traffic campaigns, four ads each: the landing-page headline and three hooks |
+| `images/` | Hebrew banners for five domains (accounting, distribution, insurance, law, real-estate): `{domain}-{angle}-{size}.png`. Angles: `headline` (the page's question, on sage) and `hook-{id}` (one sharp line, on dark). Sizes: `square` 1080×1080 and `portrait` 1080×1350 (Facebook/Instagram feed), `wide` 1200×627 (LinkedIn, Facebook link ads). No photos of people. |
 
-Regenerate after changing copy: `node scripts/make-ad-files.mjs` (checks Google's 30/90-character limits) and `node scripts/make-ad-images.mjs`.
+The hooks live in `scripts/ad-copy.mjs`. Regenerate after changing copy: `node scripts/make-ad-files.mjs` (checks Google's 30/90-character limits) and `node scripts/make-ad-images.mjs`.
 
 ## Google Ads
 
@@ -25,7 +25,8 @@ Regenerate after changing copy: `node scripts/make-ad-files.mjs` (checks Google'
 **Set by hand after import** (Editor can't take these reliably from a file)
 - Languages: Hebrew and English.
 - Location option: "Presence: people in or regularly in your targeted locations".
-- Ad schedule: Sun–Thu, 08:00–19:00.
+- Ad schedule: Sun–Thu 07:00–22:00 and Fri 08:00–13:00 (owners search outside office hours); trim with data from weeks 3–4.
+- Assets: sitelinks (איך זה עובד, שאלות נפוצות, שיחה של 30 דקות), callouts (בלי אנשי מכירות, מחיר קבוע לספרינט, סודיות מובנית).
 - Max CPC bid limit (under the Maximize clicks bid strategy): start around ₪8 and adjust after a week.
 - Conversion goal: the imported `generate_lead`.
 - Budget: the file sets ₪100/day per campaign. Change it if you want.
@@ -43,9 +44,7 @@ Then switch the campaigns on.
 2. Meta shows a preview with any errors before anything is created. If it rejects a column, export one manually created ad as a template (**Export → Selected**) and copy the rows across: the values are below.
 
 **Set by hand after import**
-- **Images:** open each ad and upload the matching image, square for feed placements and wide where Meta asks for 1.91:1:
-  - `… – reporting season` / `… – retyping orders` → `{domain}-headline-square.png`
-  - `… – what not to build` → `{domain}-memo-square.png`
+- **Images:** each ad is named `{domain} – {angle}`. Upload `images/{domain}-{angle}-square.png` for Facebook feed and `-portrait.png` for Instagram feed (Meta lets you set one image per placement). Example: ad `accounting – hook-studied` → `accounting-hook-studied-square.png`.
 - **Detailed targeting** (ad set): Israel, age 30–65, and interests or job titles such as accounting, certified public accountant, bookkeeping (accounting) and wholesale, import, logistics, ERP, small business owner (distribution). Keep "Advantage+ audience" off for the first two weeks.
 - **Placements:** Facebook and Instagram feeds only to start; turn off Audience Network and Messenger.
 - **Optimization:** link clicks. Once the Meta pixel is on the site (behind the consent banner, like GA), switch to landing page views, then to the lead conversion.
