@@ -53,6 +53,7 @@ function footer(c) {
     <div><a class="logo logo--footer" href="${href(c.lang, 'home')}">${brandLockup(c, true)}</a><p>${f.tag}</p></div>
     <div><h2>${f.cols.site}</h2><ul>${NAV.map((k) => `<li><a href="${href(c.lang, k)}">${c.nav[k]}</a></li>`).join('')}<li><a href="${href(c.lang, 'contact')}">${f.contact}</a></li><li>${extLink(c.founder.linkedin, c.founder.linkedinLabel)}</li></ul></div>
     <div><h2>${f.cols.example}</h2><ul><li><a href="${href(c.lang, 'usecase')}">${c.nav.usecase}</a></li></ul></div>
+    <div><h2>${f.cols.industries}</h2><ul>${routes.filter((r) => r.key.startsWith('lp-')).map((r) => `<li><a href="${href(c.lang, r.key)}">${f.industries[r.key.slice(3)]}</a></li>`).join('')}</ul></div>
     <div><h2>${f.cols.legal}</h2><ul><li><a href="${href(c.lang, 'privacy')}">${f.privacy}</a></li><li><a href="${href(c.lang, 'security')}">${f.security}</a></li></ul></div>
   </div>
   <div class="foot-base"><span>${f.rights}</span><span>${f.note}</span></div>
@@ -60,6 +61,25 @@ function footer(c) {
 <div class="consent" role="dialog" aria-label="Cookies" data-consent hidden><p>${c.consent.text}</p>
 <div class="btn-row"><button class="btn" type="button" data-consent-yes>${c.consent.accept}</button><button class="btn" type="button" data-consent-no>${c.consent.decline}</button></div>
 <p class="small consent-more"><a href="${href(c.lang, 'privacy')}">${c.consent.more}</a></p></div>`;
+}
+
+// Every page carries the business and the website as one schema.org graph; a page's own nodes join it.
+// Nodes refer to each other by '#org' / '#website' / '#founder', made absolute here.
+function graph(c, ctx, ld) {
+  const id = (s) => ctx.site + '/' + s;
+  const abs = (v) => (typeof v === 'string' && /^#[a-z]+$/.test(v) ? id(v) : Array.isArray(v) ? v.map(abs) : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, abs(x)])) : v);
+  const base = [
+    {
+      '@type': 'ProfessionalService', '@id': '#org', name: 'bee & co.', alternateName: 'bee and co', url: ctx.site + '/',
+      logo: { '@type': 'ImageObject', url: ctx.site + '/icon-512.png', width: 512, height: 512 },
+      image: ctx.site + `/og/og-${c.lang}.png`, description: c.descriptor, areaServed: 'IL', knowsLanguage: ['he', 'en'],
+      founder: { '@id': '#founder' },
+    },
+    { '@type': 'Person', '@id': '#founder', name: 'Eran Nachum', jobTitle: 'Founder', worksFor: { '@id': '#org' }, image: ctx.site + '/img/eran-nachum-806.jpg', sameAs: [c.founder.linkedin] },
+    { '@type': 'WebSite', '@id': '#website', url: ctx.site + '/', name: 'bee & co.', inLanguage: ['he', 'en'], publisher: { '@id': '#org' } },
+  ];
+  const own = (ld ? [].concat(ld) : []).map(({ '@context': _, ...n }) => n);
+  return abs({ '@context': 'https://schema.org', '@graph': [...base, ...own] });
 }
 
 export function layout({ c, key, meta, body, ctx, ld = '' }) {
@@ -88,9 +108,10 @@ export function layout({ c, key, meta, body, ctx, ld = '' }) {
 ${ctx.ga ? `<meta name="ga-id" content="${ctx.ga}">` : ''}
 ${ctx.noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 ${fontPre.map((f) => `<link rel="preload" href="/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`).join('\n')}
 <link rel="stylesheet" href="/assets/site.css?v=${ctx.cssHash}">
-${ld ? `<script type="application/ld+json">${json(ld)}</script>` : ''}
+<script type="application/ld+json">${json(graph(c, ctx, ld))}</script>
 </head>
 <body>
 <a class="skip" href="#main">${esc(c.ui.skip)}</a>
@@ -213,9 +234,7 @@ ${section(why, 'section--dark home-why', 'why', 'why-title')}
 ${section(outcomes, 'section--tint home-outcomes', 'outcomes', 'outcomes-title')}
 ${cta}`;
   const ld = {
-    '@context': 'https://schema.org', '@type': 'ProfessionalService', name: 'bee & co.', description: c.descriptor,
-    founder: { '@type': 'Person', name: 'Eran Nachum', jobTitle: 'Founder', sameAs: [c.founder.linkedin] },
-    areaServed: 'IL',
+    '@type': 'ProfessionalService', '@id': '#org',
     hasOfferCatalog: { '@type': 'OfferCatalog', name: sv.title, itemListElement: sv.items.map((x) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: x.h, description: x.p } })) },
   };
   return { meta: h.meta, body, ld };
@@ -294,7 +313,7 @@ ${section(story, 'about-story-sec', 'story', 'story-title')}
 ${section(`${head(mp.title, mp.intro, 'xp-title')}${ledger}`, 'section--tint about-xp', 'experience', 'xp-title')}
 ${section(whyCard + co, 'about-why', 'why', 'why-title')}
 ${ctaBand(c, p.ctaTitle, p.ctaP, '', { label: p.cta })}`;
-  const ld = { '@context': 'https://schema.org', '@type': 'Person', name: 'Eran Nachum', jobTitle: 'Founder', worksFor: { '@type': 'Organization', name: 'bee & co.' }, sameAs: [c.founder.linkedin] };
+  const ld = { '@type': 'ProfilePage', mainEntity: { '@id': '#founder' } };
   return { meta: p.meta, body, ld };
 };
 

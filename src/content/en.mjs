@@ -17,7 +17,8 @@ export default {
   nav: { how: 'Ways to work', usecase: 'Common situations', about: 'About', results: 'Measuring success', faq: 'FAQ' },
   footer: {
     tag: 'One accountable partner for AI transformation, from the business challenge to the system in daily use. Led by Eran Nachum.',
-    cols: { site: 'bee & co.', example: 'Situations', legal: 'Legal' },
+    cols: { site: 'bee & co.', example: 'Situations', industries: 'Industries', legal: 'Legal' },
+    industries: { distribution: 'Distribution and import', manufacturing: 'Manufacturing', ecommerce: 'E-commerce and retail', insurance: 'Insurance agencies', accounting: 'Accounting firms', law: 'Law firms', 'real-estate': 'Real estate and construction' },
     privacy: 'Privacy policy', security: 'Data & security', contact: 'Contact',
     note: 'Examples on this site are illustrative and use sample data.',
     rights: '© 2026 bee & co.',

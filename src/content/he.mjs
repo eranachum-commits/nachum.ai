@@ -17,7 +17,8 @@ export default {
   nav: { how: 'איך עובדים איתנו', usecase: 'מצבים נפוצים', about: 'אודות', results: 'מדידת הצלחה', faq: 'שאלות נפוצות' },
   footer: {
     tag: 'שותף אחד ואחראי לטרנספורמציית AI, מהאתגר העסקי ועד המערכת שעובדת ביום־יום. בהובלת ערן נחום.',
-    cols: { site: 'bee & co.', example: 'מצבים', legal: 'משפטי' },
+    cols: { site: 'bee & co.', example: 'מצבים', industries: 'תעשיות', legal: 'משפטי' },
+    industries: { distribution: 'הפצה ויבוא', manufacturing: 'מפעלים ותעשייה', ecommerce: 'איקומרס וקמעונאות', insurance: 'סוכנויות ביטוח', accounting: 'משרדי רואי חשבון', law: 'משרדי עורכי דין', 'real-estate': 'נדל״ן ובנייה' },
     privacy: 'מדיניות פרטיות', security: 'נתונים ואבטחה', contact: 'יצירת קשר',
     note: 'הדוגמאות באתר להמחשה בלבד ומבוססות על נתוני דוגמה.',
     rights: '© 2026 bee & co.',
