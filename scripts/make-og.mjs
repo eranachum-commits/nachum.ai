@@ -21,8 +21,8 @@ const mark = `<svg viewBox="0 0 100 100" width="76" height="76"><path d="M28 13v
 function page(c) {
   const rtl = c.dir === 'rtl';
   const T = {
-    he: { h1: 'שותף אחד.<br>מהאתגר העסקי<br>ועד AI שעובד.', by: 'בהובלת ערן נחום, לשעבר VP R&amp;D' },
-    en: { h1: 'One partner.<br>End-to-end AI<br>transformation.', by: 'Led by Eran Nachum, former VP R&amp;D' },
+    he: { h1: 'שותף אחד.<br>מהאתגר העסקי<br>ועד AI שעובד.', by: 'בהובלת ערן נחום, 22 שנה בהייטק' },
+    en: { h1: 'One partner.<br>End-to-end AI<br>transformation.', by: 'Led by Eran Nachum, 22 years in high-tech' },
   }[c.lang];
   return `<!doctype html><html lang="${c.lang}" dir="${c.dir}"><head><meta charset="utf-8"><style>${faces}
 * { box-sizing: border-box; margin: 0; }
@@ -30,7 +30,7 @@ html, body { width: 1200px; height: 630px; overflow: hidden; }
 body { background: #dce4d8; color: #202820; font-family: Plex, sans-serif; position: relative; }
 .cell { position: absolute; clip-path: ${hex}; aspect-ratio: 1.14; }
 .c1 { width: 520px; inset-inline-end: -150px; top: -70px; background: #e8ad36; opacity: .9; }
-.c2 { width: 290px; inset-inline-end: 200px; top: 390px; background: #d9d5e6; }
+.c2 { width: 270px; inset-inline-end: 150px; top: 410px; background: #d9d5e6; }
 .c3 { width: 120px; inset-inline-end: 130px; top: 470px; background: #fffdf8; }
 .in { position: absolute; inset: 64px 72px; display: flex; flex-direction: column; }
 .lock { display: flex; align-items: center; gap: 18px; direction: ltr; align-self: flex-start; }
