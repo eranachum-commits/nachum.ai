@@ -13,6 +13,18 @@
   },
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.beenco.tech" }],
+      "destination": "https://beenco.tech/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "nachum-ai.vercel.app" }],
+      "destination": "https://beenco.tech/:path*",
+      "permanent": true
+    },
+    {
       "source": "/solutions",
       "destination": "/business-use-case",
       "permanent": true
