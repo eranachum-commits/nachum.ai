@@ -33,7 +33,7 @@ export default {
     hero: {
       h1: 'One partner. End-to-end AI transformation.',
       sub: 'From the business challenge to AI that works in daily operations. bee & co. finds where AI will improve how you run, then designs, builds, integrates and gets it adopted, so you never coordinate consultants, developers and vendors yourself.',
-      trust: 'Led by Eran Nachum, a high-tech industry veteran with 22 years of building software and leading R&D teams.',
+      trust: 'Led by Eran Nachum, a senior R&D leader with 22 years in high-tech, who still writes the code hands-on.',
       primary: 'Let’s explore your opportunities',
       secondary: 'See what we deliver',
       note: '30 minutes, directly with Eran. No sales team.',
