@@ -8,6 +8,8 @@ Everything here is created **paused**. Nothing spends money until you review it 
 | `meta-ads-import.csv` | Two Facebook/Instagram traffic campaigns, four ads each: the landing-page headline and three hooks |
 | `images/` | Hebrew banners for five domains (accounting, distribution, insurance, law, real-estate): `{domain}-{angle}-{size}.png`. Angles: `headline` (the page's question, on sage) and `hook-{id}` (one sharp line, on dark). Sizes: `square` 1080×1080 and `portrait` 1080×1350 (Facebook/Instagram feed), `wide` 1200×627 (LinkedIn, Facebook link ads). No photos of people. |
 
+| `search-images/` | Text-free brand images for Google Search image assets (square 1200×1200, landscape 1200×628, sage and night). Add them with the business name and `brand/logo-300.png` after Google's advertiser verification: until then Google rejects all three on a new account. Regenerate: `node scripts/make-search-images.mjs`. |
+
 The hooks live in `scripts/ad-copy.mjs`. Regenerate after changing copy: `node scripts/make-ad-files.mjs` (checks Google's 30/90-character limits) and `node scripts/make-ad-images.mjs`.
 
 ## Google Ads
@@ -18,8 +20,8 @@ The hooks live in `scripts/ad-copy.mjs`. Regenerate after changing copy: `node s
 3. Google Ads → Goals → Conversions → Import → Google Analytics 4 → `generate_lead` as **primary** (appears in GA after the first delivered lead).
 
 **Import**
-1. Install **Google Ads Editor** (free, ads.google.com/editor) and download the account.
-2. Account → **Import → From file…** → `google-ads-editor.csv`. Review the proposed changes, then **Keep**.
+1. Install **Google Ads Editor** (free, business.google.com/en-all/ad-tools/google-ads-editor/) and download the account (913-227-0780).
+2. Open the account window, then ☰ → **Import → From file…** → `google-ads-editor.csv` (importing from the account list greys the account out). Review the proposed changes, then **Keep**.
 3. **Post** the changes to the account.
 
 **Set by hand after import** (Editor can't take these reliably from a file)
