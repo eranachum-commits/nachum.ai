@@ -28,7 +28,7 @@ The hooks live in `scripts/ad-copy.mjs`. Regenerate after changing copy: `node s
 - Languages: Hebrew and English.
 - Location option: "Presence: people in or regularly in your targeted locations".
 - Ad schedule: Sun–Thu 07:00–22:00 and Fri 08:00–13:00 (owners search outside office hours); trim with data from weeks 3–4.
-- Assets: sitelinks (איך זה עובד, שאלות נפוצות, שיחה של 30 דקות), callouts (בלי אנשי מכירות, מחיר קבוע לספרינט, סודיות מובנית).
+- Assets: sitelinks (איך זה עובד, שאלות נפוצות, שיחה של 30 דקות), callouts (בלי אנשי מכירות, מחיר קבוע לאבחון, סודיות מובנית).
 - Max CPC bid limit (under the Maximize clicks bid strategy): start around ₪8 and adjust after a week.
 - Conversion goal: the imported `generate_lead`.
 - Budget: the file sets ₪100/day per campaign. Change it if you want.
@@ -49,7 +49,8 @@ Then switch the campaigns on.
 - **Images:** each ad is named `{domain} – {angle}`. Upload `images/{domain}-{angle}-square.png` for Facebook feed and `-portrait.png` for Instagram feed (Meta lets you set one image per placement). Example: ad `accounting – hook-studied` → `accounting-hook-studied-square.png`.
 - **Detailed targeting** (ad set): Israel, age 30–65, and interests or job titles such as accounting, certified public accountant, bookkeeping (accounting) and wholesale, import, logistics, ERP, small business owner (distribution). Keep "Advantage+ audience" off for the first two weeks.
 - **Placements:** Facebook and Instagram feeds only to start; turn off Audience Network and Messenger.
-- **Optimization:** link clicks. Once the Meta pixel is on the site (behind the consent banner, like GA), switch to landing page views, then to the lead conversion.
+- **Optimization:** link clicks, and keep it there for now. The Meta pixel (dataset `928177403595090`, `META_PIXEL_ID` in Vercel) is live behind the consent banner and reports `PageView` and `Lead`, but only for visitors who accept it, so landing page views or Lead would under-count and starve the learning. Judge Meta by the lead sheet and GA, not Meta's own conversion numbers. Switch to the `Lead` conversion only if Meta reports roughly 50 leads a week, which at this budget it won't.
+- **Copy and images are generated from `scripts/ad-copy.mjs`**, the same source as the banners, so changing a hook means re-running `node scripts/make-ad-files.mjs` and `node scripts/make-ad-images.mjs` and re-uploading that ad's image.
 - Budget: the file sets ₪60/day per ad set.
 
 | Setting | Value |

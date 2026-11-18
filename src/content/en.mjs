@@ -33,7 +33,7 @@ export default {
     hero: {
       h1: 'One partner. End-to-end AI transformation.',
       sub: 'From the business challenge to AI that works in daily operations. bee & co. finds where AI will improve how you run, then designs, builds, integrates and gets it adopted, so you never coordinate consultants, developers and vendors yourself.',
-      trust: 'Led by Eran Nachum, a senior R&D leader with 22 years in high-tech, who still writes the code hands-on.',
+      trust: 'Led by Eran Nachum, a senior R&D leader with over 20 years in high-tech, who still writes the code hands-on.',
       primary: 'Let’s explore your opportunities',
       secondary: 'See what we deliver',
       note: '30 minutes, directly with Eran. No sales team.',
@@ -75,7 +75,7 @@ export default {
       notL: 'Not',
       items: [
         { h: 'Business-first thinking', p: 'We understand the business problem before we choose the technology. Sometimes the right answer is not AI, and we say so.', not: 'a tool looking for a problem' },
-        { h: 'Executive-level experience', p: '22 years in software, with VP R&D and Head of Engineering roles, organizations of 50+ people and budgets owned under a P&L. Technology decisions made the way an executive makes them.', not: 'a junior team learning on your project' },
+        { h: 'Executive-level experience', p: 'over 20 years in software, with VP R&D and Head of Engineering roles, organizations of 50+ people and budgets owned under a P&L. Technology decisions made the way an executive makes them.', not: 'a junior team learning on your project' },
         { h: 'From strategy to production', p: 'The person who helps you decide is the person who builds. Designed, engineered, integrated and running, with no handoff in between.', not: 'a slide deck and a goodbye' },
       ],
     },
@@ -202,9 +202,9 @@ export default {
   },
 
   about: {
-    meta: { title: 'About — bee & co.', desc: 'I’m Eran Nachum, founder of bee & co.: 22 years building software, Director of Engineering and VP R&D since 2020. I help companies decide what is worth building with AI, then I build it.' },
+    meta: { title: 'About — bee & co.', desc: 'I’m Eran Nachum, founder of bee & co.: over 20 years building software, Director of Engineering and VP R&D since 2020. I help companies decide what is worth building with AI, then I build it.' },
     h1: 'I help companies decide what’s worth building with AI. Then I build it.',
-    lede: 'I’m Eran Nachum, founder of bee & co. I’ve spent 22 years building software and leading the people who build it. Now I bring that to leadership teams who need one senior partner, from the first conversation to a system running in production.',
+    lede: 'I’m Eran Nachum, founder of bee & co. I’ve spent over 20 years building software and leading the people who build it. Now I bring that to leadership teams who need one senior partner, from the first conversation to a system running in production.',
     cta: 'Book a call with me',
     career: {
       title: 'My path',

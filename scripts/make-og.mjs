@@ -21,8 +21,8 @@ const mark = `<svg viewBox="0 0 100 100" width="76" height="76"><path d="M28 13v
 function page(c) {
   const rtl = c.dir === 'rtl';
   const T = {
-    he: { h1: 'שותף אחד.<br>מהאתגר העסקי<br>ועד AI שעובד.', by: 'בהובלת ערן נחום, 22 שנה בהייטק' },
-    en: { h1: 'One partner.<br>End-to-end AI<br>transformation.', by: 'Led by Eran Nachum, 22 years in high-tech' },
+    he: { h1: 'שותף אחד.<br>מהאתגר העסקי<br>ועד AI שעובד.', by: 'בהובלת ערן נחום, מעל 20 שנה בהייטק' },
+    en: { h1: 'One partner.<br>End-to-end AI<br>transformation.', by: 'Led by Eran Nachum, over 20 years in high-tech' },
   }[c.lang];
   return `<!doctype html><html lang="${c.lang}" dir="${c.dir}"><head><meta charset="utf-8"><style>${faces}
 * { box-sizing: border-box; margin: 0; }

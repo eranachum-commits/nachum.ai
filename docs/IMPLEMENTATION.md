@@ -73,7 +73,7 @@ Home redesign (2026-11-17): **one accountable partner for end-to-end AI transfor
 - Hero: EN "One partner. End-to-end AI transformation." / HE "שותף אחד. מהאתגר העסקי ועד AI שעובד." (adapted, not translated).
 - Home order: hero (promise + "Which of these sounds like your business?" picker: four situations, each showing what is usually going on and where we would start; its action opens the contact form with `?pain=` and the situation pre-filled via `?q=`) → five services → why bee & co. (three pillars) → outcomes → conversation. No founder section on home (Eran is named in the hero trust line; the About page carries his story).
 - "One-stop shop" means one accountable owner, not a large in-house team: a note under the journey says specialists are selected and managed by bee & co.
-- Experience is stated as on LinkedIn: 22 years in software, Director / Head of Engineering / VP R&D since 2020, organizations of 50+. Never "20+ years of senior leadership" (a test guards this).
+- Experience is stated as on LinkedIn: over 20 years in software, Director / Head of Engineering / VP R&D since 2020, organizations of 50+. Never "20+ years of senior leadership" (a test guards this).
 - Outcomes are qualitative only. No client metrics, testimonials or case studies until there is written permission.
 - Banned phrases (tested on home): revolutionize, cutting-edge, next-generation, "power of AI", unlock.
 
