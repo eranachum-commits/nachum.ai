@@ -23,7 +23,10 @@ await writeFile('dist/assets/site.css', css);
 const jsSrc = (await readFile('public/js/app.js', 'utf8')) + (await readFile('public/js/calc.js', 'utf8'));
 // Google Analytics 4: set GA_MEASUREMENT_ID (G-…) in Vercel. The tag loads only after the visitor accepts analytics (public/js/app.js).
 const ga = /^G-[A-Z0-9]{4,}$/.test(process.env.GA_MEASUREMENT_ID || '') ? process.env.GA_MEASUREMENT_ID : '';
-const ctx = { site, cssHash: hash(css), jsHash: hash(jsSrc), draftNoindex: true, ga };
+// Google Ads conversion: set GOOGLE_ADS_CONVERSION (AW-…/label) in Vercel production. Sent through the same consent-gated gtag
+// when a lead is delivered, with advertising cookies off. Unset (local, previews): no Ads code at all.
+const adsConversion = /^AW-\d{6,}\/[\w-]{6,}$/.test(process.env.GOOGLE_ADS_CONVERSION || '') ? process.env.GOOGLE_ADS_CONVERSION : '';
+const ctx = { site, cssHash: hash(css), jsHash: hash(jsSrc), draftNoindex: true, ga, adsConversion };
 
 let count = 0;
 for (const lang of langs) {

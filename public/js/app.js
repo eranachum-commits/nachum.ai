@@ -9,9 +9,12 @@ const store = {
 
 /* ---------- consent-gated tracking ----------
    Nothing is sent anywhere until the visitor accepts analytics. Then Google Analytics 4 loads (if the build set an ID in
-   <meta name="ga-id">), with advertising storage and ad personalization denied, and every event goes to it. */
+   <meta name="ga-id">), with advertising storage and ad personalization denied, and every event goes to it.
+   If the build also set <meta name="ads-conversion"> (AW-…/label), a delivered lead is reported to Google Ads too, without ad cookies. */
 const consent = () => store.get('bee-co-consent');
 const GA_ID = document.querySelector('meta[name="ga-id"]')?.content || '';
+const ADS = document.querySelector('meta[name="ads-conversion"]')?.content || '';
+const ADS_ON = /^AW-\d{6,}\/[\w-]{6,}$/.test(ADS);
 let gaOn = false;
 function loadGA() {
   if (gaOn || !/^G-[A-Z0-9]{4,}$/.test(GA_ID)) return;
@@ -21,6 +24,7 @@ function loadGA() {
   window.gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
   window.gtag('js', new Date());
   window.gtag('config', GA_ID);
+  if (ADS_ON) window.gtag('config', ADS.split('/')[0], { send_page_view: false }); // Ads gets the lead conversion only, no page views
   const s = document.createElement('script');
   s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID);
   document.head.append(s);
@@ -28,7 +32,8 @@ function loadGA() {
 export function track(name, props = {}) {
   if (consent() !== 'yes') return;
   const params = { lang: document.documentElement.lang, page_path: location.pathname, ...props };
-  if (gaOn) window.gtag('event', name, params);
+  if (gaOn) window.gtag('event', name, { ...params, send_to: GA_ID }); // events go to GA only, never to Ads
+  if (gaOn && ADS_ON && name === 'generate_lead') window.gtag('event', 'conversion', { send_to: ADS });
   else (window.dataLayer = window.dataLayer || []).push({ event: name, ...params });
 }
 if (consent() === 'yes') loadGA();
