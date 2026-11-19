@@ -2,7 +2,7 @@
 // `node scripts/make-ad-files.mjs` → marketing/ads/google-ads-editor.csv, marketing/ads/meta-ads-import.csv
 // Default output updates the live campaigns (keywords, negatives, ads). NEW_CAMPAIGNS=1 also creates the campaigns.
 // Everything is created PAUSED: nothing spends until it is reviewed and switched on in each platform.
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile, readFile, copyFile, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import he from '../src/content/he.mjs';
 import { HOOKS, CTA_END } from './ad-copy.mjs';
@@ -10,7 +10,7 @@ import { HOOKS, CTA_END } from './ad-copy.mjs';
 const root = resolve(import.meta.dirname, '..');
 const SITE = 'https://beenco.tech';
 const GOOGLE_ACCOUNT = '913-227-0780'; // Google Ads Editor needs the customer ID on every row (Israel time zone, ILS)
-const DAILY_ILS = { google: 60, meta: 60 }; // starting budgets per campaign; change in the platform if needed
+const DAILY_ILS = { google: 60, meta: { accounting: 30, distribution: 30, business: 60 } }; // starting daily budgets (ILS) per campaign / ad set; change in the platform if needed
 
 // Shared negatives: job seekers, students, free tools. Domain negatives below (from the campaign review).
 // Shared negatives: job seekers, students, events, free tools, how-to, software logins (reviews 2026-11-18).
@@ -146,30 +146,78 @@ for (const d of DOMAINS.filter((x) => !ONLY || x.id === ONLY)) {
   g.push(row(ad));
 }
 
-// ---- Meta Ads Manager (Import ads in bulk). Images are attached in Ads Manager after import. ----
-const mCols = ['Campaign Name', 'Campaign Status', 'Campaign Objective', 'Buying Type', 'Ad Set Name', 'Ad Set Run Status', 'Ad Set Daily Budget',
-  'Destination Type', 'Optimization Goal', 'Billing Event', 'Countries', 'Age Min', 'Age Max', 'Publisher Platforms',
-  'Ad Name', 'Ad Status', 'Body', 'Title', 'Link', 'Display Link', 'Call to Action'];
+// ---- Meta Ads Manager (Import ads in bulk) ----
+// Follows Meta's own template (AdsManagerTemplate_v2.3, 114 columns, kept in scripts/meta-import-columns.json). Meta's import dialog takes: the
+// CSV plus the banner files, each ad naming its image in the "Image File Name" column (see marketing/ads/meta-upload/). Everything is created paused.
+// Template rules: objective "Traffic"; creative type "Page post ad" with the Facebook Page ID in "Link object ID";
+// campaign, ad set and ad names up to 35 characters; Device Platforms is required.
+const META_PAGE_ID = '1437816686084407'; // the bee & co. Facebook Page (asset_id in its Business Suite URL)
+const META_SHORT = { accounting: 'Accounting', distribution: 'Distribution', business: 'AI business' };
+const mCols = JSON.parse(await readFile(join(root, 'scripts/meta-import-columns.json'), 'utf8'));
 const m = [mCols];
+const metaImages = [];
+const metaAds = []; // for the hand-setup sheet (new ad accounts can't publish bulk-imported ads)
 // One ad per banner: the landing-page headline plus each hook. utm_content tells them apart in GA;
-// the image to attach is marketing/ads/images/{domain}-{angle}-square.png (or -portrait for Instagram).
+// the image is marketing/ads/images/{domain}-{angle}-square.png (portrait and wide exist for placements added later).
 for (const d of DOMAINS.filter((x) => HOOKS[x.id])) {
-  const camp = `bee&co | ${d.name} | Traffic | W1`, set = `${d.name} – Israel 30-65`, H = HOOKS[d.id];
+  const camp = `bee&co | ${META_SHORT[d.id]} | Meta | W1`, set = `${META_SHORT[d.id]} – Israel 30-65`, H = HOOKS[d.id];
   const ads = [
     { angle: 'headline', body: H.headline.body, title: H.headline.title },
     ...H.hooks.map((x) => ({ angle: 'hook-' + x.id, body: x.body || `${x.h} ${x.s}`, title: x.title })),
   ];
   for (const a of ads) {
-    const title = a.title;
-    if (len(title) > 40) { console.error('meta title too long: ' + title); process.exit(1); }
-    m.push([camp, 'PAUSED', 'Outcome Traffic', 'AUCTION', set, 'PAUSED', DAILY_ILS.meta, 'WEBSITE', 'LINK_CLICKS', 'IMPRESSIONS',
-      'IL', 30, 65, 'facebook, instagram', `${d.id} – ${a.angle}`, 'PAUSED', `${a.body} ${CTA_END}`, title,
-      `${SITE}${d.page}?${utm('facebook', 'paid', d, '&utm_content=' + a.angle)}`, 'beenco.tech', 'LEARN_MORE']);
+    const name = `${d.id} – ${a.angle}`, image = `${d.id}-${a.angle}-square.png`;
+    for (const [what, v, max] of [['campaign', camp, 35], ['ad set', set, 35], ['ad name', name, 35], ['title', a.title, 40]]) {
+      if (len(v) > max) { console.error(`meta ${what} too long (${len(v)} > ${max}): ${v}`); process.exit(1); }
+    }
+    const o = {
+      'Campaign Name': camp, 'Campaign Status': 'PAUSED', 'Special Ad Categories': 'none', 'Campaign Objective': 'Traffic', 'Buying Type': 'AUCTION',
+      'Ad Set Run Status': 'PAUSED', 'Ad Set Name': set, 'Ad Set Daily Budget': DAILY_ILS.meta[d.id], 'Link': `${SITE}${d.page}?${utm('facebook', 'paid', d, '&utm_content=' + a.angle)}`,
+      'Link Object ID': META_PAGE_ID, 'Countries': 'IL', 'Age Min': 30, 'Age Max': 65, 'Publisher Platforms': 'facebook, instagram',
+      'Device Platforms': 'mobile, desktop', 'Facebook Positions': 'feed', 'Instagram Positions': 'stream',
+      'Optimization Goal': 'LINK_CLICKS', 'Billing Event': 'IMPRESSIONS', 'Ad Status': 'PAUSED', 'Ad Name': name, 'Title': a.title,
+      'Body': `${a.body} ${CTA_END}`, 'Display Link': 'beenco.tech', 'Creative Type': 'Page post ad', 'Image File Name': image, 'Call to Action': 'LEARN_MORE',
+    };
+    for (const k of Object.keys(o)) if (!mCols.includes(k)) { console.error('unknown Meta column: ' + k); process.exit(1); }
+    m.push(mCols.map((c) => o[c] ?? ''));
+    metaImages.push(image);
+    metaAds.push({ d, camp, set, name, title: a.title, body: o.Body, link: o.Link, image });
   }
 }
 
 const out = join(root, 'marketing/ads');
 await mkdir(out, { recursive: true });
 await writeFile(join(out, ONLY ? `google-ads-editor-${ONLY}.csv` : 'google-ads-editor.csv'), csv(g));
+
+// New ad accounts can't publish bulk-imported ads (Meta error #3738001), so this sheet lists every field for creating them by hand.
+{
+  const lines = ['# Meta ads: set up by hand', '',
+    'Generated by `node scripts/make-ad-files.mjs`. Meta blocks publishing of bulk-imported ads on new ad accounts (error #3738001), so create the campaigns in Ads Manager with **Create**, and copy the fields below. Everything is created **paused**.', '',
+    '## Settings for every campaign', '',
+    '| Field | Value |', '|---|---|',
+    '| Campaign objective | **Traffic** |', '| Special ad category | None |', '| Buying type | Auction |',
+    '| Campaign budget (Advantage campaign budget) | **Off**: set the budget on the ad set |',
+    '| Ad set: conversion location | **Website** |', '| Ad set: performance goal | **Maximize number of link clicks** |',
+    `| Ad set: daily budget | Accounting ₪${DAILY_ILS.meta.accounting}, Distribution ₪${DAILY_ILS.meta.distribution}, AI business ₪${DAILY_ILS.meta.business} |`, '| Ad set: bid strategy | Highest volume (no bid amount) |',
+    '| Audience | Original audience options (Advantage+ audience **off**). Israel, age 30–65, Hebrew. Interests: see the README |',
+    '| Placements | **Manual**: Facebook Feed and Instagram Feed only |',
+    '| Ad: Page | bee & co. |', '| Ad: format | Single image |', '| Ad: call to action | Learn more |', '| Ad: display link | beenco.tech |', '| Status | Off (paused) |', ''];
+  for (const camp of [...new Set(metaAds.map((a) => a.camp))]) {
+    const ads = metaAds.filter((a) => a.camp === camp);
+    lines.push(`## ${camp}`, '', `Ad set name: **${ads[0].set}**. Create the first ad, then **Duplicate** it inside the ad set for the other three and change the fields below.`, '');
+    for (const a of ads) {
+      lines.push(`### ${a.name}`, '', `- **Ad name:** ${a.name}`, `- **Image:** \`marketing/ads/meta-upload/${a.image}\``, `- **Primary text:** ${a.body}`, `- **Headline:** ${a.title}`, `- **Website URL:** ${a.link}`, '');
+    }
+  }
+  await writeFile(join(out, 'meta-manual-setup.md'), lines.join('\n'));
+}
 await writeFile(join(out, 'meta-ads-import.csv'), csv(m));
+// Meta's import dialog takes the images (Images tab) and the CSV (File tab) separately and matches them by file name,
+// so everything it needs goes into one folder: marketing/ads/meta-upload/. Rebuilt on every run.
+const upload = join(out, 'meta-upload');
+await rm(upload, { recursive: true, force: true });
+await mkdir(upload, { recursive: true });
+await copyFile(join(out, 'meta-ads-import.csv'), join(upload, 'meta-ads-import.csv'));
+for (const f of metaImages) await copyFile(join(out, 'images', f), join(upload, f));
+await rm(join(out, 'meta-ads-import.zip'), { force: true });
 console.log(`ok: ${g.length - 1} Google rows, ${m.length - 1} Meta ads; all limits checked`);
