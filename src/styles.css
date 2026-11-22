@@ -546,7 +546,6 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .site-header--lp .header-in .btn { white-space: nowrap; }
 /* Campaign visitors arrive in one language; on phones the action keeps the room. */
 @media (max-width: 480px) { .site-header--lp .nav--lp { display: none; } .site-header--lp .header-in { gap: 10px; } .site-header--lp .header-in .btn { margin-inline-start: auto; padding: 8px 12px; font-size: .86rem; } }
-.lp-form-p { margin-top: 0; }
 .lp-formsec { scroll-margin-top: 90px; }
 #lead { scroll-margin-top: 110px; }
 
@@ -816,15 +815,6 @@ bdi[dir='ltr'] { white-space: nowrap; }
 
 
 /* How it starts: three steps beside the form, the duration set first so the commitment is clear. */
-.lp-steps { padding: clamp(18px, 2.4vw, 24px); background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r-sheet); }
-.lp-steps h3 { margin: 0 0 6px; }
-.lp-steps ol { list-style: none; margin: 0; padding: 0; }
-.lp-steps li { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 4px 14px; padding-block: 12px; border-top: 1px solid var(--rule); }
-.lp-steps li:first-child { border-top: 0; }
-.lp-steps-dur { margin: 0; font-size: .86rem; font-weight: 600; color: var(--accent-deep); padding-top: .1em; }
-.lp-steps-h { margin: 0; font-weight: 500; color: var(--ink); }
-.lp-steps li p:not([class]) { margin: 2px 0 0; font-size: .93rem; color: var(--ink-2); line-height: 1.45; }
-@media (max-width: 420px) { .lp-steps li { grid-template-columns: 1fr; } }
 
 /* LP headlines are full questions: wider than the home promise, and a step smaller (see .hero--lp above). */
 .hero--home.hero--lp h1 { max-width: 16ch; }
@@ -1003,3 +993,8 @@ bdi[dir='ltr'] { white-space: nowrap; }
 .home-who .pillar p, .home-who .section-head .lede { color: var(--ink-2); }
 .home-who .pillars { margin-bottom: 0; }
 .home-who .co-note { max-width: none; margin-inline: 0; padding-inline: 0; }  /* lines up with the three points above it */
+
+/* Domain workflow on a landing page (/for/law): the home flow band with the use case page's today line and numbers. */
+.lp-flow-today { margin: 0 0 clamp(28px, 3.4vw, 44px); max-width: 70ch; }
+.lp-flow-calc .ex-calc h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.lp-flow-calc .ex-note { margin-top: 22px; padding-top: 0; border-top: 0; }

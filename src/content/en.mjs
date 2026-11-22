@@ -500,18 +500,11 @@ export default {
     primary: 'Let’s explore your opportunities',
     secondary: 'See how it works',
     picker: { title: 'Which of these sounds familiar?', intro: 'Pick the closest one, and see where we would start.', underL: 'What’s usually going on', startL: 'Where we’d start', measureL: 'How you’ll know it worked', cta: 'Talk about this with Eran', note: '30 minutes. Your situation is already filled in on the form.' },
-    journey: { title: 'One partner. The entire journey.', intro: 'Five stages with one owner. You make the call at every step, and we carry the work from understanding the business to results you can measure.' },
+    journey: { title: 'How it would run, step by step', intro: 'Five steps, led by Eran, with specialists brought in as the project needs. At each step you decide whether it is worth going on.' },
+    whyIntro: 'Many vendors promise AI. The difference is who leads the work, and who is accountable for the result.',
     memo: { title: 'Sometimes the right answer is not AI', p: 'Every Decision Sprint ends with a written recommendation, and it includes what not to build. This is how three ideas we often hear usually come out.' },
     faqTitle: 'Questions we usually get',
-    start: {
-      title: 'How it starts',
-      steps: [
-        { h: 'A 30-minute call', dur: 'This week', p: 'You describe the situation. You leave with an honest first view and a clear answer on whether we are the right fit.' },
-        { h: 'A Decision Sprint', dur: '2–3 weeks', p: 'A written recommendation: what to build, what not to build, and why. The fee is credited if a build follows.' },
-        { h: 'Build, integrate, improve', dur: 'Scoped in writing', p: 'Only if it is worth it, and with your go-ahead at every step.' },
-      ],
-    },
-    form: { topicL: 'What is closest to your situation?', detailHint: 'Optional if you picked one above. A few sentences are enough.', title: 'Talk to Eran: a 30-minute call', p: 'Tell us briefly what is on your mind. Eran reads every message himself and replies personally.' },
+    form: { topicL: 'What is closest to your situation?', detailHint: 'Optional if you picked one above. A few sentences are enough.' },
   },
   industries: {
     distribution: {
@@ -685,10 +678,27 @@ export default {
       ],
     },
     law: {
-      meta: { title: 'AI for law firms: one partner, end to end — bee & co.', desc: 'For law firms: one accountable partner to choose the AI worth using, with privilege and confidentiality designed in, and get it into daily work. Led by Eran Nachum.' },
+      meta: { title: 'AI for law firms: first drafts, search and a clear AI policy — bee & co.', desc: 'For law firms: decide which AI is worth the risk, then put it to work on the drafting and searching that take senior hours, with privilege and confidentiality designed in. Founder-led by Eran Nachum.' },
       kicker: 'AI for law firms',
       h1: 'Every vendor is pitching your firm an AI tool. Which one is real?',
-      lede: 'One partner from the business challenge to AI in daily use. We help the partners decide which legal AI is worth the investment and the risk, then build it into the way the firm already works, with privilege and confidentiality designed in.',
+      lede: 'bee & co. helps law firms decide which AI is worth the risk, then puts it to work on the drafting and searching that take senior hours. Built into the way the firm already works, with privilege and confidentiality designed in.',
+      // The workflow under the hero (replaces the situation picker). Illustrative: same rules as the use case page.
+      flow: {
+        title: 'What changes when AI prepares the first draft',
+        intro: 'In most firms, senior lawyers still start recurring documents from a blank page or an old file. Here is what changes.',
+        today: 'A lawyer finds a similar past file, copies it and rewrites it clause by clause.',
+        steps: [
+          { i: 'inbox', k: 'in', h: 'A new matter needs a document', p: 'An engagement letter, an agreement or a recurring filing.' },
+          { i: 'draft', k: 'ai', h: 'AI prepares the first draft', p: 'From the firm’s own templates and past files, in approved tools only. Client data never goes into a public AI tool.',
+            agents: ['Draft preparation', 'Precedent search', 'Version comparison', 'Intake summaries', 'Deadline tracking', 'Document filing'] },
+          { i: 'approve', k: 'team', h: 'A lawyer reviews every draft', p: 'Judgment, changes and sign-off stay with the lawyer. Nothing goes out without them.' },
+        ],
+        result: ['First drafts in minutes, not hours', 'Senior time back on judgment', 'The firm’s standard, every time'],
+        numbers: [{ n: '200', l: 'recurring documents a month' }, { n: '60 → 25', l: 'lawyer minutes per first draft' }, { n: '≈ 115', l: 'lawyer hours released each month' }, { n: '≈ ₪34,500', l: 'monthly capacity value, at an assumed ₪300 an hour' }],
+        measure: 'lawyer time per draft, changes needed after review, turnaround to the client.',
+        note: 'An illustrative calculation, not a bee & co. client result. In a firm that bills by the hour, released hours are capacity, not automatically savings: they become value as more matters, faster turnaround or fixed-fee work.',
+        agentsL: 'Example AI agents in a law firm', cta: 'Talk about your firm with Eran',
+      },
       here: 'In a law firm',
       situations: [
         { q: 'Vendors keep pitching AI tools, and the partners can’t tell them apart.', under: 'Every demo looks good, each vendor sells its own product, and nobody at the firm has evaluated systems like these before.', start: 'An independent comparison against your real documents and workflows, covering cost, confidentiality and risk, with a recommendation the partners can agree on.', measure: 'A decision made on time, with the reasoning written down' },
@@ -702,15 +712,6 @@ export default {
         'Inside the document system the firm uses, with a lawyer reviewing every draft.',
         'Senior hours per matter tracked every month, then extended to the next practice area.',
       ],
-      memo: {
-        for: 'Three ideas law firms often raise on the first call',
-        items: [
-          { q: 'First drafts of recurring documents, from the firm’s own templates and past files', v: 'Build', k: 'build', why: 'The same documents every week, the knowledge is already in past files, and a lawyer reviews every draft.' },
-          { q: 'A firm-wide AI platform licence for everyone', v: 'Not now', k: 'later', why: 'Licences without one clear use become a cost line. Start with one practice area and one measure.' },
-          { q: 'An AI on the website that answers clients’ legal questions', v: 'Don’t build', k: 'no', why: 'The advice carries your name and your liability. The time saved is not worth one wrong answer.' },
-        ],
-        foot: 'Sometimes the value is knowing what not to start with.',
-      },
       faq: [
         { q: 'We use a dedicated practice-management system. Is that a fit?', a: 'Yes. We start from the systems you already run and connect to them, usually with read-only access first. Replacing them is a decision we weigh with you, not an assumption.' },
         { q: 'How do you handle privilege and client confidentiality?', a: 'Confidentiality terms come first. We start with anonymized examples, data stays in approved, secured services, and nothing goes into unapproved AI tools. The partners approve the design before anything is built.' },

@@ -229,10 +229,13 @@ const FL_DEFAULT = { in: 'mail', ai: 'repeat', team: 'personAlert', result: 'tre
 const STAR = [[50, 9], [82, 27], [82, 73], [50, 91], [18, 73], [18, 27]];
 // One workflow line: an ordered list of steps (in, ai, team, result). Used on home and, without the agent star, on the use case page.
 const wfList = (steps, star, cls = '', hl = 'h3') => `<ol class="wf${cls ? ' ' + cls : ''}">${steps.map((s) => `<li class="wf-step wf-step--${s.k}"><div class="wf-stage">${s.agents && star ? star(s) : ''}<span class="wf-mark">${FL_ICON[s.i || FL_DEFAULT[s.k]]}</span></div><div class="wf-t"><${hl}>${s.h}</${hl}>${s.p ? `<p>${s.p}</p>` : ''}${s.list ? `<ul class="wf-out">${s.list.map((x) => `<li>${x}</li>`).join('')}</ul>` : ''}</div></li>`).join('')}</ol>`;
+// The example AI agents around the AI step, as on home; label names the list for screen readers.
+const agentStar = (label) => (s) => `<svg class="wf-spokes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">${s.agents.map((_, i) => `<line x1="50" y1="50" x2="${STAR[i][0]}" y2="${STAR[i][1]}" vector-effect="non-scaling-stroke"/>`).join('')}</svg>
+<ul class="wf-agents" aria-label="${esc(label)}">${s.agents.map((x, i) => `<li style="--x:${STAR[i][0]}%;--y:${STAR[i][1]}%;--i:${i}"><span>${x}</span></li>`).join('')}</ul>`;
+// The use case page's "In numbers" panel: four illustrative figures.
+const exCalc = (c, numbers) => `<div class="ex-calc"><h3>${c.usecase.numbersL}</h3><ul>${numbers.map((y) => `<li><span class="ex-n">${y.n}</span><span class="ex-l">${y.l}</span></li>`).join('')}</ul></div>`;
 const flowLine = (c) => {
-  const f = c.home.flow;
-  const star = (s) => `<svg class="wf-spokes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">${s.agents.map((_, i) => `<line x1="50" y1="50" x2="${STAR[i][0]}" y2="${STAR[i][1]}" vector-effect="non-scaling-stroke"/>`).join('')}</svg>
-<ul class="wf-agents" aria-label="${esc(f.agentsL)}">${s.agents.map((x, i) => `<li style="--x:${STAR[i][0]}%;--y:${STAR[i][1]}%;--i:${i}"><span>${x}</span></li>`).join('')}</ul>`;
+  const f = c.home.flow, star = agentStar(f.agentsL);
   return `${head(f.title, f.intro, 'flow-title')}${wfList(f.steps, star)}
 <div class="wf-foot">${btn(c, f.cta, href(c.lang, 'contact'), 'btn--primary', 'data-track="cta_flow"')}</div>`;
 };
@@ -279,7 +282,7 @@ pages.usecase = (c) => {
   const ex = c.usecase;
   // Four illustrative processes: one headline, one "today" line, the home page's workflow line and the same four numbers each.
   // One shared note under all four says these are illustrations and that released hours are capacity, not savings.
-  const calc = (x) => `<div class="ex-calc"><h3>${ex.numbersL}</h3><ul>${x.numbers.map((y) => `<li><span class="ex-n">${y.n}</span><span class="ex-l">${y.l}</span></li>`).join('')}</ul></div>`;
+  const calc = (x) => exCalc(c, x.numbers);
   const one = (x, i) => `<article class="exw" id="ex-${i + 1}"><header class="exw-head"><p class="exw-tag">${x.tag}<span class="ex-chip">${c.ui.illustrative}</span></p><h2>${x.h}</h2><p class="exw-today"><span>${ex.todayL}</span> ${x.today}</p></header>
 ${wfList([...x.steps, { k: 'result', h: ex.resultH, list: x.result }], null, 'wf--plain', 'h4')}${calc(x)}<p class="exw-measure"><span>${ex.measureL}</span> ${x.measure}</p></article>`;
   const body = `${pageHero(c, ex.title, ex.intro)}
@@ -409,30 +412,49 @@ function landing(c, id) {
   const picker = `<aside class="hero-pick" data-ladder data-vertical data-track-id="lp_situation" aria-labelledby="pick-title"><h2 id="pick-title">${pk.title}</h2><p class="pick-intro">${pk.intro}</p>
 <div class="pick-tabs" role="tablist" aria-orientation="vertical" aria-labelledby="pick-title">${tabs}</div>
 <div class="pick-panels">${panels}</div><p class="pick-note">${pk.note}</p></aside>`;
-  const hero = `<section class="hero hero--home hero--lp"><div class="container hero-grid">
+  const actions = `<div class="btn-row">${btn(c, L.primary, '#lead', 'btn--primary', track('cta_lp_hero'))}${btn(c, L.secondary, '#journey', '')}</div>
+<p class="hero-trust">${c.home.hero.trust}</p>`;
+  // A domain with a `flow` opens like home: the question beside the lede, then one workflow from this business in a dark band.
+  // The others keep the situation picker in the hero.
+  const hero = d.flow
+    ? `<section class="hero hero--home hero--lp"><div class="container hero-grid">
+<div class="hero-copy"><p class="lp-kicker">${d.kicker}</p><h1>${d.h1}</h1></div>
+<div class="hero-body"><p class="lede">${d.lede}</p>${actions}</div></div></section>`
+    : `<section class="hero hero--home hero--lp"><div class="container hero-grid">
 <div class="hero-copy"><p class="lp-kicker">${d.kicker}</p><h1>${d.h1}</h1><p class="lede">${d.lede}</p>
-<div class="btn-row">${btn(c, L.primary, '#lead', 'btn--primary', track('cta_lp_hero'))}${btn(c, L.secondary, '#journey', '')}</div>
-<p class="hero-trust">${c.home.hero.trust}</p></div>
+${actions}</div>
 ${picker}</div></section>`;
+  // The domain workflow: the home page's line (with its agent star) and the use case page's today line and numbers.
+  const f = d.flow, ex = c.usecase;
+  const flow = f ? `${head(f.title, f.intro, 'flow-title')}<p class="exw-today lp-flow-today"><span>${ex.todayL}</span> ${f.today}</p>
+${wfList([...f.steps, { k: 'result', h: ex.resultH, list: f.result }], agentStar(f.agentsL))}
+<div class="lp-flow-calc">${exCalc(c, f.numbers).replace('</h3>', ` <span class="ex-chip">${c.ui.illustrative}</span></h3>`)}<p class="exw-measure"><span>${ex.measureL}</span> ${f.measure}</p><p class="ex-note">${f.note}</p></div>
+<div class="wf-foot">${btn(c, f.cta, '#lead', 'btn--primary', track('cta_lp_flow'))}</div>` : '';
 
   // The signature: the same five stages as the home page and How it works, each carried through this domain.
   // Stage names and your decision stay shared; the sentence in between is this business.
-  const journey = `${head(L.journey.title, L.journey.intro, 'journey-title')}<div class="journey lp-journey"><p class="lp-here-l">${d.here}</p><ol class="jr-stages">${J.stages.map((s, i) => `<li class="jr-stage"><span class="jr-n" aria-hidden="true">${i + 1}</span><h3>${s.h}</h3><p class="lp-here">${d.journey[i]}</p>${s.gate ? `<p class="jr-gate"><span>${J.gateL}</span>${s.gate}</p>` : ''}</li>`).join('')}</ol><p class="jr-note">${J.note}</p></div>`;
+  const journey = `${head(L.journey.title, L.journey.intro, 'journey-title')}<div class="journey lp-journey"><p class="lp-here-l">${d.here}</p><ol class="jr-stages">${J.stages.map((s, i) => `<li class="jr-stage"><span class="jr-n" aria-hidden="true">${i + 1}</span><h3>${s.h}</h3><p class="lp-here">${d.journey[i]}</p>${s.gate ? `<p class="jr-gate"><span>${J.gateL}</span>${s.gate}</p>` : ''}</li>`).join('')}</ol></div>`;
 
-  const memo = `<div class="lp-memo"><div class="lp-memo-copy"><h2 id="memo-sec-title">${L.memo.title}</h2><p class="lede">${L.memo.p}</p>${btn(c, L.bookHere, '#lead', 'btn--primary', track('cta_lp_mid'))}</div>${memoBlock(c, d.memo)}</div>`;
+  // A domain without a memo (law: removed 2026-11-22) skips the section; its workflow carries the mid-page action.
+  const memo = d.memo && `<div class="lp-memo"><div class="lp-memo-copy"><h2 id="memo-sec-title">${L.memo.title}</h2><p class="lede">${L.memo.p}</p>${btn(c, L.bookHere, '#lead', 'btn--primary', track('cta_lp_mid'))}</div>${memoBlock(c, d.memo)}</div>`;
 
+  // Why bee & co. as on home: the three pillars (lite), the "& co." note and the security link. The intro says
+  // "vendors", not "firms": on a law firm's page "many firms promise AI" reads as other law firms.
   const wy = c.home.why;
-  const why = `${head(wy.title, wy.intro, 'why-title')}<div class="pillars">${wy.items.map((x) => `<article class="pillar"><h3>${x.h}</h3><p>${x.p}</p><p class="pillar-not"><span>${wy.notL}:</span> ${x.not}</p></article>`).join('')}</div>`;
+  const why = `${head(wy.title, L.whyIntro, 'why-title')}<div class="pillars pillars--lite">${wy.items.map((x) => `<article class="pillar"><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div>
+${coNote(c)}<p class="ways-link"><a href="${href(c.lang, 'security')}">${wy.trustLink}</a></p>`;
 
-  const startList = `<div class="lp-steps"><h3>${L.start.title}</h3><ol>${L.start.steps.map((x) => `<li><p class="lp-steps-dur">${x.dur}</p><div><p class="lp-steps-h">${x.h}</p><p>${x.p}</p></div></li>`).join('')}</ol></div>`;
-  const form = `<div class="split split--top"><div>${leadForm(c, { pain: id, title: L.form.title, topics: d.situations.map((x) => x.q), topicL: L.form.topicL, detailHint: L.form.detailHint })}</div><aside class="aside-stack"><p class="lede lp-form-p">${L.form.p}</p>${personCard(c)}${startList}</aside></div>`;
+  // The contact page's layout: heading and lede, Eran's card above the form, "what happens next" and "useful to mention" beside it.
+  // The form keeps this domain's situations as topic chips, so a lead arrives tagged with the domain and the situation.
+  const ct = c.contact;
+  const form = `${head(ct.h1, ct.lede, 'book-title')}<div class="split split--top"><div>${personCard(c)}${leadForm(c, { pain: id, topics: d.situations.map((x) => x.q), topicL: L.form.topicL, detailHint: L.form.detailHint })}</div><aside class="aside-stack"><div class="card"><h3>${ct.next.h}</h3><ol class="steps">${ct.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div><div class="card"><h3>${ct.bring.h}</h3>${ticks(ct.bring.items)}</div></aside></div>`;
 
   const body = `${hero}
-${section(journey, 'lp-journeysec', 'journey', 'journey-title')}
-${section(memo, 'section--tint lp-memosec', 'memo-sec', 'memo-sec-title')}
-${section(why, 'section--dark home-why lp-whysec', 'why', 'why-title')}
+${f ? section(flow, 'section--dark home-flow lp-flowsec', 'flow', 'flow-title') : ''}
+${section(journey, 'section--tint lp-journeysec', 'journey', 'journey-title')}
+${memo ? section(memo, 'section--tint lp-memosec', 'memo-sec', 'memo-sec-title') + '\n' : ''}${section(why, 'home-why home-who lp-whysec', 'why', 'why-title')}
 ${section(`<div class="about-how"><h2 id="faq-title">${L.faqTitle}</h2>${faqList(d.faq)}</div>`, '', 'faq', 'faq-title')}
-${section(form, 'section--tint lp-formsec', 'book', '')}
+${section(form, 'section--tint lp-formsec', 'book', 'book-title')}
 <a class="btn btn--primary lp-sticky" href="#lead" data-lp-sticky ${track('cta_lp_sticky')} hidden>${L.bookHere}</a>`;
   return { meta: d.meta, body, ld: faqLd(d.faq) };
 }
