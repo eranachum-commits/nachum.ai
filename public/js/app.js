@@ -132,7 +132,7 @@ $$('[data-pipeline]').forEach((root) => {
 /* ---------- ladder tabs ---------- */
 $$('[data-ladder]').forEach((root) => {
   const tabs = $$('[role=tab]', root);
-  const vertical = root.matches('.pain-picker, [data-vertical]');
+  const vertical = root.matches('[data-vertical]');
   const sel = (i, focus) => tabs.forEach((t, j) => {
     const on = i === j;
     t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
@@ -141,7 +141,7 @@ $$('[data-ladder]').forEach((root) => {
   });
   // Panels are all visible in the HTML (works without JS); show one at a time once tabs are live.
   root.classList.add('is-tabs');
-  // A link such as /business-use-case#s-2 opens that tab and scrolls to the picker.
+  // A link to a tab id (#s-2, say) opens that tab and scrolls to the picker.
   const fromHash = tabs.findIndex((t) => '#' + t.getAttribute('aria-controls') === location.hash);
   sel(fromHash >= 0 ? fromHash : Math.max(0, tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true')));
   if (fromHash >= 0) root.scrollIntoView({ block: 'start' });
@@ -346,76 +346,4 @@ $$('[data-lp-sticky]').forEach((bar) => {
   const show = () => { bar.hidden = !(pastHero && !atForm); };
   new IntersectionObserver(([e]) => { pastHero = !e.isIntersecting; show(); }).observe(hero);
   new IntersectionObserver(([e]) => { atForm = e.isIntersecting; show(); }).observe(form);
-});
-
-/* ---------- order flowchart (examples page) ----------
-   Two views of the same process (today / with a solution). A visitor can follow one order step by step, tap any step
-   for the explanation, and add a problem order to see the extra path. Without this script both charts are just shown. */
-$$('[data-flow]').forEach((root) => {
-  const d = root.dataset, U = d.minU;
-  const tabs = $$('[role=tab]', root), panels = $$('.fl-mode', root);
-  const detail = $('[data-fl-detail]', root), play = $('[data-fl-play]', root), prob = $('[data-fl-problem]', root);
-  root.dataset.flowOn = '1'; detail.hidden = false; play.hidden = false;
-  let mode = 0, idx = -1, timer = null;
-  const panel = () => panels[mode];
-  const nodes = () => $$('.fl-node', panel());
-  const byStep = (k) => nodes().find((n) => n.dataset.step === String(k));
-  // The path an order takes: the main steps, with the extra step after the decision when the order has a problem.
-  const path = () => { const m = [0, 1, 2, 3]; if (prob.checked) m.push('b'); m.push(4); return m.map(byStep); };
-  const clear = () => nodes().forEach((n) => { n.classList.remove('is-active', 'is-done'); $('.fl-btn', n).setAttribute('aria-pressed', 'false'); });
-  const stopTimer = () => { clearInterval(timer); timer = null; play.textContent = idx >= 0 && idx >= path().length - 1 ? d.lAgain : d.lPlay; };
-  const showIdle = () => { detail.innerHTML = '<p class="fl-d-idle">' + d.lIdle + '</p>'; };
-  const upto = (i) => path().slice(0, i + 1).reduce((a, n) => a + Number(n.dataset.min), 0);
-  function select(i) {
-    const p = path(); idx = i; clear();
-    p.forEach((n, j) => { if (j < i) n.classList.add('is-done'); });
-    const n = p[i]; n.classList.add('is-active'); $('.fl-btn', n).setAttribute('aria-pressed', 'true');
-    const last = i === p.length - 1, total = upto(i);
-    detail.innerHTML = '<p class="fl-d-h"><span class="fl-d-n">' + d.lStep + ' ' + (i + 1) + ' ' + d.lOf + ' ' + p.length + '</span> ' + $('.fl-t', n).textContent + '</p>'
-      + '<p class="fl-d-p">' + $('.fl-s', n).textContent + '</p>'
-      + '<p class="fl-d-clock"><span>' + (last ? d.lDone : d.lElapsed) + '</span> <bdi dir="ltr">' + total + ' ' + U + '</bdi></p>';
-  }
-  function reset() { stopTimer(); idx = -1; clear(); showIdle(); play.textContent = d.lPlay; }
-  tabs.forEach((t, i) => t.addEventListener('click', () => {
-    mode = i; tabs.forEach((x, j) => { x.setAttribute('aria-selected', j === i); x.tabIndex = j === i ? 0 : -1; });
-    panels.forEach((x, j) => { x.hidden = j !== i; });
-    root.classList.toggle('is-solution', i === 1); reset();
-  }));
-  tabs.forEach((t) => t.addEventListener('keydown', (e) => {
-    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-    const rtl = getComputedStyle(root).direction === 'rtl';
-    const next = (tabs.indexOf(t) + (((e.key === 'ArrowRight') !== rtl) ? 1 : -1) + tabs.length) % tabs.length;
-    tabs[next].focus(); tabs[next].click(); e.preventDefault();
-  }));
-  panels.forEach((x, j) => { x.hidden = j !== 0; });
-  const markProblem = () => root.classList.toggle('has-problem', prob.checked);
-  prob.addEventListener('change', () => { markProblem(); reset(); });
-  markProblem();
-  root.addEventListener('click', (e) => {
-    const b = e.target.closest('.fl-btn'); if (!b || !panel().contains(b)) return;
-    const li = b.closest('.fl-node');
-    if (li.dataset.step === 'b' && !prob.checked) { prob.checked = true; markProblem(); }
-    stopTimer(); select(path().indexOf(li));
-  });
-  play.addEventListener('click', () => {
-    if (timer) { stopTimer(); play.textContent = d.lPlay; return; }
-    if (idx >= path().length - 1) idx = -1;
-    play.textContent = d.lPause;
-    const step = () => { select(idx + 1); if (idx >= path().length - 1) stopTimer(); };
-    step(); timer = idx < path().length - 1 ? setInterval(step, 1700) : null;
-    if (!timer) stopTimer();
-  });
-  showIdle();
-});
-
-/* ---------- interactive volume calculator (examples page) ----------
-   Same arithmetic as the printed default: 8 to 3 minutes per order, an assumed 110 per hour. A scenario, not a result. */
-$$('[data-scenario]').forEach((root) => {
-  const input = $('[data-sc-orders]', root), lang = root.dataset.lang === 'he' ? 'he-IL' : 'en-US';
-  const nf = new Intl.NumberFormat(lang), out = (k) => $('[data-sc-out="' + k + '"]', root);
-  const put = (k, tpl, n) => { out(k).innerHTML = tpl.replace('{n}', '<bdi dir="ltr">' + nf.format(n) + '</bdi>'); };
-  input.addEventListener('input', () => {
-    const orders = Number(input.value), h = orders * 5 / 60, value = Math.round(h * 110 / 100) * 100;
-    put('orders', '{n}', orders); put('hours', root.dataset.hours, Math.round(h)); put('value', root.dataset.value, value);
-  });
 });

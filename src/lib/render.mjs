@@ -17,7 +17,7 @@ const PHOTO = { src: '/img/eran-nachum-806.jpg', set: '/img/eran-nachum-420.jpg 
 const founderPanel = (c, { eager = false, sizes = '(min-width: 980px) 360px, 80vw' } = {}) => `<figure class="portrait"><span class="portrait-photo"><img src="${PHOTO.src}" srcset="${PHOTO.set}" sizes="${sizes}" width="806" height="772" alt="${esc(c.founder.photoAlt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></span><figcaption><span class="portrait-name">${c.founder.name}</span><span class="portrait-role">${c.founder.role}</span></figcaption></figure>`;
 
 /* ---------- layout ---------- */
-const NAV = ['examples', 'how', 'about', 'results', 'faq'];
+const NAV = ['usecase', 'how', 'about', 'results', 'faq'];
 function header(c, key) {
   // Campaign landing pages keep visitors on the page: logo, language and one action that scrolls to the form.
   if (key.startsWith('lp-')) {
@@ -52,7 +52,6 @@ function footer(c) {
   <div class="foot-grid">
     <div><a class="logo logo--footer" href="${href(c.lang, 'home')}">${brandLockup(c, true)}</a><p>${f.tag}</p></div>
     <div><h2>${f.cols.site}</h2><ul>${NAV.map((k) => `<li><a href="${href(c.lang, k)}">${c.nav[k]}</a></li>`).join('')}<li><a href="${href(c.lang, 'contact')}">${f.contact}</a></li><li>${extLink(c.founder.linkedin, c.founder.linkedinLabel)}</li></ul></div>
-    <div><h2>${f.cols.example}</h2><ul><li><a href="${href(c.lang, 'usecase')}">${c.nav.usecase}</a></li></ul></div>
     <div><h2>${f.cols.industries}</h2><ul>${routes.filter((r) => r.key.startsWith('lp-')).map((r) => `<li><a href="${href(c.lang, r.key)}">${f.industries[r.key.slice(3)]}</a></li>`).join('')}</ul></div>
     <div><h2>${f.cols.legal}</h2><ul><li><a href="${href(c.lang, 'privacy')}">${f.privacy}</a></li><li><a href="${href(c.lang, 'security')}">${f.security}</a></li></ul></div>
   </div>
@@ -204,20 +203,35 @@ const stageCover = (c, st, label) => { const S = c.how.journey.stages;
 
 /* ---------- home workflow: one plain line, work comes in → AI does the repeated part → your team handles exceptions → result ---------- */
 // An ordered list, so it reads in order without CSS. The AI step is the one highlighted mark; the line runs along the reading direction.
+// Step icons, named by meaning. A step's `i` picks its icon (matching what the step says); otherwise its kind's default.
 const FL_ICON = {
-  in: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="6" width="17" height="12" rx="2.2"/><path d="M3.8 8l8.2 6 8.2-6"/></svg>',
-  ai: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 3.6h8l4 6.9-4 6.9H8l-4-6.9z" transform="translate(0 1.2)"/><path d="M9.5 12.4l2 2 3.5-4"/></svg>',
-  team: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg>',
-  result: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 17l5.5-5.5 3.5 3.5L20 8"/><path d="M14.5 8H20v5.5"/></svg>',
+  mail: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="6" width="17" height="12" rx="2.2"/><path d="M3.8 8l8.2 6 8.2-6"/></svg>',
+  inbox: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 13.5L6.6 6h10.8l2.6 7.5V19H4z"/><path d="M4 13.5h4.6l1.2 2.2h4.4l1.2-2.2H20"/></svg>',
+  chat: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 6.5A2.5 2.5 0 0 1 7 4h10a2.5 2.5 0 0 1 2.5 2.5v7A2.5 2.5 0 0 1 17 16h-6l-4.5 4v-4H7a2.5 2.5 0 0 1-2.5-2.5z"/><path d="M10.1 8.4a1.9 1.9 0 1 1 2.6 1.8c-.5.2-.7.6-.7 1.1v.3"/><path d="M12 13.6h.01"/></svg>',
+  receipt: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3.5h12v17l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3-2 1.3z"/><path d="M9 8h6M9 11.5h6M9 15h3.5"/></svg>',
+  drawing: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 19.5v-15l15 15z"/><path d="M8.5 15.5v-3.2l3.2 3.2z"/><path d="M4.5 8h2M4.5 11.5h2"/></svg>',
+  repeat: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M16.5 3.5l3 3-3 3"/><path d="M19.5 6.5H9a5 5 0 0 0-5 5"/><path d="M7.5 20.5l-3-3 3-3"/><path d="M4.5 17.5H15a5 5 0 0 0 5-5"/></svg>',
+  docCheck: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.5 3.5h7.5l4 4v13h-11.5z"/><path d="M14 3.5v4h4"/><path d="M9.3 14.2l2 2 3.6-4"/></svg>',
+  search: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg>',
+  link: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg>',
+  draft: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.5 5.5l4 4L9 19H5v-4z"/><path d="M12.5 7.5l4 4"/><path d="M13 19h6"/></svg>',
+  personAlert: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="9.5" cy="8.5" r="3.4"/><path d="M3.5 19.5c.7-3.4 3.2-5.3 6-5.3s5.3 1.9 6 5.3"/><path d="M19 6.5v5"/><path d="M19 14.6h.01"/></svg>',
+  flag: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.5 21V3.8"/><path d="M6.5 4.5h11l-2.6 4 2.6 4h-11"/></svg>',
+  send: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.5 3.5L10 14"/><path d="M20.5 3.5l-6.7 17-3.8-6.5-6.5-3.8z"/></svg>',
+  alert: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4l9 16H3z"/><path d="M12 10v4.2"/><path d="M12 17.2h.01"/></svg>',
+  approve: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M8.4 12.2l2.5 2.5 4.8-5.2"/></svg>',
+  trend: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 17l5.5-5.5 3.5 3.5L20 8"/><path d="M14.5 8H20v5.5"/></svg>',
 };
+const FL_DEFAULT = { in: 'mail', ai: 'repeat', team: 'personAlert', result: 'trend' };
 // Six spots around the AI mark (percent of the stage), clockwise from the top. The flow line runs through the centre, so no agent sits on it.
 const STAR = [[50, 9], [82, 27], [82, 73], [50, 91], [18, 73], [18, 27]];
+// One workflow line: an ordered list of steps (in, ai, team, result). Used on home and, without the agent star, on the use case page.
+const wfList = (steps, star, cls = '', hl = 'h3') => `<ol class="wf${cls ? ' ' + cls : ''}">${steps.map((s) => `<li class="wf-step wf-step--${s.k}"><div class="wf-stage">${s.agents && star ? star(s) : ''}<span class="wf-mark">${FL_ICON[s.i || FL_DEFAULT[s.k]]}</span></div><div class="wf-t"><${hl}>${s.h}</${hl}>${s.p ? `<p>${s.p}</p>` : ''}${s.list ? `<ul class="wf-out">${s.list.map((x) => `<li>${x}</li>`).join('')}</ul>` : ''}</div></li>`).join('')}</ol>`;
 const flowLine = (c) => {
   const f = c.home.flow;
   const star = (s) => `<svg class="wf-spokes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">${s.agents.map((_, i) => `<line x1="50" y1="50" x2="${STAR[i][0]}" y2="${STAR[i][1]}" vector-effect="non-scaling-stroke"/>`).join('')}</svg>
 <ul class="wf-agents" aria-label="${esc(f.agentsL)}">${s.agents.map((x, i) => `<li style="--x:${STAR[i][0]}%;--y:${STAR[i][1]}%;--i:${i}"><span>${x}</span></li>`).join('')}</ul>`;
-  const steps = f.steps.map((s) => `<li class="wf-step wf-step--${s.k}"><div class="wf-stage">${s.agents ? star(s) : ''}<span class="wf-mark">${FL_ICON[s.k]}</span></div><div class="wf-t"><h3>${s.h}</h3>${s.p ? `<p>${s.p}</p>` : ''}${s.list ? `<ul class="wf-out">${s.list.map((x) => `<li>${x}</li>`).join('')}</ul>` : ''}</div></li>`).join('');
-  return `${head(f.title, f.intro, 'flow-title')}<ol class="wf">${steps}</ol>
+  return `${head(f.title, f.intro, 'flow-title')}${wfList(f.steps, star)}
 <div class="wf-foot">${btn(c, f.cta, href(c.lang, 'contact'), 'btn--primary', 'data-track="cta_flow"')}</div>`;
 };
 
@@ -242,7 +256,7 @@ pages.home = (c) => {
   const hero = `<section class="hero hero--home"><div class="container hero-grid">
 <div class="hero-copy"><p class="hero-line">${hr.line}</p><h1>${hr.h1}</h1><p class="hero-support">${hr.support}</p></div>
 <div class="hero-body"><p class="lede">${hr.sub}</p>
-<div class="btn-row">${btn(c, hr.primary, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}<a class="hero-link" href="${href(c.lang, 'examples')}">${hr.secondary}</a></div>
+<div class="btn-row">${btn(c, hr.primary, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}<a class="hero-link" href="${href(c.lang, 'usecase')}">${hr.secondary}</a></div>
 <p class="hero-trust">${hr.trust}</p></div></div></section>`;
 
   // After the hero: is this my business (tree) → what we do (three ways) → who I work with (why, and who does what) → talk.
@@ -267,58 +281,17 @@ ${cta}`;
   return { meta: h.meta, body, ld };
 };
 
-pages.examples = (c) => {
-  const ex = c.examples;
-  // Illustrative scenarios only: labelled as such. The first one is a flowchart you can follow (public/js/app.js, data-flow)
-  // with a calculator you can move; without JavaScript both views and the default numbers are simply shown.
-  const fmt = (t, n) => t.replace('{n}', `<bdi dir="ltr">${n}</bdi>`);
-  const fl = ex.flow;
-  const node = (n, i, kind, extra = '') => `<li class="fl-node fl-node--${n.w}${kind ? ' fl-node--' + kind : ''}${extra}" data-min="${n.m}" data-step="${kind === 'branch' ? 'b' : i}">${kind === 'gate' ? `<span class="fl-tag fl-tag--no">${fl.no}</span>` : ''}${kind === 'branch' ? `<span class="fl-tag fl-tag--yes">${fl.yes}</span>` : ''}<button type="button" class="fl-btn" aria-pressed="false"><span class="fl-shape" aria-hidden="true">${kind === 'gate' ? '' : kind === 'branch' ? '' : i + 1}</span><span class="fl-t">${n.t}</span><span class="fl-m">${n.m ? `${n.m} ${fl.minU}` : ''}</span></button><p class="fl-s">${n.s}</p>${kind === 'branch' ? `<p class="fl-then">${n.then}</p>` : ''}</li>`;
-  const chart = (md) => `<div class="fl-mode" id="fl-${md.id}" role="tabpanel" aria-labelledby="fl-tab-${md.id}"${md.id === 'solution' ? ' data-second' : ''}><p class="fl-total">${md.total}</p><ol class="fl-chart">${md.nodes.map((n, i) => node(n, i, i === 3 ? 'gate' : i === 4 ? 'end' : '')).join('').replace(/(<li class="fl-node[^>]*data-step="3"[\s\S]*?<\/li>)/, `$1${node(md.branch, 0, 'branch')}`)}</ol></div>`;
-  const flow = `<div class="flow" data-flow data-min-u="${esc(fl.minU)}" data-l-step="${esc(fl.stepL)}" data-l-of="${esc(fl.ofL)}" data-l-elapsed="${esc(fl.elapsedL)}" data-l-done="${esc(fl.doneL)}" data-l-play="${esc(fl.play)}" data-l-pause="${esc(fl.pause)}" data-l-again="${esc(fl.again)}" data-l-idle="${esc(fl.idle)}">
-<h4 class="fl-title">${fl.title}</h4><p class="fl-intro">${fl.intro}</p>
-<div class="fl-bar"><div class="fl-tabs" role="tablist" aria-label="${esc(fl.tabsLabel)}">${fl.modes.map((md, i) => `<button type="button" role="tab" id="fl-tab-${md.id}" aria-controls="fl-${md.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${md.label}</button>`).join('')}</div>
-<label class="fl-problem"><input type="checkbox" data-fl-problem> <span>${fl.problemL}</span></label>
-<button type="button" class="btn btn--primary btn--sm fl-play" data-fl-play hidden>${fl.play}</button></div>
-<p class="fl-legend"><span class="fl-lg fl-lg--human">${fl.legend.human}</span><span class="fl-lg fl-lg--auto">${fl.legend.auto}</span></p>
-${fl.modes.map(chart).join('')}
-<div class="fl-detail" data-fl-detail aria-live="polite" hidden><p class="fl-d-idle">${fl.idle}</p></div>
-<p class="fl-note">${fl.note}</p></div>`;
-  const cl = ex.calc, cv = { orders: 1200, hours: 100, value: 11000 };
-  const calc = `<div class="ex-calc" data-scenario data-hours="${esc(cl.hoursFmt)}" data-value="${esc(cl.valueFmt)}" data-lang="${c.lang}"><h3>${cl.title}</h3>
-<div class="ex-slider"><label for="calc-orders">${cl.sliderL}</label><input id="calc-orders" type="range" min="100" max="5000" step="50" value="${cv.orders}" data-sc-orders></div>
-<ul><li><span class="ex-n" data-sc-out="orders">${cl.items[0].n}</span><span class="ex-l">${cl.items[0].l}</span></li><li><span class="ex-n">${cl.items[1].n}</span><span class="ex-l">${cl.items[1].l}</span></li><li><span class="ex-n" data-sc-out="hours">${cl.items[2].n}</span><span class="ex-l">${cl.items[2].l}</span></li><li><span class="ex-n" data-sc-out="value">${cl.items[3].n}</span><span class="ex-l">${cl.items[3].l}</span></li></ul><p class="ex-note">${cl.note}</p></div>`;
-  const examples = `<div class="examples">${ex.items.map((x, i) => `<article class="ex"><header class="ex-head"><p class="ex-tag">${x.tag}</p><span class="ex-chip">${c.ui.illustrative}</span><h3>${x.h}</h3></header>${i === 0 ? flow : `<div class="ex-ba"><div class="ex-before"><p class="ex-l2">${ex.beforeL}</p><p>${x.before}</p></div><div class="ex-after"><p class="ex-l2">${ex.afterL}</p><p>${x.after}</p></div></div>`}<p class="ex-value"><span>${ex.valueL}</span>${x.value}</p><div class="ex-metrics"><span>${ex.metricsL}</span><ul>${x.metrics.map((m) => `<li>${m}</li>`).join('')}</ul></div>${i === 0 ? calc : ''}</article>`).join('')}</div>`;
-
-  const body = `${pageHero(c, ex.title, ex.intro)}
-${section(examples, 'home-examples', 'examples', '')}
-${ctaBand(c, ex.cta.title, ex.cta.p, 'examples', { how: false })}`;
-  return { meta: ex.meta, body };
-};
-
 pages.usecase = (c) => {
-  const p = c.usecase, pn = p.pains, ways = c.home.ways.items;
-  // A leader's line of thought: which situation is mine → what's really going on → where it sits (Decide / Build / Lead)
-  // → what Eran does → the first step → how I'll know it worked. Then how it unfolds, with my call at each step.
-  const hero = pageHero(c, p.h1, p.lede).replace('</div></section>',
-    `<div class="btn-row">${btn(c, p.heroCta, '#situations', 'btn--primary')}${btn(c, c.ui.book, bookUrl(c, 'usecase'), '')}</div></div></section>`);
-
-  // Decide → Build → Lead lane: the engagement types this situation usually needs are lit.
-  // The lane is visual; screen readers get the same answer as a plain list of the lit engagement types.
-  const lane = (hit) => `<ol class="lane lane--ways" aria-hidden="true">${ways.map((w, i) => `<li${hit.includes(i) ? ' class="hit"' : ''}><span class="lane-hex"></span><span class="lane-l">${w.h}</span></li>`).join('')}</ol><p class="sr-only">${hit.map((i) => ways[i].h).join(', ')}</p>`;
-  const tabs = pn.items.map((x, i) => `<button type="button" role="tab" id="st-${i}" aria-controls="s-${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${x.q}</button>`).join('');
-  const panels = pn.items.map((x, i) => `<div class="pain-panel" role="tabpanel" id="s-${i}" aria-labelledby="st-${i}" tabindex="0">
-<p class="pain-quote">${x.q}</p>
-<div class="sit-under"><h3>${pn.underL}</h3><p>${x.under}</p></div>
-<div class="sit-ways"><h3>${pn.waysL}</h3>${lane(x.ways)}</div>
-<div class="sit-do"><h3>${pn.doL}</h3><p>${x.do}</p></div>
-<div class="pain-fix"><div><h3>${pn.firstL}</h3><p>${x.first}</p></div><div class="pain-measure"><h3>${pn.measureL}</h3><p>${x.measure}</p></div></div></div>`).join('');
-  const picker = `<div class="pain-picker" data-ladder data-track-id="situation_picker"><div class="pain-tabs" role="tablist" aria-orientation="vertical" aria-label="${esc(pn.tabsLabel)}">${tabs}</div><div class="pain-panels">${panels}</div></div>`;
-
-  const body = `${hero}
-${section(`${head(pn.title, pn.intro, 'situations-title')}${picker}`, 'usecase-pains', 'situations', 'situations-title')}
-${ctaBand(c, p.cta.title, p.cta.p, 'usecase')}`;
-  return { meta: p.meta, body };
+  const ex = c.usecase;
+  // Four illustrative processes: one headline, one "today" line, the home page's workflow line and the same four numbers each.
+  // One shared note under all four says these are illustrations and that released hours are capacity, not savings.
+  const calc = (x) => `<div class="ex-calc"><h3>${ex.numbersL}</h3><ul>${x.numbers.map((y) => `<li><span class="ex-n">${y.n}</span><span class="ex-l">${y.l}</span></li>`).join('')}</ul></div>`;
+  const one = (x, i) => `<article class="exw" id="ex-${i + 1}"><header class="exw-head"><p class="exw-tag">${x.tag}<span class="ex-chip">${c.ui.illustrative}</span></p><h2>${x.h}</h2><p class="exw-today"><span>${ex.todayL}</span> ${x.today}</p></header>
+${wfList([...x.steps, { k: 'result', h: ex.resultH, list: x.result }], null, 'wf--plain', 'h4')}${calc(x)}<p class="exw-measure"><span>${ex.measureL}</span> ${x.measure}</p></article>`;
+  const body = `${pageHero(c, ex.title, ex.intro)}
+${section(`<div class="exws">${ex.items.map(one).join('')}</div><p class="ex-note">${ex.note}</p>`, 'section--dark home-examples', 'examples', '')}
+${ctaBand(c, ex.cta.title, ex.cta.p, 'usecase', { how: false })}`;
+  return { meta: ex.meta, body };
 };
 
 pages.how = (c) => {

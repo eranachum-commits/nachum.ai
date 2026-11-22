@@ -65,12 +65,11 @@ await t('language switch maps to the equivalent page', () => {
     assert.ok(pages[href('en', r.key)].includes(`href="${href('he', r.key)}" hreflang="he"`), 'en→he ' + r.key);
   }
 });
-await t('generic use case replaces the solution pages', () => {
+await t('one use case page replaces the solution and examples pages', () => {
   for (const lang of langs) { const c = lang === 'he' ? he : en;
     const page = pages[href(lang, 'usecase')];
     assert.ok(page, 'use case page ' + lang);
-    assert.equal((page.match(/role="tab"/g) || []).length, c.usecase.pains.items.length, 'one tab per pain ' + lang);
-    assert.equal((page.match(/role="tabpanel"/g) || []).length, c.usecase.pains.items.length, 'one panel per pain ' + lang);
+    assert.doesNotMatch(page, /role="tab"|class="pain-picker"/, 'the old situations picker is gone ' + lang);
     assert.doesNotMatch(page, /class="decision-path"/, 'no decision path on the use case page ' + lang);
     assert.doesNotMatch(page, /class="why"/, 'comparison moved off the use case page ' + lang);
     const about = pages[href(lang, 'about')];
@@ -79,7 +78,7 @@ await t('generic use case replaces the solution pages', () => {
     for (const k of ['home', 'how', 'usecase']) assert.doesNotMatch(pages[href(lang, k)], /data-pipeline/, 'no before/after diagram on ' + k + ' ' + lang);
     assert.ok(pages[href(lang, 'home')].includes(`href="${href(lang, 'usecase')}"`), 'home links to use case ' + lang);
   }
-  for (const [u, html] of Object.entries(pages)) assert.doesNotMatch(html, /href="(\/en)?\/solutions\//, 'link to removed solution page on ' + u);
+  for (const [u, html] of Object.entries(pages)) assert.doesNotMatch(html, /href="(\/en)?\/(solutions\/|examples")/, 'link to a removed page on ' + u);
 });
 await t('results page: goal-to-decision flow and rules', () => {
   for (const lang of langs) { const c = lang === 'he' ? he : en, r = c.results, page = pages[href(lang, 'results')];
@@ -109,7 +108,7 @@ await t('illustrative content is labelled; no invented proof', () => {
 await t('repositioning: named founder, no prices, no size limits, slim form', () => {
   for (const [u, html] of Object.entries(pages)) {
     // The only currency figure on the site is the labelled illustrative calculation inside #examples.
-    const noEx = html.replace(/<section class="section home-examples"[\s\S]*?<\/section>/, '');
+    const noEx = html.replace(/<section class="section [^"]*home-examples[^"]*"[\s\S]*?<\/section>/, '');
     for (const bad of [/30[–-]300/, /WalkMe|Resident\b|Agora|ClickDimensions|Sizmek|Amdocs/i, /₪\s?\d/, /\d+\s?אלף/, /free working session/i, /פגישת עבודה ללא עלות/, /unlock/i, /mid-market budget/i, /hotfix|85%|תיקוני חירום|eight months|שמונה חודשים/i, /20\+ years of senior/i]) assert.doesNotMatch(noEx.replace(/<script[\s\S]*?<\/script>/g, ''), bad, `${bad} on ${u}`);
   }
   for (const lang of langs) { const c = lang === 'he' ? he : en, home = pages[href(lang, 'home')], contact = pages[href(lang, 'contact')];
@@ -125,7 +124,7 @@ await t('home: business-first hero, problems, illustrative examples, how we work
   for (const lang of langs) { const c = lang === 'he' ? he : en, h = c.home, home = pages[href(lang, 'home')];
     assert.ok(home.includes(`<h1>${h.hero.h1}</h1>`), 'business-value headline ' + lang);
     assert.ok(home.includes(h.hero.support) && home.includes(h.hero.primary), 'supporting line and primary action ' + lang);
-    assert.match(home, /class="hero hero--home"[\s\S]*data-track="cta_hero"[\s\S]*href="\/(en\/)?examples"/, 'two actions above the fold ' + lang);
+    assert.match(home, /class="hero hero--home"[\s\S]*data-track="cta_hero"[\s\S]*href="\/(en\/)?business-use-case"/, 'two actions above the fold ' + lang);
     assert.doesNotMatch(home, /class="record"|class="handoff"/, 'no ownership ledger in the hero ' + lang);
     // One plain workflow right after the hero: four steps in order, the AI step marked and branching into example agents.
     assert.match(home, /class="hero hero--home"[\s\S]*?<section class="section section--dark home-flow" id="flow"/, 'workflow follows the hero ' + lang);
@@ -137,7 +136,6 @@ await t('home: business-first hero, problems, illustrative examples, how we work
     assert.ok(order.every((n, i) => n > 0 && (i === 0 || n > order[i - 1])), 'sections follow the buyer journey ' + lang);
     assert.doesNotMatch(home, /class="problems"|class="outcomes/, 'problems and outcomes lists were cut from the home page ' + lang);
     assert.doesNotMatch(home, /class="ex"/, 'examples live on their own page ' + lang);
-    assert.ok(home.includes(`href="${href(lang, 'examples')}"`), 'home links to the examples page ' + lang);
     assert.doesNotMatch(home, /class="hw-step"/, 'no four-step path on the home page ' + lang);
     assert.doesNotMatch(home, /class="jr-stage"|jr-lane|data-armed/, 'the five-stage journey lives on the how-it-works page ' + lang);
     assert.doesNotMatch(home, /id="founder"|class="portrait"/, 'no founder section on home ' + lang);
@@ -156,26 +154,22 @@ await t('home: business-first hero, problems, illustrative examples, how we work
     assert.doesNotMatch(home.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' '), /\d{2,3}\s?%/, 'no unsupported percentage claims ' + lang);
   }
 });
-await t('examples page: four illustrative before/after scenarios, one worked calculation, no invented clients', () => {
-  for (const lang of langs) { const c = lang === 'he' ? he : en, h = c, home = pages[href(lang, 'examples')];
-    // Examples: four, all labelled illustrative, the arithmetic shown once, no invented clients.
-    assert.equal((home.match(/<article class="ex">/g) || []).length, 4, 'four examples ' + lang);
-    assert.equal((home.match(/class="ex-chip"/g) || []).length, 4, 'every example labelled illustrative ' + lang);
-    assert.equal((home.match(/class="ex-calc"/g) || []).length, 1, 'one worked calculation ' + lang);
-    assert.ok(home.replace(/<\/?bdi[^>]*>/g, '').includes(c.examples.calc.note), 'calculation says it is not a client result ' + lang);
-    assert.match(c.examples.calc.note, lang === 'he' ? /לא תוצאה של לקוח/ : /not a bee & co\. client result/, 'calc disclaimer wording ' + lang);
-    assert.match(c.examples.calc.note, lang === 'he' ? /קיבולת ולא חיסכון/ : /capacity, not automatically cash savings/, 'capacity is not savings ' + lang);
-  }
-});
-await t('examples page: the first example is an interactive flowchart with a volume slider', () => {
-  for (const lang of langs) { const c = lang === 'he' ? he : en, page = pages[href(lang, 'examples')], f = c.examples.flow;
-    assert.equal((page.match(/data-flow\b/g) || []).length, 1, 'one flowchart ' + lang);
-    assert.equal((page.match(/class="fl-mode"/g) || []).length, 2, 'today and with-a-solution views ' + lang);
-    assert.equal((page.match(/class="fl-node /g) || []).length, 2 * (f.modes[0].nodes.length + 1), 'five steps plus the extra step in each view ' + lang);
-    assert.equal((page.match(/class="fl-node [^"]*fl-node--gate/g) || []).length, 2, 'a decision in each view ' + lang);
-    assert.match(page, /type="range"[^>]*data-sc-orders/, 'volume slider ' + lang);
-    assert.match(page, /data-fl-problem/, 'problem-order switch ' + lang);
-    assert.ok(f.modes.every((m) => m.nodes.length === 5 && m.nodes.every((n) => n.t && n.s && Number.isInteger(n.m))), 'every step has a title, an explanation and minutes ' + lang);
+await t('use case page: four illustrative workflows in the home style, each in numbers, no invented clients', () => {
+  for (const lang of langs) { const c = lang === 'he' ? he : en, page = pages[href(lang, 'usecase')], n = c.usecase.items.length;
+    assert.equal(n, 4, 'four examples ' + lang);
+    assert.equal((page.match(/<article class="exw"/g) || []).length, n, 'every example rendered ' + lang);
+    assert.equal((page.match(/class="ex-chip"/g) || []).length, n, 'every example labelled illustrative ' + lang);
+    assert.equal((page.match(/class="exw-today"/g) || []).length, n, 'every example says how it works today ' + lang);
+    assert.equal((page.match(/<ol class="wf wf--plain">/g) || []).length, n, 'every example drawn as the workflow line ' + lang);
+    assert.equal((page.match(/class="wf-step wf-step--ai"/g) || []).length, n, 'an AI step in every workflow ' + lang);
+    assert.equal((page.match(/class="exw-measure"/g) || []).length, n, 'every example says how it is measured ' + lang);
+    assert.equal((page.match(/class="ex-calc"/g) || []).length, n, 'every example in numbers ' + lang);
+    assert.ok(c.usecase.items.every((x) => x.numbers.length === 4), 'four numbers per example ' + lang);
+    assert.equal((page.match(/class="ex-note"/g) || []).length, 1, 'one shared note ' + lang);
+    assert.ok(page.replace(/<\/?bdi[^>]*>/g, '').includes(c.usecase.note), 'the note says these are not client results ' + lang);
+    assert.match(c.usecase.note, lang === 'he' ? /לא תוצאה של לקוח/ : /not a bee & co\. client result/, 'calc disclaimer wording ' + lang);
+    assert.match(c.usecase.note, lang === 'he' ? /קיבולת ולא חיסכון/ : /capacity, not automatically cash savings/, 'capacity is not savings ' + lang);
+    assert.doesNotMatch(page, /data-flow\b|data-scenario|type="range"/, 'no leftover flowchart or slider ' + lang);
   }
 });
 await t('results page: four kinds of value, no promised percentage', () => {
@@ -324,6 +318,14 @@ await t('lead API: email adapter sends a plain-text email with reply-to the send
     assert.ok(m.text.includes(good.detail) && m.text.includes('Example Ltd'), 'message and company in the email');
     assert.equal(m.html, undefined, 'plain text only');
   } finally { es.kill(); fake.close(); }
+});
+await t('old /examples links redirect to the use case page', async () => {
+  for (const [from, to] of [['/examples', '/business-use-case'], ['/en/examples', '/en/business-use-case'], ['/solutions/orders', '/business-use-case']]) {
+    const r = await fetch(base + from, { redirect: 'manual' });
+    assert.equal(r.status, 301, from); assert.equal(r.headers.get('location'), to, from);
+  }
+  const v = JSON.parse(await readFile('vercel.json', 'utf8'));
+  for (const [from, to] of [['/examples', '/business-use-case'], ['/en/examples', '/en/business-use-case']]) assert.ok(v.redirects.some((x) => x.source === from && x.destination === to && x.permanent), 'vercel redirect ' + from);
 });
 await t('security headers present', async () => { const r = await fetch(base + '/'); assert.ok(r.headers.get('content-security-policy')); assert.equal(r.headers.get('x-content-type-options'), 'nosniff'); });
 

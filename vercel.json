@@ -25,6 +25,16 @@
       "permanent": true
     },
     {
+      "source": "/examples",
+      "destination": "/business-use-case",
+      "permanent": true
+    },
+    {
+      "source": "/en/examples",
+      "destination": "/en/business-use-case",
+      "permanent": true
+    },
+    {
       "source": "/solutions",
       "destination": "/business-use-case",
       "permanent": true
