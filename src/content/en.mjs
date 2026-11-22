@@ -499,19 +499,33 @@ export default {
     bookHere: 'Talk to Eran',
     primary: 'Let’s explore your opportunities',
     secondary: 'See how it works',
-    picker: { title: 'Which of these sounds familiar?', intro: 'Pick the closest one, and see where we would start.', underL: 'What’s usually going on', startL: 'Where we’d start', measureL: 'How you’ll know it worked', cta: 'Talk about this with Eran', note: '30 minutes. Your situation is already filled in on the form.' },
     journey: { title: 'How it would run, step by step', intro: 'Five steps, led by Eran, with specialists brought in as the project needs. At each step you decide whether it is worth going on.' },
     whyIntro: 'Many vendors promise AI. The difference is who leads the work, and who is accountable for the result.',
-    memo: { title: 'Sometimes the right answer is not AI', p: 'Every Decision Sprint ends with a written recommendation, and it includes what not to build. This is how three ideas we often hear usually come out.' },
     faqTitle: 'Questions we usually get',
     form: { topicL: 'What is closest to your situation?', detailHint: 'Optional if you picked one above. A few sentences are enough.' },
   },
   industries: {
     distribution: {
-      meta: { title: 'AI for distributors and importers: one partner, end to end — bee & co.', desc: 'For distribution, import and wholesale companies: one accountable partner to find where AI pays off in quotes, orders and the ERP, then build it, connect it and get it used. Led by Eran Nachum.' },
+      meta: { title: 'AI for distributors and importers: orders and quotes without retyping — bee & co.', desc: 'For distribution, import and wholesale companies: AI that reads orders and drafts quotes inside the ERP you already run, with your team approving the exceptions. Founder-led by Eran Nachum.' },
       kicker: 'AI and automation for distributors and importers',
       h1: 'Still retyping orders and quotes by hand?',
-      lede: 'One partner from the business challenge to AI in daily use. We find where AI pays off in your quotes, orders and ERP, then build it, connect it to the systems you run and get your team using it.',
+      lede: 'bee & co. helps distributors and importers stop retyping orders and quotes. AI does the repeated entry inside the ERP you already run, and your team handles only the exceptions.',
+      flow: {
+        title: 'What changes when AI enters the orders',
+        intro: 'In most distributors, every order is read and typed into the ERP by hand. Here is what changes.',
+        today: 'Employees read each order and type it into the ERP, line by line.',
+        steps: [
+          { i: 'mail', k: 'in', h: 'An order arrives by email', p: 'As a PDF, a spreadsheet or a plain message, the way the customer always sends it.' },
+          { i: 'docCheck', k: 'ai', h: 'AI reads it and prepares the entry', p: 'It checks products, prices and the customer against your ERP, and prepares the order there.',
+            agents: ['Order entry', 'Quote drafts', 'Price checks', 'Stock questions', 'Supplier invoices', 'Customer updates'] },
+          { i: 'flag', k: 'team', h: 'Your team checks only the flagged orders', p: 'An unknown product or an odd quantity is flagged, not guessed.' },
+        ],
+        result: ['Orders entered in minutes', 'Fewer typing errors', 'More orders per employee'],
+        numbers: [{ n: '1,200', l: 'orders a month' }, { n: '8 → 3', l: 'minutes per order' }, { n: '≈ 100', l: 'work hours released each month' }, { n: '≈ ₪11,000', l: 'monthly labor capacity value, at an assumed ₪110 an hour' }],
+        measure: 'time per order, error rate, orders per employee.',
+        note: 'An illustrative calculation, not a bee & co. client result. Released hours are capacity, not automatically cash savings: they become savings only if they replace hiring, overtime or outside services.',
+        agentsL: 'Example AI agents in a distribution company', cta: 'Talk about your company with Eran',
+      },
       here: 'In a distribution company',
       situations: [
         { q: 'Every new customer means more people retyping orders.', under: 'Orders arrive by email, PDF and phone, and someone keys them into the ERP line by line.', start: 'Read incoming orders automatically, prepare them in the ERP, and let a person approve only what looks unusual.', measure: 'Orders handled per person, per month' },
@@ -525,15 +539,6 @@ export default {
         'Connected to the ERP, with a salesperson approving every exception, and the team trained.',
         'Orders per person tracked every month, then the next process: stock, returns or supplier invoices.',
       ],
-      memo: {
-        for: 'Three ideas distributors often raise on the first call',
-        items: [
-          { q: 'Quote drafts generated from incoming requests and the price list in the ERP', v: 'Build', k: 'build', why: 'Hundreds a month, clear pricing rules, and a salesperson approves the exceptions.' },
-          { q: 'Replace the ERP before anything else', v: 'Not now', k: 'later', why: 'It works. The hours are lost in the retyping around it, not in the ERP itself.' },
-          { q: 'A WhatsApp chatbot for customers', v: 'Don’t build', k: 'no', why: 'Customers order through reps and email. A bot would sit beside the real work.' },
-        ],
-        foot: 'Sometimes the value is knowing what not to start with.',
-      },
       faq: [
         { q: 'Does this work with Priority or SAP Business One?', a: 'Yes. We start from the ERP you already run and connect to it, usually with read-only access first. Replacing it is rarely the first step.' },
         { q: 'We already have an IT supplier. Why would we need you?', a: 'Your IT supplier keeps the systems running. We work above that: deciding what is worth changing, designing it, building it, and working alongside your supplier where needed.' },
@@ -542,10 +547,26 @@ export default {
       ],
     },
     manufacturing: {
-      meta: { title: 'AI for manufacturers: one partner, end to end — bee & co.', desc: 'For manufacturing and industrial companies: one accountable partner for AI and systems, from an independent decision before you commit budget to delivery on the systems you run. Led by Eran Nachum.' },
+      meta: { title: 'AI for manufacturers: quotes and planning without the bottleneck — bee & co.', desc: 'For manufacturing and industrial companies: AI that drafts quotes and plans from your own past jobs, with your experts approving, inside the ERP and files you already use. Founder-led by Eran Nachum.' },
       kicker: 'AI and automation for manufacturers',
       h1: 'Planning in Excel, and know-how in two people’s heads?',
-      lede: 'One partner from the business challenge to AI in daily use. We find where AI pays off in quoting, planning and the office systems around the plant, then build it, connect it and get your team using it.',
+      lede: 'bee & co. helps manufacturers take routine work off the few people everything depends on. AI drafts quotes and plans from your past jobs, and your experts approve them and handle the hard cases.',
+      flow: {
+        title: 'What changes when AI drafts the quote',
+        intro: 'In most plants, every quote waits for the one or two people who know the pricing. Here is what changes.',
+        today: 'Pricing rules live in a few heads and spreadsheets, so every quote waits for them.',
+        steps: [
+          { i: 'drawing', k: 'in', h: 'A quote request arrives', p: 'With drawings, specs or a plain email.' },
+          { i: 'draft', k: 'ai', h: 'AI drafts the quote', p: 'Using the rules captured from your past jobs, materials and machine times.',
+            agents: ['Quote drafts', 'Drawing reading', 'Material costing', 'Production planning', 'Order status', 'Supplier follow-ups'] },
+          { i: 'approve', k: 'team', h: 'An expert approves it', p: 'Their time goes to the hard jobs, not the routine ones.' },
+        ],
+        result: ['Quotes out in hours, not days', 'Less dependence on key people', 'Steadier planning'],
+        numbers: [{ n: '150', l: 'quote requests a month' }, { n: '120 → 45', l: 'expert minutes per quote' }, { n: '≈ 190', l: 'expert hours released each month' }, { n: '≈ ₪30,000', l: 'monthly expert capacity value, at an assumed ₪160 an hour' }],
+        measure: 'time from request to quote, share of quotes done without the key person.',
+        note: 'An illustrative calculation, not a bee & co. client result. Released hours are capacity, not automatically cash savings: they become savings only if they replace hiring, overtime or outside services.',
+        agentsL: 'Example AI agents in a manufacturing company', cta: 'Talk about your plant with Eran',
+      },
       here: 'In a manufacturing company',
       situations: [
         { q: 'Everything depends on two people who know how it works.', under: 'Quoting rules, process knowledge and workarounds live in a few heads and old spreadsheets.', start: 'Capture what those people know, build it into the workflow, and let them handle the exceptions instead of every case.', measure: 'Share of work handled without the key person' },
@@ -559,15 +580,6 @@ export default {
         'Connected to the ERP and the planning files you already use, on one line or product family first.',
         'Re-planning hours tracked every week, then extended to the next line.',
       ],
-      memo: {
-        for: 'Three ideas manufacturers often raise on the first call',
-        items: [
-          { q: 'An assistant that drafts quotes from drawings and past jobs', v: 'Build', k: 'build', why: 'The rules already exist in past quotes, and an estimator approves every price.' },
-          { q: 'A full smart-factory platform across the plant', v: 'Not now', k: 'later', why: 'The data it needs is not collected yet. Start with one line and one measure.' },
-          { q: 'Predictive maintenance on every machine', v: 'Don’t build', k: 'no', why: 'Breakdowns here are rare and cheap. The money is lost in planning, not in maintenance.' },
-        ],
-        foot: 'Sometimes the value is knowing what not to start with.',
-      },
       faq: [
         { q: 'Our systems are old. Is that a problem?', a: 'Usually not. We start from the systems you run and connect to them. Replacing them is a decision we weigh with you, not an assumption.' },
         { q: 'Do you work on the shop floor or the office side?', a: 'Mostly the office side: quoting, planning, orders, documentation and the systems that connect them. Where floor data matters, we start with what is already collected.' },
@@ -576,10 +588,26 @@ export default {
       ],
     },
     ecommerce: {
-      meta: { title: 'AI for e-commerce and retail brands: one partner, end to end — bee & co.', desc: 'For e-commerce and retail brands without a technology leader: one accountable partner for your stack, AI and agencies, from decision to daily use. Led by Eran Nachum.' },
+      meta: { title: 'AI for e-commerce and retail brands: faster service, cleaner orders — bee & co.', desc: 'For e-commerce and retail brands without a technology leader: AI that drafts service replies from order data, stock and orders in sync, and senior technology leadership part-time. Founder-led by Eran Nachum.' },
       kicker: 'AI and automation for online retailers',
       h1: 'Plenty of tools. Nobody senior running the technology?',
-      lede: 'One partner from the business challenge to AI in daily use. We take the technology seat part-time, decide what is worth building in your store, service and stock flows, then build it with your agency and get it used.',
+      lede: 'bee & co. helps online brands answer customers faster and keep stock and orders in sync. AI drafts the replies from order and shipping data, and your team approves them. If you have no technology leader, we take that seat part-time.',
+      flow: {
+        title: 'What changes when AI drafts the service replies',
+        intro: 'In most online brands, reps look up the same order details and answer the same questions all day. Here is what changes.',
+        today: 'Reps check the store, the shipping app and the helpdesk for every “where is my order?”.',
+        steps: [
+          { i: 'chat', k: 'in', h: 'A customer asks a question', p: 'By email, chat or WhatsApp: where is my order, can I return it.' },
+          { i: 'search', k: 'ai', h: 'AI finds the answer and drafts a reply', p: 'From the order, the shipping status and your return policy.',
+            agents: ['Service replies', 'Order tracking', 'Returns', 'Stock sync', 'Product questions', 'Review follow-ups'] },
+          { i: 'send', k: 'team', h: 'The rep reviews and sends', p: 'And handles the sensitive cases personally.' },
+        ],
+        result: ['Faster first replies', 'More requests per rep', 'The same answer every time'],
+        numbers: [{ n: '3,000', l: 'customer requests a month' }, { n: '9 → 5', l: 'minutes per request' }, { n: '≈ 200', l: 'work hours released each month' }, { n: '≈ ₪22,000', l: 'monthly labor capacity value, at an assumed ₪110 an hour' }],
+        measure: 'first response time, handling time, customer satisfaction.',
+        note: 'An illustrative calculation, not a bee & co. client result. Released hours are capacity, not automatically cash savings: they become savings only if they replace hiring, overtime or outside services.',
+        agentsL: 'Example AI agents in an online brand', cta: 'Talk about your brand with Eran',
+      },
       here: 'In an online brand',
       situations: [
         { q: 'We bought AI tools and nothing really changed.', under: 'Apps were added one by one, nobody owns how they fit together, and usage fades after the first month.', start: 'Pick the one process where AI matters most and build it into the systems the team already uses, with an owner and a measure.', measure: 'Weekly active use, and time saved on that process' },
@@ -593,15 +621,6 @@ export default {
         'Inside the helpdesk and store the team already use, with an agent approving every reply.',
         'Errors per 100 orders and service time tracked every month, with the roadmap reviewed each quarter.',
       ],
-      memo: {
-        for: 'Three ideas online brands often raise on the first call',
-        items: [
-          { q: 'AI drafts for customer service replies, from order and shipping data', v: 'Build', k: 'build', why: 'High volume, repeated questions, and an agent approves before anything is sent.' },
-          { q: 'Rebuild the store on a new platform', v: 'Not now', k: 'later', why: 'The store is not the bottleneck. Fix the stock and order sync first.' },
-          { q: 'AI-written product descriptions for the whole catalogue', v: 'Don’t build', k: 'no', why: 'The catalogue is small and sells on brand. The hours are lost in service, not in copy.' },
-        ],
-        foot: 'Sometimes the value is knowing what not to start with.',
-      },
       faq: [
         { q: 'We run on Shopify or WooCommerce with a few apps. Is that a fit?', a: 'Yes. We start from your current stack and change only what earns its place. Moving platforms is a decision, not a default.' },
         { q: 'We have an agency. Do you replace them?', a: 'No. We work as the senior technology lead on your side: setting priorities, reviewing their work, and making sure what they build fits together.' },
@@ -610,10 +629,26 @@ export default {
       ],
     },
     insurance: {
-      meta: { title: 'AI for insurance agencies: one partner, end to end — bee & co.', desc: 'For insurance agencies and financial-advisory firms: one accountable partner to take paperwork off the team with AI, securely, from decision to daily use. Led by Eran Nachum.' },
+      meta: { title: 'AI for insurance agencies: less paperwork, more time with clients — bee & co.', desc: 'For insurance agencies and financial-advisory firms: AI that reads insurers’ documents and prepares renewals and client summaries, securely, with your agents approving. Founder-led by Eran Nachum.' },
       kicker: 'AI and automation for insurance agencies',
       h1: 'Your agents spend the day on paperwork, not on clients?',
-      lede: 'One partner from the business challenge to AI in daily use. We find where AI takes the paperwork off your team without putting client data or compliance at risk, then build it, connect it and get it used.',
+      lede: 'bee & co. helps insurance agencies take the paperwork off their agents. AI reads insurers’ documents and prepares renewals and client summaries on approved, secured services, and your agents check them and spend the time with clients.',
+      flow: {
+        title: 'What changes when AI prepares the renewal',
+        intro: 'In most agencies, every renewal means copying details from the insurer’s documents into the agency system. Here is what changes.',
+        today: 'An agent opens each insurer’s quote, each in its own format, and copies the details into the agency system by hand.',
+        steps: [
+          { i: 'receipt', k: 'in', h: 'Renewal quotes arrive', p: 'From several insurers, each in its own format.' },
+          { i: 'docCheck', k: 'ai', h: 'AI reads them and prepares the comparison', p: 'It brings premiums, coverage and changes into the agency system, on approved and secured services.',
+            agents: ['Renewal comparisons', 'Policy reading', 'Client summaries', 'Missing documents', 'Claims follow-up', 'Client onboarding'] },
+          { i: 'flag', k: 'team', h: 'The agent checks what changed', p: 'Only coverage changes and unusual terms need a closer look. The agent decides what to offer.' },
+        ],
+        result: ['Renewals prepared in minutes', 'More time with clients', 'Fewer copying errors'],
+        numbers: [{ n: '600', l: 'renewals a month' }, { n: '25 → 8', l: 'minutes per renewal' }, { n: '≈ 170', l: 'work hours released each month' }, { n: '≈ ₪20,400', l: 'monthly labor capacity value, at an assumed ₪120 an hour' }],
+        measure: 'time per renewal, copying errors, client meetings per agent.',
+        note: 'An illustrative calculation, not a bee & co. client result. Released hours are capacity, not automatically cash savings: they become savings only if they replace hiring, overtime or outside services.',
+        agentsL: 'Example AI agents in an insurance agency', cta: 'Talk about your agency with Eran',
+      },
       here: 'In an insurance agency',
       situations: [
         { q: 'Every renewal season, the whole office stops to chase documents.', under: 'Quotes, policies and forms arrive from several insurers in different formats, and someone copies the details into your system by hand.', start: 'Read the incoming documents automatically, prepare the data in your system, and let a person approve only what does not match.', measure: 'Hours per renewal, and files handled per employee' },
@@ -627,15 +662,6 @@ export default {
         'Connected to the agency management system, with an agent checking every summary, and the team trained.',
         'Hours per renewal tracked every month, then the next workflow: claims follow-up or client onboarding.',
       ],
-      memo: {
-        for: 'Three ideas insurance agencies often raise on the first call',
-        items: [
-          { q: 'A summary of the client’s policy and pension reports, ready before every meeting', v: 'Build', k: 'build', why: 'Dozens of documents per client, the same questions every time, and the agent checks the summary before the meeting.' },
-          { q: 'Replace the agency management system', v: 'Not now', k: 'later', why: 'It holds every policy and commission. The hours are lost copying between it and the insurers’ portals.' },
-          { q: 'An AI bot that gives clients coverage advice', v: 'Don’t build', k: 'no', why: 'Advice is regulated and personal. A bot that gets it wrong is a liability, not a saving.' },
-        ],
-        foot: 'Sometimes the value is knowing what not to start with.',
-      },
       faq: [
         { q: 'Does this work with our agency management system and the insurers’ portals?', a: 'We start from the systems you already run and connect to what they allow, usually with read-only access first. Where a portal offers no connection, we design around it rather than promise one.' },
         { q: 'Our client data is financial and medical. How is it protected?', a: 'Confidentiality terms come first. We start with anonymized examples and read-only access, data stays in approved, secured services, and nothing goes into unapproved AI tools. Your compliance officer sees the design before anything is built.' },
@@ -644,10 +670,26 @@ export default {
       ],
     },
     accounting: {
-      meta: { title: 'AI for accounting firms: one partner, end to end — bee & co.', desc: 'For CPA and bookkeeping firms: one accountable partner to take document chasing, data entry and reconciliation off the team with AI, with client confidentiality designed in. Led by Eran Nachum.' },
+      meta: { title: 'AI for accounting firms: less chasing, keying and reconciling — bee & co.', desc: 'For CPA and bookkeeping firms: AI that collects client documents, suggests entries and matches the bank inside the software you already run, with client confidentiality designed in. Founder-led by Eran Nachum.' },
       kicker: 'AI and automation for accounting firms',
       h1: 'Reporting season stops the whole office again?',
-      lede: 'One partner from the business challenge to AI in daily use. We find where AI takes document chasing, data entry and reconciliation off your team, then build it into the software the firm already runs and get the team using it.',
+      lede: 'bee & co. helps accounting firms get through reporting season without stopping the office. AI collects and sorts client documents and suggests the entries inside the software you already run, and your team handles only what doesn’t match.',
+      flow: {
+        title: 'What changes when AI handles the client documents',
+        intro: 'In most firms, staff chase, sort and key in client documents by hand, all year. Here is what changes.',
+        today: 'Staff chase clients for receipts, then key each document into the accounting software and match it to the bank.',
+        steps: [
+          { i: 'receipt', k: 'in', h: 'Client documents arrive', p: 'Receipts, invoices and bank statements, by email, WhatsApp or upload.' },
+          { i: 'link', k: 'ai', h: 'AI sorts them and suggests the entries', p: 'It reads each document, suggests the entry and matches it to the bank, inside the software you already run. A missing document gets an automatic reminder.',
+            agents: ['Document sorting', 'Suggested entries', 'Bank matching', 'Client reminders', 'Missing documents', 'Report preparation'] },
+          { i: 'alert', k: 'team', h: 'Your team handles only the mismatches', p: 'A professional approves every exception. Everything that matches moves on by itself.' },
+        ],
+        result: ['Less keying and chasing', 'A calmer reporting season', 'More clients per employee'],
+        numbers: [{ n: '2,500', l: 'client documents a month' }, { n: '4 → 1.5', l: 'minutes per document' }, { n: '≈ 105', l: 'work hours released each month' }, { n: '≈ ₪12,600', l: 'monthly labor capacity value, at an assumed ₪120 an hour' }],
+        measure: 'time per document, files per employee, days to close a client file.',
+        note: 'An illustrative calculation, not a bee & co. client result. Released hours are capacity, not automatically cash savings: they become savings only if they replace hiring, overtime or outside services.',
+        agentsL: 'Example AI agents in an accounting firm', cta: 'Talk about your firm with Eran',
+      },
       here: 'In an accounting firm',
       situations: [
         { q: 'We chase clients for documents all year.', under: 'Receipts, statements and forms arrive by email, WhatsApp and on paper, incomplete and late, and someone tracks by hand who is missing what.', start: 'Automatic requests and reminders for each client, incoming documents sorted into the right client file, and a person handling only what is missing or unclear.', measure: 'Days from year-end to a complete client file' },
@@ -661,15 +703,6 @@ export default {
         'Inside the accounting software the firm runs, with a professional approving every exception, and the team trained.',
         'Files per person tracked every month, then the next workflow: payroll, reports or client onboarding.',
       ],
-      memo: {
-        for: 'Three ideas accounting firms often raise on the first call',
-        items: [
-          { q: 'Incoming documents sorted and matched against bank statements automatically', v: 'Build', k: 'build', why: 'Thousands of documents a season, clear matching rules, and a professional approves the exceptions.' },
-          { q: 'Move the firm to new accounting software', v: 'Not now', k: 'later', why: 'The software works. The hours are lost in the typing and chasing around it.' },
-          { q: 'A bot that answers clients’ tax questions', v: 'Don’t build', k: 'no', why: 'Tax advice carries the firm’s name and licence. One wrong answer costs more than the time saved.' },
-        ],
-        foot: 'Sometimes the value is knowing what not to start with.',
-      },
       faq: [
         { q: 'We work with Hashavshevet, Rivhit or Priority. Is that a fit?', a: 'Yes. We start from the software you already run and connect to what it allows, usually with read-only access first. Replacing it is a decision we weigh with you, not an assumption.' },
         { q: 'How is our clients’ financial data protected?', a: 'Confidentiality terms come first. We start with anonymized examples, data stays in approved, secured services, and nothing goes into unapproved AI tools. The partners approve the design before anything is built.' },
@@ -720,10 +753,26 @@ export default {
       ],
     },
     'real-estate': {
-      meta: { title: 'AI for real-estate developers and contractors: one partner, end to end — bee & co.', desc: 'For real-estate developers and construction companies: one accountable partner for project data, tenders and reporting, from decision to daily use. Led by Eran Nachum, who also led engineering in real-estate investment tech.' },
+      meta: { title: 'AI for real-estate developers and contractors: bills checked, reports current — bee & co.', desc: 'For real-estate developers and construction companies: AI that checks subcontractor bills against the contract and keeps project reporting current, with project managers approving. Founder-led by Eran Nachum, who also led engineering in real-estate investment tech.' },
       kicker: 'AI and automation for developers and builders',
       h1: 'Ten projects running, and the real status lives in Excel?',
-      lede: 'One partner from the business challenge to AI in daily use. We find what is worth changing in your project reporting, tenders and subcontractor bills, then build it, connect it and get your project managers using it.',
+      lede: 'bee & co. helps developers and builders see every project without rebuilding the report by hand. AI checks subcontractor bills against the contract and keeps one project report up to date, and your project managers approve the exceptions.',
+      flow: {
+        title: 'What changes when AI checks the subcontractor bills',
+        intro: 'In most construction companies, engineers check every subcontractor bill against the contract by hand. Here is what changes.',
+        today: 'An engineer compares each bill, line by line, with the contract, the bill of quantities and what was actually done on site.',
+        steps: [
+          { i: 'receipt', k: 'in', h: 'A subcontractor bill arrives', p: 'Every month, with quantities, prices and attached measurements.' },
+          { i: 'docCheck', k: 'ai', h: 'AI checks it against the contract', p: 'Quantities, unit prices and progress are compared with the contract and the previous bills.',
+            agents: ['Bill checks', 'Project reports', 'Budget tracking', 'Tender comparisons', 'Change orders', 'Schedule updates'] },
+          { i: 'flag', k: 'team', h: 'The project manager reviews the exceptions', p: 'Only items above the contract or out of line need a closer look.' },
+        ],
+        result: ['Bills checked in hours, not days', 'Fewer overpayments', 'Project status always current'],
+        numbers: [{ n: '120', l: 'subcontractor bills a month' }, { n: '90 → 30', l: 'engineer minutes per bill' }, { n: '≈ 120', l: 'engineer hours released each month' }, { n: '≈ ₪21,600', l: 'monthly capacity value, at an assumed ₪180 an hour' }],
+        measure: 'engineer time per bill, overpayments caught, days to close the monthly report.',
+        note: 'An illustrative calculation, not a bee & co. client result. Released hours are capacity, not automatically cash savings: they become savings only if they replace hiring, overtime or outside services.',
+        agentsL: 'Example AI agents in a construction company', cta: 'Talk about your projects with Eran',
+      },
       here: 'In a development or construction company',
       situations: [
         { q: 'Every month, someone rebuilds the project report by hand.', under: 'Budget, schedule and progress sit with each project manager, the bookkeeping team and the site, in different files.', start: 'Connect the data you already have into one report that updates itself, and leave people the parts that need judgment.', measure: 'Days to close the monthly project report' },
@@ -737,15 +786,6 @@ export default {
         'Connected to the ERP and the bookkeeping systems, with project managers approving the exceptions.',
         'Days to close the report tracked every month, then rolled out project by project.',
       ],
-      memo: {
-        for: 'Three ideas developers and contractors often raise on the first call',
-        items: [
-          { q: 'Subcontractor bills checked automatically against the contract and measured progress', v: 'Build', k: 'build', why: 'Dozens a month on every project, the rules are in the contracts, and the project manager approves the exceptions.' },
-          { q: 'One construction-management platform across every project at once', v: 'Not now', k: 'later', why: 'Rolled out everywhere at once, it stalls on the first site. Start with one project and one report.' },
-          { q: 'A chatbot that answers apartment buyers', v: 'Don’t build', k: 'no', why: 'Buyers decide with a sales rep and a lawyer. The hours are lost in project reporting, not in answering buyers.' },
-        ],
-        foot: 'Sometimes the value is knowing what not to start with.',
-      },
       faq: [
         { q: 'Our project managers are not technology people. Will they use it?', a: 'That is the first design question, not the last. We build into the tools they already open every day, start with one project, and measure real use before going further.' },
         { q: 'Does this work with our ERP and the bookkeeping systems?', a: 'Usually, yes. We start from what you already run and connect to it, read-only first. Replacing systems is a decision we weigh with you, not an assumption.' },

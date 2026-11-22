@@ -228,32 +228,23 @@ await t('campaign landing pages: home language narrowed to one domain', () => {
   for (const lang of langs) { const c = lang === 'he' ? he : en;
     for (const id of Object.keys(c.industries)) { const page = pages[href(lang, 'lp-' + id)], d = c.industries[id], n = d.situations.length;
       assert.ok(page, 'landing page ' + id + ' ' + lang);
-      // Hero: the domain question, the one-partner lede, the home trust line, and a situation picker like the home page.
+      // Hero: the domain question, the business-first lede and the home trust line.
       const plain = page.replace(/<\/?bdi[^>]*>/g, '');
       assert.ok(plain.includes(d.lede), 'one-partner lede on ' + id);
       assert.ok(plain.includes(c.home.hero.trust), 'home trust line on ' + id);
-      if (d.flow) {
-        // A domain workflow instead of the picker: four steps, the agent star, four labelled illustrative numbers.
-        assert.doesNotMatch(page, /class="hero-pick"/, 'no picker beside a domain workflow on ' + id);
-        assert.match(page, /lp-flowsec/, 'domain workflow on ' + id);
-        assert.equal((page.match(/class="wf-step /g) || []).length, 4, 'four workflow steps on ' + id);
-        assert.equal((page.match(/class="wf-agents"/g) || []).length, 1, 'example agents on ' + id);
-        assert.equal(d.flow.numbers.length, 4, 'four numbers on ' + id);
-        assert.match(d.flow.note, lang === 'he' ? /לא תוצאה של לקוח/ : /not a bee & co\. client result/, 'calc disclaimer on ' + id);
-      } else {
-        assert.match(page, /class="hero-pick" data-ladder/, 'situation picker in the hero on ' + id);
-        assert.equal((page.match(/role="tab" id="lp-t-/g) || []).length, n, 'one tab per situation on ' + id);
-        assert.equal((page.match(/class="pick-measure"/g) || []).length, n, 'measure in every panel on ' + id);
-        assert.equal((page.match(/data-pick="/g) || []).length, n, 'every panel fills the form on ' + id);
-      }
+      // A domain workflow under the hero: four steps, the agent star, four labelled illustrative numbers.
+      assert.match(page, /lp-flowsec/, 'domain workflow on ' + id);
+      assert.equal((page.match(/class="wf-step /g) || []).length, 4, 'four workflow steps on ' + id);
+      assert.equal((page.match(/class="wf-agents"/g) || []).length, 1, 'example agents on ' + id);
+      assert.equal(d.flow.numbers.length, 4, 'four numbers on ' + id);
+      assert.match(d.flow.note, lang === 'he' ? /לא תוצאה של לקוח/ : /not a bee & co\. client result/, 'calc disclaimer on ' + id);
       assert.match(page, /href="#journey"/, 'secondary action to the journey on ' + id);
       // Signature: the five shared stages, each traced through this domain.
       assert.equal(d.journey.length, 5, 'five journey lines for ' + id);
       assert.equal((page.match(/class="lp-here"/g) || []).length, 5, 'domain journey on ' + id);
       for (const s of c.how.journey.stages) assert.ok(page.includes(`<h3>${s.h}</h3>`), 'stage ' + s.h + ' on ' + id);
       // Proof of judgment, why bee & co., founder, FAQ, form.
-      if (d.memo) { assert.equal((page.match(/class="memo-row memo-row--/g) || []).length, 3, 'memo on ' + id); assert.ok(plain.includes(d.memo.for), 'domain memo on ' + id); }
-      else assert.doesNotMatch(page, /lp-memosec/, 'no memo section on ' + id);
+      assert.doesNotMatch(page, /lp-memosec|hero-pick/, 'no memo or picker on ' + id);
       assert.equal((page.match(/class="pillar"/g) || []).length, c.home.why.items.length, 'why bee & co. pillars on ' + id);
       assert.doesNotMatch(page, /class="lp-founder"/, 'no founder strip on ' + id);
       assert.match(page, new RegExp(`<form[^>]*id="lead"`), 'form on the page ' + id);
@@ -264,8 +255,7 @@ await t('campaign landing pages: home language narrowed to one domain', () => {
       assert.match(page, /site-header--lp/, 'slim header on ' + id);
       assert.doesNotMatch(page, /class="mobile-nav"/, 'no site menu on ' + id);
       assert.match(page, /data-lp-sticky/, 'sticky phone action on ' + id);
-      assert.match(page, d.memo ? /data-track="cta_lp_mid"/ : /data-track="cta_lp_flow"/, 'mid-page call to action on ' + id);
-      if (d.memo) assert.doesNotMatch(d.memo.for, /Decision Sprint|ספרינט/, 'no jargon in the memo intro on ' + id);
+      assert.match(page, /data-track="cta_lp_flow"/, 'mid-page call to action on ' + id);
       // Voice: bee & co. does the work ("we"); Eran is named as the person who leads it, not as the subject of every step.
       assert.doesNotMatch(JSON.stringify(d), /Eran (does|works|takes|builds|learns|finds)|ערן (עושה|עובד|נכנס|בונה|לומד|מאתר)/, 'first-person plural voice on ' + id);
     }

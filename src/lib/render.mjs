@@ -401,42 +401,28 @@ ${p.sections.map((x) => `<h2 id="${x.id}">${x.h}</h2>${x.blocks.map(block).join(
 
 /* ---------- campaign landing pages: one template, one content entry per domain ---------- */
 // Same language as the home page, narrowed to one domain. A cold visitor's path:
-// is this my business (question headline) → which of these is me (picker, as on home; its action fills the form)
-// → what "one partner, end to end" means here (the five journey stages traced through this domain: the page's signature)
-// → proof of judgment (the memo, including what not to build) → why bee & co. (home pillars) → my questions → talk.
+// is this my business (question headline) → what changes here (one workflow from this business, with illustrative numbers)
+// → how it would run (the five stages traced through this domain) → why bee & co. (as on home) → my questions → talk (as on /contact).
 // On phones a sticky action follows from the hero to the form.
 function landing(c, id) {
-  const L = c.lp, d = c.industries[id], pk = L.picker, J = c.how.journey, track = (k) => `data-track="${k}" data-industry="${id}"`;
-  const tabs = d.situations.map((x, i) => `<button type="button" role="tab" id="lp-t-${i}" aria-controls="lp-p-${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}"><span class="pick-dot" aria-hidden="true"></span><span>${x.q}</span></button>`).join('');
-  const panels = d.situations.map((x, i) => `<div class="pick-panel" role="tabpanel" id="lp-p-${i}" aria-labelledby="lp-t-${i}" tabindex="0"${i ? ' hidden' : ''}><p class="pick-l">${pk.underL}</p><p class="pick-under">${x.under}</p><p class="pick-l">${pk.startL}</p><p class="pick-start">${x.start}</p><p class="pick-measure"><span>${pk.measureL}</span>${x.measure}</p><a class="btn btn--primary pick-cta" href="#lead" data-pick="${i}" ${track('cta_lp_pick')}>${pk.cta}</a></div>`).join('');
-  const picker = `<aside class="hero-pick" data-ladder data-vertical data-track-id="lp_situation" aria-labelledby="pick-title"><h2 id="pick-title">${pk.title}</h2><p class="pick-intro">${pk.intro}</p>
-<div class="pick-tabs" role="tablist" aria-orientation="vertical" aria-labelledby="pick-title">${tabs}</div>
-<div class="pick-panels">${panels}</div><p class="pick-note">${pk.note}</p></aside>`;
+  const L = c.lp, d = c.industries[id], J = c.how.journey, track = (k) => `data-track="${k}" data-industry="${id}"`;
   const actions = `<div class="btn-row">${btn(c, L.primary, '#lead', 'btn--primary', track('cta_lp_hero'))}${btn(c, L.secondary, '#journey', '')}</div>
 <p class="hero-trust">${c.home.hero.trust}</p>`;
-  // A domain with a `flow` opens like home: the question beside the lede, then one workflow from this business in a dark band.
-  // The others keep the situation picker in the hero.
-  const hero = d.flow
-    ? `<section class="hero hero--home hero--lp"><div class="container hero-grid">
+  // Opens like home: the question beside the lede, then one workflow from this business in a dark band.
+  const hero = `<section class="hero hero--home hero--lp"><div class="container hero-grid">
 <div class="hero-copy"><p class="lp-kicker">${d.kicker}</p><h1>${d.h1}</h1></div>
-<div class="hero-body"><p class="lede">${d.lede}</p>${actions}</div></div></section>`
-    : `<section class="hero hero--home hero--lp"><div class="container hero-grid">
-<div class="hero-copy"><p class="lp-kicker">${d.kicker}</p><h1>${d.h1}</h1><p class="lede">${d.lede}</p>
-${actions}</div>
-${picker}</div></section>`;
+<div class="hero-body"><p class="lede">${d.lede}</p>${actions}</div></div></section>`;
   // The domain workflow: the home page's line (with its agent star) and the use case page's today line and numbers.
   const f = d.flow, ex = c.usecase;
-  const flow = f ? `${head(f.title, f.intro, 'flow-title')}<p class="exw-today lp-flow-today"><span>${ex.todayL}</span> ${f.today}</p>
+  const flow = `${head(f.title, f.intro, 'flow-title')}<p class="exw-today lp-flow-today"><span>${ex.todayL}</span> ${f.today}</p>
 ${wfList([...f.steps, { k: 'result', h: ex.resultH, list: f.result }], agentStar(f.agentsL))}
 <div class="lp-flow-calc">${exCalc(c, f.numbers).replace('</h3>', ` <span class="ex-chip">${c.ui.illustrative}</span></h3>`)}<p class="exw-measure"><span>${ex.measureL}</span> ${f.measure}</p><p class="ex-note">${f.note}</p></div>
-<div class="wf-foot">${btn(c, f.cta, '#lead', 'btn--primary', track('cta_lp_flow'))}</div>` : '';
+<div class="wf-foot">${btn(c, f.cta, '#lead', 'btn--primary', track('cta_lp_flow'))}</div>`;
 
   // The signature: the same five stages as the home page and How it works, each carried through this domain.
   // Stage names and your decision stay shared; the sentence in between is this business.
   const journey = `${head(L.journey.title, L.journey.intro, 'journey-title')}<div class="journey lp-journey"><p class="lp-here-l">${d.here}</p><ol class="jr-stages">${J.stages.map((s, i) => `<li class="jr-stage"><span class="jr-n" aria-hidden="true">${i + 1}</span><h3>${s.h}</h3><p class="lp-here">${d.journey[i]}</p>${s.gate ? `<p class="jr-gate"><span>${J.gateL}</span>${s.gate}</p>` : ''}</li>`).join('')}</ol></div>`;
 
-  // A domain without a memo (law: removed 2026-11-22) skips the section; its workflow carries the mid-page action.
-  const memo = d.memo && `<div class="lp-memo"><div class="lp-memo-copy"><h2 id="memo-sec-title">${L.memo.title}</h2><p class="lede">${L.memo.p}</p>${btn(c, L.bookHere, '#lead', 'btn--primary', track('cta_lp_mid'))}</div>${memoBlock(c, d.memo)}</div>`;
 
   // Why bee & co. as on home: the three pillars (lite), the "& co." note and the security link. The intro says
   // "vendors", not "firms": on a law firm's page "many firms promise AI" reads as other law firms.
@@ -450,9 +436,9 @@ ${coNote(c)}<p class="ways-link"><a href="${href(c.lang, 'security')}">${wy.trus
   const form = `${head(ct.h1, ct.lede, 'book-title')}<div class="split split--top"><div>${personCard(c)}${leadForm(c, { pain: id, topics: d.situations.map((x) => x.q), topicL: L.form.topicL, detailHint: L.form.detailHint })}</div><aside class="aside-stack"><div class="card"><h3>${ct.next.h}</h3><ol class="steps">${ct.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div><div class="card"><h3>${ct.bring.h}</h3>${ticks(ct.bring.items)}</div></aside></div>`;
 
   const body = `${hero}
-${f ? section(flow, 'section--dark home-flow lp-flowsec', 'flow', 'flow-title') : ''}
+${section(flow, 'section--dark home-flow lp-flowsec', 'flow', 'flow-title')}
 ${section(journey, 'section--tint lp-journeysec', 'journey', 'journey-title')}
-${memo ? section(memo, 'section--tint lp-memosec', 'memo-sec', 'memo-sec-title') + '\n' : ''}${section(why, 'home-why home-who lp-whysec', 'why', 'why-title')}
+${section(why, 'home-why home-who lp-whysec', 'why', 'why-title')}
 ${section(`<div class="about-how"><h2 id="faq-title">${L.faqTitle}</h2>${faqList(d.faq)}</div>`, '', 'faq', 'faq-title')}
 ${section(form, 'section--tint lp-formsec', 'book', 'book-title')}
 <a class="btn btn--primary lp-sticky" href="#lead" data-lp-sticky ${track('cta_lp_sticky')} hidden>${L.bookHere}</a>`;
