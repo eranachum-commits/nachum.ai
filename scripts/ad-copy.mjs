@@ -34,6 +34,10 @@ export const HOOKS = {
       { id: 'tools', h: 'קניתם כלי AI. שום דבר לא באמת השתנה.', s: 'אנחנו בונים AI בתוך העבודה עצמה, ומלווים את הצוות עד שמשתמשים בו.', title: 'AI שהצוות באמת משתמש בו' },
       { id: 'manual', h: 'כל לקוח חדש מוסיף עוד עבודה ידנית.', s: 'AI שעושה את החלק החוזר, בתוך המערכות שכבר יש לכם. אדם בודק חריגים.', title: 'AI בתוך המערכות שכבר יש לכם' },
       { id: 'vendor', h: 'כל ספק AI ימליץ על המוצר שלו. מי ימליץ לכם?', s: 'מבט עצמאי: מה שווה לבנות, מה לא עכשיו ומה בכלל לא.', title: 'מה שווה לבנות עם AI, ומה לא' },
+      // Customer service (segment review 2026-11-22): an angle inside the general campaign, not a segment of its own. Lands on the
+      // use case page's customer-service example, whose headline it repeats. Not on Google: "בוט"/"צ'אטבוט" searches are cheap-bot shoppers.
+      { id: 'service', h: 'הנציגים מחפשים תשובות במקום לעזור ללקוחות?', s: 'AI מוצא את התשובה ומנסח מענה. הנציג בודק ושולח.', title: 'AI שמנסח תשובות ללקוחות', page: '/business-use-case', anchor: 'ex-2',
+        body: 'הנציגים מחפשים תשובות במקום לעזור ללקוחות? AI מוצא את התשובה בהזמנות, במדיניות ובמסמכים שלכם ומנסח מענה, והנציג בודק ושולח.' },
     ],
   },
   insurance: {

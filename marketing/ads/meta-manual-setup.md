@@ -130,6 +130,14 @@ Ad set name: **AI business – Israel 30-65**. Create the first ad, then **Dupli
 - **Headline:** מה שווה לבנות עם AI, ומה לא
 - **Website URL:** https://beenco.tech/?utm_source=facebook&utm_medium=paid&utm_campaign=business-w1&utm_content=hook-vendor
 
+### business – hook-service
+
+- **Ad name:** business – hook-service
+- **Image:** `marketing/ads/meta-upload/business-hook-service-square.png`
+- **Primary text:** הנציגים מחפשים תשובות במקום לעזור ללקוחות? AI מוצא את התשובה בהזמנות, במדיניות ובמסמכים שלכם ומנסח מענה, והנציג בודק ושולח. שיחה של 30 דקות עם ערן נחום, בלי התחייבות.
+- **Headline:** AI שמנסח תשובות ללקוחות
+- **Website URL:** https://beenco.tech/business-use-case?utm_source=facebook&utm_medium=paid&utm_campaign=business-w1&utm_content=hook-service#ex-2
+
 ## bee&co | Law | Meta | W2
 
 Ad set name: **Law – Israel 30-65**. Create the first ad, then **Duplicate** it inside the ad set for the other three and change the fields below.

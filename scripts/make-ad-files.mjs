@@ -192,7 +192,7 @@ for (const d of DOMAINS.filter((x) => HOOKS[x.id])) {
   const camp = `bee&co | ${META_SHORT[d.id]} | Meta | ${wave(d).toUpperCase()}`, set = `${META_SHORT[d.id]} – Israel 30-65`, H = HOOKS[d.id];
   const ads = [
     { angle: 'headline', body: H.headline.body, title: H.headline.title },
-    ...H.hooks.map((x) => ({ angle: 'hook-' + x.id, body: x.body || `${x.h} ${x.s}`, title: x.title })),
+    ...H.hooks.map((x) => ({ angle: 'hook-' + x.id, body: x.body || `${x.h} ${x.s}`, title: x.title, page: x.page, anchor: x.anchor })),
   ];
   for (const a of ads) {
     const name = `${d.id} – ${a.angle}`, image = `${d.id}-${a.angle}-square.png`;
@@ -201,7 +201,7 @@ for (const d of DOMAINS.filter((x) => HOOKS[x.id])) {
     }
     const o = {
       'Campaign Name': camp, 'Campaign Status': 'PAUSED', 'Special Ad Categories': 'none', 'Campaign Objective': 'Traffic', 'Buying Type': 'AUCTION',
-      'Ad Set Run Status': 'PAUSED', 'Ad Set Name': set, 'Ad Set Daily Budget': DAILY_ILS.meta[d.id], 'Link': `${SITE}${d.page}?${utm('facebook', 'paid', d, '&utm_content=' + a.angle)}`,
+      'Ad Set Run Status': 'PAUSED', 'Ad Set Name': set, 'Ad Set Daily Budget': DAILY_ILS.meta[d.id], 'Link': `${SITE}${a.page || d.page}?${utm('facebook', 'paid', d, '&utm_content=' + a.angle)}${a.anchor ? '#' + a.anchor : ''}`, // a hook may land on its own page
       'Link Object ID': META_PAGE_ID, 'Countries': 'IL', 'Age Min': 30, 'Age Max': 65, 'Publisher Platforms': 'facebook, instagram',
       'Device Platforms': 'mobile, desktop', 'Facebook Positions': 'feed', 'Instagram Positions': 'stream',
       'Optimization Goal': 'LINK_CLICKS', 'Billing Event': 'IMPRESSIONS', 'Ad Status': 'PAUSED', 'Ad Name': name, 'Title': a.title,
