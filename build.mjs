@@ -29,7 +29,11 @@ const adsConversion = /^AW-\d{6,}\/[\w-]{6,}$/.test(process.env.GOOGLE_ADS_CONVE
 // Meta (Facebook/Instagram) pixel: set META_PIXEL_ID (digits) in Vercel production. Loads only after the visitor accepts analytics.
 // Unset (local, previews): no Meta code at all.
 const metaPixel = /^\d{10,20}$/.test(process.env.META_PIXEL_ID || '') ? process.env.META_PIXEL_ID : '';
-const ctx = { site, cssHash: hash(css), jsHash: hash(jsSrc), draftNoindex: true, ga, adsConversion, metaPixel };
+// Vercel Web Analytics: cookieless page-view counts, so ad clicks can be compared with real visits, including visitors who
+// decline analytics. Same-origin script (/_vercel/insights), only on Vercel builds; set VERCEL_ANALYTICS=0 to turn it off.
+// Enable Web Analytics on the Vercel project too, or the script answers 404.
+const vercelAnalytics = Boolean(process.env.VERCEL) && process.env.VERCEL_ANALYTICS !== '0';
+const ctx = { site, cssHash: hash(css), jsHash: hash(jsSrc), draftNoindex: true, ga, adsConversion, metaPixel, vercelAnalytics };
 
 let count = 0;
 for (const lang of langs) {

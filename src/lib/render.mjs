@@ -109,6 +109,7 @@ export function layout({ c, key, meta, body, ctx, ld = '' }) {
 ${ctx.ga ? `<meta name="ga-id" content="${ctx.ga}">` : ''}
 ${ctx.ga && ctx.adsConversion ? `<meta name="ads-conversion" content="${ctx.adsConversion}">` : ''}
 ${ctx.metaPixel ? `<meta name="meta-pixel" content="${ctx.metaPixel}">` : ''}
+${ctx.vercelAnalytics ? '<script defer src="/_vercel/insights/script.js"></script>' : ''}
 ${ctx.noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">

@@ -24,7 +24,7 @@ export default {
     rights: '© 2026 bee & co.',
   },
   consent: {
-    text: 'We use Google Analytics, Google Ads and Meta (Facebook and Instagram) measurement only if you agree, to learn which pages and ads are useful. Nothing is loaded until you choose.',
+    text: 'We use Google Analytics, Google Ads and Meta (Facebook and Instagram) measurement only if you agree, to learn which pages and ads are useful. None of them loads until you choose. A cookieless visit count runs either way.',
     accept: 'Accept analytics', decline: 'Decline', more: 'Privacy policy',
   },
 
@@ -402,7 +402,7 @@ export default {
     meta: { title: 'Privacy policy — bee & co.', desc: 'What bee & co. collects when you get in touch, why, who processes it on our behalf, how long we keep it, and how to see, correct or delete your details.' },
     h1: 'Privacy policy',
     lede: 'What we collect when you contact bee & co., why we collect it, who handles it and how to reach us about it. Written to be read, not skimmed past.',
-    updatedL: 'Last updated', updated: '18 November 2026',
+    updatedL: 'Last updated', updated: '22 November 2026',
     shortTitle: 'In short',
     short: [
       'We only collect what you send us through the contact form, plus the minimum technical data needed to run the site safely.',
@@ -438,6 +438,7 @@ export default {
       ] },
       { id: 'cookies', h: 'Cookies and analytics', blocks: [
         { p: 'Fonts and scripts are served from our own site, so until you accept analytics, loading a page doesn’t contact third parties.' },
+        { p: 'Whatever you choose, our host Vercel counts page views for us without cookies (Vercel Web Analytics). It records the page, the referring site, the country and the device and browser type, and stores nothing in your browser. It does not identify you or follow you across sites, and we see only totals.' },
         { p: 'When you accept or decline analytics, your choice is saved in your browser’s local storage so we don’t ask again. You can clear it in your browser settings at any time.' },
         { p: 'If you accept analytics, we load Google Analytics 4 to count visits and see which pages and buttons are used, including whether a message was sent. It sets cookies in your browser. Advertising storage and ad personalization are turned off, and we don’t send it your name, email or message. If you decline, it never loads.' },
         { p: 'If you accept analytics and send us a message, Google Ads also learns about the visit and that a message was sent, so we can see which ad brought it. This sets no advertising cookies, and we don’t send your name, email or message.' },
@@ -446,7 +447,7 @@ export default {
       { id: 'share', h: 'Who handles your details', blocks: [
         { p: 'Only Eran Nachum reads the messages. To run the site and deliver your message, we use a small number of service providers who process data on our behalf and only according to our instructions:' },
         { list: [
-          'Vercel, which hosts the site (United States and other regions).',
+          'Vercel, which hosts the site and counts page views without cookies (United States and other regions).',
           'Resend and our email inbox, which deliver your message to us (United States or the EU).',
           'Google, for Google Analytics and Google Ads measurement, only if you accept analytics (United States and other regions).',
           'Meta, for Facebook and Instagram ad measurement, only if you accept analytics (United States, Ireland and other regions).',
