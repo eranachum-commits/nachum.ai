@@ -145,14 +145,14 @@ Still present:
 - **Every push to `main` deploys to production** at the configured production URL (build ≈ 10 seconds). Pull requests get preview deployments.
 - `vercel.json`: build `node build.mjs`, output `dist/`, clean URLs, security headers (CSP, frame, referrer, permissions, nosniff), long cache on fonts and SVGs.
 - Canonical, hreflang and sitemap URLs use the Vercel production URL unless `SITE_URL` is set.
-- **Search engines are blocked on Vercel** (`robots.txt: Disallow: /`) until `ALLOW_INDEXING=1` is set, because prices, legal pages and the domain are still drafts.
+- **Production is always indexable** (since 2026-11-23). Vercel preview deployments get `robots.txt: Disallow: /` unless `ALLOW_INDEXING=1`. The privacy page stays `noindex` until legal sign-off.
 
 ### Environment variables
 
 | Variable | Default | Purpose |
 |---|---|---|
 | `SITE_URL` | Vercel production URL, else `http://localhost:3000` | Canonical/hreflang/sitemap origin |
-| `ALLOW_INDEXING` | unset | Set to `1` on Vercel to let search engines index the site |
+| `ALLOW_INDEXING` | unset | Production is indexed regardless; set to `1` to also open a preview deployment to search engines |
 | `LEAD_ADAPTER` | `dev` | `dev` stores locally (on Vercel: ephemeral `/tmp`) and tells the visitor the request was not delivered; `webhook` sends leads to `LEAD_WEBHOOK_URL` |
 | `LEAD_WEBHOOK_URL`, `LEAD_WEBHOOK_SECRET` | unset | CRM / automation endpoint for leads |
 | `BOOKING_URL` | unset | Scheduling link shown after a successful submission |
@@ -190,7 +190,7 @@ Process used for the redesigns: the `frontend-design` skill for direction, `desi
 
 - Prices still in the footer note and the contact forms (see section 8).
 - Lead delivery: set `LEAD_ADAPTER=webhook` and a webhook URL in Vercel to receive real leads.
-- Indexing: set `ALLOW_INDEXING=1` after launch approvals.
+- Indexing: production is indexed by default (2026-11-23); submit `https://beenco.tech/sitemap.xml` in Google Search Console.
 - Domain: connect the approved production domain in Vercel, then set `SITE_URL`.
 - Founder photo (currently an "EN" monogram placeholder) and final logo.
 - Screen-reader testing with VoiceOver and NVDA.

@@ -9,8 +9,9 @@ import en from './src/content/en.mjs';
 
 const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL ? 'https://' + process.env.VERCEL_PROJECT_PRODUCTION_URL : '';
 const site = (process.env.SITE_URL || vercelUrl || 'http://localhost:3000').replace(/\/$/, '');
-// Draft content (prices, legal, domain: docs/APPROVALS.md) stays out of search engines on Vercel until ALLOW_INDEXING=1.
-const blockIndexing = Boolean(process.env.VERCEL) && process.env.ALLOW_INDEXING !== '1';
+// Production is always open to search engines (decided 2026-11-23). Vercel preview deployments stay out, so draft branches and
+// *.vercel.app copies are never indexed; ALLOW_INDEXING=1 also opens a preview. The privacy page keeps its own noindex (draftNoindex).
+const blockIndexing = Boolean(process.env.VERCEL) && process.env.VERCEL_ENV !== 'production' && process.env.ALLOW_INDEXING !== '1';
 const content = { he, en };
 const hash = (s) => createHash('sha1').update(s).digest('hex').slice(0, 8);
 
