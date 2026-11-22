@@ -211,23 +211,27 @@ const FL_ICON = {
   result: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 17l5.5-5.5 3.5 3.5L20 8"/><path d="M14.5 8H20v5.5"/></svg>',
 };
 // Six spots around the AI mark (percent of the stage), clockwise from the top. The flow line runs through the centre, so no agent sits on it.
-const STAR = [[50, 9], [81, 27], [81, 73], [50, 91], [19, 73], [19, 27]];
+const STAR = [[50, 9], [82, 27], [82, 73], [50, 91], [18, 73], [18, 27]];
 const flowLine = (c) => {
   const f = c.home.flow;
   const star = (s) => `<svg class="wf-spokes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">${s.agents.map((_, i) => `<line x1="50" y1="50" x2="${STAR[i][0]}" y2="${STAR[i][1]}" vector-effect="non-scaling-stroke"/>`).join('')}</svg>
-<ul class="wf-agents" aria-label="${esc(f.agentsL)}">${s.agents.map((x, i) => `<li style="--x:${STAR[i][0]}%;--y:${STAR[i][1]}%"><span>${x}</span></li>`).join('')}</ul>`;
+<ul class="wf-agents" aria-label="${esc(f.agentsL)}">${s.agents.map((x, i) => `<li style="--x:${STAR[i][0]}%;--y:${STAR[i][1]}%;--i:${i}"><span>${x}</span></li>`).join('')}</ul>`;
   const steps = f.steps.map((s) => `<li class="wf-step wf-step--${s.k}"><div class="wf-stage">${s.agents ? star(s) : ''}<span class="wf-mark">${FL_ICON[s.k]}</span></div><div class="wf-t"><h3>${s.h}</h3>${s.p ? `<p>${s.p}</p>` : ''}${s.list ? `<ul class="wf-out">${s.list.map((x) => `<li>${x}</li>`).join('')}</ul>` : ''}</div></li>`).join('');
   return `${head(f.title, f.intro, 'flow-title')}<ol class="wf">${steps}</ol>
 <div class="wf-foot">${btn(c, f.cta, href(c.lang, 'contact'), 'btn--primary', 'data-track="cta_flow"')}</div>`;
 };
 
-/* ---------- home "who does what": one accountable lead, specialists under that accountability, an owner on your side ---------- */
+/* ---------- home "who does what": three rows on one engagement timeline, from the first call to handover ---------- */
+// Eran's bar runs the whole engagement; specialists come and go inside it; your owner is named early and takes over at handover.
+// The dashed handover line crosses all three rows. Spans are illustrative, in percent of the timeline; WHO_HO is handover.
+const WHO_HO = 84, WHO_SPANS = [[8, 50], [16, 62], [28, 70], [46, 80], [58, 84]];
 const rolesMap = (c, rl) => { const [a, b, o] = rl.items;
-  return `<div class="rm"><article class="rm-lead"><svg class="rm-mark" viewBox="0 0 72 72" aria-hidden="true" focusable="false"><path d="M22 6h28l22 30-22 30H22L0 36z" transform="translate(0 0) scale(.9) translate(4 4)"/><path d="M26 37l8 8 15-17"/></svg>
-<div class="rm-lead-t"><h4>${a.h}</h4><p>${a.p}</p></div>
-<div class="rm-span" aria-hidden="true"><span>${rl.startL}</span><i></i><span>${rl.endL}</span></div><p class="rm-first">${a.first}</p></article>
-<div class="rm-row"><article class="rm-spec"><h4>${b.h}</h4><p>${b.p}</p><ul class="rm-chips" aria-label="${esc(rl.chipsL)}">${rl.chips.map((x) => `<li>${x}</li>`).join('')}</ul><p class="rm-first">${b.first}</p></article>
-<article class="rm-you"><h4>${o.h}</h4><p>${o.p}</p><p class="rm-first">${o.first}</p></article></div></div>`; };
+  const row = (k, x, track) => `<article class="who-row who-row--${k}"><div class="who-t"><h4>${x.h}</h4><p>${x.p}</p>${x.first ? `<p class="who-first">${x.first}</p>` : ''}</div><div class="who-track">${track}</div></article>`;
+  return `<div class="who" style="--ho:${WHO_HO}">
+${row('lead', a, `<span class="who-ax who-ax--start">${rl.startL}</span><span class="who-ax who-ax--end">${rl.endL}</span><span class="who-bar"><svg class="who-hex" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h10l5 9-5 9H7l-5-9z"/></svg></span>`)}
+${row('spec', b, `<ul class="who-spans" aria-label="${esc(rl.chipsL)}">${rl.chips.map((t, i) => `<li style="--s:${WHO_SPANS[i % WHO_SPANS.length][0]};--e:${WHO_SPANS[i % WHO_SPANS.length][1]}"><span>${t}</span></li>`).join('')}</ul>`)}
+${row('you', o, `<span class="who-thin" aria-hidden="true"></span><span class="who-own">${rl.ownL}</span>`)}
+</div>`; };
 
 /* ---------- pages ---------- */
 const pages = {};
@@ -248,7 +252,7 @@ pages.home = (c) => {
   const services = `${head(wk.title, wk.intro, 'services-title')}${waysLine(c, wk)}<p class="ways-link"><a href="${href(c.lang, 'how')}">${wk.link}</a></p>`;
 
   const why = `${head(wy.title, wy.intro, 'why-title')}<div class="pillars pillars--lite">${wy.items.map((x) => `<article class="pillar"><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div>
-<div class="hw-roles"><h3 class="as-h3" id="roles-title">${rl.title}</h3><p class="lede">${rl.intro}</p>${rolesMap(c, rl)}</div><p class="ways-link"><a href="${href(c.lang, 'security')}">${wy.trustLink}</a></p>`;
+<div class="hw-roles">${head(rl.title, rl.intro, 'roles-title')}${rolesMap(c, rl)}</div><p class="ways-link"><a href="${href(c.lang, 'security')}">${wy.trustLink}</a></p>`;
 
   const cta = section(`<div class="cta-band"><h2 id="cta-title">${h.cta.title}</h2><p class="lede">${h.cta.p}</p><div class="btn-row">${btn(c, h.cta.button, bookUrl(c), 'btn--primary', 'data-track="cta_band"')}${btn(c, c.ui.seeHow, href(c.lang, 'how'), '')}</div><p class="cta-note">${hr.note}</p><p class="cta-note cta-measure">${ms.note} <a href="${href(c.lang, 'results')}">${ms.link}</a></p></div>`, 'section--dark', 'talk', 'cta-title');
 

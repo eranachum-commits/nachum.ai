@@ -85,12 +85,12 @@ export default {
     roles: {
       title: 'Who does what',
       intro: 'One accountable partner does not mean one person doing everything. Here is how the work is split.',
-      startL: 'First call', endL: 'Handover', chipsL: 'As the project needs',
+      startL: 'First call', endL: 'Handover', ownL: 'Yours', chipsL: 'As the project needs',
       chips: ['AI engineering', 'Software development', 'Systems integration', 'QA and security', 'Implementation'],
       items: [
-        { h: 'Eran, personally', p: 'Understands the business, defines the problem, directs the solution and the technology decisions, oversees quality and reports to you on results.', first: 'He leads every engagement, from the first call to handover.' },
-        { h: 'Specialists, as needed', p: 'AI engineering, software development, systems integration, QA and security, and implementation, in the amount the project needs. Eran chooses them and manages them.', first: 'Not every project needs all of them. They work under Eran’s accountability, not instead of it.' },
-        { h: 'On your side', p: 'A named owner for every system we build, so it stays yours.', first: 'Documentation, runbooks and training are part of the handover.' },
+        { h: 'Eran, personally', p: 'Understands the business, directs the solution and stays accountable for the result.' },
+        { h: 'Specialists, as needed', p: 'Only the ones the project needs, chosen and managed by Eran.' },
+        { h: 'On your side', p: 'A named owner for every system, with documentation and training at handover.' },
       ],
     },
     ways: {
