@@ -189,7 +189,7 @@ const personCard = (c) => `<div class="person-card"><span class="person-mark" ar
 /* ---------- shared blocks ---------- */
 // Decide → Build → Lead is a real progression of responsibility, so it is drawn as one connected line.
 // Service families add who it is for, what you receive and what you measure; "who does what" items stay short.
-const waysLine = (c, w) => `<ol class="ways">${w.items.map((x) => `<li class="way"><h3>${x.h}</h3>${x.who ? `<p class="way-for"><span>${w.forL}</span>${x.who}</p>` : ''}<p>${x.p}</p>${x.get ? `<p class="way-get"><span>${w.getL}</span>${x.get}</p><p class="way-get"><span>${w.measureL}</span>${x.measure}</p>` : ''}<p class="way-first">${x.first}</p></li>`).join('')}</ol>`;
+const waysLine = (c, w) => `<ol class="ways">${w.items.map((x) => `<li class="way"><h3>${x.h}</h3><p>${x.p}</p><p class="way-get"><span>${w.getL}</span>${x.get}</p><p class="way-first">${x.first}</p></li>`).join('')}</ol>`;
 const ctaBand = (c, title, p, pain, { how = true, label = c.ui.book } = {}) => section(`<div class="cta-band"><h2>${title}</h2><p class="lede">${p}</p><div class="btn-row">${btn(c, label, bookUrl(c, pain), 'btn--primary', 'data-track="cta_band"')}${how ? btn(c, c.ui.seeHow, href(c.lang, 'how'), '') : ''}</div><p class="cta-note">${c.home.hero.note}</p></div>`, 'section--dark');
 const pageHero = (c, h1, lede) => `<section class="page-hero"><div class="container"><h1>${h1}</h1>${lede ? `<p class="lede">${lede}</p>` : ''}</div></section>`;
 

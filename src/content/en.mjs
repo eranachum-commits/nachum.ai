@@ -95,12 +95,12 @@ export default {
     },
     ways: {
       title: 'Three ways we help',
-      intro: 'One integrated offering, where each step builds on the last. Most work starts with a conversation, then a short Decision Sprint.',
-      forL: 'Who it’s for', getL: 'You receive', measureL: 'You measure',
+      intro: 'Most work starts with a conversation, then a short Decision Sprint. Each step builds on the last.',
+      getL: 'You get',
       items: [
-        { h: 'Business & technology advisory', who: 'Leadership teams deciding where to invest, or facing a significant technology decision.', p: 'We identify opportunities, evaluate investments, define requirements and recommend what to do, and what to leave alone.', get: 'A written recommendation with costs, risks and priorities.', measure: 'A decision made on time, with a baseline and success metrics agreed.', first: 'Usually starts with a 2–3 week Decision Sprint.' },
-        { h: 'AI solutions & implementation', who: 'Companies with a clear process they want to improve.', p: 'We design and implement solutions that automate repetitive work, connect your systems and support daily operations.', get: 'A working solution in daily use, with trained users, named owners and documentation.', measure: 'Time per task, error rate and work handled per employee, against the baseline.', first: 'When the technical risk is high, it starts with a short proof of value on your real examples.' },
-        { h: 'Continuous improvement & transformation', who: 'Companies that want results to keep growing after launch.', p: 'Ongoing improvement, adoption across the organization, expansion to new processes and experienced technology leadership when you need it, without hiring a full-time executive.', get: 'A one-page scorecard every month and a clear agenda for the next step.', measure: 'Results against agreed metrics, quarter after quarter.', first: 'Usually starts with a three-month engagement.' },
+        { h: 'Business & technology advisory', p: 'For leaders deciding where to invest. We find the opportunities and recommend what to do, and what to leave alone.', get: 'A written recommendation with costs, risks and priorities.', first: 'Starts with a 2–3 week Decision Sprint.' },
+        { h: 'AI solutions & implementation', p: 'For a clear process you want to improve. We build solutions that take over repeated work and connect your systems.', get: 'A working solution in daily use, with trained users and named owners.', first: 'If the technical risk is high, we start with a short proof of value.' },
+        { h: 'Continuous improvement & transformation', p: 'For results that keep growing after launch: ongoing improvement, and senior technology leadership when you need it.', get: 'A one-page scorecard every month and a clear next step.', first: 'Starts with a three-month engagement.' },
       ],
       link: 'How each engagement works',
     },

@@ -145,7 +145,8 @@ await t('home: business-first hero, problems, illustrative examples, how we work
     assert.equal((home.match(/class="rm-(lead|spec|you)"/g) || []).length, 3, 'who-does-what: lead, specialists, owner on your side ' + lang);
     assert.equal((home.match(/<li class="way">/g) || []).length, h.ways.items.length, 'service items ' + lang);
     assert.equal(h.ways.items.length, 3, 'three service families ' + lang);
-    assert.equal((home.match(/class="way-for"/g) || []).length, 3, 'each service says who it is for ' + lang);
+    assert.equal((home.match(/class="way-get"/g) || []).length, 3, 'each service says what you get ' + lang);
+    assert.equal((home.match(/class="way-first"/g) || []).length, 3, 'each service says how it starts ' + lang);
     assert.doesNotMatch(home, /class="svc"/, 'no five-service list ' + lang);
     assert.doesNotMatch(home, /still writes the code|שעדיין כותב את הקוד|I build it myself|I personally build|אני בונה בעצמי/, 'no solo-coder line on home ' + lang);
     assert.equal((home.match(/<article class="pillar">/g) || []).length, 3, 'three pillars ' + lang);

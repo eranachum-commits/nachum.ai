@@ -901,7 +901,7 @@ bdi[dir='ltr'] { white-space: nowrap; }
 .problems h3 { font-size: clamp(1.2rem, 1.8vw, 1.4rem); font-weight: 500; margin-bottom: .4em; }
 .problems p { margin: 0; color: var(--ink-2); }
 .problems .prob-fix { margin-top: auto; padding-top: 1em; font-size: .95rem; color: var(--ink); }
-.prob-fix span, .ex-value span, .ex-metrics > span, .way-for span, .way-get span { display: block; margin-bottom: .2em; font-size: .78rem; font-weight: 600; letter-spacing: .02em; color: var(--accent-deep); }
+.prob-fix span, .ex-value span, .ex-metrics > span, .way-get span { display: block; margin-bottom: .2em; font-size: .78rem; font-weight: 600; letter-spacing: .02em; color: var(--accent-deep); }
 
 /* Examples: illustrative before/after, one card per process. */
 .examples { display: grid; gap: clamp(18px, 2.4vw, 28px); grid-template-columns: minmax(0, 1fr); }
@@ -948,9 +948,7 @@ bdi[dir='ltr'] { white-space: nowrap; }
 .hw-roles .lede { margin: 0 0 clamp(20px, 3vw, 32px); max-width: 60ch; }
 
 /* Service families: who it is for, what you receive, what you measure. */
-.way .way-for, .way .way-get { margin: 0 0 .8em; max-width: 42ch; font-size: .96rem; }
-.way .way-for { color: var(--ink); }
-.way .way-get { color: var(--ink-2); }
+.way .way-get { margin: 0 0 .8em; max-width: 42ch; font-size: .96rem; color: var(--ink); }
 
 /* Trust list under the three pillars, on the dark band. */
 .trust-list { margin-top: clamp(32px, 4.5vw, 56px); padding-top: clamp(22px, 3vw, 32px); border-top: 1px solid var(--night-line); }
