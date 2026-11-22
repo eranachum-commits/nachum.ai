@@ -4,7 +4,7 @@ Everything here is created **paused**. Nothing spends money until you review it 
 
 | File | What it is |
 |---|---|
-| `google-ads-editor.csv` | Three Google Search campaigns (accounting, distribution, AI for business): ad group, keywords, negative keywords, one responsive search ad each. `google-ads-editor-business.csv` is the AI for business campaign alone, for importing it without re-adding the other two campaigns' ads |
+| `google-ads-editor.csv` | Three Google Search campaigns (accounting, distribution, AI for business): ad group, keywords, negative keywords, one responsive search ad each. `google-ads-editor-business.csv` is the AI for business campaign alone, for importing it without re-adding the other two campaigns' ads. `google-ads-editor-business-ad.csv` is only its responsive search ad (refreshed 2026-11-23 to the new home wording): import it to add the new ad beside the live one, then pause the old ad. Build with `ONLY=business ADS_ONLY=1 node scripts/make-ad-files.mjs` |
 | `meta-manual-setup.md` | Every field of the 12 Meta ads, to create them by hand in Ads Manager (new ad accounts can't publish imported ads) |
 | `meta-upload/` | **What you import into Meta**: `meta-ads-import.csv` plus the 12 square banners it names (Meta matches them by file name). Built by `make-ad-files.mjs` from Meta's own template (`scripts/meta-import-columns.json`) |
 | `meta-ads-import.csv` | Three Facebook/Instagram traffic campaigns (accounting, distribution, AI for business), four ads each: the landing-page headline and three hooks |

@@ -27,8 +27,9 @@ function page(id, angle, [W, H]) {
   const dark = angle !== 'headline', wide = W > H, tall = H > W;
   const ink = dark ? '#f5f0e6' : '#202820', soft = dark ? '#c7bdca' : '#465247';
   const hk = HOOKS[id].hooks.find((x) => 'hook-' + x.id === angle);
-  const main = hk ? hk.h : (he.industries[id]?.h1 ?? he.home.hero.h1);
-  const sub = hk ? hk.s : 'מאתרים איפה AI חוסך עבודה, ובונים את זה בתוך המערכות שכבר יש לכם.';
+  const main = hk ? hk.h : (HOOKS[id].headline?.h ?? he.industries[id]?.h1 ?? he.home.hero.h1);
+  // The general headline banner carries the home page's support line under its H1; industry banners keep the shared line.
+  const sub = hk ? hk.s : id === 'business' ? he.home.hero.support : 'מאתרים איפה AI חוסך עבודה, ובונים את זה בתוך המערכות שכבר יש לכם.';
   const s = wide ? 0.66 : 1; // type scale
   const big = Math.round((main.length > 34 ? 84 : 96) * s); // portrait is as wide as square: same type size, same line breaks
   return `<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><style>${faces}

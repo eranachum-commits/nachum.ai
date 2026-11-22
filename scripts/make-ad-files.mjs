@@ -75,13 +75,14 @@ const DOMAINS = [
     keywords: ['בינה מלאכותית לעסקים', 'בינה מלאכותית לעסק', 'AI לעסקים', 'אוטומציה לעסקים', 'אוטומציה עסקית', 'הטמעת AI',
       'הטמעת בינה מלאכותית', 'יועץ AI', 'יועץ בינה מלאכותית', 'ייעוץ AI לעסקים', 'סוכן AI לעסק', 'סוכן AI לעסקים', 'סוכני AI לעסקים'],
     paused: ['סוכן AI'], // ~500/month but mixed intent (products, real-estate agents, free tools): on only if search terms show buyers
-    headlines: ['בינה מלאכותית לעסקים', 'אוטומציה לעסקים', 'AI לעסקים, מקצה לקצה', 'הטמעת AI בתוך העסק שלכם',
-      'יועץ AI שגם בונה בעצמו', 'סוכני AI בתוך המערכות שלכם', 'מהבעיה העסקית ועד AI שעובד', 'בלי להחליף את המערכות שלכם',
-      'קבעו שיחה של 30 דקות', 'מעל 20 שנה בפיתוח תוכנה', 'שותף אחד, מקצה לקצה', 'מדברים ישירות עם ערן נחום',
+    // Wording from the 22 Nov home page ("Your business can work smarter"), not the older "one partner, end to end".
+    headlines: ['בינה מלאכותית לעסקים', 'אוטומציה לעסקים', 'AI לעסקים: לעבוד חכם יותר', 'הטמעת AI בתוך העסק שלכם',
+      'שירות טוב יותר ללקוחות עם AI', 'סוכני AI בתוך המערכות שלכם', 'מהבעיה העסקית ועד AI שעובד', 'בלי להחליף את המערכות שלכם',
+      'קבעו שיחה של 30 דקות', 'מעל 20 שנה בפיתוח תוכנה', 'פחות עבודה ידנית עם AI', 'מדברים ישירות עם ערן נחום',
       'מה שווה לבנות, ומה לא', 'מלווים עד שהצוות משתמש', 'הסכם סודיות לפני הכול'],
     pins: [0, 1, 2],
     descriptions: ['מאתרים איפה AI חוסך עבודה, בונים בתוך המערכות שכבר יש לכם ומלווים את הצוות עד שזה עובד.',
-      'אסטרטגיה, פיתוח, חיבור למערכות והטמעה, באחריות של שותף אחד. בלי ספקים שמגלגלים אחריות.',
+      'העסק שלכם יכול לעבוד חכם יותר עם AI: פחות עבודה ידנית, פחות עלויות ושירות טוב יותר.',
       'בשיחה של 30 דקות עם ערן נחום נבין איפה העסק מאבד שעות ומה שווה לבדוק קודם.',
       'לפעמים התשובה הנכונה היא בכלל לא AI. אומרים את זה לפני שמתחילים לבנות.'],
     paths: ['לעסקים', 'שיחה'], // Hebrew only: mixed-direction paths render out of order
@@ -155,19 +156,22 @@ const row = (o) => gCols.map((c) => (c === 'Account' ? GOOGLE_ACCOUNT : o[c] ?? 
 // ONLY=<id> writes just that campaign to google-ads-editor-<id>.csv, for importing one new campaign without re-adding
 // the other campaigns' ads (each import of an ad creates a new copy).
 const ONLY = process.env.ONLY || '';
+// ADS_ONLY=1 (with ONLY=<id>) writes just the responsive search ad, to add a new ad beside the live one without touching the
+// campaign's settings, keywords or negatives. Then pause the old ad in Google Ads.
+const ADS_ONLY = process.env.ADS_ONLY === '1';
 for (const d of DOMAINS.filter((x) => !ONLY || x.id === ONLY)) {
   const camp = `bee&co | ${d.name} | Search | ${wave(d).toUpperCase()}`, ag = `${d.name} – core`;
   // Campaign, location and ad group rows only for a first upload (NEW_CAMPAIGNS=1). On the live account they would
   // reset the budget, status and bid settings set by hand and duplicate the location.
-  if (process.env.NEW_CAMPAIGNS === '1' || d.create) {
+  if (!ADS_ONLY && (process.env.NEW_CAMPAIGNS === '1' || d.create)) {
     g.push(row({ Campaign: camp, 'Campaign Type': 'Search', Networks: 'Google search', Budget: d.budget || DAILY_ILS.google, 'Budget type': 'Daily',
       'Bid Strategy Type': 'Maximize clicks', 'Campaign Status': 'Paused', 'Final URL suffix': utm('google', 'cpc', d, '&utm_term={keyword}') }));
     g.push(row({ Campaign: camp, Location: 'Israel' }));
     g.push(row({ Campaign: camp, 'Ad Group': ag, 'Ad Group Status': 'Enabled' }));
   }
-  d.keywords.forEach((k) => g.push(row({ Campaign: camp, 'Ad Group': ag, Keyword: k, 'Criterion Type': 'Phrase', Status: 'Enabled' })));
-  d.paused.forEach((k) => g.push(row({ Campaign: camp, 'Ad Group': ag, Keyword: k, 'Criterion Type': 'Phrase', Status: 'Paused' })));
-  [...NEGATIVES, ...d.negatives].forEach((k) => g.push(row({ Campaign: camp, Keyword: k, 'Criterion Type': 'Campaign Negative Broad' })));
+  if (!ADS_ONLY) d.keywords.forEach((k) => g.push(row({ Campaign: camp, 'Ad Group': ag, Keyword: k, 'Criterion Type': 'Phrase', Status: 'Enabled' })));
+  if (!ADS_ONLY) d.paused.forEach((k) => g.push(row({ Campaign: camp, 'Ad Group': ag, Keyword: k, 'Criterion Type': 'Phrase', Status: 'Paused' })));
+  if (!ADS_ONLY) [...NEGATIVES, ...d.negatives].forEach((k) => g.push(row({ Campaign: camp, Keyword: k, 'Criterion Type': 'Campaign Negative Broad' })));
   const ad = { Campaign: camp, 'Ad Group': ag, 'Ad type': 'Responsive search ad', Status: 'Enabled', 'Final URL': SITE + d.page, 'Path 1': d.paths[0], 'Path 2': d.paths[1] };
   d.headlines.forEach((h, i) => { ad[`Headline ${i + 1}`] = h; });
   d.pins.forEach((i) => { ad[`Headline ${i + 1} position`] = 1; }); // Google rotates these in position 1, the rest anywhere
@@ -216,7 +220,7 @@ for (const d of DOMAINS.filter((x) => HOOKS[x.id])) {
 
 const out = join(root, 'marketing/ads');
 await mkdir(out, { recursive: true });
-await writeFile(join(out, ONLY ? `google-ads-editor-${ONLY}.csv` : 'google-ads-editor.csv'), csv(g));
+await writeFile(join(out, ONLY ? `google-ads-editor-${ONLY}${ADS_ONLY ? '-ad' : ''}.csv` : 'google-ads-editor.csv'), csv(g));
 
 // New ad accounts can't publish bulk-imported ads (Meta error #3738001), so this sheet lists every field for creating them by hand.
 {

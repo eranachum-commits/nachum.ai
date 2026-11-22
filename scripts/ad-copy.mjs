@@ -29,7 +29,8 @@ export const HOOKS = {
   // The headline banner carries the home page's H1; the hooks are the home page's "situations", in the reader's words.
   business: {
     who: 'לעסקים',
-    headline: { body: 'רוצים AI בעסק ולא בטוחים מאיפה להתחיל? אנחנו מאתרים איפה AI חוסך עבודה, בונים בתוך המערכות שכבר יש לכם ודואגים שהצוות באמת משתמש.', title: 'AI בעסק, מקצה לקצה' },
+    // The headline ad repeats the home page's H1 with "AI" added (h: the banner line; without it the banner uses the page's H1).
+    headline: { h: 'העסק שלכם יכול לעבוד חכם יותר עם AI.', body: 'העסק שלכם יכול לעבוד חכם יותר עם AI: פחות עבודה ידנית, פחות עלויות ושירות טוב יותר. מאתרים איפה הולכים זמן וכסף, ובונים AI שעושה את העבודה החוזרת בתוך המערכות שכבר יש לכם.', title: 'העסק שלכם יכול לעבוד חכם יותר עם AI' },
     hooks: [
       { id: 'tools', h: 'קניתם כלי AI. שום דבר לא באמת השתנה.', s: 'אנחנו בונים AI בתוך העבודה עצמה, ומלווים את הצוות עד שמשתמשים בו.', title: 'AI שהצוות באמת משתמש בו' },
       { id: 'manual', h: 'כל לקוח חדש מוסיף עוד עבודה ידנית.', s: 'AI שעושה את החלק החוזר, בתוך המערכות שכבר יש לכם. אדם בודק חריגים.', title: 'AI בתוך המערכות שכבר יש לכם' },

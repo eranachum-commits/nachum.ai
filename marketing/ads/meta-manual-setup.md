@@ -102,8 +102,8 @@ Ad set name: **AI business – Israel 30-65**. Create the first ad, then **Dupli
 
 - **Ad name:** business – headline
 - **Image:** `marketing/ads/meta-upload/business-headline-square.png`
-- **Primary text:** רוצים AI בעסק ולא בטוחים מאיפה להתחיל? אנחנו מאתרים איפה AI חוסך עבודה, בונים בתוך המערכות שכבר יש לכם ודואגים שהצוות באמת משתמש. שיחה של 30 דקות עם ערן נחום, בלי התחייבות.
-- **Headline:** AI בעסק, מקצה לקצה
+- **Primary text:** העסק שלכם יכול לעבוד חכם יותר עם AI: פחות עבודה ידנית, פחות עלויות ושירות טוב יותר. מאתרים איפה הולכים זמן וכסף, ובונים AI שעושה את העבודה החוזרת בתוך המערכות שכבר יש לכם. שיחה של 30 דקות עם ערן נחום, בלי התחייבות.
+- **Headline:** העסק שלכם יכול לעבוד חכם יותר עם AI
 - **Website URL:** https://beenco.tech/?utm_source=facebook&utm_medium=paid&utm_campaign=business-w1&utm_content=headline
 
 ### business – hook-tools
