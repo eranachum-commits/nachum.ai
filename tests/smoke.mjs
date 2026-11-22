@@ -142,7 +142,7 @@ await t('home: business-first hero, problems, illustrative examples, how we work
     assert.doesNotMatch(home, /class="jr-stage"|jr-lane|data-armed/, 'the five-stage journey lives on the how-it-works page ' + lang);
     assert.doesNotMatch(home, /id="founder"|class="portrait"/, 'no founder section on home ' + lang);
     assert.equal((home.match(/<ol class="ways">/g) || []).length, 1, 'service families ' + lang);
-    assert.equal((home.match(/class="who-row who-row--(lead|spec|you)"/g) || []).length, 3, 'who-does-what: lead, specialists, owner on your side ' + lang);
+    assert.equal((home.match(/class="acc-(lead|spec|you)"/g) || []).length, 3, 'who-does-what: lead, specialists, owner on your side ' + lang);
     assert.equal((home.match(/<li class="way">/g) || []).length, h.ways.items.length, 'service items ' + lang);
     assert.equal(h.ways.items.length, 3, 'three service families ' + lang);
     assert.equal((home.match(/class="way-get"/g) || []).length, 3, 'each service says what you get ' + lang);

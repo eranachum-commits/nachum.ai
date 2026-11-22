@@ -1141,49 +1141,32 @@ bdi[dir='ltr'] { white-space: nowrap; }
 }
 .wf-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; margin-top: clamp(40px, 5vw, 60px); padding-top: 28px; border-top: 1px solid var(--night-line); }
 
-/* ---------- who does what: one engagement timeline. Pollen = Eran, dashed = specialists as needed, ink = yours after handover ---------- */
-.who { --ho: 84; --ho-x: calc(var(--ho) * 1%); margin-top: clamp(24px, 3vw, 36px); border-top: 2px solid var(--ink); }
-.who-row { display: grid; gap: 14px; padding: 22px 0; border-bottom: 1px solid var(--rule); }
-.who h4 { margin: 0 0 .3em; font-size: 1.2rem; font-weight: 600; letter-spacing: -.01em; color: var(--ink); }
-.who-t p { margin: 0; color: var(--ink-2); max-width: 46ch; }
-.who-t .who-first { margin-top: .6em; font-size: .92rem; font-weight: 600; color: var(--ink); }
-.who-track { position: relative; min-height: 44px; align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
-/* The handover line, continuous through the rows. */
-.who-track::after { content: ''; position: absolute; inset-inline-start: var(--ho-x); top: -22px; bottom: -23px; border-inline-start: 2px dashed var(--accent); opacity: .45; }
-.who-row--lead .who-track::after { top: calc(50% - 30px); }
-.who-row--you .who-track::after { bottom: -22px; }
-
-/* Eran: the whole engagement. */
-.who-row--lead .who-track { min-height: 64px; }
-.who-bar { position: absolute; inset-inline-start: 0; width: var(--ho-x); top: calc(50% - 2px); height: 14px; border-radius: 999px; background: var(--pollen); }
-.who-hex { position: absolute; inset-inline-start: -4px; top: 50%; width: 30px; height: 30px; margin-top: -15px; fill: var(--pollen); stroke: var(--paper); stroke-width: 2.5; }
-.who-ax { position: absolute; top: calc(50% - 30px); font-size: .8rem; font-weight: 600; color: var(--accent-deep); white-space: nowrap; }
-.who-ax--start { inset-inline-start: 0; }
-.who-ax--end { inset-inline-end: calc(100% - var(--ho-x) + 8px); }
-
-/* Specialists: each comes in for part of the work. */
-.who-spans { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-.who-spans li { position: relative; height: 30px; }
-.who-spans span { position: absolute; inset-inline-start: calc(var(--s) * 1%); width: calc((var(--e) - var(--s)) * 1%); height: 100%; display: flex; align-items: center; padding-inline: 12px; border: 1.5px dashed var(--field); border-radius: 999px; background: var(--sheet); font-size: .84rem; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-/* Your side: an owner named from the start, the system yours after handover. */
-.who-thin { position: absolute; inset-inline-start: 0; width: var(--ho-x); top: 50%; border-top: 2px dotted var(--rule-2); }
-.who-own { position: absolute; inset-inline-start: var(--ho-x); inset-inline-end: 0; top: 50%; height: 30px; margin-top: -15px; display: flex; align-items: center; justify-content: center; border-radius: 0 999px 999px 0; background: var(--ink); color: var(--paper); font-size: .84rem; font-weight: 600; }
-[dir='rtl'] .who-own { border-radius: 999px 0 0 999px; }
-
+/* ---------- who does what: Eran's pollen frame holds the specialists; a handover arrow passes the work to your side ---------- */
+.acc { display: grid; gap: 14px; margin-top: clamp(8px, 1.5vw, 16px); }
+.acc h4 { margin: 0 0 .3em; font-size: 1.2rem; font-weight: 600; letter-spacing: -.01em; }
+.acc p { margin: 0; }
+.acc-lead { padding: clamp(20px, 2.6vw, 32px); border: 2px solid var(--pollen); border-radius: 20px; background: var(--sheet); }
+.acc-head { display: flex; gap: 18px; align-items: center; }
+.acc-head p { color: var(--ink-2); max-width: 44ch; }
+.acc-photo { flex: none; width: 72px; height: 72px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; box-shadow: 0 0 0 3px var(--sheet), 0 0 0 5px var(--pollen); }
+.acc-spec { margin-top: clamp(18px, 2.4vw, 26px); padding: clamp(16px, 2vw, 22px); border: 1.5px dashed var(--field); border-radius: 14px; background: var(--paper); }
+.acc-spec h4 { font-size: 1.05rem; }
+.acc-spec p { color: var(--ink-2); font-size: .96rem; }
+.acc-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; padding: 0; }
+.acc-chips li { padding: 5px 13px; border: 1.5px solid var(--rule-2); border-radius: 999px; background: var(--sheet); font-size: .88rem; font-weight: 600; color: var(--ink); }
+/* The handover: down on phones, across on wide screens. */
+.acc-hand { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: .86rem; font-weight: 600; color: var(--accent-deep); }
+.acc-hand svg { width: 48px; height: 18px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transform: rotate(90deg); }
+.acc-you { position: relative; padding: clamp(20px, 2.6vw, 32px); border-radius: 20px; background: var(--ink); color: var(--paper); }
+.acc-you h4 { color: var(--paper); }
+.acc-you p { color: var(--peri); max-width: 34ch; }
+.acc-key { display: block; width: 34px; height: 34px; margin-bottom: 14px; fill: none; stroke: var(--pollen); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 @media (min-width: 860px) {
-  .who-row { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 4vw, 56px); align-items: center; }
-}
-@media (max-width: 859px) {
-  /* Too narrow for a Gantt: specialists wrap as chips, the timeline shapes stay for Eran and your side. */
-  .who-spans { display: flex; flex-wrap: wrap; gap: 8px; }
-  .who-spans li { height: auto; }
-  .who-spans span { position: static; width: auto; padding: 5px 12px; }
-  .who-row--spec .who-track::after { display: none; }
-  .who-row--spec .who-track { min-height: 0; }
-  .who-row--you .who-track::after { top: 0; bottom: 0; }
-  .who-row--lead .who-track::after { bottom: 0; }
-  .who-own { font-size: .78rem; }
+  .acc { grid-template-columns: minmax(0, 1fr) auto minmax(0, .5fr); gap: 0; align-items: center; }
+  .acc-hand { flex-direction: column; gap: 4px; padding-inline: 14px; }
+  .acc-hand svg { width: 64px; height: 24px; transform: none; }
+  [dir='rtl'] .acc-hand svg { transform: scaleX(-1); }
+  .acc-you { align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
 }
 
 /* ---------- home, shorter: quiet hero link, light "who you work with" section, measurement line in the closing band ---------- */

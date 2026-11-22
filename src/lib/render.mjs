@@ -221,16 +221,15 @@ const flowLine = (c) => {
 <div class="wf-foot">${btn(c, f.cta, href(c.lang, 'contact'), 'btn--primary', 'data-track="cta_flow"')}</div>`;
 };
 
-/* ---------- home "who does what": three rows on one engagement timeline, from the first call to handover ---------- */
-// Eran's bar runs the whole engagement; specialists come and go inside it; your owner is named early and takes over at handover.
-// The dashed handover line crosses all three rows. Spans are illustrative, in percent of the timeline; WHO_HO is handover.
-const WHO_HO = 84, WHO_SPANS = [[8, 50], [16, 62], [28, 70], [46, 80], [58, 84]];
+/* ---------- home "who does what": accountability drawn as containment ---------- */
+// Eran's frame encloses the specialists (they work under his accountability, not instead of it); a handover arrow
+// passes the work out of the frame to the owner on your side.
 const rolesMap = (c, rl) => { const [a, b, o] = rl.items;
-  const row = (k, x, track) => `<article class="who-row who-row--${k}"><div class="who-t"><h4>${x.h}</h4><p>${x.p}</p>${x.first ? `<p class="who-first">${x.first}</p>` : ''}</div><div class="who-track">${track}</div></article>`;
-  return `<div class="who" style="--ho:${WHO_HO}">
-${row('lead', a, `<span class="who-ax who-ax--start">${rl.startL}</span><span class="who-ax who-ax--end">${rl.endL}</span><span class="who-bar"><svg class="who-hex" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h10l5 9-5 9H7l-5-9z"/></svg></span>`)}
-${row('spec', b, `<ul class="who-spans" aria-label="${esc(rl.chipsL)}">${rl.chips.map((t, i) => `<li style="--s:${WHO_SPANS[i % WHO_SPANS.length][0]};--e:${WHO_SPANS[i % WHO_SPANS.length][1]}"><span>${t}</span></li>`).join('')}</ul>`)}
-${row('you', o, `<span class="who-thin" aria-hidden="true"></span><span class="who-own">${rl.ownL}</span>`)}
+  return `<div class="acc">
+<article class="acc-lead"><div class="acc-head"><img class="acc-photo" src="/img/eran-nachum-420.jpg" width="72" height="72" alt="" loading="lazy" decoding="async"><div><h4>${a.h}</h4><p>${a.p}</p></div></div>
+<div class="acc-spec"><h4>${b.h}</h4><p>${b.p}</p><ul class="acc-chips" aria-label="${esc(rl.chipsL)}">${rl.chips.map((t) => `<li>${t}</li>`).join('')}</ul></div></article>
+<div class="acc-hand"><span>${rl.endL}</span><svg viewBox="0 0 64 24" aria-hidden="true" focusable="false"><path d="M2 12h58M52 5l8 7-8 7"/></svg></div>
+<article class="acc-you"><svg class="acc-key" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg><h4>${o.h}</h4><p>${o.p}</p></article>
 </div>`; };
 
 /* ---------- pages ---------- */

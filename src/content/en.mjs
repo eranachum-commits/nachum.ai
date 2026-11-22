@@ -85,7 +85,7 @@ export default {
     roles: {
       title: 'Who does what',
       intro: 'One accountable partner does not mean one person doing everything. Here is how the work is split.',
-      startL: 'First call', endL: 'Handover', ownL: 'Yours', chipsL: 'As the project needs',
+      endL: 'Handover', chipsL: 'As the project needs',
       chips: ['AI engineering', 'Software development', 'Systems integration', 'QA and security', 'Implementation'],
       items: [
         { h: 'Eran, personally', p: 'Understands the business, directs the solution and stays accountable for the result.' },
