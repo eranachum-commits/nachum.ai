@@ -17,7 +17,9 @@ const PHOTO = { src: '/img/eran-nachum-806.jpg', set: '/img/eran-nachum-420.jpg 
 const founderPanel = (c, { eager = false, sizes = '(min-width: 980px) 360px, 80vw' } = {}) => `<figure class="portrait"><span class="portrait-photo"><img src="${PHOTO.src}" srcset="${PHOTO.set}" sizes="${sizes}" width="806" height="772" alt="${esc(c.founder.photoAlt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></span><figcaption><span class="portrait-name">${c.founder.name}</span><span class="portrait-role">${c.founder.role}</span></figcaption></figure>`;
 
 /* ---------- layout ---------- */
-const NAV = ['usecase', 'how', 'about', 'results', 'faq'];
+// Header: how working together goes, who leads it, then the use cases. The footer lists every page, including results and FAQ.
+const NAV = ['how', 'about', 'usecase'];
+const FOOT_NAV = [...NAV, 'results', 'faq'];
 function header(c, key) {
   // Campaign landing pages keep visitors on the page: logo, language and one action that scrolls to the form.
   if (key.startsWith('lp-')) {
@@ -51,7 +53,7 @@ function footer(c) {
   return `<footer class="site-footer"><div class="container">
   <div class="foot-grid">
     <div><a class="logo logo--footer" href="${href(c.lang, 'home')}">${brandLockup(c, true)}</a><p>${f.tag}</p></div>
-    <div><h2>${f.cols.site}</h2><ul>${NAV.map((k) => `<li><a href="${href(c.lang, k)}">${c.nav[k]}</a></li>`).join('')}<li><a href="${href(c.lang, 'contact')}">${f.contact}</a></li><li>${extLink(c.founder.linkedin, c.founder.linkedinLabel)}</li></ul></div>
+    <div><h2>${f.cols.site}</h2><ul>${FOOT_NAV.map((k) => `<li><a href="${href(c.lang, k)}">${c.nav[k]}</a></li>`).join('')}<li><a href="${href(c.lang, 'contact')}">${f.contact}</a></li><li>${extLink(c.founder.linkedin, c.founder.linkedinLabel)}</li></ul></div>
     <div><h2>${f.cols.industries}</h2><ul>${routes.filter((r) => r.key.startsWith('lp-')).map((r) => `<li><a href="${href(c.lang, r.key)}">${f.industries[r.key.slice(3)]}</a></li>`).join('')}</ul></div>
     <div><h2>${f.cols.legal}</h2><ul><li><a href="${href(c.lang, 'privacy')}">${f.privacy}</a></li><li><a href="${href(c.lang, 'security')}">${f.security}</a></li></ul></div>
   </div>
@@ -235,22 +237,14 @@ const flowLine = (c) => {
 <div class="wf-foot">${btn(c, f.cta, href(c.lang, 'contact'), 'btn--primary', 'data-track="cta_flow"')}</div>`;
 };
 
-/* ---------- home "who does what": accountability drawn as containment ---------- */
-// Eran's frame encloses the specialists (they work under his accountability, not instead of it); a handover arrow
-// passes the work out of the frame to the owner on your side.
-const rolesMap = (c, rl) => { const [a, b, o] = rl.items;
-  return `<div class="acc">
-<article class="acc-lead"><div class="acc-head"><img class="acc-photo" src="/img/eran-nachum-420.jpg" width="72" height="72" alt="" loading="lazy" decoding="async"><div><h4>${a.h}</h4><p>${a.p}</p></div></div>
-<div class="acc-spec"><h4>${b.h}</h4><p>${b.p}</p><ul class="acc-chips" aria-label="${esc(rl.chipsL)}">${rl.chips.map((t) => `<li>${t}</li>`).join('')}</ul></div></article>
-<div class="acc-hand"><span>${rl.endL}</span><svg viewBox="0 0 64 24" aria-hidden="true" focusable="false"><path d="M2 12h58M52 5l8 7-8 7"/></svg></div>
-<article class="acc-you"><svg class="acc-key" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg><h4>${o.h}</h4><p>${o.p}</p></article>
-</div>`; };
+/* ---------- "& co." note: founder-led, specialists as each project needs. Same text on home and about (about.co) ---------- */
+const coNote = (c) => `<div class="co-note"><p class="co-mark" aria-hidden="true" dir="ltr">&amp; co.</p><div><h3>${c.about.co.h}</h3><p>${c.about.co.p}</p></div></div>`;
 
 /* ---------- pages ---------- */
 const pages = {};
 
 pages.home = (c) => {
-  const h = c.home, hr = h.hero, wy = h.why, rl = h.roles, wk = h.ways, ms = h.measure;
+  const h = c.home, hr = h.hero, wy = h.why, wk = h.ways, ms = h.measure;
   // Five-second test: what we do (h1), why it matters (lede), why trust us (trust line), what next (two actions).
   // Directly below, one plain workflow carries the main message: work comes in, AI agents do the repeated part, people handle exceptions.
   const hero = `<section class="hero hero--home"><div class="container hero-grid">
@@ -265,7 +259,7 @@ pages.home = (c) => {
   const services = `${head(wk.title, wk.intro, 'services-title')}${waysLine(c, wk)}<p class="ways-link"><a href="${href(c.lang, 'how')}">${wk.link}</a></p>`;
 
   const why = `${head(wy.title, wy.intro, 'why-title')}<div class="pillars pillars--lite">${wy.items.map((x) => `<article class="pillar"><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div>
-<div class="hw-roles">${head(rl.title, rl.intro, 'roles-title')}${rolesMap(c, rl)}</div><p class="ways-link"><a href="${href(c.lang, 'security')}">${wy.trustLink}</a></p>`;
+${coNote(c)}<p class="ways-link"><a href="${href(c.lang, 'security')}">${wy.trustLink}</a></p>`;
 
   const cta = section(`<div class="cta-band"><h2 id="cta-title">${h.cta.title}</h2><p class="lede">${h.cta.p}</p><div class="btn-row">${btn(c, h.cta.button, bookUrl(c), 'btn--primary', 'data-track="cta_band"')}${btn(c, c.ui.seeHow, href(c.lang, 'how'), '')}</div><p class="cta-note">${hr.note}</p><p class="cta-note cta-measure">${ms.note} <a href="${href(c.lang, 'results')}">${ms.link}</a></p></div>`, 'section--dark', 'talk', 'cta-title');
 
@@ -335,8 +329,7 @@ ${career}</div></section>`;
   const whyCard = `<div class="why-card" data-why><div class="why-main"><h2 id="why-title">${w.title}</h2><p class="why-lead">${w.lead}</p><div class="why-act">${btn(c, p.cta, bookUrl(c), 'btn--primary', 'data-track="cta_about_why"')}<span class="why-sign">${c.founder.name}</span></div></div><ol class="why-points">${w.points.map((x, i) => `<li style="--i:${i}"><span class="why-hex" aria-hidden="true"></span><div><h3>${x.h}</h3><p>${x.p}</p></div></li>`).join('')}</ol></div>`;
 
   // What "& co." means sits right under the card whose promise mentions the specialists: the name set large as the visual.
-  const co = `<div class="co-note"><p class="co-mark" aria-hidden="true" dir="ltr">&amp; co.</p><div><h3>${p.co.h}</h3><p>${p.co.p}</p></div></div>
-<div class="co-lists"><div><h4>${p.co.leadsL}</h4>${ticks(p.co.leads)}</div><div><h4>${p.co.specL}</h4>${ticks(p.co.spec)}</div></div>`;
+  const co = coNote(c);
 
   const body = `${hero}
 ${section(story, 'about-story-sec', 'story', 'story-title')}

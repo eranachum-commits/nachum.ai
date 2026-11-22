@@ -140,7 +140,8 @@ await t('home: business-first hero, problems, illustrative examples, how we work
     assert.doesNotMatch(home, /class="jr-stage"|jr-lane|data-armed/, 'the five-stage journey lives on the how-it-works page ' + lang);
     assert.doesNotMatch(home, /id="founder"|class="portrait"/, 'no founder section on home ' + lang);
     assert.equal((home.match(/<ol class="ways">/g) || []).length, 1, 'service families ' + lang);
-    assert.equal((home.match(/class="acc-(lead|spec|you)"/g) || []).length, 3, 'who-does-what: lead, specialists, owner on your side ' + lang);
+    assert.equal((home.match(/class="co-note"/g) || []).length, 1, 'the "& co." note on home ' + lang);
+    assert.doesNotMatch(home, /class="acc-|id="roles-title"/, 'no who-does-what diagram on home ' + lang);
     assert.equal((home.match(/<li class="way">/g) || []).length, h.ways.items.length, 'service items ' + lang);
     assert.equal(h.ways.items.length, 3, 'three service families ' + lang);
     assert.equal((home.match(/class="way-get"/g) || []).length, 3, 'each service says what you get ' + lang);
@@ -185,8 +186,8 @@ await t('founder-led model is consistent: no page says Eran builds everything hi
     assert.doesNotMatch(html.replace(/<script[\s\S]*?<\/script>/g, ''), /does much of the hands-on work (himself|myself)|I build it myself|I still design and build|עושה בעצמו חלק גדול|אני בונה בעצמי|no handoff|בלי העברת מקל/i, 'solo-builder claim on ' + u);
   }
   for (const lang of langs) { const about = pages[href(lang, 'about')], c = lang === 'he' ? he : en;
-    assert.match(about, /class="co-lists"/, 'founder leads / specialists lists ' + lang);
-    assert.equal((about.match(/class="co-lists"[\s\S]*?<\/div><\/div>/)[0].match(/<li[ >]/g) || []).length, c.about.co.leads.length + c.about.co.spec.length, 'co lists ' + lang);
+    assert.match(about, /class="co-note"/, 'the "& co." note on about ' + lang);
+    assert.doesNotMatch(about, /class="co-lists"/, 'no founder / specialists lists on about ' + lang);
   }
 });
 await t('how it works: the journey and the engagement timeline with decisions', () => {
@@ -318,6 +319,14 @@ await t('lead API: email adapter sends a plain-text email with reply-to the send
     assert.ok(m.text.includes(good.detail) && m.text.includes('Example Ltd'), 'message and company in the email');
     assert.equal(m.html, undefined, 'plain text only');
   } finally { es.kill(); fake.close(); }
+});
+await t('header: three links, the language switch and one action; the footer keeps every page', () => {
+  for (const lang of langs) { const page = pages[href(lang, 'home')];
+    const nav = page.match(/<nav class="nav"[\s\S]*?<\/nav>/)[0];
+    assert.deepEqual([...nav.matchAll(/<a href="([^"]+)"(?! hreflang)/g)].map((m) => m[1]), ['how', 'about', 'usecase'].map((k) => href(lang, k)), 'header links ' + lang);
+    const foot = page.match(/<footer[\s\S]*?<\/footer>/)[0];
+    for (const k of ['usecase', 'how', 'about', 'results', 'faq']) assert.ok(foot.includes(`href="${href(lang, k)}"`), 'footer links ' + k + ' ' + lang);
+  }
 });
 await t('old /examples links redirect to the use case page', async () => {
   for (const [from, to] of [['/examples', '/business-use-case'], ['/en/examples', '/en/business-use-case'], ['/solutions/orders', '/business-use-case']]) {

@@ -14,7 +14,7 @@ export default {
     illustrative: 'Illustrative', home: 'Home', send: 'Send message', sending: 'Sending…',
     required: 'Required', fixField: 'Please check the highlighted fields.', main: 'Main navigation',
   },
-  nav: { usecase: 'In practice', how: 'Ways to work', about: 'About', results: 'Measuring success', faq: 'FAQ' },
+  nav: { usecase: 'Use cases', how: 'Ways to work', about: 'About', results: 'Measuring success', faq: 'FAQ' },
   footer: {
     tag: 'A founder-led boutique for practical AI: from the business challenge to a solution that works. Led by Eran Nachum, with specialists as each project needs.',
     cols: { site: 'bee & co.', industries: 'Industries', legal: 'Legal' },
@@ -80,17 +80,6 @@ export default {
         { h: 'Plan the right solution', p: 'We assess the opportunities, prioritize by business value and choose the right approach.' },
         { h: 'Bring in the right specialists', p: 'Eran leads and coordinates the expertise the project needs, in the amount its scope and complexity call for.' },
         { h: 'Implement and measure', p: 'We build the solution, help your people adopt it and measure results against metrics agreed in advance.' },
-      ],
-    },
-    roles: {
-      title: 'Who does what',
-      intro: 'One accountable partner does not mean one person doing everything. Here is how the work is split.',
-      endL: 'Handover', chipsL: 'As the project needs',
-      chips: ['AI engineering', 'Software development', 'Systems integration', 'QA and security', 'Implementation'],
-      items: [
-        { h: 'Eran, personally', p: 'Understands the business, directs the solution and stays accountable for the result.' },
-        { h: 'Specialists, as needed', p: 'Only the ones the project needs, chosen and managed by Eran.' },
-        { h: 'On your side', p: 'A named owner for every system, with documentation and training at handover.' },
       ],
     },
     ways: {
@@ -304,7 +293,7 @@ export default {
       rows: [
         { from: 'I ran R&D as VP, with the budget owned under a P&L.', to: 'Technology choices tied to business return' },
         { from: 'I’ve built and run production systems, and I still work hands-on with modern AI.', to: 'Systems that are secure, maintainable and work with what you already run' },
-        { from: 'I grew an R&D team from 15 to 30+ and led an organization of 50+.', to: 'Teams set up to grow without losing ownership or delivery discipline' },
+        { from: 'I built and grew R&D teams and led engineering organizations of over 50 engineers.', to: 'Teams set up to grow without losing ownership or delivery discipline' },
       ],
     },
     why: {
@@ -316,9 +305,7 @@ export default {
         { h: 'I stay until it works', p: 'Until your people use it, with the result measured on your own process.' },
       ],
     },
-    co: { h: 'What the “& co.” means', p: 'bee & co. is founder-led, with specialist delivery that flexes to the project. I lead every engagement personally, and I stay accountable for the result. We don’t maintain a large permanent team: specialists join in the amount a project needs, and not every project needs all of them.',
-      leadsL: 'I lead personally', leads: ['Business discovery and defining the problem', 'The solution direction and plan', 'Technology decisions and architecture oversight', 'Delivery, quality and execution oversight', 'Executive communication and measuring results'],
-      specL: 'Specialists, as required', spec: ['AI engineering', 'Software development', 'Data and systems integration', 'Quality assurance and security', 'Implementation and operational enablement'] },
+    co: { h: 'What the “& co.” means', p: 'bee & co. is founder-led, with specialist delivery that flexes to the project. I lead every engagement personally, and I stay accountable for the result. We don’t maintain a large permanent team: specialists join in the amount a project needs, and not every project needs all of them.' },
     ctaTitle: 'Bring me the decision you’re facing.',
     ctaP: 'A 30-minute call, directly with me. No sales team, no pitch deck, and an honest answer on whether I’m the right fit.',
   },

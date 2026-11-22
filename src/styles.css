@@ -134,7 +134,7 @@ p { margin: 0 0 1em; text-wrap: pretty; }
 .mobile-nav.open { display: block; }
 .mobile-nav a { display: block; padding: 13px 0; text-decoration: none; font-weight: 500; border-bottom: 1px solid var(--rule); }
 .mobile-nav .btn { margin-top: 18px; width: 100%; border-bottom: 1.5px solid var(--accent); }
-@media (min-width: 1040px) {
+@media (min-width: 900px) {  /* three links, the language switch and the button fit from here */
   .nav { display: flex; } .menu-btn, .mobile-nav { display: none !important; }
   .header-in .btn { display: inline-flex; }
 }
@@ -858,7 +858,6 @@ bdi[dir='ltr'] { white-space: nowrap; }
   .hw-n { top: 0; }
   .hw-step:not(:last-child)::after { top: 15px; bottom: auto; inset-inline: 40px calc(-1 * clamp(20px, 2.6vw, 36px) + 6px); width: auto; height: 2px; }
 }
-.hw-roles { margin-top: clamp(56px, 7vw, 96px); }
 
 /* Service families: who it is for, what you receive, what you measure. */
 .way .way-get { margin: 0 0 .8em; max-width: 42ch; font-size: .96rem; color: var(--ink); }
@@ -875,10 +874,6 @@ bdi[dir='ltr'] { white-space: nowrap; }
 .measure-note { margin: 1.6rem 0 0; max-width: 62ch; font-weight: 500; color: var(--ink); }
 
 /* About: who leads / what specialists cover. */
-.co-lists { display: grid; gap: 18px 40px; grid-template-columns: minmax(0, 1fr); max-width: 1040px; margin: 18px auto 0; padding-inline: clamp(4px, 2vw, 24px); }
-@media (min-width: 760px) { .co-lists { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.co-lists h4 { margin: 0 0 .5em; font-size: 1rem; font-weight: 600; }
-.co-lists .ticks { margin: 0; font-size: .96rem; }
 
 /* Results: the four kinds of value and the metrics that go with them. */
 .kinds { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 clamp(24px, 3vw, 44px); grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
@@ -997,34 +992,6 @@ bdi[dir='ltr'] { white-space: nowrap; }
 
 .wf-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; margin-top: clamp(40px, 5vw, 60px); padding-top: 28px; border-top: 1px solid var(--night-line); }
 
-/* ---------- who does what: Eran's pollen frame holds the specialists; a handover arrow passes the work to your side ---------- */
-.acc { display: grid; gap: 14px; margin-top: clamp(8px, 1.5vw, 16px); }
-.acc h4 { margin: 0 0 .3em; font-size: 1.2rem; font-weight: 600; letter-spacing: -.01em; }
-.acc p { margin: 0; }
-.acc-lead { padding: clamp(20px, 2.6vw, 32px); border: 2px solid var(--pollen); border-radius: 20px; background: var(--sheet); }
-.acc-head { display: flex; gap: 18px; align-items: center; }
-.acc-head p { color: var(--ink-2); max-width: 44ch; }
-.acc-photo { flex: none; width: 72px; height: 72px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; box-shadow: 0 0 0 3px var(--sheet), 0 0 0 5px var(--pollen); }
-.acc-spec { margin-top: clamp(18px, 2.4vw, 26px); padding: clamp(16px, 2vw, 22px); border: 1.5px dashed var(--field); border-radius: 14px; background: var(--paper); }
-.acc-spec h4 { font-size: 1.05rem; }
-.acc-spec p { color: var(--ink-2); font-size: .96rem; }
-.acc-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; padding: 0; }
-.acc-chips li { padding: 5px 13px; border: 1.5px solid var(--rule-2); border-radius: 999px; background: var(--sheet); font-size: .88rem; font-weight: 600; color: var(--ink); }
-/* The handover: down on phones, across on wide screens. */
-.acc-hand { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: .86rem; font-weight: 600; color: var(--accent-deep); }
-.acc-hand svg { width: 48px; height: 18px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transform: rotate(90deg); }
-.acc-you { position: relative; padding: clamp(20px, 2.6vw, 32px); border-radius: 20px; background: var(--ink); color: var(--paper); }
-.acc-you h4 { color: var(--paper); }
-.acc-you p { color: var(--peri); max-width: 34ch; }
-.acc-key { display: block; width: 34px; height: 34px; margin-bottom: 14px; fill: none; stroke: var(--pollen); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-@media (min-width: 860px) {
-  .acc { grid-template-columns: minmax(0, 1fr) auto minmax(0, .5fr); gap: 0; align-items: center; }
-  .acc-hand { flex-direction: column; gap: 4px; padding-inline: 14px; }
-  .acc-hand svg { width: 64px; height: 24px; transform: none; }
-  [dir='rtl'] .acc-hand svg { transform: scaleX(-1); }
-  .acc-you { align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
-}
-
 /* ---------- home, shorter: quiet hero link, light "who you work with" section, measurement line in the closing band ---------- */
 .hero-link { align-self: center; padding: 10px 4px; font-weight: 600; color: var(--ink); text-decoration: underline; text-underline-offset: 5px; }
 .hero-link:hover { color: var(--accent-deep); }
@@ -1035,3 +1002,4 @@ bdi[dir='ltr'] { white-space: nowrap; }
 .home-who .pillar h3 { color: var(--ink); font-size: clamp(1.35rem, 2vw, 1.7rem); font-weight: 600; }
 .home-who .pillar p, .home-who .section-head .lede { color: var(--ink-2); }
 .home-who .pillars { margin-bottom: 0; }
+.home-who .co-note { max-width: none; margin-inline: 0; padding-inline: 0; }  /* lines up with the three points above it */
