@@ -17,7 +17,7 @@ const PHOTO = { src: '/img/eran-nachum-806.jpg', set: '/img/eran-nachum-420.jpg 
 const founderPanel = (c, { eager = false, sizes = '(min-width: 980px) 360px, 80vw' } = {}) => `<figure class="portrait"><span class="portrait-photo"><img src="${PHOTO.src}" srcset="${PHOTO.set}" sizes="${sizes}" width="806" height="772" alt="${esc(c.founder.photoAlt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></span><figcaption><span class="portrait-name">${c.founder.name}</span><span class="portrait-role">${c.founder.role}</span></figcaption></figure>`;
 
 /* ---------- layout ---------- */
-const NAV = ['how', 'about', 'results', 'faq'];
+const NAV = ['examples', 'how', 'about', 'results', 'faq'];
 function header(c, key) {
   // Campaign landing pages keep visitors on the page: logo, language and one action that scrolls to the form.
   if (key.startsWith('lp-')) {
@@ -188,7 +188,8 @@ const personCard = (c) => `<div class="person-card"><span class="person-mark" ar
 
 /* ---------- shared blocks ---------- */
 // Decide → Build → Lead is a real progression of responsibility, so it is drawn as one connected line.
-const waysLine = (c, w) => `<ol class="ways">${w.items.map((x) => `<li class="way"><h3>${x.h}</h3><p>${x.p}</p><p class="way-first">${x.first}</p></li>`).join('')}</ol>`;
+// Service families add who it is for, what you receive and what you measure; "who does what" items stay short.
+const waysLine = (c, w) => `<ol class="ways">${w.items.map((x) => `<li class="way"><h3>${x.h}</h3>${x.who ? `<p class="way-for"><span>${w.forL}</span>${x.who}</p>` : ''}<p>${x.p}</p>${x.get ? `<p class="way-get"><span>${w.getL}</span>${x.get}</p><p class="way-get"><span>${w.measureL}</span>${x.measure}</p>` : ''}<p class="way-first">${x.first}</p></li>`).join('')}</ol>`;
 const ctaBand = (c, title, p, pain, { how = true, label = c.ui.book } = {}) => section(`<div class="cta-band"><h2>${title}</h2><p class="lede">${p}</p><div class="btn-row">${btn(c, label, bookUrl(c, pain), 'btn--primary', 'data-track="cta_band"')}${how ? btn(c, c.ui.seeHow, href(c.lang, 'how'), '') : ''}</div><p class="cta-note">${c.home.hero.note}</p></div>`, 'section--dark');
 const pageHero = (c, h1, lede) => `<section class="page-hero"><div class="container"><h1>${h1}</h1>${lede ? `<p class="lede">${lede}</p>` : ''}</div></section>`;
 
@@ -200,11 +201,12 @@ const journeyMap = (c) => { const j = c.how.journey;
 const stageCover = (c, st, label) => { const S = c.how.journey.stages;
   return `<p class="svc-cover"><span class="svc-hexes" aria-hidden="true">${S.map((x, i) => `<i${st.includes(i) ? ' class="on"' : ''}></i>`).join('')}</span><span class="svc-cover-t"><span class="svc-cover-l">${label}:</span> ${st.map((i) => S[i].h).join(', ')}</span></p>`; };
 
+
 /* ---------- pages ---------- */
 const pages = {};
 
 pages.home = (c) => {
-  const h = c.home, hr = h.hero, pk = h.picker, j = c.how.journey, sv = h.services, wy = h.why, oc = h.outcomes;
+  const h = c.home, hr = h.hero, pk = h.picker, wy = h.why, rl = h.roles, wk = h.ways, pr = h.problems, hw = h.how, ms = h.measure;
   // Five-second test: what we do (h1), why it matters (lede), why trust us (trust line), what next (two actions).
   // Beside it, the visitor finds themselves: four situations in an executive's own words. Picking one shows what is
   // usually going on and where we would start, and the action opens the contact form with that situation filled in.
@@ -215,31 +217,83 @@ pages.home = (c) => {
 <div class="pick-tabs" role="tablist" aria-orientation="vertical" aria-labelledby="pick-title">${pickTabs}</div>
 <div class="pick-panels">${pickPanels}</div><p class="pick-note">${pk.note}</p></aside>`;
   const hero = `<section class="hero hero--home"><div class="container hero-grid">
-<div class="hero-copy"><h1>${hr.h1}</h1><p class="lede">${hr.sub}</p>
-<div class="btn-row">${btn(c, hr.primary, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, hr.secondary, '#services', '')}</div>
+<div class="hero-copy"><p class="hero-line">${hr.line}</p><h1>${hr.h1}</h1><p class="hero-support">${hr.support}</p><p class="lede">${hr.sub}</p>
+<div class="btn-row">${btn(c, hr.primary, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, hr.secondary, href(c.lang, 'examples'), '')}</div>
 <p class="hero-trust">${hr.trust}</p></div>
 ${picker}</div></section>`;
 
-  // Services are one model, not five products: each row shows which journey stages it covers.
-  const cover = (st) => stageCover(c, st, sv.coversL);
-  const services = `${head(sv.title, sv.intro, 'services-title')}<ul class="svc-list">${sv.items.map((x) => `<li class="svc"><h3>${x.h}</h3><p class="svc-p">${x.p}</p>${cover(x.stages)}</li>`).join('')}</ul>`;
+  // Buyer journey after the hero: recognisable problems → what it looks like in practice → how we work and who does what
+  // → the three service families → why trust us → how value is measured → talk.
+  // One small line drawing per problem (ink strokes, one pollen accent): decorative, the text carries the meaning.
+  const S = (inner) => `<svg class="prob-art" viewBox="0 0 120 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${inner}</svg>`;
+  const HEX = (x, y, r = 7) => `<path class="pa-fill" d="M${x - r / 2} ${y - r * .87}h${r}l${r / 2} ${r * .87}-${r / 2} ${r * .87}h-${r}l-${r / 2}-${r * .87}z"/>`;
+  const ART = [
+    // manual work: email → typing into a grid, with a rework loop
+    S(`<rect x="6" y="14" width="26" height="18" rx="3"/><path d="M6 17l13 9 13-9"/><path d="M38 23h20" stroke-dasharray="3 4"/><rect x="64" y="8" width="50" height="40" rx="3"/><path d="M64 20h50M64 32h50M82 8v40"/>${HEX(98, 26, 6)}<path d="M20 44c0 10 20 10 20 0" /><path d="M40 44l-3-4M40 44l-4 2"/>`),
+    // costs grow with the business: rising bars, a person added with each
+    S(`<path d="M8 56h104"/><rect x="14" y="40" width="16" height="16" rx="2"/><rect x="44" y="28" width="16" height="28" rx="2"/><rect x="74" y="14" width="16" height="42" rx="2"/><path d="M100 20l8-10 8 10M108 10v18"/>${HEX(22, 32, 5)}${HEX(52, 20, 5)}${HEX(82, 6, 5)}`),
+    // customers wait: queue of people and a clock
+    S(`<circle cx="22" cy="40" r="6"/><path d="M12 58c0-8 20-8 20 0"/><circle cx="50" cy="40" r="6"/><path d="M40 58c0-8 20-8 20 0"/><circle cx="78" cy="40" r="6"/><path d="M68 58c0-8 20-8 20 0"/><circle cx="102" cy="20" r="14"/><path d="M102 12v8l6 4"/>${HEX(102, 20, 3)}<path d="M22 22h20a4 4 0 0 1 4 4v0a4 4 0 0 1-4 4h-6l-5 5v-5h-9a4 4 0 0 1-4-4v0a4 4 0 0 1 4-4z"/>`),
+    // systems don't talk: two boxes with a broken link and hand-carried data
+    S(`<rect x="6" y="14" width="34" height="34" rx="4"/><path d="M14 26h18M14 34h12"/><rect x="80" y="14" width="34" height="34" rx="4"/><path d="M88 26h18M88 34h12"/><path d="M40 31h12M68 31h12"/><path d="M54 24l5 14M62 24l-5 14" /><path d="M50 52c6 6 14 6 20 0" stroke-dasharray="3 4"/>${HEX(60, 31, 4)}`),
+    // unclear where AI pays: signpost with a question mark
+    S(`<path d="M60 8v52"/><path d="M60 14h36l8 7-8 7H60z"/><path d="M60 34H24l-8 7 8 7h36z"/>${HEX(78, 21, 4)}${HEX(42, 41, 4)}<path d="M104 46c0-5 8-5 8-10a6 6 0 0 0-12 0M106 56h.01"/>`),
+  ];
+  const problems = `${head(pr.title, pr.intro, 'problems-title')}<ul class="problems">${pr.items.map((x, i) => `<li>${ART[i]}<h3>${x.h}</h3><p>${x.p}</p><p class="prob-fix"><span>${pr.fixL}</span>${x.fix}</p></li>`).join('')}</ul><p class="ways-link"><a href="${href(c.lang, 'examples')}">${pr.more}</a></p>`;
 
-  const why = `${head(wy.title, wy.intro, 'why-title')}<div class="pillars">${wy.items.map((x) => `<article class="pillar"><h3>${x.h}</h3><p>${x.p}</p><p class="pillar-not"><span>${wy.notL}:</span> ${x.not}</p></article>`).join('')}</div>`;
+  const how = `${head(hw.title, hw.intro, 'how-title')}<ol class="hw">${hw.steps.map((x, i) => `<li class="hw-step"><span class="hw-n" aria-hidden="true">${i + 1}</span><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ol>
+<div class="hw-roles"><h3 class="as-h3" id="roles-title">${rl.title}</h3><p class="lede">${rl.intro}</p>${waysLine(c, rl)}</div>`;
 
-  const outcomes = `${head(oc.title, oc.intro, 'outcomes-title')}<ul class="outcomes">${oc.items.map((x) => `<li><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ul><p class="ways-link"><a href="${href(c.lang, 'results')}">${oc.link}</a></p>`;
+  const services = `${head(wk.title, wk.intro, 'services-title')}${waysLine(c, wk)}<p class="ways-link"><a href="${href(c.lang, 'how')}">${wk.link}</a></p>`;
+
+  const why = `${head(wy.title, wy.intro, 'why-title')}<div class="pillars">${wy.items.map((x) => `<article class="pillar"><h3>${x.h}</h3><p>${x.p}</p><p class="pillar-not"><span>${wy.notL}:</span> ${x.not}</p></article>`).join('')}</div>
+<div class="trust-list"><h3>${wy.trustTitle}</h3>${ticks(wy.trust)}<p class="ways-link"><a href="${href(c.lang, 'security')}">${wy.trustLink}</a></p></div>`;
+
+  const measure = `${head(ms.title, ms.intro, 'measure-title')}<ul class="outcomes outcomes--four">${ms.items.map((x) => `<li><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ul><p class="measure-note">${ms.note}</p><p class="ways-link"><a href="${href(c.lang, 'results')}">${ms.link}</a></p>`;
 
   const cta = section(`<div class="cta-band"><h2 id="cta-title">${h.cta.title}</h2><p class="lede">${h.cta.p}</p><div class="btn-row">${btn(c, h.cta.button, bookUrl(c), 'btn--primary', 'data-track="cta_band"')}${btn(c, c.ui.seeHow, href(c.lang, 'how'), '')}</div><p class="cta-note">${hr.note}</p></div>`, 'section--dark', 'talk', 'cta-title');
 
   const body = `${hero}
 ${section(services, 'home-services', 'services', 'services-title')}
+${section(problems, 'section--tint home-problems', 'problems', 'problems-title')}
+${section(how, 'home-how', 'how', 'how-title')}
 ${section(why, 'section--dark home-why', 'why', 'why-title')}
-${section(outcomes, 'section--tint home-outcomes', 'outcomes', 'outcomes-title')}
+${section(measure, 'home-outcomes', 'measure', 'measure-title')}
 ${cta}`;
   const ld = {
     '@type': 'ProfessionalService', '@id': '#org',
-    hasOfferCatalog: { '@type': 'OfferCatalog', name: sv.title, itemListElement: sv.items.map((x) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: x.h, description: x.p } })) },
+    hasOfferCatalog: { '@type': 'OfferCatalog', name: wk.title, itemListElement: wk.items.map((x) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: x.h, description: x.p } })) },
   };
   return { meta: h.meta, body, ld };
+};
+
+pages.examples = (c) => {
+  const ex = c.examples;
+  // Illustrative scenarios only: labelled as such. The first one is a flowchart you can follow (public/js/app.js, data-flow)
+  // with a calculator you can move; without JavaScript both views and the default numbers are simply shown.
+  const fmt = (t, n) => t.replace('{n}', `<bdi dir="ltr">${n}</bdi>`);
+  const fl = ex.flow;
+  const node = (n, i, kind, extra = '') => `<li class="fl-node fl-node--${n.w}${kind ? ' fl-node--' + kind : ''}${extra}" data-min="${n.m}" data-step="${kind === 'branch' ? 'b' : i}">${kind === 'gate' ? `<span class="fl-tag fl-tag--no">${fl.no}</span>` : ''}${kind === 'branch' ? `<span class="fl-tag fl-tag--yes">${fl.yes}</span>` : ''}<button type="button" class="fl-btn" aria-pressed="false"><span class="fl-shape" aria-hidden="true">${kind === 'gate' ? '' : kind === 'branch' ? '' : i + 1}</span><span class="fl-t">${n.t}</span><span class="fl-m">${n.m ? `${n.m} ${fl.minU}` : ''}</span></button><p class="fl-s">${n.s}</p>${kind === 'branch' ? `<p class="fl-then">${n.then}</p>` : ''}</li>`;
+  const chart = (md) => `<div class="fl-mode" id="fl-${md.id}" role="tabpanel" aria-labelledby="fl-tab-${md.id}"${md.id === 'solution' ? ' data-second' : ''}><p class="fl-total">${md.total}</p><ol class="fl-chart">${md.nodes.map((n, i) => node(n, i, i === 3 ? 'gate' : i === 4 ? 'end' : '')).join('').replace(/(<li class="fl-node[^>]*data-step="3"[\s\S]*?<\/li>)/, `$1${node(md.branch, 0, 'branch')}`)}</ol></div>`;
+  const flow = `<div class="flow" data-flow data-min-u="${esc(fl.minU)}" data-l-step="${esc(fl.stepL)}" data-l-of="${esc(fl.ofL)}" data-l-elapsed="${esc(fl.elapsedL)}" data-l-done="${esc(fl.doneL)}" data-l-play="${esc(fl.play)}" data-l-pause="${esc(fl.pause)}" data-l-again="${esc(fl.again)}" data-l-idle="${esc(fl.idle)}">
+<h4 class="fl-title">${fl.title}</h4><p class="fl-intro">${fl.intro}</p>
+<div class="fl-bar"><div class="fl-tabs" role="tablist" aria-label="${esc(fl.tabsLabel)}">${fl.modes.map((md, i) => `<button type="button" role="tab" id="fl-tab-${md.id}" aria-controls="fl-${md.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${md.label}</button>`).join('')}</div>
+<label class="fl-problem"><input type="checkbox" data-fl-problem> <span>${fl.problemL}</span></label>
+<button type="button" class="btn btn--primary btn--sm fl-play" data-fl-play hidden>${fl.play}</button></div>
+<p class="fl-legend"><span class="fl-lg fl-lg--human">${fl.legend.human}</span><span class="fl-lg fl-lg--auto">${fl.legend.auto}</span></p>
+${fl.modes.map(chart).join('')}
+<div class="fl-detail" data-fl-detail aria-live="polite" hidden><p class="fl-d-idle">${fl.idle}</p></div>
+<p class="fl-note">${fl.note}</p></div>`;
+  const cl = ex.calc, cv = { orders: 1200, hours: 100, value: 11000 };
+  const calc = `<div class="ex-calc" data-scenario data-hours="${esc(cl.hoursFmt)}" data-value="${esc(cl.valueFmt)}" data-lang="${c.lang}"><h3>${cl.title}</h3>
+<div class="ex-slider"><label for="calc-orders">${cl.sliderL}</label><input id="calc-orders" type="range" min="100" max="5000" step="50" value="${cv.orders}" data-sc-orders></div>
+<ul><li><span class="ex-n" data-sc-out="orders">${cl.items[0].n}</span><span class="ex-l">${cl.items[0].l}</span></li><li><span class="ex-n">${cl.items[1].n}</span><span class="ex-l">${cl.items[1].l}</span></li><li><span class="ex-n" data-sc-out="hours">${cl.items[2].n}</span><span class="ex-l">${cl.items[2].l}</span></li><li><span class="ex-n" data-sc-out="value">${cl.items[3].n}</span><span class="ex-l">${cl.items[3].l}</span></li></ul><p class="ex-note">${cl.note}</p></div>`;
+  const examples = `<div class="examples">${ex.items.map((x, i) => `<article class="ex"><header class="ex-head"><p class="ex-tag">${x.tag}</p><span class="ex-chip">${c.ui.illustrative}</span><h3>${x.h}</h3></header>${i === 0 ? flow : `<div class="ex-ba"><div class="ex-before"><p class="ex-l2">${ex.beforeL}</p><p>${x.before}</p></div><div class="ex-after"><p class="ex-l2">${ex.afterL}</p><p>${x.after}</p></div></div>`}<p class="ex-value"><span>${ex.valueL}</span>${x.value}</p><div class="ex-metrics"><span>${ex.metricsL}</span><ul>${x.metrics.map((m) => `<li>${m}</li>`).join('')}</ul></div>${i === 0 ? calc : ''}</article>`).join('')}</div>`;
+
+  const body = `${pageHero(c, ex.title, ex.intro)}
+${section(examples, 'home-examples', 'examples', '')}
+${ctaBand(c, ex.cta.title, ex.cta.p, 'examples', { how: false })}`;
+  return { meta: ex.meta, body };
 };
 
 pages.usecase = (c) => {
@@ -308,7 +362,8 @@ ${career}</div></section>`;
   const whyCard = `<div class="why-card" data-why><div class="why-main"><h2 id="why-title">${w.title}</h2><p class="why-lead">${w.lead}</p><div class="why-act">${btn(c, p.cta, bookUrl(c), 'btn--primary', 'data-track="cta_about_why"')}<span class="why-sign">${c.founder.name}</span></div></div><ol class="why-points">${w.points.map((x, i) => `<li style="--i:${i}"><span class="why-hex" aria-hidden="true"></span><div><h3>${x.h}</h3><p>${x.p}</p></div></li>`).join('')}</ol></div>`;
 
   // What "& co." means sits right under the card whose promise mentions the specialists: the name set large as the visual.
-  const co = `<div class="co-note"><p class="co-mark" aria-hidden="true" dir="ltr">&amp; co.</p><div><h3>${p.co.h}</h3><p>${p.co.p}</p></div></div>`;
+  const co = `<div class="co-note"><p class="co-mark" aria-hidden="true" dir="ltr">&amp; co.</p><div><h3>${p.co.h}</h3><p>${p.co.p}</p></div></div>
+<div class="co-lists"><div><h4>${p.co.leadsL}</h4>${ticks(p.co.leads)}</div><div><h4>${p.co.specL}</h4>${ticks(p.co.spec)}</div></div>`;
 
   const body = `${hero}
 ${section(story, 'about-story-sec', 'story', 'story-title')}
@@ -333,9 +388,13 @@ pages.results = (c) => {
   const flow = `<ol class="mflow">${f.nodes.map(node).join('')}</ol>`;
   // The rules are the commitments, so they are set large and read as statements; the two notes sit under them as footnotes.
   const rules = `<div class="rules"><h2 id="rules-title">${r.title}</h2><ul class="rules-list">${r.items.map((x) => `<li><span class="rules-hex" aria-hidden="true"></span>${x}</li>`).join('')}</ul><div class="rules-notes"><div><h3>${r.monthly.h}</h3><p>${r.monthly.p}</p></div><div><h3>${r.honest.h}</h3><p>${r.honest.p}</p></div></div></div>`;
+  // Four kinds of value are never interchangeable; the metrics are grouped by what a leader asks about.
+  const k = p.kinds;
+  const kinds = `${head(k.title, k.intro, 'kinds-title')}<ul class="kinds">${k.items.map((x) => `<li><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ul><h3 class="as-h3 kinds-sub">${k.metricsTitle}</h3><div class="metric-groups">${k.groups.map((g) => `<div><h3>${g.h}</h3><ul>${g.items.map((x) => `<li>${x}</li>`).join('')}</ul></div>`).join('')}</div><p class="notice">${k.noClaim}</p>`;
   const body = `${pageHero(c, p.h1, p.lede)}
-${section(`${head(f.title, f.intro, 'flow-title')}${flow}`, 'results-flow', 'flow', 'flow-title')}
-${section(rules, 'section--tint results-rules', 'rules', 'rules-title')}
+${section(kinds, 'results-kinds', 'kinds', 'kinds-title')}
+${section(`${head(f.title, f.intro, 'flow-title')}${flow}`, 'section--tint results-flow', 'flow', 'flow-title')}
+${section(rules, 'results-rules', 'rules', 'rules-title')}
 ${ctaBand(c, p.cta.title, p.cta.p)}`;
   return { meta: p.meta, body };
 };

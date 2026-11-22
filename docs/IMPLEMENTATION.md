@@ -68,6 +68,10 @@ English display headings use an editorial serif stack; Hebrew headings, body cop
 
 ## 4. Messaging
 
+**Update 2026-11-22 (business-first repositioning, supersedes the hero and home order below):** headline "Your business can work smarter." / "העסק שלכם יכול לעבוד חכם יותר.", delivery model is founder-led leadership plus specialists engaged per project (never a claimed permanent team). Home order: hero (+ situation picker) → five business problems → a link to the examples page (`/examples`: four *illustrative* before/after scenarios, one with a labelled worked calculation: 1,200 orders, 8→3 min, ~100 h, ≈₪11,000 capacity value at an assumed ₪110/h, explicitly not a client result and not cash savings) → how we work (4 steps) + who does what → three service families (Advisory = Decide, AI solutions & implementation = Build, Continuous improvement & transformation = Lead; "Decision Sprint" stays the named first step) → why bee & co. (three pillars + risk-reduction list) → four kinds of value (time saved / capacity released / financial savings / growth) → conversation. The only currency figure allowed on the site is on the examples page (`.home-examples`) (guarded in `tests/smoke.mjs`). About no longer says Eran builds everything himself; it has the "leads personally / specialists as required" lists (`about.co`). Results page adds the four kinds of value and metrics by category.
+
+Earlier home redesign (2026-11-17), kept for history:
+
 Home redesign (2026-11-17): **one accountable partner for end-to-end AI transformation**, made credible by a senior technology executive who still builds.
 
 - Hero: EN "One partner. End-to-end AI transformation." / HE "שותף אחד. מהאתגר העסקי ועד AI שעובד." (adapted, not translated).

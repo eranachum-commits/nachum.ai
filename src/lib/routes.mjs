@@ -1,6 +1,7 @@
 // Route registry. Hebrew is the default locale at "/", English lives under "/en".
 export const routes = [
   { key: 'home', path: '' },
+  { key: 'examples', path: 'examples' },
   { key: 'usecase', path: 'business-use-case' },
   { key: 'how', path: 'how-it-works' },
   { key: 'about', path: 'about' },

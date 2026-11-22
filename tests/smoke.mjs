@@ -108,7 +108,9 @@ await t('illustrative content is labelled; no invented proof', () => {
 });
 await t('repositioning: named founder, no prices, no size limits, slim form', () => {
   for (const [u, html] of Object.entries(pages)) {
-    for (const bad of [/30[–-]300/, /WalkMe|Resident\b|Agora|ClickDimensions|Sizmek|Amdocs/i, /₪\s?\d/, /\d+\s?אלף/, /free working session/i, /פגישת עבודה ללא עלות/, /unlock/i, /mid-market budget/i, /hotfix|85%|תיקוני חירום|eight months|שמונה חודשים/i, /20\+ years of senior/i]) assert.doesNotMatch(html.replace(/<script[\s\S]*?<\/script>/g, ''), bad, `${bad} on ${u}`);
+    // The only currency figure on the site is the labelled illustrative calculation inside #examples.
+    const noEx = html.replace(/<section class="section home-examples"[\s\S]*?<\/section>/, '');
+    for (const bad of [/30[–-]300/, /WalkMe|Resident\b|Agora|ClickDimensions|Sizmek|Amdocs/i, /₪\s?\d/, /\d+\s?אלף/, /free working session/i, /פגישת עבודה ללא עלות/, /unlock/i, /mid-market budget/i, /hotfix|85%|תיקוני חירום|eight months|שמונה חודשים/i, /20\+ years of senior/i]) assert.doesNotMatch(noEx.replace(/<script[\s\S]*?<\/script>/g, ''), bad, `${bad} on ${u}`);
   }
   for (const lang of langs) { const c = lang === 'he' ? he : en, home = pages[href(lang, 'home')], contact = pages[href(lang, 'contact')];
     assert.ok(home.includes(c.founder.name), 'founder full name on home ' + lang);
@@ -119,26 +121,77 @@ await t('repositioning: named founder, no prices, no size limits, slim form', ()
     for (const f of ['size', 'budget', 'urgency']) assert.doesNotMatch(contact, new RegExp(`name="${f}"`), 'no ' + f + ' field ' + lang);
   }
 });
-await t('home: one-partner hero, journey map, five services, three pillars, outcomes, one conversion section', () => {
+await t('home: business-first hero, problems, illustrative examples, how we work, three services, trust, measurement, one conversion section', () => {
   for (const lang of langs) { const c = lang === 'he' ? he : en, h = c.home, home = pages[href(lang, 'home')];
-    assert.ok(home.includes(`<h1>${h.hero.h1}</h1>`), 'one-partner headline ' + lang);
-    assert.match(home, /class="hero hero--home"[\s\S]*data-track="cta_hero"[\s\S]*href="#services"/, 'two actions above the fold ' + lang);
+    assert.ok(home.includes(`<h1>${h.hero.h1}</h1>`), 'business-value headline ' + lang);
+    assert.ok(home.includes(h.hero.support) && home.includes(h.hero.primary), 'supporting line and primary action ' + lang);
+    assert.match(home, /class="hero hero--home"[\s\S]*data-track="cta_hero"[\s\S]*href="\/(en\/)?examples"/, 'two actions above the fold ' + lang);
     assert.doesNotMatch(home, /class="record"|class="handoff"/, 'no ownership ledger in the hero ' + lang);
     assert.match(home, /class="hero hero--home"[\s\S]*?<aside class="hero-pick" data-ladder data-vertical/, 'situation picker beside the headline ' + lang);
     assert.equal((home.match(/id="hp-t-\d"/g) || []).length, h.picker.items.length, 'one choice per situation ' + lang);
     assert.equal((home.match(/class="pick-panel" role="tabpanel"[^>]*hidden/g) || []).length, h.picker.items.length - 1, 'only the first answer shows before a pick ' + lang);
     for (const x of h.picker.items) assert.ok(home.includes(`${href(lang, 'contact')}?pain=${x.id}&amp;q=`), 'pick opens the form with the situation: ' + x.id);
-    assert.match(home, /id="services"/, 'secondary action has a target ' + lang);
-    assert.doesNotMatch(home, /class="jr-stage"|jr-lane|data-armed/, 'journey lives on the how-it-works page, not home ' + lang);
-    assert.match(home, /<\/section>\s*<section class="section home-services" id="services"/, 'services come right after the hero ' + lang);
+    // Order of the buyer journey.
+    const order = ['id="services"', 'id="problems"', 'id="how"', 'id="why"', 'id="measure"', 'id="talk"'].map((k) => home.indexOf(k));
+    assert.ok(order.every((n, i) => n > 0 && (i === 0 || n > order[i - 1])), 'sections follow the buyer journey ' + lang);
+    assert.equal((home.match(/<ul class="problems">[\s\S]*?<\/ul>/)[0].match(/<li>/g) || []).length, 5, 'five business problems ' + lang);
+    assert.doesNotMatch(home, /class="ex"/, 'examples live on their own page ' + lang);
+    assert.ok(home.includes(`href="${href(lang, 'examples')}"`), 'home links to the examples page ' + lang);
+    assert.equal((home.match(/class="hw-step"/g) || []).length, 4, 'four how-we-work steps ' + lang);
+    assert.doesNotMatch(home, /class="jr-stage"|jr-lane|data-armed/, 'the five-stage journey lives on the how-it-works page ' + lang);
     assert.doesNotMatch(home, /id="founder"|class="portrait"/, 'no founder section on home ' + lang);
-    assert.equal((home.match(/<li class="svc">/g) || []).length, 5, 'five services ' + lang);
-    for (const x of h.services.items) assert.ok(x.stages.length && x.stages.every((i) => i >= 0 && i < 5), 'service maps to stages: ' + x.h);
+    assert.equal((home.match(/<ol class="ways">/g) || []).length, 2, 'service families plus who-does-what ' + lang);
+    assert.equal((home.match(/<li class="way">/g) || []).length, h.ways.items.length + h.roles.items.length, 'service and role items ' + lang);
+    assert.equal(h.ways.items.length, 3, 'three service families ' + lang);
+    assert.equal((home.match(/class="way-for"/g) || []).length, 3, 'each service says who it is for ' + lang);
+    assert.doesNotMatch(home, /class="svc"/, 'no five-service list ' + lang);
+    assert.doesNotMatch(home, /still writes the code|שעדיין כותב את הקוד|I build it myself|I personally build|אני בונה בעצמי/, 'no solo-coder line on home ' + lang);
     assert.equal((home.match(/<article class="pillar">/g) || []).length, 3, 'three pillars ' + lang);
-    assert.equal((home.match(/<ul class="outcomes">[\s\S]*?<\/ul>/)[0].match(/<li>/g) || []).length, h.outcomes.items.length, 'outcomes ' + lang);
-    assert.ok(home.includes(`href="${href(lang, 'results')}"`), 'outcomes link to the measurement method ' + lang);
+    assert.equal((home.match(/<div class="trust-list">[\s\S]*?<\/ul>/)[0].match(/<li>/g) || []).length, h.why.trust.length, 'risk-reduction list ' + lang);
+    assert.equal((home.match(/<ul class="outcomes outcomes--four">[\s\S]*?<\/ul>/)[0].match(/<li>/g) || []).length, 4, 'four kinds of value ' + lang);
+    assert.ok(home.includes(`href="${href(lang, 'results')}"`), 'measurement link ' + lang);
     assert.match(home, /data-track="cta_band"/, 'closing conversation section ' + lang);
-    assert.doesNotMatch(home.replace(/<script[\s\S]*?<\/script>/g, ''), /revolutioni[sz]e|cutting-edge|next-generation|power of AI/i, 'no generic AI phrases ' + lang);
+    assert.doesNotMatch(home.replace(/<script[\s\S]*?<\/script>/g, ''), /revolutioni[sz]e|cutting-edge|next-generation|power of AI|guaranteed|מובטח/i, 'no generic AI phrases or guarantees ' + lang);
+    assert.doesNotMatch(home.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' '), /\d{2,3}\s?%/, 'no unsupported percentage claims ' + lang);
+  }
+});
+await t('examples page: four illustrative before/after scenarios, one worked calculation, no invented clients', () => {
+  for (const lang of langs) { const c = lang === 'he' ? he : en, h = c, home = pages[href(lang, 'examples')];
+    // Examples: four, all labelled illustrative, the arithmetic shown once, no invented clients.
+    assert.equal((home.match(/<article class="ex">/g) || []).length, 4, 'four examples ' + lang);
+    assert.equal((home.match(/class="ex-chip"/g) || []).length, 4, 'every example labelled illustrative ' + lang);
+    assert.equal((home.match(/class="ex-calc"/g) || []).length, 1, 'one worked calculation ' + lang);
+    assert.ok(home.replace(/<\/?bdi[^>]*>/g, '').includes(c.examples.calc.note), 'calculation says it is not a client result ' + lang);
+    assert.match(c.examples.calc.note, lang === 'he' ? /לא תוצאה של לקוח/ : /not a bee & co\. client result/, 'calc disclaimer wording ' + lang);
+    assert.match(c.examples.calc.note, lang === 'he' ? /קיבולת ולא חיסכון/ : /capacity, not automatically cash savings/, 'capacity is not savings ' + lang);
+  }
+});
+await t('examples page: the first example is an interactive flowchart with a volume slider', () => {
+  for (const lang of langs) { const c = lang === 'he' ? he : en, page = pages[href(lang, 'examples')], f = c.examples.flow;
+    assert.equal((page.match(/data-flow\b/g) || []).length, 1, 'one flowchart ' + lang);
+    assert.equal((page.match(/class="fl-mode"/g) || []).length, 2, 'today and with-a-solution views ' + lang);
+    assert.equal((page.match(/class="fl-node /g) || []).length, 2 * (f.modes[0].nodes.length + 1), 'five steps plus the extra step in each view ' + lang);
+    assert.equal((page.match(/class="fl-node [^"]*fl-node--gate/g) || []).length, 2, 'a decision in each view ' + lang);
+    assert.match(page, /type="range"[^>]*data-sc-orders/, 'volume slider ' + lang);
+    assert.match(page, /data-fl-problem/, 'problem-order switch ' + lang);
+    assert.ok(f.modes.every((m) => m.nodes.length === 5 && m.nodes.every((n) => n.t && n.s && Number.isInteger(n.m))), 'every step has a title, an explanation and minutes ' + lang);
+  }
+});
+await t('results page: four kinds of value, no promised percentage', () => {
+  for (const lang of langs) { const c = lang === 'he' ? he : en, page = pages[href(lang, 'results')];
+    assert.equal((page.match(/<ul class="kinds">[\s\S]*?<\/ul>/)[0].match(/<li>/g) || []).length, 4, 'four kinds ' + lang);
+    assert.equal((page.match(/class="metric-groups"[\s\S]*?<\/div><\/div>\s*<p/)[0].match(/<h3>/g) || []).length, c.results.kinds.groups.length, 'metric groups ' + lang);
+    assert.doesNotMatch(page.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' '), /\d{2,3}\s?%/, 'no percentage claims ' + lang);
+  }
+});
+await t('founder-led model is consistent: no page says Eran builds everything himself', () => {
+  for (const [u, html] of Object.entries(pages)) {
+    if (/\/for\//.test(u)) continue;
+    assert.doesNotMatch(html.replace(/<script[\s\S]*?<\/script>/g, ''), /does much of the hands-on work (himself|myself)|I build it myself|I still design and build|עושה בעצמו חלק גדול|אני בונה בעצמי|no handoff|בלי העברת מקל/i, 'solo-builder claim on ' + u);
+  }
+  for (const lang of langs) { const about = pages[href(lang, 'about')], c = lang === 'he' ? he : en;
+    assert.match(about, /class="co-lists"/, 'founder leads / specialists lists ' + lang);
+    assert.equal((about.match(/class="co-lists"[\s\S]*?<\/div><\/div>/)[0].match(/<li>/g) || []).length, c.about.co.leads.length + c.about.co.spec.length, 'co lists ' + lang);
   }
 });
 await t('how it works: the journey and the engagement timeline with decisions', () => {
