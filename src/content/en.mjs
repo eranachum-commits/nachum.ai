@@ -33,25 +33,25 @@ export default {
     hero: {
       h1: 'Your business can work smarter.',
       support: 'Less manual work. Lower costs. Better service for your customers.',
-      sub: 'bee & co. helps companies find where time and money are being lost, and improve how the business runs with AI solutions fitted to it. From the business challenge to a solution that works, with personal leadership and specialists as the project needs.',
+      sub: 'bee & co. helps established businesses find where time and money are lost, and fixes it with AI that fits how you work.',
       line: 'One partner. From the business challenge to AI that works.',
-      trust: 'Led by Eran Nachum, a senior technology executive: over 20 years in software, six of them as Director of Engineering and VP R&D, in organizations of 50+ people.',
+      trust: 'Led by Eran Nachum: over 20 years in software, six of them as Director of Engineering and VP R&D.',
       primary: 'Let’s find where you can save and improve',
       secondary: 'See how it works',
       note: '30 minutes, directly with Eran. No sales team.',
     },
-    picker: {
-      title: 'Which of these sounds like your business?',
-      intro: 'Pick the closest one, and see where we would start.',
-      underL: 'What’s usually going on', startL: 'Where we’d start',
-      cta: 'Talk about this with Eran',
-      note: '30 minutes. Your situation is already filled in.',
-      items: [
-        { id: 'ai-tools', q: 'We bought AI tools. Nothing really changed.', under: 'The tools sit beside the work, not inside it, and nobody owns the change.', start: 'Pick the one process where AI matters most and build it into daily work, with owners and a measure.' },
-        { id: 'manual-work', q: 'Every new customer adds manual work.', under: 'The repeated part is done by hand, between email, spreadsheets and the ERP or CRM.', start: 'Map where the hours really go, then build the repeated part into the systems you already run.' },
-        { id: 'tech-decision', q: 'There’s a big technology decision on the table.', under: 'It’s expensive to reverse, and most of the advice comes from people selling one of the options.', start: 'An independent recommendation with costs, risks and a go/no-go, in a 2–3 week Decision Sprint.' },
-        { id: 'no-cto', q: 'We don’t have a senior technology leader.', under: 'Decisions about systems, vendors and AI are made by people for whom technology is a side job.', start: 'Experienced technology leadership when you need it, without hiring a full-time executive: priorities, vendor decisions and a written 90-day agenda.' },
+    // One plain workflow under the hero: the main message in four steps. Generic on purpose; the field pages show the specifics.
+    flow: {
+      title: 'What changes when AI does the repeated work',
+      intro: 'In most businesses, the same work is typed, checked and chased by hand every day. Here is what changes.',
+      steps: [
+        { k: 'in', h: 'Work comes in', p: 'Orders, documents and customer questions arrive by email, in every format.' },
+        { k: 'ai', h: 'AI does the repeated part', p: 'Small AI agents, each with one job. They read, check against your data and prepare the work in the systems you already use.',
+          agents: ['Order entry', 'Document filing', 'Invoice matching', 'Customer replies', 'Quote drafts', 'Follow-ups'] },
+        { k: 'team', h: 'Your team handles the exceptions', p: 'People review only what doesn’t fit, and make the decisions.' },
+        { k: 'result', h: 'Your business works smarter', list: ['Less manual work', 'Lower costs', 'Better service'] },
       ],
+      agentsL: 'Example AI agents', cta: 'Talk about your business with Eran',
     },
     memo: {
       title: 'Three AI ideas. Three honest answers.',
@@ -85,6 +85,8 @@ export default {
     roles: {
       title: 'Who does what',
       intro: 'One accountable partner does not mean one person doing everything. Here is how the work is split.',
+      startL: 'First call', endL: 'Handover', chipsL: 'As the project needs',
+      chips: ['AI engineering', 'Software development', 'Systems integration', 'QA and security', 'Implementation'],
       items: [
         { h: 'Eran, personally', p: 'Understands the business, defines the problem, directs the solution and the technology decisions, oversees quality and reports to you on results.', first: 'He leads every engagement, from the first call to handover.' },
         { h: 'Specialists, as needed', p: 'AI engineering, software development, systems integration, QA and security, and implementation, in the amount the project needs. Eran chooses them and manages them.', first: 'Not every project needs all of them. They work under Eran’s accountability, not instead of it.' },

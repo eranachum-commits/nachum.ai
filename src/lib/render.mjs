@@ -202,63 +202,60 @@ const stageCover = (c, st, label) => { const S = c.how.journey.stages;
   return `<p class="svc-cover"><span class="svc-hexes" aria-hidden="true">${S.map((x, i) => `<i${st.includes(i) ? ' class="on"' : ''}></i>`).join('')}</span><span class="svc-cover-t"><span class="svc-cover-l">${label}:</span> ${st.map((i) => S[i].h).join(', ')}</span></p>`; };
 
 
+/* ---------- home workflow: one plain line, work comes in → AI does the repeated part → your team handles exceptions → result ---------- */
+// An ordered list, so it reads in order without CSS. The AI step is the one highlighted mark; the line runs along the reading direction.
+const FL_ICON = {
+  in: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="6" width="17" height="12" rx="2.2"/><path d="M3.8 8l8.2 6 8.2-6"/></svg>',
+  ai: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 3.6h8l4 6.9-4 6.9H8l-4-6.9z" transform="translate(0 1.2)"/><path d="M9.5 12.4l2 2 3.5-4"/></svg>',
+  team: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg>',
+  result: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 17l5.5-5.5 3.5 3.5L20 8"/><path d="M14.5 8H20v5.5"/></svg>',
+};
+// Six spots around the AI mark (percent of the stage), clockwise from the top. The flow line runs through the centre, so no agent sits on it.
+const STAR = [[50, 9], [81, 27], [81, 73], [50, 91], [19, 73], [19, 27]];
+const flowLine = (c) => {
+  const f = c.home.flow;
+  const star = (s) => `<svg class="wf-spokes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">${s.agents.map((_, i) => `<line x1="50" y1="50" x2="${STAR[i][0]}" y2="${STAR[i][1]}" vector-effect="non-scaling-stroke"/>`).join('')}</svg>
+<ul class="wf-agents" aria-label="${esc(f.agentsL)}">${s.agents.map((x, i) => `<li style="--x:${STAR[i][0]}%;--y:${STAR[i][1]}%"><span>${x}</span></li>`).join('')}</ul>`;
+  const steps = f.steps.map((s) => `<li class="wf-step wf-step--${s.k}"><div class="wf-stage">${s.agents ? star(s) : ''}<span class="wf-mark">${FL_ICON[s.k]}</span></div><div class="wf-t"><h3>${s.h}</h3>${s.p ? `<p>${s.p}</p>` : ''}${s.list ? `<ul class="wf-out">${s.list.map((x) => `<li>${x}</li>`).join('')}</ul>` : ''}</div></li>`).join('');
+  return `${head(f.title, f.intro, 'flow-title')}<ol class="wf">${steps}</ol>
+<div class="wf-foot">${btn(c, f.cta, href(c.lang, 'contact'), 'btn--primary', 'data-track="cta_flow"')}</div>`;
+};
+
+/* ---------- home "who does what": one accountable lead, specialists under that accountability, an owner on your side ---------- */
+const rolesMap = (c, rl) => { const [a, b, o] = rl.items;
+  return `<div class="rm"><article class="rm-lead"><svg class="rm-mark" viewBox="0 0 72 72" aria-hidden="true" focusable="false"><path d="M22 6h28l22 30-22 30H22L0 36z" transform="translate(0 0) scale(.9) translate(4 4)"/><path d="M26 37l8 8 15-17"/></svg>
+<div class="rm-lead-t"><h4>${a.h}</h4><p>${a.p}</p></div>
+<div class="rm-span" aria-hidden="true"><span>${rl.startL}</span><i></i><span>${rl.endL}</span></div><p class="rm-first">${a.first}</p></article>
+<div class="rm-row"><article class="rm-spec"><h4>${b.h}</h4><p>${b.p}</p><ul class="rm-chips" aria-label="${esc(rl.chipsL)}">${rl.chips.map((x) => `<li>${x}</li>`).join('')}</ul><p class="rm-first">${b.first}</p></article>
+<article class="rm-you"><h4>${o.h}</h4><p>${o.p}</p><p class="rm-first">${o.first}</p></article></div></div>`; };
+
 /* ---------- pages ---------- */
 const pages = {};
 
 pages.home = (c) => {
-  const h = c.home, hr = h.hero, pk = h.picker, wy = h.why, rl = h.roles, wk = h.ways, pr = h.problems, hw = h.how, ms = h.measure;
+  const h = c.home, hr = h.hero, wy = h.why, rl = h.roles, wk = h.ways, ms = h.measure;
   // Five-second test: what we do (h1), why it matters (lede), why trust us (trust line), what next (two actions).
-  // Beside it, the visitor finds themselves: four situations in an executive's own words. Picking one shows what is
-  // usually going on and where we would start, and the action opens the contact form with that situation filled in.
-  // Tabs reuse the situations-page script (data-ladder); panels after the first start hidden so nothing shifts on load.
-  const pickTabs = pk.items.map((x, i) => `<button type="button" role="tab" id="hp-t-${i}" aria-controls="hp-p-${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}"><span class="pick-dot" aria-hidden="true"></span><span>${x.q}</span></button>`).join('');
-  const pickPanels = pk.items.map((x, i) => `<div class="pick-panel" role="tabpanel" id="hp-p-${i}" aria-labelledby="hp-t-${i}" tabindex="0"${i ? ' hidden' : ''}><p class="pick-l">${pk.underL}</p><p class="pick-under">${x.under}</p><p class="pick-l">${pk.startL}</p><p class="pick-start">${x.start}</p>${btn(c, pk.cta, `${href(c.lang, 'contact')}?pain=${x.id}&amp;q=${encodeURIComponent(x.q)}`, 'btn--primary pick-cta', `data-track="cta_hero_pick" data-situation="${x.id}"`)}</div>`).join('');
-  const picker = `<aside class="hero-pick" data-ladder data-vertical data-track-id="hero_situation" aria-labelledby="pick-title"><h2 id="pick-title">${pk.title}</h2><p class="pick-intro">${pk.intro}</p>
-<div class="pick-tabs" role="tablist" aria-orientation="vertical" aria-labelledby="pick-title">${pickTabs}</div>
-<div class="pick-panels">${pickPanels}</div><p class="pick-note">${pk.note}</p></aside>`;
+  // Directly below, one plain workflow carries the main message: work comes in, AI agents do the repeated part, people handle exceptions.
   const hero = `<section class="hero hero--home"><div class="container hero-grid">
-<div class="hero-copy"><p class="hero-line">${hr.line}</p><h1>${hr.h1}</h1><p class="hero-support">${hr.support}</p><p class="lede">${hr.sub}</p>
-<div class="btn-row">${btn(c, hr.primary, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}${btn(c, hr.secondary, href(c.lang, 'examples'), '')}</div>
-<p class="hero-trust">${hr.trust}</p></div>
-${picker}</div></section>`;
+<div class="hero-copy"><p class="hero-line">${hr.line}</p><h1>${hr.h1}</h1><p class="hero-support">${hr.support}</p></div>
+<div class="hero-body"><p class="lede">${hr.sub}</p>
+<div class="btn-row">${btn(c, hr.primary, bookUrl(c), 'btn--primary', 'data-track="cta_hero"')}<a class="hero-link" href="${href(c.lang, 'examples')}">${hr.secondary}</a></div>
+<p class="hero-trust">${hr.trust}</p></div></div></section>`;
 
-  // Buyer journey after the hero: recognisable problems → what it looks like in practice → how we work and who does what
-  // → the three service families → why trust us → how value is measured → talk.
-  // One small line drawing per problem (ink strokes, one pollen accent): decorative, the text carries the meaning.
-  const S = (inner) => `<svg class="prob-art" viewBox="0 0 120 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${inner}</svg>`;
-  const HEX = (x, y, r = 7) => `<path class="pa-fill" d="M${x - r / 2} ${y - r * .87}h${r}l${r / 2} ${r * .87}-${r / 2} ${r * .87}h-${r}l-${r / 2}-${r * .87}z"/>`;
-  const ART = [
-    // manual work: email → typing into a grid, with a rework loop
-    S(`<rect x="6" y="14" width="26" height="18" rx="3"/><path d="M6 17l13 9 13-9"/><path d="M38 23h20" stroke-dasharray="3 4"/><rect x="64" y="8" width="50" height="40" rx="3"/><path d="M64 20h50M64 32h50M82 8v40"/>${HEX(98, 26, 6)}<path d="M20 44c0 10 20 10 20 0" /><path d="M40 44l-3-4M40 44l-4 2"/>`),
-    // costs grow with the business: rising bars, a person added with each
-    S(`<path d="M8 56h104"/><rect x="14" y="40" width="16" height="16" rx="2"/><rect x="44" y="28" width="16" height="28" rx="2"/><rect x="74" y="14" width="16" height="42" rx="2"/><path d="M100 20l8-10 8 10M108 10v18"/>${HEX(22, 32, 5)}${HEX(52, 20, 5)}${HEX(82, 6, 5)}`),
-    // customers wait: queue of people and a clock
-    S(`<circle cx="22" cy="40" r="6"/><path d="M12 58c0-8 20-8 20 0"/><circle cx="50" cy="40" r="6"/><path d="M40 58c0-8 20-8 20 0"/><circle cx="78" cy="40" r="6"/><path d="M68 58c0-8 20-8 20 0"/><circle cx="102" cy="20" r="14"/><path d="M102 12v8l6 4"/>${HEX(102, 20, 3)}<path d="M22 22h20a4 4 0 0 1 4 4v0a4 4 0 0 1-4 4h-6l-5 5v-5h-9a4 4 0 0 1-4-4v0a4 4 0 0 1 4-4z"/>`),
-    // systems don't talk: two boxes with a broken link and hand-carried data
-    S(`<rect x="6" y="14" width="34" height="34" rx="4"/><path d="M14 26h18M14 34h12"/><rect x="80" y="14" width="34" height="34" rx="4"/><path d="M88 26h18M88 34h12"/><path d="M40 31h12M68 31h12"/><path d="M54 24l5 14M62 24l-5 14" /><path d="M50 52c6 6 14 6 20 0" stroke-dasharray="3 4"/>${HEX(60, 31, 4)}`),
-    // unclear where AI pays: signpost with a question mark
-    S(`<path d="M60 8v52"/><path d="M60 14h36l8 7-8 7H60z"/><path d="M60 34H24l-8 7 8 7h36z"/>${HEX(78, 21, 4)}${HEX(42, 41, 4)}<path d="M104 46c0-5 8-5 8-10a6 6 0 0 0-12 0M106 56h.01"/>`),
-  ];
-  const problems = `${head(pr.title, pr.intro, 'problems-title')}<ul class="problems">${pr.items.map((x, i) => `<li>${ART[i]}<h3>${x.h}</h3><p>${x.p}</p><p class="prob-fix"><span>${pr.fixL}</span>${x.fix}</p></li>`).join('')}</ul><p class="ways-link"><a href="${href(c.lang, 'examples')}">${pr.more}</a></p>`;
-
-  const how = `${head(hw.title, hw.intro, 'how-title')}<ol class="hw">${hw.steps.map((x, i) => `<li class="hw-step"><span class="hw-n" aria-hidden="true">${i + 1}</span><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ol>
-<div class="hw-roles"><h3 class="as-h3" id="roles-title">${rl.title}</h3><p class="lede">${rl.intro}</p>${waysLine(c, rl)}</div>`;
-
+  // After the hero: is this my business (tree) → what we do (three ways) → who I work with (why, and who does what) → talk.
+  // The five-problems list and the four kinds of value were cut for length: the tree already shows the problems by field,
+  // and the measurement line now sits in the closing band (the full version is on the results page).
   const services = `${head(wk.title, wk.intro, 'services-title')}${waysLine(c, wk)}<p class="ways-link"><a href="${href(c.lang, 'how')}">${wk.link}</a></p>`;
 
-  const why = `${head(wy.title, wy.intro, 'why-title')}<div class="pillars">${wy.items.map((x) => `<article class="pillar"><h3>${x.h}</h3><p>${x.p}</p><p class="pillar-not"><span>${wy.notL}:</span> ${x.not}</p></article>`).join('')}</div>
-<div class="trust-list"><h3>${wy.trustTitle}</h3>${ticks(wy.trust)}<p class="ways-link"><a href="${href(c.lang, 'security')}">${wy.trustLink}</a></p></div>`;
+  const why = `${head(wy.title, wy.intro, 'why-title')}<div class="pillars pillars--lite">${wy.items.map((x) => `<article class="pillar"><h3>${x.h}</h3><p>${x.p}</p></article>`).join('')}</div>
+<div class="hw-roles"><h3 class="as-h3" id="roles-title">${rl.title}</h3><p class="lede">${rl.intro}</p>${rolesMap(c, rl)}</div><p class="ways-link"><a href="${href(c.lang, 'security')}">${wy.trustLink}</a></p>`;
 
-  const measure = `${head(ms.title, ms.intro, 'measure-title')}<ul class="outcomes outcomes--four">${ms.items.map((x) => `<li><h3>${x.h}</h3><p>${x.p}</p></li>`).join('')}</ul><p class="measure-note">${ms.note}</p><p class="ways-link"><a href="${href(c.lang, 'results')}">${ms.link}</a></p>`;
-
-  const cta = section(`<div class="cta-band"><h2 id="cta-title">${h.cta.title}</h2><p class="lede">${h.cta.p}</p><div class="btn-row">${btn(c, h.cta.button, bookUrl(c), 'btn--primary', 'data-track="cta_band"')}${btn(c, c.ui.seeHow, href(c.lang, 'how'), '')}</div><p class="cta-note">${hr.note}</p></div>`, 'section--dark', 'talk', 'cta-title');
+  const cta = section(`<div class="cta-band"><h2 id="cta-title">${h.cta.title}</h2><p class="lede">${h.cta.p}</p><div class="btn-row">${btn(c, h.cta.button, bookUrl(c), 'btn--primary', 'data-track="cta_band"')}${btn(c, c.ui.seeHow, href(c.lang, 'how'), '')}</div><p class="cta-note">${hr.note}</p><p class="cta-note cta-measure">${ms.note} <a href="${href(c.lang, 'results')}">${ms.link}</a></p></div>`, 'section--dark', 'talk', 'cta-title');
 
   const body = `${hero}
+${section(flowLine(c), 'section--dark home-flow', 'flow', 'flow-title')}
 ${section(services, 'home-services', 'services', 'services-title')}
-${section(problems, 'section--tint home-problems', 'problems', 'problems-title')}
-${section(how, 'home-how', 'how', 'how-title')}
-${section(why, 'section--dark home-why', 'why', 'why-title')}
-${section(measure, 'home-outcomes', 'measure', 'measure-title')}
+${section(why, 'home-why home-who', 'why', 'why-title')}
 ${cta}`;
   const ld = {
     '@type': 'ProfessionalService', '@id': '#org',
