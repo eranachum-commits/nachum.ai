@@ -2,7 +2,7 @@
 // `node scripts/make-ad-files.mjs` → marketing/ads/google-ads-editor.csv, marketing/ads/meta-ads-import.csv
 // Default output updates the live campaigns (keywords, negatives, ads). NEW_CAMPAIGNS=1 also creates the campaigns.
 // Everything is created PAUSED: nothing spends until it is reviewed and switched on in each platform.
-import { mkdir, writeFile, readFile, copyFile, rm } from 'node:fs/promises';
+import { mkdir, writeFile, readFile, readdir, copyFile, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import he from '../src/content/he.mjs';
 import { HOOKS, CTA_END } from './ad-copy.mjs';
@@ -10,7 +10,7 @@ import { HOOKS, CTA_END } from './ad-copy.mjs';
 const root = resolve(import.meta.dirname, '..');
 const SITE = 'https://beenco.tech';
 const GOOGLE_ACCOUNT = '913-227-0780'; // Google Ads Editor needs the customer ID on every row (Israel time zone, ILS)
-const DAILY_ILS = { google: 60, meta: { accounting: 30, distribution: 30, business: 60 } }; // starting daily budgets (ILS) per campaign / ad set; change in the platform if needed
+const DAILY_ILS = { google: 60, meta: { accounting: 30, distribution: 30, business: 60, law: 30 } }; // starting daily budgets (ILS) per campaign / ad set; change in the platform if needed
 
 // Shared negatives: job seekers, students, free tools. Domain negatives below (from the campaign review).
 // Shared negatives: job seekers, students, events, free tools, how-to, software logins (reviews 2026-11-18).
@@ -95,10 +95,38 @@ const DOMAINS = [
       'תעשייתית', 'plc', 'רובוטיקה', 'רובוט', 'בקרה',
       // WhatsApp bots and marketing automation
       'וואטסאפ', 'ווטסאפ', 'whatsapp', 'בוט', "צ'אטבוט", 'שיווקית', 'דיוור', 'אינסטגרם',
+      // search-terms review 2026-11-22: IPO news, product names that "AI" close-variants matched, media generation, courses
+      'הנפקה', 'הנפקת', 'אנתרופיק', 'אנטרופיק', 'anthropic', 'מניה', 'מניות', 'קריינות', 'פודקאסט', 'לוגו', 'סרטון', 'סרטוני', 'פרומפטים',
+      'סדנת', 'שיווק', 'marketing', 'סכנות', 'יחליף', 'סושיאל', 'alibaba', 'capafy', 'cropus', 'rto', 'clara', 'קלרה', 'skills', 'סקילס',
+      'tofu', 'duks', 'revora', 'newo', 'briskwhale', 'neurolytica', 'sourcingai', 'תקדין',
       // an AI as personal adviser; education
       'משפטי', 'השקעות', 'רפואי', 'מס', 'חינוך', 'בית ספר', 'מורים', 'סמינריונית',
       // tool lists, freelancing, careers
       'כלים', 'כלי', 'אפליקציה', 'פרילנס', 'פרילנסר', 'קריירה', 'הסמכה'],
+  },
+  {
+    // Law-firm test (segment review 2026-11-22, marketing/ads/review-segments-2026-11-22.md). Its own campaign: "AI for business"
+    // negates "משפטי". create: the import makes it paused. Import alone with ONLY=law. Switch on only if Keyword Planner
+    // shows ~50+ searches a month for these phrases; Meta is the main test.
+    id: 'law', name: 'Law firms', page: '/for/law', create: true, wave: 'w2', budget: 20,
+    keywords: ['בינה מלאכותית לעורכי דין', 'AI לעורכי דין', 'AI למשרד עורכי דין', 'בינה מלאכותית למשרד עורכי דין',
+      'AI במשרד עורכי דין', 'בינה מלאכותית במשרד עורכי דין', 'כלי AI לעורכי דין', 'כלי בינה מלאכותית לעורכי דין',
+      'אוטומציה למשרד עורכי דין'],
+    paused: [],
+    // Independent selection is the angle: Hebrew legal-AI products (Techdin, Din Rega, LitiGate) give free demos.
+    headlines: ['AI למשרדי עורכי דין', 'בינה מלאכותית לעורכי דין', 'AI לעורכי דין', 'AI למשרד עורכי דין',
+      'איזה כלי AI באמת שווה?', 'השוואה עצמאית של כלי AI', 'עם חיסיון וסודיות מובנים', 'טיוטה ראשונה מהתבניות שלכם',
+      'חיפוש בתיקים של המשרד', 'עורך דין עובר על כל טיוטה', 'מדיניות AI ברורה למשרד', 'קבעו שיחה של 30 דקות',
+      'מעל 20 שנה בפיתוח תוכנה', 'בלי אנשי מכירות', 'לא ספק כלים. מבט עצמאי'],
+    pins: [0, 1, 2],
+    descriptions: ['כל ספק מציג הדגמה טובה. משווים את הכלים על המסמכים שלכם וממליצים מה שווה את הסיכון.',
+      'טיוטות ראשונות וחיפוש בתיקים, בתוך המערכות שהמשרד כבר עובד איתן. עורך דין מאשר הכול.',
+      'קודם הסכם סודיות. מידע לקוחות נשאר בכלים מאושרים בלבד, ושום דבר לא עובר לכלי ציבורי.',
+      'בשיחה של 30 דקות עם ערן נחום נבין איפה הולכות שעות הבכירים ומה שווה לבדוק קודם.'],
+    paths: ['עורכי-דין', 'שיחה'],
+    // The public looking for free legal answers from an AI ("עורך דין AI"), and law students.
+    negatives: ['ייעוץ משפטי', 'שאלה משפטית', 'לייעוץ', 'בוט', 'גירושין', 'גירושים', 'מזונות', 'צוואה', 'ירושה', 'תאונה',
+      'פיצויים', 'פיטורים', 'תביעה', 'תביעות קטנות', 'לימודי', 'משפטים', 'סטודנטים'],
   },
 ];
 
@@ -113,7 +141,8 @@ for (const d of DOMAINS) {
 }
 if (errs.length) { console.error(errs.join('\n')); process.exit(1); }
 
-const utm = (src, med, d, extra = '') => `utm_source=${src}&utm_medium=${med}&utm_campaign=${d.id}-w1${extra}`;
+const wave = (d) => d.wave || 'w1';
+const utm = (src, med, d, extra = '') => `utm_source=${src}&utm_medium=${med}&utm_campaign=${d.id}-${wave(d)}${extra}`;
 const csv = (rows) => '﻿' + rows.map((r) => r.map((v) => { const s = String(v ?? ''); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }).join(',')).join('\r\n') + '\r\n';
 
 // ---- Google Ads Editor (Account → Import → From file) ----
@@ -127,11 +156,11 @@ const row = (o) => gCols.map((c) => (c === 'Account' ? GOOGLE_ACCOUNT : o[c] ?? 
 // the other campaigns' ads (each import of an ad creates a new copy).
 const ONLY = process.env.ONLY || '';
 for (const d of DOMAINS.filter((x) => !ONLY || x.id === ONLY)) {
-  const camp = `bee&co | ${d.name} | Search | W1`, ag = `${d.name} – core`;
+  const camp = `bee&co | ${d.name} | Search | ${wave(d).toUpperCase()}`, ag = `${d.name} – core`;
   // Campaign, location and ad group rows only for a first upload (NEW_CAMPAIGNS=1). On the live account they would
   // reset the budget, status and bid settings set by hand and duplicate the location.
   if (process.env.NEW_CAMPAIGNS === '1' || d.create) {
-    g.push(row({ Campaign: camp, 'Campaign Type': 'Search', Networks: 'Google search', Budget: DAILY_ILS.google, 'Budget type': 'Daily',
+    g.push(row({ Campaign: camp, 'Campaign Type': 'Search', Networks: 'Google search', Budget: d.budget || DAILY_ILS.google, 'Budget type': 'Daily',
       'Bid Strategy Type': 'Maximize clicks', 'Campaign Status': 'Paused', 'Final URL suffix': utm('google', 'cpc', d, '&utm_term={keyword}') }));
     g.push(row({ Campaign: camp, Location: 'Israel' }));
     g.push(row({ Campaign: camp, 'Ad Group': ag, 'Ad Group Status': 'Enabled' }));
@@ -152,7 +181,7 @@ for (const d of DOMAINS.filter((x) => !ONLY || x.id === ONLY)) {
 // Template rules: objective "Traffic"; creative type "Page post ad" with the Facebook Page ID in "Link object ID";
 // campaign, ad set and ad names up to 35 characters; Device Platforms is required.
 const META_PAGE_ID = '1437816686084407'; // the bee & co. Facebook Page (asset_id in its Business Suite URL)
-const META_SHORT = { accounting: 'Accounting', distribution: 'Distribution', business: 'AI business' };
+const META_SHORT = { accounting: 'Accounting', distribution: 'Distribution', business: 'AI business', law: 'Law' };
 const mCols = JSON.parse(await readFile(join(root, 'scripts/meta-import-columns.json'), 'utf8'));
 const m = [mCols];
 const metaImages = [];
@@ -160,7 +189,7 @@ const metaAds = []; // for the hand-setup sheet (new ad accounts can't publish b
 // One ad per banner: the landing-page headline plus each hook. utm_content tells them apart in GA;
 // the image is marketing/ads/images/{domain}-{angle}-square.png (portrait and wide exist for placements added later).
 for (const d of DOMAINS.filter((x) => HOOKS[x.id])) {
-  const camp = `bee&co | ${META_SHORT[d.id]} | Meta | W1`, set = `${META_SHORT[d.id]} – Israel 30-65`, H = HOOKS[d.id];
+  const camp = `bee&co | ${META_SHORT[d.id]} | Meta | ${wave(d).toUpperCase()}`, set = `${META_SHORT[d.id]} – Israel 30-65`, H = HOOKS[d.id];
   const ads = [
     { angle: 'headline', body: H.headline.body, title: H.headline.title },
     ...H.hooks.map((x) => ({ angle: 'hook-' + x.id, body: x.body || `${x.h} ${x.s}`, title: x.title })),
@@ -198,7 +227,7 @@ await writeFile(join(out, ONLY ? `google-ads-editor-${ONLY}.csv` : 'google-ads-e
     '| Campaign objective | **Traffic** |', '| Special ad category | None |', '| Buying type | Auction |',
     '| Campaign budget (Advantage campaign budget) | **Off**: set the budget on the ad set |',
     '| Ad set: conversion location | **Website** |', '| Ad set: performance goal | **Maximize number of link clicks** |',
-    `| Ad set: daily budget | Accounting ₪${DAILY_ILS.meta.accounting}, Distribution ₪${DAILY_ILS.meta.distribution}, AI business ₪${DAILY_ILS.meta.business} |`, '| Ad set: bid strategy | Highest volume (no bid amount) |',
+    `| Ad set: daily budget | Accounting ₪${DAILY_ILS.meta.accounting}, Distribution ₪${DAILY_ILS.meta.distribution}, AI business ₪${DAILY_ILS.meta.business}, Law ₪${DAILY_ILS.meta.law} |`, '| Ad set: bid strategy | Highest volume (no bid amount) |',
     '| Audience | Original audience options (Advantage+ audience **off**). Israel, age 30–65, Hebrew. Interests: see the README |',
     '| Placements | **Manual**: Facebook Feed and Instagram Feed only |',
     '| Ad: Page | bee & co. |', '| Ad: format | Single image |', '| Ad: call to action | Learn more |', '| Ad: display link | beenco.tech |', '| Status | Off (paused) |', ''];
@@ -213,10 +242,11 @@ await writeFile(join(out, ONLY ? `google-ads-editor-${ONLY}.csv` : 'google-ads-e
 }
 await writeFile(join(out, 'meta-ads-import.csv'), csv(m));
 // Meta's import dialog takes the images (Images tab) and the CSV (File tab) separately and matches them by file name,
-// so everything it needs goes into one folder: marketing/ads/meta-upload/. Rebuilt on every run.
+// so everything it needs goes into one folder: marketing/ads/meta-upload/. Rebuilt on every run: only the banners and the
+// import CSV are replaced. Review exports (meta-results-*.csv, google-search-terms-*.csv) also live here and are kept.
 const upload = join(out, 'meta-upload');
-await rm(upload, { recursive: true, force: true });
 await mkdir(upload, { recursive: true });
+for (const f of await readdir(upload)) if (f.endsWith('.png')) await rm(join(upload, f));
 await copyFile(join(out, 'meta-ads-import.csv'), join(upload, 'meta-ads-import.csv'));
 for (const f of metaImages) await copyFile(join(out, 'images', f), join(upload, f));
 await rm(join(out, 'meta-ads-import.zip'), { force: true });

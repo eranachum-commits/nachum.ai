@@ -57,7 +57,7 @@ Then switch the campaigns on.
 - **Placements:** Facebook and Instagram feeds only to start; turn off Audience Network and Messenger.
 - **Optimization:** link clicks, and keep it there for now. The Meta pixel (dataset `928177403595090`, `META_PIXEL_ID` in Vercel) is live behind the consent banner and reports `PageView` and `Lead`, but only for visitors who accept it, so landing page views or Lead would under-count and starve the learning. Judge Meta by the lead sheet and GA, not Meta's own conversion numbers. Switch to the `Lead` conversion only if Meta reports roughly 50 leads a week, which at this budget it won't.
 - **Copy and images are generated from `scripts/ad-copy.mjs`**, the same source as the banners, so changing a hook means re-running `node scripts/make-ad-files.mjs` and `node scripts/make-ad-images.mjs` and re-uploading that ad's image.
-- Budget: ₪30/day for the accounting and distribution ad sets and ₪60/day for AI business (₪120/day in total). Set in the ad sets and in `scripts/make-ad-files.mjs`.
+- Budget: ₪30/day for the accounting, distribution and law ad sets and ₪60/day for AI business. Law (wave 2, `law-w2`) is a 2-week test from 2026-11-22: see `review-segments-2026-11-22.md`. Set in the ad sets and in `scripts/make-ad-files.mjs`.
 
 | Setting | Value |
 |---|---|
