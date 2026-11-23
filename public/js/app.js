@@ -61,7 +61,6 @@ if (consent() === 'yes') { loadGA(); loadMeta(); }
 })();
 document.addEventListener('click', (e) => {
   const a = e.target.closest('[data-track]'); if (a) track('cta_click', { id: a.dataset.track, industry: a.dataset.industry || '' });
-  const b = e.target.closest('[data-booking]'); if (b) track('booking_link_click', { lead_source: b.dataset.booking || 'general' });
 });
 
 /* ---------- navigation ---------- */
@@ -278,7 +277,6 @@ $$('[data-lead-form]').forEach((form) => {
         const dev = body.mode === 'dev';
         status.className = 'form-status notice ' + (dev ? '' : 'notice--ok');
         status.innerHTML = `<strong>${dev ? D.devH : D.okH}</strong><br>${dev ? D.dev : D.okP}`;
-        if (body.bookingUrl) status.insertAdjacentHTML('beforeend', `<br><a class="btn btn--primary btn--sm" style="margin-top:12px" href="${body.bookingUrl}" rel="noopener" data-booking="${data.pain || ''}">${D.bookL}</a>`);
         // generate_lead is GA4's recommended event for a delivered lead: mark it as a key event in GA4.
         if (!dev) { track('booking_completed', { form: form.id, pain: data.pain }); track('generate_lead', { lead_source: data.pain || 'general', form: form.id }); }
         form.reset(); $('[name=source]', form).value = location.pathname + location.search;

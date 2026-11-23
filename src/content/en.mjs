@@ -382,7 +382,7 @@ export default {
     person: 'You’ll be talking to',
     call: ['30 minutes', 'Directly with Eran, no sales team', 'No obligation and no pitch deck'],
     lede: 'Tell us briefly what’s on your mind. Eran reads every message himself and replies personally.',
-    next: { h: 'What happens next', steps: ['Eran reads your message and replies personally.', 'You pick a time for a 30-minute call.', 'If there is a fit, you receive a short written proposal for the next step.'] },
+    next: { h: 'What happens next', steps: ['Eran reads your message and replies personally.', 'Together you set a time for a 30-minute call.', 'If there is a fit, you receive a short written proposal for the next step.'] },
     bring: { h: 'Useful to mention', items: ['The decision or problem in front of you', 'Why it matters now', 'Anything you have already tried'] },
   },
 
@@ -394,7 +394,7 @@ export default {
     },
     consent: 'I agree that bee & co. may contact me about this message and store these details for that purpose. See the privacy policy.',
     errors: { required: 'This field is required.', email: 'Enter a valid email address.', consent: 'Please confirm to continue.' },
-    ok: { h: 'Message sent', devH: 'Development mode: message NOT delivered', dev: 'This site is running without a lead integration. Your message was saved locally for testing only and has not reached bee & co.', p: 'Thank you. Eran will read your message and reply personally.', book: 'Choose a time' },
+    ok: { h: 'Message sent', devH: 'Development mode: message NOT delivered', dev: 'This site is running without a lead integration. Your message was saved locally for testing only and has not reached bee & co.', p: 'Thank you. Eran will read your message and reply personally.' },
     fail: 'Your message was not sent. Please try again in a moment.',
     failNet: 'We could not reach the server, so nothing was sent. Please try again.',
   },

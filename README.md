@@ -34,5 +34,5 @@ docs/                        APPROVALS.md (what needs your decision) · LAUNCH.m
 ## Lead capture
 `POST /api/leads` validates server-side (required fields, email, consent, length caps), has a honeypot and a per-IP limit.
 - `LEAD_ADAPTER=dev` (default): appends to `data/leads.jsonl`; the UI says plainly **"Development mode: request NOT delivered"**.
-- `LEAD_ADAPTER=webhook` + `LEAD_WEBHOOK_URL` (+ optional `LEAD_WEBHOOK_SECRET`, `BOOKING_URL`): forwards JSON to your CRM/Make/Zapier/n8n. Success is shown only after the webhook returns 2xx.
+- `LEAD_ADAPTER=webhook` + `LEAD_WEBHOOK_URL` (+ optional `LEAD_WEBHOOK_SECRET`): forwards JSON to your CRM/Make/Zapier/n8n. Success is shown only after the webhook returns 2xx.
 No fake success states anywhere: network failure shows an error and nothing is claimed as sent.

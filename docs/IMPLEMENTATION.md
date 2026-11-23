@@ -155,7 +155,6 @@ Still present:
 | `ALLOW_INDEXING` | unset | Production is indexed regardless; set to `1` to also open a preview deployment to search engines |
 | `LEAD_ADAPTER` | `dev` | `dev` stores locally (on Vercel: ephemeral `/tmp`) and tells the visitor the request was not delivered; `webhook` sends leads to `LEAD_WEBHOOK_URL` |
 | `LEAD_WEBHOOK_URL`, `LEAD_WEBHOOK_SECRET` | unset | CRM / automation endpoint for leads |
-| `BOOKING_URL` | unset | Scheduling link shown after a successful submission |
 
 ## 10. History
 

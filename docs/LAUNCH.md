@@ -15,7 +15,7 @@
 
 ## Before going public
 1. Resolve everything in `docs/APPROVALS.md`.
-2. Set env: `SITE_URL`, `LEAD_ADAPTER=webhook`, `LEAD_WEBHOOK_URL`, `LEAD_WEBHOOK_SECRET`, `BOOKING_URL`; send a real test lead and confirm it lands in the CRM.
+2. Set env: `SITE_URL`, `LEAD_ADAPTER=webhook`, `LEAD_WEBHOOK_URL`, `LEAD_WEBHOOK_SECRET`; send a real test lead and confirm it lands in the CRM.
 3. Deploy anywhere that runs Node ≥ 20 (`npm run build && node server.mjs`) behind HTTPS (Render, Fly, Railway, a VPS + Caddy/nginx). `dist/` alone is static, but then `/api/leads` needs an equivalent function — don't ship the form without it.
 4. Remove `noindex` on privacy page (in `render.mjs`, `draftNoindex`) once legal approves.
 5. Analytics: load your vendor inside the consent callback in `app.js` (`set('yes')`) and map `dataLayer` events: `cta_click`, `tool_interaction`, `booking_initiated`, `booking_completed`. Optimise on offline CRM stages (qualified → session held → memo → **paid Sprint**), not page views.

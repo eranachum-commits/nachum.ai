@@ -30,6 +30,6 @@ Copy that makes numeric claims (all illustrative, labelled "להמחשה בלב�
 | 17 | Decision Stories page | not built | — | Eran's raw notes for 2 career stories (Agora RE hotfixes −85% is the first candidate) |
 | 18 | References | not shown | one 2017 peer recommendation on LinkedIn | 3–5 recommendations from former CEOs/execs (Resident, Agora RE, WalkMe) |
 | 19 | LinkedIn profile | outside the site | still shows the startup role as current, "Open to work" on | End-date the startup role, add "Founder, bee & co.", new headline, turn off Open to work |
-| 20 | Booking link | `BOOKING_URL` env | not set | Calendar link so the success message offers "Choose a time" |
+| 20 | Booking link | removed | removed 2026-11-23 | No self-booking: Eran replies to each message and sets the call time |
 
 Prices: none are published anywhere (decision 2026-11-16). Items 1 and 3 above are superseded.

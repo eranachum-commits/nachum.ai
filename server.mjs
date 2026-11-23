@@ -7,7 +7,6 @@ const PORT = Number(process.env.PORT || 3000);
 const ADAPTER = process.env.LEAD_ADAPTER || 'dev';
 const WEBHOOK = process.env.LEAD_WEBHOOK_URL || '';
 const SECRET = process.env.LEAD_WEBHOOK_SECRET || '';
-const BOOKING_URL = process.env.BOOKING_URL || '';
 // Email delivery (LEAD_ADAPTER=email): each lead is emailed through Resend (https://resend.com) — a plain HTTPS call, no SDK.
 const EMAIL_KEY = process.env.RESEND_API_KEY || '';
 const EMAIL_TO = process.env.LEAD_EMAIL_TO || '';
@@ -94,7 +93,7 @@ export async function handleLead(req, res) {
     if (limited(ip)) return sendJson(res, 429, { ok: false, error: 'rate' }); // only valid submissions count
     lead.receivedAt = new Date().toISOString();
     const mode = await deliver(lead);
-    sendJson(res, 200, { ok: true, mode, bookingUrl: mode === 'dev' ? '' : BOOKING_URL });
+    sendJson(res, 200, { ok: true, mode }); // no self-booking link: Eran replies personally (removed 2026-11-23)
   } catch (e) {
     console.error('lead error', e.message);
     sendJson(res, 502, { ok: false, error: 'delivery' });
