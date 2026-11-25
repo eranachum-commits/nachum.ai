@@ -25,6 +25,8 @@ const MISCONFIGURED = (ADAPTER === 'webhook' && !WEBHOOK) || (ADAPTER === 'email
 
 /* ---- lead validation (server-side, authoritative) ---- */
 const ROLE_MAX = 120;
+// An Israeli or international phone number: 9-15 digits once spaces, dashes, dots and brackets are removed.
+export const isPhone = (v) => /^\+?\d{9,15}$/.test(String(v).replace(/[\s\-().]/g, ''));
 const clean = (v, max = 300) => String(v ?? '').replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').trim().slice(0, max);
 export function validateLead(b) {
   const errors = {};
@@ -35,8 +37,16 @@ export function validateLead(b) {
     extra: {},
   };
   for (const k of ['volume', 'system', 'channels', 'process', 'team', 'tools', 'stalled']) if (b[k]) lead.extra[k] = clean(b[k], 300);
-  for (const k of ['name', 'company', 'email']) if (!lead[k]) errors[k] = 'required';
-  if (!lead.detail && !lead.topic) errors.detail = 'required'; // a picked situation (landing pages) can stand in for the message
+  // Landing pages send a short form (name and phone, the rest optional); the contact page keeps the full form.
+  lead.form = b.form === 'short' ? 'short' : 'full';
+  if (lead.form === 'short') {
+    if (!lead.name) errors.name = 'required';
+    if (!lead.phone) errors.phone = 'required';
+    else if (!isPhone(lead.phone)) errors.phone = 'phone';
+  } else {
+    for (const k of ['name', 'company', 'email']) if (!lead[k]) errors[k] = 'required';
+    if (!lead.detail && !lead.topic) errors.detail = 'required'; // a picked situation (landing pages) can stand in for the message
+  }
   if (lead.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(lead.email)) errors.email = 'email';
   if (!(b.consent === true || b.consent === 'true' || b.consent === 'on')) errors.consent = 'required';
   return { lead, errors };
@@ -47,9 +57,10 @@ export function validateLead(b) {
 export function leadEmail(lead) {
   const rows = [['Name', lead.name], ['Company', lead.company], ['Role', lead.role], ['Email', lead.email], ['Phone', lead.phone],
     ['Page', lead.source], ['Industry', lead.pain], ['Situation', lead.topic], ['Language', lead.lang]].filter(([, v]) => v);
-  const text = `${rows.map(([k, v]) => `${k}: ${v}`).join('\n')}\n\nMessage:\n${lead.detail || '(none — situation picked above)'}\n`;
+  const none = lead.form === 'short' ? '(short form: call back by phone)' : '(none — situation picked above)';
+  const text = `${rows.map(([k, v]) => `${k}: ${v}`).join('\n')}\n\nMessage:\n${lead.detail || none}\n`;
   const subject = `New message from ${lead.name}${lead.company ? ` (${lead.company})` : ''} — bee & co.`.replace(/[\r\n]+/g, ' ');
-  return { from: EMAIL_FROM, to: [EMAIL_TO], reply_to: lead.email, subject, text };
+  return { from: EMAIL_FROM, to: [EMAIL_TO], ...(lead.email ? { reply_to: lead.email } : {}), subject, text };
 }
 
 async function deliver(lead) {

@@ -59,9 +59,8 @@ function footer(c) {
   </div>
   <div class="foot-base"><span>${f.rights}</span><span>${f.note}</span></div>
 </div></footer>
-<div class="consent" role="dialog" aria-label="Cookies" data-consent hidden><p>${c.consent.text}</p>
-<div class="btn-row"><button class="btn" type="button" data-consent-yes>${c.consent.accept}</button><button class="btn" type="button" data-consent-no>${c.consent.decline}</button></div>
-<p class="small consent-more"><a href="${href(c.lang, 'privacy')}">${c.consent.more}</a></p></div>`;
+<div class="consent" role="dialog" aria-label="Cookies" data-consent hidden><p>${c.consent.short} <a href="${href(c.lang, 'privacy')}">${c.consent.more}</a></p>
+<div class="btn-row"><button class="btn" type="button" data-consent-yes>${c.consent.accept}</button><button class="btn" type="button" data-consent-no>${c.consent.decline}</button></div></div>`;
 }
 
 // Every page carries the business and the website as one schema.org graph; a page's own nodes join it.
@@ -170,6 +169,30 @@ ${input('phone', f.phone, { type: 'tel', required: false, auto: 'tel' })}
 <div class="field"><div class="checkrow"><input id="${id}-consent" name="consent" type="checkbox" required aria-describedby="${id}-consent-e"><label for="${id}-consent">${F.consent.replace(/ראו מדיניות פרטיות|See the privacy policy/, (m) => `<a href="${href(c.lang, 'privacy')}">${m}</a>`)}</label></div><span class="err" id="${id}-consent-e" role="alert"></span></div>
 <div class="form-status" role="status" aria-live="polite" tabindex="-1"></div>
 <button class="btn btn--primary" type="submit" data-submit>${c.ui.send}</button>
+</form>`;
+}
+
+// Landing pages: a short form for cold ad traffic. Name and phone are required; business name and email are optional.
+// The industry travels as `pain` and the ad as `source` (UTM tags), so no situation or message is asked for.
+function shortForm(c, { id = 'lead', pain = '', companyL = '' } = {}) {
+  const F = c.form, S = c.lp.form, E = F.errors;
+  const req = `<span aria-hidden="true"> *</span><span class="sr-only"> (${E.required})</span>`;
+  const input = (n, label, { type = 'text', required = false, auto = '', mode = '' } = {}) => `<div class="field"><label for="${id}-${n}">${label}${required ? req : ''}</label><input id="${id}-${n}" name="${n}" type="${type}" ${required ? 'required' : ''} ${auto ? `autocomplete="${auto}"` : ''} ${mode ? `inputmode="${mode}" dir="ltr"` : ''} aria-describedby="${id}-${n}-e"><span class="err" id="${id}-${n}-e" role="alert"></span></div>`;
+  return `<form class="form-card form-card--short" data-lead-form id="${id}" novalidate method="post" action="/api/leads" data-lang="${c.lang}"
+ data-m-required="${esc(E.required)}" data-m-email="${esc(E.email)}" data-m-phone="${esc(S.phoneErr)}" data-m-consent="${esc(E.consent)}" data-m-fix="${esc(c.ui.fixField)}" data-m-sending="${esc(c.ui.sending)}" data-m-fail="${esc(F.fail)}" data-m-net="${esc(F.failNet)}"
+ data-ok-h="${esc(F.ok.h)}" data-ok-p="${esc(S.ok)}" data-dev-h="${esc(F.ok.devH)}" data-dev="${esc(F.ok.dev)}">
+<h2 class="as-h3">${S.title}</h2>
+<div class="form-grid">
+${input('name', S.name, { required: true, auto: 'name' })}
+${input('phone', S.phone, { type: 'tel', required: true, auto: 'tel', mode: 'tel' })}
+${input('company', companyL || S.company, { auto: 'organization' })}
+${input('email', S.email, { type: 'email', auto: 'email' })}
+</div>
+<div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+<input type="hidden" name="form" value="short"><input type="hidden" name="pain" value="${pain}"><input type="hidden" name="lang" value="${c.lang}"><input type="hidden" name="source" value=""><input type="hidden" name="ts" value="">
+<div class="field"><div class="checkrow"><input id="${id}-consent" name="consent" type="checkbox" required aria-describedby="${id}-consent-e"><label for="${id}-consent">${S.consent.replace(/ראו מדיניות פרטיות|See the privacy policy/, (m) => `<a href="${href(c.lang, 'privacy')}">${m}</a>`)}</label></div><span class="err" id="${id}-consent-e" role="alert"></span></div>
+<div class="form-status" role="status" aria-live="polite" tabindex="-1"></div>
+<button class="btn btn--primary" type="submit" data-submit>${S.submit}</button>
 </form>`;
 }
 
@@ -402,12 +425,16 @@ ${p.sections.map((x) => `<h2 id="${x.id}">${x.h}</h2>${x.blocks.map(block).join(
 
 /* ---------- campaign landing pages: one template, one content entry per domain ---------- */
 // Same language as the home page, narrowed to one domain. A cold visitor's path:
-// is this my business (question headline) → what changes here (one workflow from this business, with illustrative numbers)
-// → how it would run (the five stages traced through this domain) → why bee & co. (as on home) → my questions → talk (as on /contact).
+// is this my business (question headline, software strip) → what changes here (one workflow from this business, with illustrative numbers)
+// → how it would run (the five stages traced through this domain) → why bee & co. (as on home) → talk (short form) → my questions.
 // On phones a sticky action follows from the hero to the form.
 function landing(c, id) {
   const L = c.lp, d = c.industries[id], J = c.how.journey, track = (k) => `data-track="${k}" data-industry="${id}"`;
-  const actions = `<div class="btn-row">${btn(c, L.primary, '#lead', 'btn--primary', track('cta_lp_hero'))}${btn(c, L.secondary, '#journey', '')}</div>
+  // The software strip answers the first question a firm asks ("does it work with what we run?") next to the action.
+  const sys = d.systems ? `<p class="lp-systems"><span class="lp-systems-l">${d.systems.l}:</span> ${d.systems.items.map((x) => `<bdi>${x}</bdi>`).join(' · ')}<span class="lp-systems-n">${d.systems.note}</span></p>` : '';
+  // The action comes first so it stays above the cookie banner on a phone's first screen.
+  const actions = `<div class="btn-row">${btn(c, d.cta || L.primary, '#lead', 'btn--primary', track('cta_lp_hero'))}${btn(c, L.secondary, '#journey', '', track('cta_lp_how'))}</div>
+<p class="lp-callnote">${L.callNote}</p>${sys}
 <p class="hero-trust">${c.home.hero.trust}</p>`;
   // Opens like home: the question beside the lede, then one workflow from this business in a dark band.
   const hero = `<section class="hero hero--home hero--lp"><div class="container hero-grid">
@@ -434,14 +461,15 @@ ${coNote(c)}<p class="ways-link"><a href="${href(c.lang, 'security')}">${wy.trus
   // The contact page's layout: heading and lede, Eran's card above the form, "what happens next" and "useful to mention" beside it.
   // The form keeps this domain's situations as topic chips, so a lead arrives tagged with the domain and the situation.
   const ct = c.contact;
-  const form = `${head(ct.h1, ct.lede, 'book-title')}<div class="split split--top"><div>${personCard(c)}${leadForm(c, { pain: id, topics: d.situations.map((x) => x.q), topicL: L.form.topicL, detailHint: L.form.detailHint })}</div><aside class="aside-stack"><div class="card"><h3>${ct.next.h}</h3><ol class="steps">${ct.next.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div><div class="card"><h3>${ct.bring.h}</h3>${ticks(ct.bring.items)}</div></aside></div>`;
+  const nx = L.form.next;
+  const form = `${head(ct.h1, L.form.lede, 'book-title')}<div class="split split--top"><div>${personCard(c)}${shortForm(c, { pain: id, companyL: d.companyL })}</div><aside class="aside-stack"><div class="card"><h3>${nx.h}</h3><ol class="steps">${nx.steps.map((x) => `<li>${x}</li>`).join('')}</ol></div></aside></div>`;
 
   const body = `${hero}
 ${section(flow, 'section--dark home-flow lp-flowsec', 'flow', 'flow-title')}
 ${section(journey, 'section--tint lp-journeysec', 'journey', 'journey-title')}
 ${section(why, 'home-why home-who lp-whysec', 'why', 'why-title')}
-${section(`<div class="about-how"><h2 id="faq-title">${L.faqTitle}</h2>${faqList(d.faq)}</div>`, '', 'faq', 'faq-title')}
 ${section(form, 'section--tint lp-formsec', 'book', 'book-title')}
+${section(`<div class="about-how"><h2 id="faq-title">${L.faqTitle}</h2>${faqList(d.faq)}</div>`, '', 'faq', 'faq-title')}
 <a class="btn btn--primary lp-sticky" href="#lead" data-lp-sticky ${track('cta_lp_sticky')} hidden>${L.bookHere}</a>`;
   return { meta: d.meta, body, ld: faqLd(d.faq) };
 }

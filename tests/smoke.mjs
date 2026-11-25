@@ -249,9 +249,20 @@ await t('campaign landing pages: home language narrowed to one domain', () => {
       assert.doesNotMatch(page, /class="lp-founder"/, 'no founder strip on ' + id);
       assert.match(page, new RegExp(`<form[^>]*id="lead"`), 'form on the page ' + id);
       assert.match(page, new RegExp(`name="pain" value="${id}"`), 'lead tagged with domain ' + id);
-      assert.equal((page.match(/name="topic"/g) || []).length, n, 'situation chips on ' + id);
-      assert.match(page, /data-or="topic"/, 'message optional when a situation is picked on ' + id);
-      assert.ok(page.includes(`<h2 id="book-title">${c.contact.h1}</h2>`) && page.includes(c.contact.next.h) && page.includes(c.contact.bring.h), 'contact page layout around the form on ' + id);
+      // Short form for cold ad traffic: name and phone required, business name and email optional, nothing else.
+      const form = page.match(/<form[^>]*id="lead"[\s\S]*?<\/form>/)[0];
+      assert.match(form, /name="form" value="short"/, 'short form on ' + id);
+      assert.match(form, /name="name"[^>]*required/, 'name required on ' + id);
+      assert.match(form, /name="phone" type="tel"[^>]*required/, 'phone required on ' + id);
+      assert.doesNotMatch(form, /name="(company|email)"[^>]* required/, 'business name and email optional on ' + id);
+      assert.doesNotMatch(form, /name="(topic|detail|role)"/, 'no situation, message or role on ' + id);
+      if (d.companyL) assert.ok(form.includes(d.companyL), 'domain label for the business name on ' + id);
+      assert.ok(page.indexOf('id="book"') < page.indexOf('id="faq"'), 'form above the FAQ on ' + id);
+      assert.ok(plain.includes(c.lp.callNote), 'what the call is, next to the action, on ' + id);
+      if (d.systems) { const strip = plain.match(/class="lp-systems"[\s\S]*?<\/p>/)[0]; for (const x of d.systems.items) assert.ok(strip.includes(x), 'software strip names ' + x + ' on ' + id); }
+      assert.ok(d.cta && d.systems, 'domain action and software strip on ' + id);
+      if (d.systems) assert.ok(page.indexOf('lp-systems') < page.indexOf('id="flow"'), 'software strip in the hero on ' + id);
+      assert.ok(page.includes(`<h2 id="book-title">${c.contact.h1}</h2>`) && page.includes(c.lp.form.next.h) && !page.includes(c.contact.bring.h), 'contact page layout around the form on ' + id);
       assert.match(page, /site-header--lp/, 'slim header on ' + id);
       assert.doesNotMatch(page, /class="mobile-nav"/, 'no site menu on ' + id);
       assert.match(page, /data-lp-sticky/, 'sticky phone action on ' + id);
@@ -294,6 +305,15 @@ await t('lead API rejects invalid input server-side', async () => {
   r = await post({ ...good, role: undefined, phone: undefined }); assert.notEqual(r.status, 400);
   r = await post('{bad json'); assert.equal(r.status, 400);
   r = await post({ ...good, detail: 'x'.repeat(30000) }); assert.equal(r.status, 413);
+  // Landing pages' short form: name and a real phone number are required; nothing else is.
+  const short = { form: 'short', name: 'Dana', phone: '', consent: true, pain: 'accounting', lang: 'he', website: '' };
+  r = await post(short); assert.equal(r.status, 400); let e = (await r.json()).errors; assert.equal(e.phone, 'required'); assert.equal(e.email, undefined); assert.equal(e.company, undefined); assert.equal(e.detail, undefined);
+  r = await post({ ...short, phone: '12' }); assert.equal(r.status, 400); assert.equal((await r.json()).errors.phone, 'phone');
+  r = await post({ ...short, phone: '050-1234567', name: '' }); assert.equal(r.status, 400);
+  r = await post({ ...short, phone: '050-1234567', email: 'nope' }); assert.equal(r.status, 400); assert.equal((await r.json()).errors.email, 'email');
+  r = await post({ ...short, phone: '050-1234567', consent: false }); assert.equal(r.status, 400);
+  // The full form (contact page) still needs company and email even when a phone is given.
+  r = await post({ ...good, company: '', email: '', phone: '050-1234567' }); assert.equal(r.status, 400);
 });
 await t('lead API: honeypot stores nothing; valid lead reports dev mode honestly', async () => {
   let r = await post({ ...good, website: 'http://spam' }); assert.equal(r.status, 200);
@@ -319,6 +339,10 @@ await t('lead API: email adapter sends a plain-text email with reply-to the send
     assert.equal(got[0].auth, 'Bearer test-key'); assert.deepEqual(m.to, ['owner@example.com']); assert.equal(m.reply_to, good.email);
     assert.ok(m.text.includes(good.detail) && m.text.includes('Example Ltd'), 'message and company in the email');
     assert.equal(m.html, undefined, 'plain text only');
+    // A short-form lead with no email: delivered, with no reply-to, and the phone in the email.
+    const r2 = await fetch(`http://localhost:${ePort}/api/leads`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ form: 'short', name: 'Dana', phone: '+972 50 123 4567', consent: true, pain: 'accounting', lang: 'he', source: '/for/accounting?utm_content=hook-reminder', website: '' }) });
+    assert.equal(r2.status, 200); const m2 = got[1].body;
+    assert.equal(m2.reply_to, undefined, 'no reply-to without an email'); assert.ok(m2.text.includes('+972 50 123 4567') && m2.text.includes('utm_content=hook-reminder'), 'phone and ad in the email');
   } finally { es.kill(); fake.close(); }
 });
 await t('header: three links, the language switch and one action; the footer keeps every page', () => {

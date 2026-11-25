@@ -24,6 +24,7 @@ export default {
     rights: '© 2026 bee & co.',
   },
   consent: {
+    short: 'Google Analytics, Google Ads and Meta load only if you agree, to measure which pages and ads help.',
     text: 'We use Google Analytics, Google Ads and Meta (Facebook and Instagram) measurement only if you agree, to learn which pages and ads are useful. None of them loads until you choose. A cookieless visit count runs either way.',
     accept: 'Accept analytics', decline: 'Decline', more: 'Privacy policy',
   },
@@ -417,13 +418,13 @@ export default {
       ] },
       { id: 'collect', h: 'What we collect', blocks: [
         { list: [
-          'Your name, company and email (required), so we can reply.',
-          'Your message, or the situation you picked (one of them is required), so we understand what you need.',
-          'Your role and phone number, only if you choose to add them.',
+          'On the contact page form: your name, company and email, plus your message or the situation you picked (required), so we can reply and understand what you need.',
+          'On the short form on our industry pages: your name and phone (required), so we can call you back.',
+          'Your role, phone, business name or email, only if you choose to add them.',
           'The page you wrote from and your language, sent automatically with the form.',
           'Your IP address and basic request data, used only to keep the site secure.',
         ] },
-        { p: 'You are not legally required to give us any of this information. Without a name, company, email and a message we simply can’t reply.' },
+        { p: 'You are not legally required to give us any of this information. Without a name and a way to reach you we simply can’t get back to you.' },
         { p: 'Please don’t send confidential business information or other people’s personal data in the first message. If we work together, we agree how that kind of information is handled first.' },
       ] },
       { id: 'use', h: 'How we use it', blocks: [
@@ -497,20 +498,31 @@ export default {
   },
   // Campaign landing pages: one template, one entry per industry (src/lib/render.mjs → landing()).
   lp: {
-    bookHere: 'Talk to Eran',
+    bookHere: 'Check the fit',
+    callNote: 'A 30-minute call with Eran Nachum, the founder. No cost, no commitment.',
     primary: 'Let’s explore your opportunities',
     secondary: 'See how it works',
     journey: { title: 'How it would run, step by step', intro: 'Five steps, led by Eran, with specialists brought in as the project needs. At each step you decide whether it is worth going on.' },
     whyIntro: 'Many vendors promise AI. The difference is who leads the work, and who is accountable for the result.',
     faqTitle: 'Questions we usually get',
-    form: { topicL: 'What is closest to your situation?', detailHint: 'Optional if you picked one above. A few sentences are enough.' },
+    form: {
+      lede: 'Leave your name and phone, and Eran will call you back for a 30-minute conversation. No cost, no commitment.',
+      title: 'Check the fit', submit: 'Check the fit',
+      name: 'Full name', phone: 'Phone', company: 'Business name (optional)', email: 'Email (optional)',
+      phoneErr: 'Enter a valid phone number.',
+      consent: 'I agree that bee & co. may contact me by phone or email about this enquiry and store these details for that purpose. See the privacy policy.',
+      ok: 'Thank you. Eran will call you back personally.',
+      next: { h: 'What happens next', steps: ['Eran calls you back, personally.', 'In a 30-minute call we work out what is most worth checking in your business, and whether it fits the software you already run.', 'If there is a fit, you get a short written proposal for the next step.'] },
+    },
   },
   industries: {
     distribution: {
       meta: { title: 'AI for distributors and importers: orders and quotes without retyping — bee & co.', desc: 'For distribution, import and wholesale companies: AI that reads orders and drafts quotes inside the ERP you already run, with your team approving the exceptions. Founder-led by Eran Nachum.' },
       kicker: 'AI and automation for distributors and importers',
       h1: 'Still retyping orders and quotes by hand?',
-      lede: 'bee & co. helps distributors and importers stop retyping orders and quotes. AI does the repeated entry inside the ERP you already run, and your team handles only the exceptions.',
+      lede: 'bee & co. brings AI into the repeated work of distributors and importers: from order entry and quotes, through price checks and stock questions, to supplier invoices. All inside the ERP you already run, with your team handling only the exceptions, so the same team handles more orders.',
+      cta: 'Check the fit for my company', companyL: 'Company name (optional)',
+      systems: { l: 'Works with the ERP you already run', items: ['Priority', 'SAP Business One', 'Hashavshevet'], note: 'In the cloud or on a server in your company. The fit with your version and setup is checked in the first call.' },
       flow: {
         title: 'What changes when AI enters the orders',
         intro: 'In most distributors, every order is read and typed into the ERP by hand. Here is what changes.',
@@ -541,7 +553,7 @@ export default {
         'Orders per person tracked every month, then the next process: stock, returns or supplier invoices.',
       ],
       faq: [
-        { q: 'Does this work with Priority or SAP Business One?', a: 'Yes. We start from the ERP you already run and connect to it, usually with read-only access first. Replacing it is rarely the first step.' },
+        { q: 'Does this work with Priority or SAP Business One?', a: 'In most cases, yes. We start from the ERP you already run, in the cloud or on a server in your company, and connect to what your version and setup allow, usually with read-only access first. Where there is no direct connection, we look at alternatives and tell you so up front. Replacing the ERP is rarely the first step.' },
         { q: 'We already have an IT supplier. Why would we need you?', a: 'Your IT supplier keeps the systems running. We work above that: deciding what is worth changing, designing it, building it, and working alongside your supplier where needed.' },
         { q: 'What about our customer and pricing data?', a: 'Confidentiality terms come first. We start with anonymized examples and read-only access, and nothing goes into unapproved AI tools.' },
         { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
@@ -551,7 +563,9 @@ export default {
       meta: { title: 'AI for manufacturers: quotes and planning without the bottleneck — bee & co.', desc: 'For manufacturing and industrial companies: AI that drafts quotes and plans from your own past jobs, with your experts approving, inside the ERP and files you already use. Founder-led by Eran Nachum.' },
       kicker: 'AI and automation for manufacturers',
       h1: 'Planning in Excel, and know-how in two people’s heads?',
-      lede: 'bee & co. helps manufacturers take routine work off the few people everything depends on. AI drafts quotes and plans from your past jobs, and your experts approve them and handle the hard cases.',
+      lede: 'bee & co. takes routine work off the few people everything depends on: from draft quotes and material costing, through reading drawings, to production planning and order status. AI works from your past jobs and inside the systems you already run, and your experts approve and handle the hard cases.',
+      cta: 'Check the fit for my plant', companyL: 'Plant or company name (optional)',
+      systems: { l: 'Works with the systems you already run', items: ['Priority', 'SAP', 'Excel'], note: 'Including older systems and planning that lives in spreadsheets. The fit with your systems is checked in the first call.' },
       flow: {
         title: 'What changes when AI drafts the quote',
         intro: 'In most plants, every quote waits for the one or two people who know the pricing. Here is what changes.',
@@ -582,7 +596,7 @@ export default {
         'Re-planning hours tracked every week, then extended to the next line.',
       ],
       faq: [
-        { q: 'Our systems are old. Is that a problem?', a: 'Usually not. We start from the systems you run and connect to them. Replacing them is a decision we weigh with you, not an assumption.' },
+        { q: 'Our systems are old. Is that a problem?', a: 'Usually not. We start from the systems you run and connect to what they allow. Where there is no direct connection, we look at alternatives and tell you so up front. Replacing them is a decision we weigh with you, not an assumption.' },
         { q: 'Do you work on the shop floor or the office side?', a: 'Mostly the office side: quoting, planning, orders, documentation and the systems that connect them. Where floor data matters, we start with what is already collected.' },
         { q: 'What about our designs and customer data?', a: 'Confidentiality terms come first. We start with anonymized examples and read-only access, and nothing goes into unapproved AI tools.' },
         { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
@@ -591,8 +605,10 @@ export default {
     ecommerce: {
       meta: { title: 'AI for e-commerce and retail brands: faster service, cleaner orders — bee & co.', desc: 'For e-commerce and retail brands without a technology leader: AI that drafts service replies from order data, stock and orders in sync, and senior technology leadership part-time. Founder-led by Eran Nachum.' },
       kicker: 'AI and automation for online retailers',
-      h1: 'Plenty of tools. Nobody senior running the technology?',
-      lede: 'bee & co. helps online brands answer customers faster and keep stock and orders in sync. AI drafts the replies from order and shipping data, and your team approves them. If you have no technology leader, we take that seat part-time.',
+      h1: 'Answering “where’s my order?” all day, and stock still out of sync?',
+      lede: 'bee & co. brings AI into the daily work of online brands: from customer replies and order tracking, through returns, to keeping stock in sync between the store and the warehouse. AI works from the order and shipping data you already have, and your team approves. If you have no technology leader, we take that seat part-time.',
+      cta: 'Check the fit for my store', companyL: 'Store or brand name (optional)',
+      systems: { l: 'Works with the store you already run', items: ['Shopify', 'WooCommerce', 'Wix'], note: 'Alongside your shipping apps and help desk. The fit is checked in the first call.' },
       flow: {
         title: 'What changes when AI drafts the service replies',
         intro: 'In most online brands, reps look up the same order details and answer the same questions all day. Here is what changes.',
@@ -623,7 +639,7 @@ export default {
         'Errors per 100 orders and service time tracked every month, with the roadmap reviewed each quarter.',
       ],
       faq: [
-        { q: 'We run on Shopify or WooCommerce with a few apps. Is that a fit?', a: 'Yes. We start from your current stack and change only what earns its place. Moving platforms is a decision, not a default.' },
+        { q: 'We run on Shopify or WooCommerce with a few apps. Is that a fit?', a: 'In most cases, yes. We start from your current stack, connect to what the platform and apps allow, and change only what earns its place. Where there is no direct connection, we tell you so up front. Moving platforms is a decision, not a default.' },
         { q: 'We have an agency. Do you replace them?', a: 'No. We work as the senior technology lead on your side: setting priorities, reviewing their work, and making sure what they build fits together.' },
         { q: 'What about our customer data?', a: 'Confidentiality terms come first. We start with anonymized examples and read-only access, and nothing goes into unapproved AI tools.' },
         { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
@@ -633,7 +649,9 @@ export default {
       meta: { title: 'AI for insurance agencies: less paperwork, more time with clients — bee & co.', desc: 'For insurance agencies and financial-advisory firms: AI that reads insurers’ documents and prepares renewals and client summaries, securely, with your agents approving. Founder-led by Eran Nachum.' },
       kicker: 'AI and automation for insurance agencies',
       h1: 'Your agents spend the day on paperwork, not on clients?',
-      lede: 'bee & co. helps insurance agencies take the paperwork off their agents. AI reads insurers’ documents and prepares renewals and client summaries on approved, secured services, and your agents check them and spend the time with clients.',
+      lede: 'bee & co. brings AI into the work of insurance agencies: from comparing renewals and reading policies, through client summaries before a meeting, to tracking missing documents and claims. All on approved, secured services, with the agent checking every summary and spending the time with clients.',
+      cta: 'Check the fit for my agency', companyL: 'Agency name (optional)',
+      systems: { l: 'Works with what you already run', items: ['Your agency management system', 'Insurers’ portals', 'Email and documents'], note: 'We connect to what the systems and portals allow. Where a portal offers no connection, we tell you so up front.' },
       flow: {
         title: 'What changes when AI prepares the renewal',
         intro: 'In most agencies, every renewal means copying details from the insurer’s documents into the agency system. Here is what changes.',
@@ -673,8 +691,10 @@ export default {
     accounting: {
       meta: { title: 'AI for accounting firms: less chasing, keying and reconciling — bee & co.', desc: 'For CPA and bookkeeping firms: AI that collects client documents, suggests entries and matches the bank inside the software you already run, with client confidentiality designed in. Founder-led by Eran Nachum.' },
       kicker: 'AI and automation for accounting firms',
-      h1: 'Reporting season stops the whole office again?',
-      lede: 'bee & co. helps accounting firms get through reporting season without stopping the office. AI collects and sorts client documents and suggests the entries inside the software you already run, and your team handles only what doesn’t match.',
+      h1: 'Still keying in documents and chasing clients for receipts?',
+      lede: 'bee & co. brings AI into the day-to-day work of accounting firms: from collecting client documents, through suggested entries and bank reconciliation, to preparing reports. All inside the software you already run, with a professional approving every exception, so each person on your team can handle more client files.',
+      cta: 'Check the fit for my firm', companyL: 'Firm name (optional)',
+      systems: { l: 'Works with the software you already run', items: ['Hashavshevet', 'Rivhit', 'Priority'], note: 'In the cloud or on a server in your office. The fit with your version and setup is checked in the first call.' },
       flow: {
         title: 'What changes when AI handles the client documents',
         intro: 'In most firms, staff chase, sort and key in client documents by hand, all year. Here is what changes.',
@@ -705,17 +725,20 @@ export default {
         'Files per person tracked every month, then the next workflow: payroll, reports or client onboarding.',
       ],
       faq: [
-        { q: 'We work with Hashavshevet, Rivhit or Priority. Is that a fit?', a: 'Yes. We start from the software you already run and connect to what it allows, usually with read-only access first. Replacing it is a decision we weigh with you, not an assumption.' },
+        { q: 'We work with Hashavshevet, Rivhit or Priority. Is that a fit?', a: 'In most cases, yes. We start from the software you already run, in the cloud or on a server in your office, and connect to what your version and setup allow, usually with read-only access first. Where there is no direct connection, we look at alternatives and tell you so up front. Replacing it is a decision we weigh with you, not an assumption.' },
         { q: 'How is our clients’ financial data protected?', a: 'Confidentiality terms come first. We start with anonymized examples, data stays in approved, secured services, and nothing goes into unapproved AI tools. The partners approve the design before anything is built.' },
         { q: 'We are a small firm. Is this only for large offices?', a: 'It depends less on size than on volume. If the same work repeats across many client files, there is usually something worth building. The first call is where we find out.' },
         { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
       ],
     },
     law: {
+      companyL: 'Firm name (optional)',
       meta: { title: 'AI for law firms: first drafts, search and a clear AI policy — bee & co.', desc: 'For law firms: decide which AI is worth the risk, then put it to work on the drafting and searching that take senior hours, with privilege and confidentiality designed in. Founder-led by Eran Nachum.' },
       kicker: 'AI for law firms',
       h1: 'Every vendor is pitching your firm an AI tool. Which one is real?',
-      lede: 'bee & co. helps law firms decide which AI is worth the risk, then puts it to work on the drafting and searching that take senior hours. Built into the way the firm already works, with privilege and confidentiality designed in.',
+      lede: 'bee & co. helps law firms decide which AI is worth the risk, then puts it to work: from first drafts built on the firm’s templates, through searching your own files and precedents, to version comparison and deadline tracking. Built into the way the firm already works, with privilege and confidentiality designed in, and a lawyer reviews every draft.',
+      cta: 'Check the fit for my firm',
+      systems: { l: 'Works with the tools you already run', items: ['Your practice-management system', 'Microsoft 365', 'Your document store'], note: 'Approved tools only, and client data never goes into a public AI tool. The fit is checked in the first call.' },
       // The workflow under the hero (replaces the situation picker). Illustrative: same rules as the use case page.
       flow: {
         title: 'What changes when AI prepares the first draft',
@@ -747,7 +770,7 @@ export default {
         'Senior hours per matter tracked every month, then extended to the next practice area.',
       ],
       faq: [
-        { q: 'We use a dedicated practice-management system. Is that a fit?', a: 'Yes. We start from the systems you already run and connect to them, usually with read-only access first. Replacing them is a decision we weigh with you, not an assumption.' },
+        { q: 'We use a dedicated practice-management system. Is that a fit?', a: 'In most cases, yes. We start from the systems you already run and connect to what they allow, usually with read-only access first. Where there is no direct connection, we look at alternatives and tell you so up front. Replacing them is a decision we weigh with you, not an assumption.' },
         { q: 'How do you handle privilege and client confidentiality?', a: 'Confidentiality terms come first. We start with anonymized examples, data stays in approved, secured services, and nothing goes into unapproved AI tools. The partners approve the design before anything is built.' },
         { q: 'We bill by the hour. Doesn’t AI work against us?', a: 'It is a real question, and part of the decision. We look at where saved hours turn into capacity, faster turnaround or fixed-fee work, and recommend only what makes business sense for the firm.' },
         { q: 'What does it cost?', a: 'It depends on scope. After a 30-minute call you receive a short written proposal, usually for a fixed-price Decision Sprint first.' },
@@ -757,7 +780,9 @@ export default {
       meta: { title: 'AI for real-estate developers and contractors: bills checked, reports current — bee & co.', desc: 'For real-estate developers and construction companies: AI that checks subcontractor bills against the contract and keeps project reporting current, with project managers approving. Founder-led by Eran Nachum, who also led engineering in real-estate investment tech.' },
       kicker: 'AI and automation for developers and builders',
       h1: 'Ten projects running, and the real status lives in Excel?',
-      lede: 'bee & co. helps developers and builders see every project without rebuilding the report by hand. AI checks subcontractor bills against the contract and keeps one project report up to date, and your project managers approve the exceptions.',
+      lede: 'bee & co. brings AI into the daily work of developers and builders: from checking subcontractor bills against the contract and bill of quantities, through budget, change and tender tracking, to one project report that stays up to date. Inside the tools you already use, with your project managers approving every exception.',
+      cta: 'Check the fit for my company', companyL: 'Company name (optional)',
+      systems: { l: 'Works with the tools you already use', items: ['Excel', 'Your ERP or finance system', 'Your project management system'], note: 'We start from the spreadsheets and systems your project managers already open. The fit is checked in the first call.' },
       flow: {
         title: 'What changes when AI checks the subcontractor bills',
         intro: 'In most construction companies, engineers check every subcontractor bill against the contract by hand. Here is what changes.',

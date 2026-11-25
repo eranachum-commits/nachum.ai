@@ -254,6 +254,8 @@ $$('[data-lead-form]').forEach((form) => {
       // Landing pages: the message is optional when a situation was picked.
       else if (f.dataset.or && !f.value.trim() && !form.querySelector(`[name=${f.dataset.or}]:checked`)) msg = D.mRequired;
       else if (f.type === 'email' && f.value && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.value.trim())) msg = D.mEmail;
+      // Short form: a phone number of 9-15 digits once spaces, dashes and brackets are removed (same rule as the server).
+      else if (f.type === 'tel' && f.required && !/^\+?\d{9,15}$/.test(f.value.replace(/[\s\-().]/g, ''))) msg = D.mPhone;
       setErr(f.name, msg);
       if (msg && !first) first = f;
     }
@@ -271,7 +273,7 @@ $$('[data-lead-form]').forEach((form) => {
       const res = await fetch(form.getAttribute('action'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
       const body = await res.json().catch(() => ({}));
       if (res.status === 400 && body.errors) {
-        Object.entries(body.errors).forEach(([k, v]) => setErr(k, v === 'email' ? D.mEmail : k === 'consent' ? D.mConsent : D.mRequired));
+        Object.entries(body.errors).forEach(([k, v]) => setErr(k, v === 'email' ? D.mEmail : v === 'phone' ? D.mPhone : k === 'consent' ? D.mConsent : D.mRequired));
         status.className = 'form-status notice notice--err'; status.textContent = D.mFix;
       } else if (res.ok && body.ok) {
         const dev = body.mode === 'dev';
@@ -341,7 +343,10 @@ $$('[data-lp-sticky]').forEach((bar) => {
   if (!('IntersectionObserver' in window)) return;
   const hero = $('.hero--lp'), form = $('.lp-formsec');
   let pastHero = false, atForm = false;
-  const show = () => { bar.hidden = !(pastHero && !atForm); };
+  // Never under the cookie banner: both sit at the bottom of the screen, and the banner must stay readable.
+  const banner = $('[data-consent]');
+  const show = () => { bar.hidden = !(pastHero && !atForm && (!banner || banner.hidden)); };
+  if (banner) new MutationObserver(show).observe(banner, { attributes: true, attributeFilter: ['hidden'] });
   new IntersectionObserver(([e]) => { pastHero = !e.isIntersecting; show(); }).observe(hero);
   new IntersectionObserver(([e]) => { atForm = e.isIntersecting; show(); }).observe(form);
 });
