@@ -58,6 +58,22 @@ Ad set name: **Accounting – Israel 30-65**. Create the first ad, then **Duplic
 - **Headline:** AI שרודף אחרי המסמכים במקומכם
 - **Website URL:** https://beenco.tech/for/accounting?utm_source=facebook&utm_medium=paid&utm_campaign=accounting-w1&utm_content=hook-reminder
 
+### accounting – hook-keying
+
+- **Ad name:** accounting – hook-keying
+- **Image:** `marketing/ads/meta-upload/accounting-hook-keying-square.png`
+- **Primary text:** העובדים מבלים את היום בהקלדה ובהתאמות? AI מציע רישומים והתאמות בנק בתוך התוכנה שלכם. איש מקצוע מאשר כל חריג. שיחה של 30 דקות עם ערן, בלי התחייבות.
+- **Headline:** פחות הקלדה והתאמות, עם AI
+- **Website URL:** https://beenco.tech/for/accounting?utm_source=facebook&utm_medium=paid&utm_campaign=accounting-w1&utm_content=hook-keying
+
+### accounting – hook-onprem
+
+- **Ad name:** accounting – hook-onprem
+- **Image:** `marketing/ads/meta-upload/accounting-hook-onprem-square.png`
+- **Primary text:** חשבשבת מותקנת אצלכם במשרד, לא בענן? אנחנו בונים AI שעובד לצד התוכנה שכבר יש לכם, ואת ההתאמה לגרסה ולהתקנה שלכם בודקים בשיחה הראשונה. שיחה של 30 דקות עם ערן, בלי התחייבות.
+- **Headline:** בודקים התאמה גם לחשבשבת מקומית
+- **Website URL:** https://beenco.tech/for/accounting?utm_source=facebook&utm_medium=paid&utm_campaign=accounting-w1&utm_content=hook-onprem
+
 ## bee&co | Distribution | Meta | W1
 
 Ad set name: **Distribution – Israel 30-65**. Create the first ad, then **Duplicate** it inside the ad set for the other three and change the fields below.
